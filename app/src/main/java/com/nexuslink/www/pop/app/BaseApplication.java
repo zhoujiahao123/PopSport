@@ -13,6 +13,7 @@ import com.umeng.socialize.UMShareAPI;
 
 public class BaseApplication extends Application {
     {
+        PlatformConfig.setWeixin("wx967daebe835fbeac", "585523ac310c933504000104");
         PlatformConfig.setQQZone("100424468", "585523ac310c933504000104");
     }
     @Override
