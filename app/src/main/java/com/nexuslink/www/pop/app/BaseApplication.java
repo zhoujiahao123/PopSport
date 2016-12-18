@@ -2,6 +2,7 @@ package com.nexuslink.www.pop.app;
 
 import android.app.Application;
 
+import com.antfortune.freeline.FreelineCore;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -18,5 +19,6 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         UMShareAPI.get(this);
+        FreelineCore.init(this);
     }
 }

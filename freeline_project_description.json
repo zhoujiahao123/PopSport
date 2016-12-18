@@ -1,0 +1,96 @@
+{
+    "project_type": "gradle",
+    "android_gradle_plugin_version": "2.2.0",
+    "freeline_gradle_plugin_version": "0.8.4",
+    "java_home": "C:\\java\\jdk1.8.0_71",
+    "freeline_cache_dir": "D:\\github\\Pop",
+    "auto_dependency": true,
+    "product_flavor": "",
+    "build_script": "gradlew.bat :app:assembleDebug",
+    "build_script_work_directory": "",
+    "root_dir": "D:\\github\\Pop",
+    "main_project_name": "app",
+    "main_project_dir": "app",
+    "build_directory": "D:\\github\\Pop\\app\\build",
+    "build_cache_dir": "D:\\github\\Pop\\app\\build\\freeline",
+    "build_tools_version": "25.0.0",
+    "sdk_directory": "D:\\android",
+    "build_tools_directory": "D:\\android\\build-tools\\25.0.0",
+    "compile_sdk_version": "android-24",
+    "compile_sdk_directory": "D:\\android\\platforms\\android-24",
+    "package": "com.nexuslink.www.pop",
+    "debug_package": "com.nexuslink.www.pop",
+    "main_manifest_path": "D:\\github\\Pop\\app\\src\\main\\AndroidManifest.xml",
+    "launcher": "com.nexuslink.www.pop.ui.LogIn",
+    "apk_path": "D:\\github\\Pop\\app\\build\\outputs\\apk\\app-debug.apk",
+    "extra_dep_res_paths": [
+        
+    ],
+    "exclude_dep_res_paths": [
+        
+    ],
+    "main_r_path": "D:\\github\\Pop\\app\\build\\generated\\source\\r\\debug\\R.java",
+    "use_jdk8": true,
+    "main_src_directory": [
+        "D:\\github\\Pop\\app\\src\\debug\\java",
+        "D:\\github\\Pop\\app\\src\\main\\java"
+    ],
+    "main_res_directory": [
+        "D:\\github\\Pop\\app\\src\\debug\\res",
+        "D:\\github\\Pop\\app\\src\\main\\res"
+    ],
+    "main_assets_directory": [
+        "D:\\github\\Pop\\app\\src\\debug\\assets",
+        "D:\\github\\Pop\\app\\src\\main\\assets"
+    ],
+    "main_jni_directory": [
+        "D:\\github\\Pop\\app\\src\\debug\\jni",
+        "D:\\github\\Pop\\app\\src\\main\\jni"
+    ],
+    "main_jniLibs_directory": [
+        "D:\\github\\Pop\\app\\src\\debug\\jniLibs",
+        "D:\\github\\Pop\\app\\src\\main\\jniLibs"
+    ],
+    "project_source_sets": {
+        "app": {
+            "main_src_directory": [
+                "D:\\github\\Pop\\app\\src\\debug\\java",
+                "D:\\github\\Pop\\app\\src\\main\\java"
+            ],
+            "main_res_directory": [
+                "D:\\github\\Pop\\app\\src\\debug\\res",
+                "D:\\github\\Pop\\app\\src\\main\\res"
+            ],
+            "main_assets_directory": [
+                "D:\\github\\Pop\\app\\src\\debug\\assets",
+                "D:\\github\\Pop\\app\\src\\main\\assets"
+            ],
+            "main_jni_directory": [
+                "D:\\github\\Pop\\app\\src\\debug\\jni",
+                "D:\\github\\Pop\\app\\src\\main\\jni"
+            ],
+            "main_jniLibs_directory": [
+                "D:\\github\\Pop\\app\\src\\debug\\jniLibs",
+                "D:\\github\\Pop\\app\\src\\main\\jniLibs"
+            ],
+            "main_manifest_path": "D:\\github\\Pop\\app\\src\\main\\AndroidManifest.xml"
+        }
+    },
+    "modules": [
+        {
+            "name": "app",
+            "path": "D:\\github\\Pop\\app"
+        }
+    ],
+    "module_dependencies": {
+        "app": [
+            
+        ]
+    },
+    "databinding": [
+        
+    ],
+    "databinding_modules": [
+        
+    ]
+}
