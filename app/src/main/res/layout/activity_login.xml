@@ -61,34 +61,34 @@
     </android.support.design.widget.TextInputLayout>
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="@dimen/btn_width"
-        android:layout_height="@dimen/btn_height"
+        android:layout_width="@dimen/btn_login_width"
+        android:layout_height="@dimen/button_height_normal"
         android:layout_below="@id/layout_input_password"
         android:text="@string/btn_login"
-        android:layout_marginTop="@dimen/padding_small"
+        android:layout_marginTop="@dimen/spacing_normal"
         style="@style/btn_style"
         />
     <Button
         android:id="@+id/btn_sign_in"
-        android:layout_width="@dimen/btn_width"
-        android:layout_height="@dimen/btn_height"
+        android:layout_width="@dimen/btn_login_width"
+        android:layout_height="@dimen/button_height_normal"
         android:layout_below="@id/btn_login"
         android:text="@string/btn_sign_in"
-        android:layout_marginTop="@dimen/padding_smaller"
+        android:layout_marginTop="@dimen/spacing_small"
         style="@style/btn_style"
         />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_height"
+        android:layout_height="@dimen/layout_login_height"
         android:layout_alignParentBottom="true">
         <LinearLayout
             android:id="@+id/layout_login_qq"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="@dimen/layout_height"
+            android:layout_height="@dimen/layout_login_height"
             style="@style/layout_style_qq">
             <ImageView
-                android:layout_marginTop="@dimen/padding_smaller"
+                android:layout_marginTop="@dimen/spacing_small"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:src="@drawable/qqimage"
@@ -96,19 +96,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/font_small"
                 android:text="@string/layout_login_qq"
-                android:textColor="@color/white_high"
+                android:textColor="@color/white_light"
                 android:layout_gravity="center_horizontal"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_login_wechat"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="@dimen/layout_height"
+            android:layout_height="@dimen/layout_login_height"
             style="@style/layout_style_wechat">
             <ImageView
-                android:layout_marginTop="@dimen/padding_smaller"
+                android:layout_marginTop="@dimen/spacing_small"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:src="@drawable/wechat"
@@ -116,9 +116,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/font_small"
                 android:text="@string/layout_login_wechat"
-                android:textColor="@color/white_high"
+                android:textColor="@color/white_light"
                 android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </LinearLayout>

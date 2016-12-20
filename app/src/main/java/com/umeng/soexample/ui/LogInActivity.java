@@ -16,6 +16,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.soexample.R;
+import com.umeng.soexample.app.BaseActivity;
 import com.umeng.soexample.presenter.LogInPresenter;
 import com.umeng.soexample.presenter.LogInPresenterImp;
 import com.umeng.soexample.ui.view.LoginView;
@@ -30,7 +31,7 @@ import butterknife.OnClick;
  * Created by ASUS-NB on 2016/12/17.
  */
 
-public class LogInActivity extends AppCompatActivity implements LoginView {
+public class LogInActivity extends BaseActivity implements LoginView {
     private static final String TAG = "AppCompatActivity";
     @BindView(R.id.layout_login_qq)
     LinearLayout layoutLoginQq;
@@ -59,18 +60,17 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Toast.makeText(getApplicationContext(), "Authorize succeed", Toast.LENGTH_SHORT).show();
             Toast.makeText(LogInActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
+            //在这里打开另一个activity
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            Toast.makeText(getApplicationContext(), "Authorize fail", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "授权失败", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
-            Toast.makeText(getApplicationContext(), "Authorize cancel", Toast.LENGTH_SHORT).show();
         }
     };
 
