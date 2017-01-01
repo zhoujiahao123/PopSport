@@ -5,7 +5,7 @@ import de.greenrobot.daogenerator.Schema;
 
 public class MyClass {
     public static void mian(String []args){
-        Schema schema = new Schema(1,"com.umeng.soexample");
+        Schema schema = new Schema(1,"com.nexuslink");
 
     }
     public static void addUser(Schema schema){

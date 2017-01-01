@@ -62,7 +62,7 @@
     <Button
         android:id="@+id/btn_login"
         android:layout_width="@dimen/btn_login_width"
-        android:layout_height="@dimen/button_height_normal"
+        android:layout_height="@dimen/button_height"
         android:layout_below="@id/layout_input_password"
         android:text="@string/btn_login"
         android:layout_marginTop="@dimen/spacing_normal"
@@ -71,7 +71,7 @@
     <Button
         android:id="@+id/btn_sign_in"
         android:layout_width="@dimen/btn_login_width"
-        android:layout_height="@dimen/button_height_normal"
+        android:layout_height="@dimen/button_height"
         android:layout_below="@id/btn_login"
         android:text="@string/btn_sign_in"
         android:layout_marginTop="@dimen/spacing_small"
@@ -96,7 +96,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_small"
+                android:textSize="@dimen/font_normal"
                 android:text="@string/layout_login_qq"
                 android:textColor="@color/white_light"
                 android:layout_gravity="center_horizontal"/>
@@ -116,7 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_small"
+                android:textSize="@dimen/font_normal"
                 android:text="@string/layout_login_wechat"
                 android:textColor="@color/white_light"
                 android:layout_gravity="center_horizontal"/>

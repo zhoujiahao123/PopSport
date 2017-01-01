@@ -1,11 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
     <style name="login_style">
         <item name="android:background">@drawable/sport3</item>
@@ -17,25 +19,25 @@
     </style>
     <style name="image_name">
         <item name="android:src">@drawable/username</item>
-        <item name="android:paddingLeft">@dimen/padding_small</item>
-        <item name="android:paddingRight">@dimen/padding_smaller</item>
+        <item name="android:paddingLeft">@dimen/spacing_normal</item>
+        <item name="android:paddingRight">@dimen/spacing_normal</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="image_password">
         <item name="android:src">@drawable/password</item>
-        <item name="android:paddingLeft">@dimen/padding_small</item>
-        <item name="android:paddingRight">@dimen/padding_smaller</item>
+        <item name="android:paddingLeft">@dimen/spacing_normal</item>
+        <item name="android:paddingRight">@dimen/spacing_small</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="layout_input">
-        <item name="android:textColor">@color/white_middle</item>
-        <item name="android:textColorHint">@color/white_middle</item>
+        <item name="android:textColor">@color/white_normal</item>
+        <item name="android:textColorHint">@color/white_normal</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="btn_style">
         <item name="android:background">@drawable/state_btn_login</item>
         <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:textColor">@color/white_middle</item>
+        <item name="android:textColor">@color/white_normal</item>
         <item name="android:textSize">21sp</item>
     </style>
     <style name="layout_style_qq">
