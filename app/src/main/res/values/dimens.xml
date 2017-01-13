@@ -8,6 +8,12 @@
     <dimen name="btn_login_width">280dp</dimen>
     <dimen name="layout_login_height">100dp</dimen>
     <dimen name="image_pad_top">80dp</dimen>
+    <dimen name="padding_top">0dp</dimen>
+    <dimen name="image_head">80dp</dimen>
+    <dimen name="image_head_edge">85dp</dimen>
+    <dimen name="image_head_padding_top">120dp</dimen>
+    <dimen name="image_head_edge_padding_top">100dp</dimen>
+    <dimen name="image_dot">20dp</dimen>
     <!--font size-->
     <dimen name="font_larger">22sp</dimen>
     <dimen name="font_large">18sp</dimen>

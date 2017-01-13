@@ -1,11 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
@@ -48,6 +44,18 @@
     <style name="layout_style_wechat">
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/state_login_alter</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:paddingTop">@dimen/padding_top</item>
+    </style>
+
+    //个人信息中的一些自定义控件属性
+    <style name="layout_style_square">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/selector_square</item>
         <item name="android:orientation">vertical</item>
     </style>
 </resources>

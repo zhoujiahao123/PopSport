@@ -119,6 +119,10 @@ public class LogInActivity extends BaseActivity implements LoginView {
         switch (view.getId()) {
             case R.id.btn_login:
                 logIn(textInputName.getText().toString(),textInputPassword.getText().toString());
+                Intent intent = new Intent(LogInActivity.this,PersonInfoActivity.class);
+                if(intent.resolveActivity(getPackageManager())!=null){
+                    startActivity(intent);
+                }
                 break;
             case R.id.btn_sign_in:
                 signIn();
