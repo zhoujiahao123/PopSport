@@ -6,4 +6,9 @@
     <string name="btn_sign_in">注册</string>
     <string name="layout_login_qq">QQ登录</string>
     <string name="layout_login_wechat">微信登录</string>
+    <string name="tab_text_one">日常</string>
+    <string name="tab_text_two">约跑</string>
+    <string name="tab_text_three">社区</string>
+    <string name="steps">步数</string>
+    <string name="expect_steps_test">目标xxxx步</string>
 </resources>
