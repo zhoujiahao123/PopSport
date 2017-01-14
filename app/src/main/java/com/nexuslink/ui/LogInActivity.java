@@ -1,4 +1,4 @@
-package com.umeng.soexample.ui;
+package com.nexuslink.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,14 +12,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.nexuslink.R;
+import com.nexuslink.app.BaseActivity;
+import com.nexuslink.presenter.LogInPresenter;
+import com.nexuslink.presenter.LogInPresenterImp;
+import com.nexuslink.ui.view.LoginView;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.soexample.R;
-import com.umeng.soexample.app.BaseActivity;
-import com.umeng.soexample.presenter.LogInPresenter;
-import com.umeng.soexample.presenter.LogInPresenterImp;
-import com.umeng.soexample.ui.view.LoginView;
 
 import java.util.Map;
 
@@ -119,6 +119,10 @@ public class LogInActivity extends BaseActivity implements LoginView {
         switch (view.getId()) {
             case R.id.btn_login:
                 logIn(textInputName.getText().toString(),textInputPassword.getText().toString());
+                Intent intent = new Intent(LogInActivity.this,PersonInfoActivity.class);
+                if(intent.resolveActivity(getPackageManager())!=null){
+                    startActivity(intent);
+                }
                 break;
             case R.id.btn_sign_in:
                 signIn();

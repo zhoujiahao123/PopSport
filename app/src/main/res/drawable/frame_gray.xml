@@ -6,6 +6,6 @@
     <!--边界白色-->
     <stroke
         android:width="0.5dp"
-        android:color="@color/gray" >
+        android:color="@color/gray_normal" >
     </stroke>
 </shape>
