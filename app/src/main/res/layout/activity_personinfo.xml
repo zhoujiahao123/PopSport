@@ -60,96 +60,105 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:orientation="vertical"
-        android:background="@color/white_light"
         android:layout_alignParentBottom="true"
-        android:clickable="true"
         >
         <LinearLayout
-            android:clickable="true"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="100dp"
-                style="@style/layout_style_wechat">
+                android:layout_height="150dp"
+                style="@style/layout_style_square">
+                <ImageView
+                    android:src="@drawable/friend"
+
+                    style="@style/PhotoStyle"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="dddddddddd"
-                    android:textSize="30sp"/>
+                    android:text="我的好友"
+                    style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 style="@style/layout_style_square">
+                <ImageView
+                    android:src="@drawable/runningroom"
 
+                    style="@style/PhotoStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跑房"
+                    style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 style="@style/layout_style_square">
+                <ImageView
+                    android:src="@drawable/setting"
 
+                    style="@style/PhotoStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改资料"
+                    style="@style/TvStyle"/>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:clickable="true"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 style="@style/layout_style_square">
+                <ImageView
+                    android:src="@drawable/exerplan"
 
+                    style="@style/PhotoStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的任务"
+                    style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 style="@style/layout_style_square">
-
+                <ImageView
+                    android:src="@drawable/achieve"
+                    style="@style/PhotoStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的成就"
+                    style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 style="@style/layout_style_square">
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:clickable="true"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            >
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="100dp"
-                style="@style/layout_style_square">
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="100dp"
-                style="@style/layout_style_square">
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="100dp"
-                style="@style/layout_style_square">
-
+                <ImageView
+                    android:src="@drawable/rank"
+                    style="@style/PhotoStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="排行榜"
+                    style="@style/TvStyle"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
