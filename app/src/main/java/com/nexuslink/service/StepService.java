@@ -120,6 +120,7 @@ public class StepService extends Service implements SensorEventListener {
         //===============================================在这里进行数据新的一列的存储
         //通过日期匹配，当数据中有今日步数的行，那么将步数值进行读取，如果没有那么久新增一行，并将CURRENT_STEP存储进去
 
+
     }
 
     /**

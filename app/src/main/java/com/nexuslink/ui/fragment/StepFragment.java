@@ -92,6 +92,7 @@ public class StepFragment extends Fragment {
     private void initData() {
         //从数据库中取得数据
 
+
     }
 
     private void initView(View v) {
