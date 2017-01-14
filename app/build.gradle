@@ -39,12 +39,13 @@ android {
             keyPassword "android"
         }
     }
-}
-sourceSets {
-    main {
-        java.srcDirs = ['src/main/java', 'src/main/java-gen']
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java-gen']
+        }
     }
 }
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
