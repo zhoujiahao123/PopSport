@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.antfortune.freeline'
 apply plugin: 'com.neenbedankt.android-apt'
 android {
     compileSdkVersion 24
@@ -39,12 +38,13 @@ android {
             keyPassword "android"
         }
     }
-}
-sourceSets {
-    main {
-        java.srcDirs = ['src/main/java', 'src/main/java-gen']
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java-gen']
+        }
     }
 }
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

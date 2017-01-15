@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="windowNoTitle">true</item>
@@ -58,4 +57,18 @@
         <item name="android:background">@drawable/selector_square</item>
         <item name="android:orientation">vertical</item>
     </style>
+    //控件中图片的style
+    <style name="PhotoStyle">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/spacing_huge</item>
+        <item name="android:layout_width">@dimen/image_size40</item>
+        <item name="android:layout_height">@dimen/image_size40</item>
+    </style>
+    //控件中文字的style
+    <style name="TvStyle">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingTop">@dimen/spacing_small</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
 </resources>
