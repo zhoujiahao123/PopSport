@@ -13,14 +13,17 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 import com.nexuslink.R;
+import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.config.Constants;
 import com.nexuslink.service.StepService;
@@ -29,11 +32,13 @@ import com.nexuslink.util.DBUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.greenrobot.dao.query.QueryBuilder;
+
 /**
  * Created by 猿人 on 2017/1/14.
  */
 
-public class StepFragment extends Fragment {
+public class StepFragment extends Fragment implements View.OnClickListener {
     //===============================================常量
     private static final String TAG = "StepFragment";
     //===============================================辅助变量
@@ -42,16 +47,27 @@ public class StepFragment extends Fragment {
     //===============================================view
     private MagicProgressCircle stepCircle;
     private TextView currentStepsTv,expectStepsTv;
+    private Toolbar mStepToolbar;
     //===============================================Messenger
     private Messenger messengerService;
     private Messenger messengerClient = new Messenger(new MessengerHandler());
+
+    /**
+     * Toolbar左侧点击事件
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(activity, "天气查询", Toast.LENGTH_SHORT).show();
+    }
+
     private class MessengerHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-                case Constants.MSG_FROMSERVICE:
-                    currentStepsTv.setText(msg.getData().getInt("currentSteps"));
+                case Constants.MSG_FROM_SERVICE:
+                    currentStepsTv.setText(msg.getData().getInt("currentSteps")+"");
                     break;
                 default:
                     break;
@@ -64,9 +80,8 @@ public class StepFragment extends Fragment {
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            isBind = true;
             messengerService = new Messenger(service);
-            Message msg = Message.obtain(null,Constants.MSG_FROMCLIENT);
+            Message msg = Message.obtain(null,Constants.MSG_FROM_CLIENT);
             msg.replyTo = messengerClient;
             try {
                 messengerService.send(msg);
@@ -86,11 +101,6 @@ public class StepFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         setupService();
     }
 
@@ -100,11 +110,30 @@ public class StepFragment extends Fragment {
         View view = inflater.inflate(R.layout.step_fragment,container,false);
         //初始化view
         initView(view);
-        //初始化view的数据，这里是计步显示
-//        initData();
+        initDate();
         return view;
     }
 
+    private void initDate() {
+        QueryBuilder qb = stepsDao.queryBuilder();
+        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
+        Steps steps = (Steps) qb.unique();
+        if(steps!=null){
+            currentStepsTv.setText(steps.getSteps()+"");
+        }else{
+            currentStepsTv.setText(0+"");
+        }
+    }
+
+    /**
+     * 取得今日日期
+     * @return
+     */
+    private String getTodayDate(){
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
+    }
     private void setupService() {
         if(!isBind){
             Intent intent = new Intent(activity, StepService.class);
@@ -115,28 +144,14 @@ public class StepFragment extends Fragment {
         }
     }
 
-//    private void initData() {
-//        //从数据库中取得数据
-//        QueryBuilder qb = stepsDao.queryBuilder();
-//        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
-//        Steps steps = (Steps) qb.unique();
-//        if(steps!=null){
-//            currentStepsTv.setText(steps.getSteps()+"");
-//        }else{
-//            currentStepsTv.setText(0+"");
-//        }
-//    }
-    private String getTodayDate(){
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
-    }
 
     private void initView(View v) {
         stepCircle = (MagicProgressCircle) v.findViewById(R.id.stepCircle);
         currentStepsTv = (TextView) v.findViewById(R.id.tv_currentSteps);
         expectStepsTv = (TextView) v.findViewById(R.id.tv_expectSteps);
-
+        mStepToolbar = (Toolbar) v.findViewById(R.id.toolbar_step);
+        mStepToolbar.setNavigationIcon(R.drawable.weather);
+        mStepToolbar.setNavigationOnClickListener(this);
     }
 
     @Override

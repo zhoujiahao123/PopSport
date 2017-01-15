@@ -14,17 +14,16 @@
 
     <eu.long1.spacetablayout.SpaceTabLayout
         android:id="@+id/spaceTab_mainView"
-
+        android:layout_alignParentBottom="true"
         app:tab_color="@color/blue_normal"
         app:button_color="@color/pink_light"
-
         app:icon_one="@drawable/step"
         app:icon_two="@drawable/appointment"
         app:icon_three="@drawable/community"
         app:icon_four="@drawable/personalinfo"
         app:number_of_tabs="four"
         app:starting_position="one"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </eu.long1.spacetablayout.SpaceTabLayout>
 

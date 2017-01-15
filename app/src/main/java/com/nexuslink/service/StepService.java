@@ -44,7 +44,7 @@ public class StepService extends Service implements SensorEventListener {
     //存储间隔
     private static int duration = 3000;
     //当前日期
-    private static String CURRENTDATE = "";
+    private static String CURRENT_DATE = "";
     //传感器
     private SensorManager sensorManager;
 
@@ -74,9 +74,10 @@ public class StepService extends Service implements SensorEventListener {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-                case Constants.MSG_FROMCLIENT:
+                case Constants.MSG_FROM_CLIENT:
+                    Log.i(TAG, String.valueOf(msg.replyTo==null));
                     messengerFromClient = msg.replyTo;
-                    Message message = Message.obtain(null,Constants.MSG_FROMCLIENT);
+                    Message message = Message.obtain(null,Constants.MSG_FROM_SERVICE);
                     Bundle bundle = new Bundle();
                     bundle.putInt("currentSteps",CURRENT_STEPS);
                     message.setData(bundle);
@@ -124,7 +125,7 @@ public class StepService extends Service implements SensorEventListener {
      * 初始化当天的步数
      */
     private void initTodayData() {
-        CURRENTDATE = getTodayDate();
+        CURRENT_DATE = getTodayDate();
         //===============================================在这里进行数据新的一列的存储
         //通过日期匹配，当数据中有今日步数的行，那么将步数值进行读取，如果没有那么久新增一行，并将CURRENT_STEP存储进去
         QueryBuilder qb = stepsDao.queryBuilder();
@@ -135,7 +136,7 @@ public class StepService extends Service implements SensorEventListener {
         }else{
             //增加一行
             Steps stepsAdd = new Steps();
-            stepsAdd.setCurrentDate(CURRENTDATE);
+            stepsAdd.setCurrentDate(CURRENT_DATE);
             stepsAdd.setSteps(0);
             stepsDao.insert(stepsAdd);
         }
@@ -266,7 +267,7 @@ public class StepService extends Service implements SensorEventListener {
      */
     private void isNewDay() {
         String time = "00:00";
-        if(time.equals(new SimpleDateFormat("HH:mm").format(new Date()))||(!CURRENTDATE.equals(getTodayDate()))){
+        if(time.equals(new SimpleDateFormat("HH:mm").format(new Date()))||(!CURRENT_DATE.equals(getTodayDate()))){
             initTodayData();
         }
     }
@@ -282,12 +283,12 @@ public class StepService extends Service implements SensorEventListener {
         //不为空时，说明还未到12点，我们进行更新就行，为空说明为最后一次存储
         if(steps!=null){
             steps.setSteps(tempStep);
-            steps.setCurrentDate(CURRENTDATE);
+            steps.setCurrentDate(CURRENT_DATE);
             stepsDao.update(steps);
         }else{
             steps = new Steps();
             steps.setSteps(tempStep);
-            steps.setCurrentDate(CURRENTDATE);
+            steps.setCurrentDate(CURRENT_DATE);
             stepsDao.update(steps);
         }
 
@@ -296,6 +297,7 @@ public class StepService extends Service implements SensorEventListener {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Log.i(TAG,"返回IBinder");
         return messengerFromService.getBinder();
     }
 
@@ -337,7 +339,7 @@ public class StepService extends Service implements SensorEventListener {
         @Override
         public void onTick(long millisUntilFinished) {
 
-            Message msg = Message.obtain(null,Constants.MSG_FROMSERVICE);
+            Message msg = Message.obtain(null,Constants.MSG_FROM_SERVICE);
             Bundle bundle = new Bundle();
             bundle.putInt("currentSteps",CURRENT_STEPS);
             msg.setData(bundle);

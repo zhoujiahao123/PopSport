@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.nexuslink.R;
 import com.nexuslink.ui.fragment.AppointmentFragment;
 import com.nexuslink.ui.fragment.CommunityFragment;
-import com.nexuslink.ui.fragment.PersonalInfoFragment;
+import com.nexuslink.ui.fragment.PersonInfoFragment;
 import com.nexuslink.ui.fragment.StepFragment;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class MainViewActivity extends AppCompatActivity {
         Fragment stepFragment = new StepFragment();
         Fragment appointFragment = new AppointmentFragment();
         Fragment communityFragment = new CommunityFragment();
-        Fragment personalInfoFragment = new PersonalInfoFragment();
+        Fragment personalInfoFragment = PersonInfoFragment.getInstance();
 
         fragments.add(stepFragment);
         fragments.add(appointFragment);
