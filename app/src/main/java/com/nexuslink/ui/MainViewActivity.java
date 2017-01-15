@@ -53,6 +53,8 @@ public class MainViewActivity extends AppCompatActivity {
 
         mSpaceTab.initialize(mViewPager,getSupportFragmentManager(),fragments,savedInstanceState);
 
+
+
     }
 
     @Override
