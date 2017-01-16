@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="@string/step_menu_setteing"
+        android:id="@+id/step_menu_setting"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/step_menu_setting"
+        ></item>
+</menu>
