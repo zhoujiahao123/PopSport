@@ -5,7 +5,7 @@
         <item name="windowActionBar">false</item>
     </style>
     <style name="login_style">
-        <item name="android:background">@drawable/sport3</item>
+        <item name="android:background">@color/blue_normal</item>
     </style>
     <style name="image_style">
         <item name="android:src">@drawable/running</item>

@@ -61,7 +61,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             Toast.makeText(LogInActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
-            //在这里打开另一个activity
+            Intent mainViewIntent = new Intent(LogInActivity.this,MainViewActivity.class);
+            startActivity(mainViewIntent);
+            finish();
         }
 
         @Override
@@ -118,7 +120,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
     public void onClick1(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                logIn(textInputName.getText().toString(),textInputPassword.getText().toString());
+                Intent mainViewIntent = new Intent(LogInActivity.this,MainViewActivity.class);
+                startActivity(mainViewIntent);
+                finish();
                 break;
             case R.id.btn_sign_in:
                 signIn();

@@ -8,6 +8,7 @@
     <color name="white_normal">#e9e7e7</color>
     <color name="gray_normal">#605f5f</color>
     <color name="blue_normal">#99cccc</color>
+    <color name="blue_light">#88afaf</color>
     <color name="yellow_light">#FFCC99</color>
     <color name="yellow_normal_light">#FF9966</color>
 </resources>
