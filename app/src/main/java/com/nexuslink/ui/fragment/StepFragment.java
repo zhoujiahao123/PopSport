@@ -149,9 +149,6 @@ public class StepFragment extends Fragment implements View.OnClickListener {
         stepCircle = (MagicProgressCircle) v.findViewById(R.id.stepCircle);
         currentStepsTv = (TextView) v.findViewById(R.id.tv_currentSteps);
         expectStepsTv = (TextView) v.findViewById(R.id.tv_expectSteps);
-        mStepToolbar = (Toolbar) v.findViewById(R.id.toolbar_step);
-        mStepToolbar.setNavigationIcon(R.drawable.weather);
-        mStepToolbar.setNavigationOnClickListener(this);
     }
 
     @Override

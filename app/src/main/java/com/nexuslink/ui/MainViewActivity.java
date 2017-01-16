@@ -9,7 +9,7 @@ import com.nexuslink.R;
 import com.nexuslink.ui.fragment.AppointmentFragment;
 import com.nexuslink.ui.fragment.CommunityFragment;
 import com.nexuslink.ui.fragment.PersonInfoFragment;
-import com.nexuslink.ui.fragment.StepFragment;
+import com.nexuslink.ui.fragment.StepAndRunFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +41,12 @@ public class MainViewActivity extends AppCompatActivity {
     }
 
     private void initView(Bundle savedInstanceState) {
-        Fragment stepFragment = new StepFragment();
+        Fragment stepAndRunFragment = new StepAndRunFragment();
         Fragment appointFragment = new AppointmentFragment();
         Fragment communityFragment = new CommunityFragment();
         Fragment personalInfoFragment = PersonInfoFragment.getInstance();
 
-        fragments.add(stepFragment);
+        fragments.add(stepAndRunFragment);
         fragments.add(appointFragment);
         fragments.add(communityFragment);
         fragments.add(personalInfoFragment);

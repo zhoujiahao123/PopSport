@@ -77,17 +77,7 @@ public class StepService extends Service implements SensorEventListener {
                 case Constants.MSG_FROM_CLIENT:
                     Log.i(TAG, String.valueOf(msg.replyTo==null));
                     messengerFromClient = msg.replyTo;
-                    Message message = Message.obtain(null,Constants.MSG_FROM_SERVICE);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("currentSteps",CURRENT_STEPS);
-                    message.setData(bundle);
-                    try {
-                        messengerFromService.send(message);
-                    } catch (RemoteException e) {
-                        Log.i(TAG,"remoteException");
-                        e.printStackTrace();
-
-                    }
+                    StepService.this.sendMessage();
                     break;
                 default:
                     break;
@@ -192,6 +182,8 @@ public class StepService extends Service implements SensorEventListener {
                 Log.i(TAG,"tempStepCount:"+tempStep +"hasStepCount:"+hasStepCount+" privousStepCount:"+previousStepCount
                         +" CURRENT_STEP:"+ CURRENT_STEPS);
             }
+            sendMessage();
+
 //            Toast.makeText(BaseApplication.mContext, tempStep, Toast.LENGTH_SHORT).show();
         }else if(stepSensor == 1){
             if(event.values[0] == 1.0){
@@ -205,7 +197,19 @@ public class StepService extends Service implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
+    private void sendMessage(){
+        Message msg = Message.obtain(null,Constants.MSG_FROM_SERVICE);
+        Bundle bundle = new Bundle();
+        bundle.putInt("currentSteps",CURRENT_STEPS);
+        msg.setData(bundle);
+        try {
+            if(hasRecord&&messengerFromClient!=null){
+                messengerFromClient.send(msg);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -338,18 +342,6 @@ public class StepService extends Service implements SensorEventListener {
 
         @Override
         public void onTick(long millisUntilFinished) {
-
-            Message msg = Message.obtain(null,Constants.MSG_FROM_SERVICE);
-            Bundle bundle = new Bundle();
-            bundle.putInt("currentSteps",CURRENT_STEPS);
-            msg.setData(bundle);
-            try {
-                if(hasRecord&&messengerFromClient!=null){
-                    messengerFromClient.send(msg);
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
 //            Log.i(TAG,"currentSteps:"+CURRENT_STEPS);
         }
 

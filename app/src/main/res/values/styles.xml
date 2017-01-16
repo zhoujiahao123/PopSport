@@ -56,11 +56,11 @@
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/selector_square</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
     //控件中图片的style
     <style name="PhotoStyle">
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginTop">@dimen/spacing_huge</item>
         <item name="android:layout_width">@dimen/image_size40</item>
         <item name="android:layout_height">@dimen/image_size40</item>
     </style>
