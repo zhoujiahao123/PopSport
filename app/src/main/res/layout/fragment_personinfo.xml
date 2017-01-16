@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
     <RelativeLayout
-    android:background="@color/blue_normal"
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+    <RelativeLayout
+        android:paddingTop="@dimen/spacing_huge_toolbar"
+        android:paddingBottom="@dimen/spacing_huge"
+        android:id="@+id/head_relative"
+        android:background="@color/blue_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <com.nexuslink.util.CircleImageView
-        android:id="@+id/image_head"
-        android:layout_width="@dimen/image_head"
-        android:layout_height="@dimen/image_head"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/image_head_padding_top"
-        android:src="@drawable/head"
+            android:id="@+id/image_head"
+            android:layout_width="@dimen/image_head"
+            android:layout_height="@dimen/image_head"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/head"
+
             />
         <TextView
             android:id="@+id/tv_name"
@@ -24,53 +32,56 @@
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/spacing_tiny"
             />
-    <ImageView
-        android:id="@+id/image_dot"
-        android:layout_width="@dimen/image_dot"
-        android:layout_height="@dimen/image_dot"
-        android:background="@drawable/dot"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tv_name"
-        android:paddingTop="@dimen/spacing_normal"
-        />
-    <TextView
-        android:id="@+id/tv_achieve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="追风少年"
-        android:textSize="@dimen/font_normal"
-        android:layout_below="@id/tv_name"
-        android:textColor="@color/white_light"
-        android:layout_toLeftOf="@id/image_dot"
-        android:paddingRight="@dimen/spacing_tiny"
-        />
-    <TextView
-        android:id="@+id/tv_grade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white_light"
-        android:text="18lv"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tv_name"
-        android:layout_toRightOf="@id/image_dot"
-        android:paddingLeft="@dimen/spacing_tiny"
-        />
+        <ImageView
+            android:id="@+id/image_dot"
+            android:layout_width="@dimen/image_dot"
+            android:layout_height="@dimen/image_dot"
+            android:background="@drawable/dot"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_name"
+            android:paddingTop="@dimen/spacing_normal"
+            />
+        <TextView
+            android:id="@+id/tv_achieve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="追风少年"
+            android:textSize="@dimen/font_normal"
+            android:layout_below="@id/tv_name"
+            android:textColor="@color/white_light"
+            android:layout_toLeftOf="@id/image_dot"
+            android:paddingRight="@dimen/spacing_tiny"
+            />
+        <TextView
+            android:id="@+id/tv_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_light"
+            android:text="18lv"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_name"
+            android:layout_toRightOf="@id/image_dot"
+            android:paddingLeft="@dimen/spacing_tiny"
+            />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/group_container"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/head_relative"
         >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="0dp"
+              android:layout_weight="1"
             android:orientation="horizontal">
             <LinearLayout
                 android:id="@+id/group_myfriend"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_height="@dimen/personalInfo_item_height"
                 style="@style/layout_style_square">
                 <ImageView
                     android:src="@drawable/friend"
@@ -85,7 +96,7 @@
                 android:id="@+id/group_runningromm"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_height="@dimen/personalInfo_item_height"
                 style="@style/layout_style_square">
                 <ImageView
                     android:src="@drawable/runningroom"
@@ -101,7 +112,7 @@
                 android:id="@+id/group_setting"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_height="@dimen/personalInfo_item_height"
                 style="@style/layout_style_square">
                 <ImageView
                     android:src="@drawable/setting"
@@ -117,13 +128,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
             <LinearLayout
                 android:id="@+id/group_mytask"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="@dimen/personalInfo_item_height"
                 style="@style/layout_style_square">
                 <ImageView
                     android:src="@drawable/exerplan"
@@ -139,7 +152,7 @@
                 android:id="@+id/group_achieve"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_height="@dimen/personalInfo_item_height"
                 style="@style/layout_style_square">
                 <ImageView
                     android:src="@drawable/achieve"
@@ -154,7 +167,7 @@
                 android:id="@+id/group_rank"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_height="@dimen/personalInfo_item_height"
                 style="@style/layout_style_square">
                 <ImageView
                     android:src="@drawable/rank"
