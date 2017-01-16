@@ -76,4 +76,7 @@ dependencies {
     compile 'eu.long1:spacetablayout:1.0.4'
     //progressbar
     compile 'com.liulishuo.magicprogresswidget:library:1.0.2'
+    compile files('libs/SocialSDK_Sina_Simplify.jar')
+    compile files('libs/SocialSDK_Sina_Full.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
 }

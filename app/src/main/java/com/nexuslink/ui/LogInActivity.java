@@ -89,7 +89,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 break;
             case R.id.layout_login_wechat:
                 UMShareAPI mShareAPI1 = UMShareAPI.get(LogInActivity.this);
-                mShareAPI1.doOauthVerify(LogInActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
+                mShareAPI1.getPlatformInfo(LogInActivity.this, SHARE_MEDIA.SINA, umAuthListener);
                 break;
         }
     }
