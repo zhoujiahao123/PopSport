@@ -2,18 +2,26 @@ package com.nexuslink.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nexuslink.app.BaseFragment;
+import com.nexuslink.R;
+import com.nexuslink.model.data.WeatherInfo;
 import com.nexuslink.ui.view.PersonInfoView;
+import com.nexuslink.util.HttpUtil;
+import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.WeatherCallbackListener;
+
+import retrofit2.Response;
 
 /**
  * Created by ASUS-NB on 2017/1/14.
  */
 
-public class PersonInfoFragment extends BaseFragment implements PersonInfoView{
+public class PersonInfoFragment extends Fragment implements PersonInfoView,WeatherCallbackListener{
 
 
     public static PersonInfoFragment getInstance(){
@@ -23,7 +31,9 @@ public class PersonInfoFragment extends BaseFragment implements PersonInfoView{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_personinfo,container,false);
+        HttpUtil.getWeatherInfoUtil(this);
+        return view;
     }
 
     @Override
@@ -53,6 +63,16 @@ public class PersonInfoFragment extends BaseFragment implements PersonInfoView{
 
     @Override
     public void showRank() {
+
+    }
+
+    @Override
+    public void succeed(WeatherInfo response) {
+        Log.e("TAG", response.getResult().getData().getLife().getInfo().getChuanyi().get(0));
+    }
+
+    @Override
+    public void failed(Throwable t) {
 
     }
 }
