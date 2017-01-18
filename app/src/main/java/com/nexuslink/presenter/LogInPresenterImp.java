@@ -1,10 +1,8 @@
 package com.nexuslink.presenter;
 
-import android.widget.Toast;
-
 import com.nexuslink.model.LogInModeImp;
 import com.nexuslink.model.LogInModel;
-import com.nexuslink.ui.LogInActivity;
+import com.nexuslink.ui.activity.LogInActivity;
 import com.nexuslink.ui.view.LoginView;
 
 
@@ -21,7 +19,7 @@ public class LogInPresenterImp implements LogInPresenter{
     }
     @Override
     public void logInToService(String uid,String password) {
-        logInModel.sendRequestForLogIn();
+        logInModel.getLogInInfo();
     }
 
     @Override

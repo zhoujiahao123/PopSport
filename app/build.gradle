@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.0"
     defaultConfig {
         applicationId "com.nexuslink"
-        minSdkVersion 21
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -79,4 +79,6 @@ dependencies {
     compile files('libs/SocialSDK_Sina_Simplify.jar')
     compile files('libs/SocialSDK_Sina_Full.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
+    //图片漂浮处理库
+    compile 'com.ufreedom.uikit:FloatingViewLib:1.0.2'
 }

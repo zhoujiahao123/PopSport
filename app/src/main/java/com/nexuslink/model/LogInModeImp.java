@@ -15,8 +15,13 @@ public class LogInModeImp implements LogInModel {
     }
 
     @Override
-    public void sendRequestForLogIn() {
+    public void getLogInInfo() {
         //根据服务器返回的数据来判断是否成功
         presenterImp.logInCheck(true);
+    }
+
+    @Override
+    public void getError() {
+
     }
 }

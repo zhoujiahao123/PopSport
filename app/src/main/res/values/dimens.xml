@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!--一些杂乱的-->
+    <dimen name="personalInfo_item_height">100dp</dimen>
     <dimen name="step_circle_stoke_width">20dp</dimen>
     <dimen name="step_circle_size">200dp</dimen>
     <dimen name="image_size">50dp</dimen>
@@ -25,6 +26,9 @@
     <dimen name="font_small">12sp</dimen>
 
     <!--typical spacing between two views-->
+    <dimen name="spacing_huger_weather">120dp</dimen>
+    <dimen name="spacing_huger_toolbar">120dp</dimen>
+    <dimen name="spacing_huge_toolbar">65dp</dimen>
     <dimen name="spacing_huge">40dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_normal">14dp</dimen>

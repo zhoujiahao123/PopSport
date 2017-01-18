@@ -14,6 +14,6 @@ import rx.Observable;
 
 public interface Api {
     //获取天气信息
-    @GET("http://op.juhe.cn/onebox/weather/")
+    @GET("query")
     Observable<WeatherInfo> getWeatherInfo(@Query("cityname") String cityName, @Query("key")String key);
 }

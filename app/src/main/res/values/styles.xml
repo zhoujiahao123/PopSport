@@ -5,7 +5,7 @@
         <item name="windowActionBar">false</item>
     </style>
     <style name="login_style">
-        <item name="android:background">@drawable/sport3</item>
+        <item name="android:background">@color/blue_normal</item>
     </style>
     <style name="image_style">
         <item name="android:src">@drawable/running</item>
@@ -56,11 +56,11 @@
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/selector_square</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
     //控件中图片的style
     <style name="PhotoStyle">
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginTop">@dimen/spacing_huge</item>
         <item name="android:layout_width">@dimen/image_size40</item>
         <item name="android:layout_height">@dimen/image_size40</item>
     </style>
@@ -69,6 +69,12 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:paddingTop">@dimen/spacing_small</item>
         <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    //天气
+    <style name="weather_style">
+        <item name="android:layout_marginBottom">@dimen/spacing_huger_weather</item>
+
     </style>
 
 </resources>

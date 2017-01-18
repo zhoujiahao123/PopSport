@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top"
+        android:background="@color/blue_normal"
+        >
+    </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:id="@+id/group_search"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_normal"
+        android:layout_below="@+id/toolbar"
+        >
+        <EditText
+            android:id="@+id/ed_searchfriend"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_normal"
+            android:textColorHint="@color/yellow_normal_light"
+            android:textColor="@color/yellow_normal_light"
+            android:hint="搜索好友"
+            android:background="@null"
+            android:paddingLeft="@dimen/spacing_small"
+            android:maxLines="1"
+            />
+        <ImageView
+            android:id="@+id/image_search"
+            android:src="@drawable/search1"
+            android:layout_width="@dimen/image_size40"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group_search">
+    </android.support.design.widget.TabLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout">
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>

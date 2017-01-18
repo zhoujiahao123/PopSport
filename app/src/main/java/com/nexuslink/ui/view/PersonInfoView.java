@@ -6,7 +6,7 @@ package com.nexuslink.ui.view;
 
 public interface PersonInfoView {
     //查看我的好友
-    void showFriends(String nickName,String headPath);
+    void showFriends();
 
     //查看我参与的跑房
     void showRunningRoom();
