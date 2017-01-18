@@ -116,10 +116,10 @@ public class StepFragment extends Fragment implements View.OnClickListener {
 
     private void initDate() {
         QueryBuilder qb = stepsDao.queryBuilder();
-        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
+        qb.where(StepsDao.Properties.Date.eq(getTodayDate()));
         Steps steps = (Steps) qb.unique();
         if(steps!=null){
-            currentStepsTv.setText(steps.getSteps()+"");
+            currentStepsTv.setText(steps.getUStep()+"");
         }else{
             currentStepsTv.setText(0+"");
         }
@@ -149,9 +149,6 @@ public class StepFragment extends Fragment implements View.OnClickListener {
         stepCircle = (MagicProgressCircle) v.findViewById(R.id.stepCircle);
         currentStepsTv = (TextView) v.findViewById(R.id.tv_currentSteps);
         expectStepsTv = (TextView) v.findViewById(R.id.tv_expectSteps);
-        mStepToolbar = (Toolbar) v.findViewById(R.id.toolbar_step);
-        mStepToolbar.setNavigationIcon(R.drawable.weather);
-        mStepToolbar.setNavigationOnClickListener(this);
     }
 
     @Override
