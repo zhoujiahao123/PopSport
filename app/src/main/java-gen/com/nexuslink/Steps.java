@@ -7,8 +7,8 @@ package com.nexuslink;
 public class Steps {
 
     private Long id;
-    private Integer uStep;
-    private String date;
+    private Integer steps;
+    private String currentDate;
 
     public Steps() {
     }
@@ -17,10 +17,10 @@ public class Steps {
         this.id = id;
     }
 
-    public Steps(Long id, Integer uStep, String date) {
+    public Steps(Long id, Integer steps, String currentDate) {
         this.id = id;
-        this.uStep = uStep;
-        this.date = date;
+        this.steps = steps;
+        this.currentDate = currentDate;
     }
 
     public Long getId() {
@@ -31,20 +31,20 @@ public class Steps {
         this.id = id;
     }
 
-    public Integer getUStep() {
-        return uStep;
+    public Integer getSteps() {
+        return steps;
     }
 
-    public void setUStep(Integer uStep) {
-        this.uStep = uStep;
+    public void setSteps(Integer steps) {
+        this.steps = steps;
     }
 
-    public String getDate() {
-        return date;
+    public String getCurrentDate() {
+        return currentDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
     }
 
 }
