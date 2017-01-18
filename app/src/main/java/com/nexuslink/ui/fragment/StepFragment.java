@@ -116,10 +116,10 @@ public class StepFragment extends Fragment implements View.OnClickListener {
 
     private void initDate() {
         QueryBuilder qb = stepsDao.queryBuilder();
-        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
+        qb.where(StepsDao.Properties.Date.eq(getTodayDate()));
         Steps steps = (Steps) qb.unique();
         if(steps!=null){
-            currentStepsTv.setText(steps.getSteps()+"");
+            currentStepsTv.setText(steps.getUStep()+"");
         }else{
             currentStepsTv.setText(0+"");
         }

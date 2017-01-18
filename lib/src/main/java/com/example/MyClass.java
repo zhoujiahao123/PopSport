@@ -15,10 +15,18 @@ public class MyClass {
         }
     }
     public static void createTable(Schema schema){
+
+        //计步表
         Entity steps = schema.addEntity("Steps");
         steps.addIdProperty().primaryKey();
-        steps.addIntProperty("steps");
-        steps.addStringProperty("currentDate");
+        steps.addIntProperty("uStep");
+        steps.addStringProperty("date");
+
+        //跑步表
+        Entity run = schema.addEntity("Run");
+        run.addIdProperty().primaryKey();
+        run.addIntProperty("uMileage");
+        run.addStringProperty("date");
 
         //用户表
         Entity user = schema.addEntity("User");

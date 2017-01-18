@@ -9,6 +9,7 @@ import de.greenrobot.dao.AbstractDaoSession;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
+
 import com.nexuslink.Steps;
 import com.nexuslink.User;
 import com.nexuslink.TaskSteps;
@@ -29,6 +30,10 @@ import com.nexuslink.TaskMileagesDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig stepsDaoConfig;
+    private final DaoConfig runDaoConfig;
+
+    private final StepsDao stepsDao;
+    private final RunDao runDao;
     private final DaoConfig userDaoConfig;
     private final DaoConfig taskStepsDaoConfig;
     private final DaoConfig taskMileagesDaoConfig;
@@ -44,6 +49,15 @@ public class DaoSession extends AbstractDaoSession {
 
         stepsDaoConfig = daoConfigMap.get(StepsDao.class).clone();
         stepsDaoConfig.initIdentityScope(type);
+
+        runDaoConfig = daoConfigMap.get(RunDao.class).clone();
+        runDaoConfig.initIdentityScope(type);
+
+        stepsDao = new StepsDao(stepsDaoConfig, this);
+        runDao = new RunDao(runDaoConfig, this);
+
+        registerDao(Steps.class, stepsDao);
+        registerDao(Run.class, runDao);
 
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
@@ -67,6 +81,7 @@ public class DaoSession extends AbstractDaoSession {
     
     public void clear() {
         stepsDaoConfig.getIdentityScope().clear();
+        runDaoConfig.getIdentityScope().clear();
         userDaoConfig.getIdentityScope().clear();
         taskStepsDaoConfig.getIdentityScope().clear();
         taskMileagesDaoConfig.getIdentityScope().clear();
@@ -76,6 +91,8 @@ public class DaoSession extends AbstractDaoSession {
         return stepsDao;
     }
 
+    public RunDao getRunDao() {
+        return runDao;
     public UserDao getUserDao() {
         return userDao;
     }
