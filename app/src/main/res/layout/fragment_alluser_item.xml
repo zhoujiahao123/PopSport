@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.nexuslink.util.CircleImageView
+        android:id="@+id/image_head"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacing_normal"/>
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_head"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacing_normal"/>
+    <Button
+        android:id="@+id/btn_follow"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height_short"
+        android:layout_below="@id/tv_name"
+        android:text="关注"
+        android:textSize="@dimen/font_small"
+        android:background="@drawable/selector_button_follow"
+        android:textColor="@color/white_light"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:layout_marginBottom="@dimen/spacing_normal"/>
+</RelativeLayout>

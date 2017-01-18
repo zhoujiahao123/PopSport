@@ -39,14 +39,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.LogInActivity">
+        <activity android:name=".ui.activity.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.FriendActivity"/>
+        <activity android:name=".ui.activity.FriendActivity"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -82,7 +82,7 @@
 
           />
 
-        <activity android:name=".ui.MainViewActivity">
+        <activity android:name=".ui.activity.MainViewActivity">
 
         </activity>
         <activity

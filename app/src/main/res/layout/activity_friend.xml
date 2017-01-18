@@ -15,12 +15,12 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_light"
+        android:background="@color/white_normal"
         android:layout_below="@+id/toolbar"
         >
         <EditText
             android:id="@+id/ed_searchfriend"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_normal"
             android:textColorHint="@color/yellow_normal_light"
             android:textColor="@color/yellow_normal_light"
@@ -30,6 +30,7 @@
             android:maxLines="1"
             />
         <ImageView
+            android:id="@+id/image_search"
             android:src="@drawable/search1"
             android:layout_width="@dimen/image_size40"
             android:layout_height="wrap_content"

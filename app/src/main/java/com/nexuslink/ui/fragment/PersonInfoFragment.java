@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.nexuslink.R;
-import com.nexuslink.ui.FriendActivity;
+import com.nexuslink.ui.activity.FriendActivity;
 import com.nexuslink.ui.view.PersonInfoView;
 
 import butterknife.BindView;
@@ -53,9 +53,8 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView {
     @Override
     public void showFriends() {
         Intent friendIntent = new Intent(getContext(), FriendActivity.class);
-        if(friendIntent.resolveActivity(getContext().getPackageManager())!=null){
-            startActivity(friendIntent);
-        }
+        startActivity(friendIntent);
+
     }
 
     @Override

@@ -71,4 +71,10 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
+    //天气
+    <style name="weather_style">
+        <item name="android:layout_marginBottom">@dimen/spacing_huger_weather</item>
+
+    </style>
+
 </resources>

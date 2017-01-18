@@ -1,4 +1,4 @@
-package com.nexuslink.ui;
+package com.nexuslink.ui.activity;
 
 
 import com.nexuslink.app.BaseActivity;
