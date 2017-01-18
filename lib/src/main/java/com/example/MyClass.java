@@ -5,7 +5,6 @@ import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 
 public class MyClass {
-
     public static void main(String []args){
         Schema schema = new Schema(1,"com.nexuslink");
         createTable(schema);
@@ -14,7 +13,6 @@ public class MyClass {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     public static void createTable(Schema schema){
 
@@ -30,6 +28,36 @@ public class MyClass {
         run.addIntProperty("uMileage");
         run.addStringProperty("date");
 
+        //用户表
+        Entity user = schema.addEntity("User");
+        user.addIdProperty().primaryKey();
+        user.addIntProperty("uId");
+        user.addStringProperty("uName");
+        user.addStringProperty("uGender");
+        user.addStringProperty("uImg");
+        user.addFloatProperty("uHeight");
+        user.addFloatProperty("uWeight");
+        user.addIntProperty("uFansNum");
+        user.addIntProperty("uExp");
+        user.addLongProperty("uHistoryStep");
+        user.addLongProperty("uHistoryMileage");
+        user.addLongProperty("uBestRecordStep");
+        user.addLongProperty("uBestRecordMileage");
+        user.addStringProperty("uAchievements");
+        user.addIntProperty("uFollowedNum");
 
+        //每日任务步数表
+        Entity taskSteps = schema.addEntity("TaskSteps");
+        taskSteps.addIdProperty().primaryKey();
+        taskSteps.addStringProperty("TaskStepsName");
+        taskSteps.addIntProperty("taskFlag");
+        taskSteps.addIntProperty("taskNum");
+
+        //每日任务里程数表
+        Entity taskMileages = schema.addEntity("TaskMileages");
+        taskMileages.addIdProperty().primaryKey();
+        taskMileages.addStringProperty("TaskMileagesName");
+        taskMileages.addIntProperty("taskFlag");
+        taskMileages.addIntProperty("taskNum");
     }
 }

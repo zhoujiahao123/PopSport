@@ -1,10 +1,9 @@
-package com.nexuslink.ui;
+package com.nexuslink.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -61,7 +60,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             Toast.makeText(LogInActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
-            //在这里打开另一个activity
+            Intent mainViewIntent = new Intent(LogInActivity.this,MainViewActivity.class);
+            startActivity(mainViewIntent);
+            finish();
         }
 
         @Override
@@ -89,7 +90,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 break;
             case R.id.layout_login_wechat:
                 UMShareAPI mShareAPI1 = UMShareAPI.get(LogInActivity.this);
-                mShareAPI1.doOauthVerify(LogInActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
+                mShareAPI1.getPlatformInfo(LogInActivity.this, SHARE_MEDIA.SINA, umAuthListener);
                 break;
         }
     }
@@ -118,7 +119,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
     public void onClick1(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                logIn(textInputName.getText().toString(),textInputPassword.getText().toString());
+                Intent mainViewIntent = new Intent(LogInActivity.this,MainViewActivity.class);
+                startActivity(mainViewIntent);
+                finish();
                 break;
             case R.id.btn_sign_in:
                 signIn();

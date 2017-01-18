@@ -5,7 +5,7 @@
         <item name="windowActionBar">false</item>
     </style>
     <style name="login_style">
-        <item name="android:background">@drawable/sport3</item>
+        <item name="android:background">@color/blue_normal</item>
     </style>
     <style name="image_style">
         <item name="android:src">@drawable/running</item>
@@ -69,6 +69,12 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:paddingTop">@dimen/spacing_small</item>
         <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    //天气
+    <style name="weather_style">
+        <item name="android:layout_marginBottom">@dimen/spacing_huger_weather</item>
+
     </style>
 
 </resources>

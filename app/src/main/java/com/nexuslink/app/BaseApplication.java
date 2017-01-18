@@ -21,7 +21,7 @@ public class BaseApplication extends Application {
     {
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
-    }
+        PlatformConfig.setSinaWeibo("4258197523", "30268867be9ea03cd1f41c8a93f8795f");    }
     //===============================================数据库
     public static  SQLiteDatabase db;
 

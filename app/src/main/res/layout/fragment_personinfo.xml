@@ -78,13 +78,13 @@
               android:layout_weight="1"
             android:orientation="horizontal">
             <LinearLayout
+                android:id="@+id/group_myfriend"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="@dimen/personalInfo_item_height"
                 style="@style/layout_style_square">
                 <ImageView
                     android:src="@drawable/friend"
-
                     style="@style/PhotoStyle"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,6 +93,7 @@
                     style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/group_runningromm"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="@dimen/personalInfo_item_height"
@@ -108,6 +109,7 @@
                     style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/group_setting"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="@dimen/personalInfo_item_height"
@@ -130,6 +132,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
             <LinearLayout
+                android:id="@+id/group_mytask"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
@@ -146,6 +149,7 @@
                     style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/group_achieve"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="@dimen/personalInfo_item_height"
@@ -160,6 +164,7 @@
                     style="@style/TvStyle"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/group_rank"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="@dimen/personalInfo_item_height"

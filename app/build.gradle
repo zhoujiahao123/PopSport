@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 android {
     compileSdkVersion 24
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "24.0.0"
     defaultConfig {
         applicationId "com.nexuslink"
-        minSdkVersion 21
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -58,7 +58,7 @@ dependencies {
     compile files('libs/SocialSDK_WeChat_Simplify.jar')
     compile files('libs/umeng_social_tool.jar')
     compile files('libs/umeng_social_net.jar')
-    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:design:24.0.0'
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.facebook.stetho:stetho:1.0.1'
@@ -76,4 +76,9 @@ dependencies {
     compile 'eu.long1:spacetablayout:1.0.4'
     //progressbar
     compile 'com.liulishuo.magicprogresswidget:library:1.0.2'
+    compile files('libs/SocialSDK_Sina_Simplify.jar')
+    compile files('libs/SocialSDK_Sina_Full.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
+    //图片漂浮处理库
+    compile 'com.ufreedom.uikit:FloatingViewLib:1.0.2'
 }

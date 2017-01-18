@@ -6,28 +6,29 @@ package com.nexuslink.model;
 
 public class PersonInfoMedelImp implements PersonInfoModel{
 
+
     @Override
-    public void setFriends() {
+    public void getFriends() {
 
     }
 
     @Override
-    public void setRunningRoom() {
+    public void getRunningRoom() {
 
     }
 
     @Override
-    public void setTask() {
+    public void getTask() {
 
     }
 
     @Override
-    public void setAchieve() {
+    public void getAchieve() {
 
     }
 
     @Override
-    public void setRank() {
+    public void getRank() {
 
     }
 }
