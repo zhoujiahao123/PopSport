@@ -11,4 +11,5 @@
     <string name="tab_text_three">社区</string>
     <string name="steps">步数</string>
     <string name="expect_steps_test">目标xxxx步</string>
+    <string name="step_menu_setteing">设置</string>
 </resources>

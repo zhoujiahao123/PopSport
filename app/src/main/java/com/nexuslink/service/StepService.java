@@ -77,17 +77,7 @@ public class StepService extends Service implements SensorEventListener {
                 case Constants.MSG_FROM_CLIENT:
                     Log.i(TAG, String.valueOf(msg.replyTo==null));
                     messengerFromClient = msg.replyTo;
-                    Message message = Message.obtain(null,Constants.MSG_FROM_SERVICE);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("currentSteps",CURRENT_STEPS);
-                    message.setData(bundle);
-                    try {
-                        messengerFromService.send(message);
-                    } catch (RemoteException e) {
-                        Log.i(TAG,"remoteException");
-                        e.printStackTrace();
-
-                    }
+                    StepService.this.sendMessage();
                     break;
                 default:
                     break;
@@ -129,15 +119,15 @@ public class StepService extends Service implements SensorEventListener {
         //===============================================在这里进行数据新的一列的存储
         //通过日期匹配，当数据中有今日步数的行，那么将步数值进行读取，如果没有那么久新增一行，并将CURRENT_STEP存储进去
         QueryBuilder qb = stepsDao.queryBuilder();
-        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
+        qb.where(StepsDao.Properties.Date.eq(getTodayDate()));
         Steps steps = (Steps) qb.unique();
         if(steps!=null){
-            CURRENT_STEPS = steps.getSteps();
+            CURRENT_STEPS = steps.getUStep();
         }else{
             //增加一行
             Steps stepsAdd = new Steps();
-            stepsAdd.setCurrentDate(CURRENT_DATE);
-            stepsAdd.setSteps(0);
+            stepsAdd.setDate(CURRENT_DATE);
+            stepsAdd.setUStep(0);
             stepsDao.insert(stepsAdd);
         }
     }
@@ -192,6 +182,8 @@ public class StepService extends Service implements SensorEventListener {
                 Log.i(TAG,"tempStepCount:"+tempStep +"hasStepCount:"+hasStepCount+" privousStepCount:"+previousStepCount
                         +" CURRENT_STEP:"+ CURRENT_STEPS);
             }
+            sendMessage();
+
 //            Toast.makeText(BaseApplication.mContext, tempStep, Toast.LENGTH_SHORT).show();
         }else if(stepSensor == 1){
             if(event.values[0] == 1.0){
@@ -205,7 +197,19 @@ public class StepService extends Service implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
+    private void sendMessage(){
+        Message msg = Message.obtain(null,Constants.MSG_FROM_SERVICE);
+        Bundle bundle = new Bundle();
+        bundle.putInt("currentSteps",CURRENT_STEPS);
+        msg.setData(bundle);
+        try {
+            if(hasRecord&&messengerFromClient!=null){
+                messengerFromClient.send(msg);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -278,17 +282,17 @@ public class StepService extends Service implements SensorEventListener {
     private void save() {
         int tempStep = CURRENT_STEPS;
         QueryBuilder qb = stepsDao.queryBuilder();
-        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
+        qb.where(StepsDao.Properties.Date.eq(getTodayDate()));
         Steps steps = (Steps) qb.unique();
         //不为空时，说明还未到12点，我们进行更新就行，为空说明为最后一次存储
         if(steps!=null){
-            steps.setSteps(tempStep);
-            steps.setCurrentDate(CURRENT_DATE);
+            steps.setUStep(tempStep);
+            steps.setDate(CURRENT_DATE);
             stepsDao.update(steps);
         }else{
             steps = new Steps();
-            steps.setSteps(tempStep);
-            steps.setCurrentDate(CURRENT_DATE);
+            steps.setUStep(tempStep);
+            steps.setDate(CURRENT_DATE);
             stepsDao.update(steps);
         }
 
@@ -338,18 +342,6 @@ public class StepService extends Service implements SensorEventListener {
 
         @Override
         public void onTick(long millisUntilFinished) {
-
-            Message msg = Message.obtain(null,Constants.MSG_FROM_SERVICE);
-            Bundle bundle = new Bundle();
-            bundle.putInt("currentSteps",CURRENT_STEPS);
-            msg.setData(bundle);
-            try {
-                if(hasRecord&&messengerFromClient!=null){
-                    messengerFromClient.send(msg);
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
 //            Log.i(TAG,"currentSteps:"+CURRENT_STEPS);
         }
 
