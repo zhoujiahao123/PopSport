@@ -31,8 +31,6 @@ public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig stepsDaoConfig;
     private final DaoConfig runDaoConfig;
-
-    private final StepsDao stepsDao;
     private final RunDao runDao;
     private final DaoConfig userDaoConfig;
     private final DaoConfig taskStepsDaoConfig;
@@ -67,8 +65,6 @@ public class DaoSession extends AbstractDaoSession {
 
         taskMileagesDaoConfig = daoConfigMap.get(TaskMileagesDao.class).clone();
         taskMileagesDaoConfig.initIdentityScope(type);
-
-        stepsDao = new StepsDao(stepsDaoConfig, this);
         userDao = new UserDao(userDaoConfig, this);
         taskStepsDao = new TaskStepsDao(taskStepsDaoConfig, this);
         taskMileagesDao = new TaskMileagesDao(taskMileagesDaoConfig, this);
@@ -92,7 +88,7 @@ public class DaoSession extends AbstractDaoSession {
     }
 
     public RunDao getRunDao() {
-        return runDao;
+        return runDao;}
     public UserDao getUserDao() {
         return userDao;
     }

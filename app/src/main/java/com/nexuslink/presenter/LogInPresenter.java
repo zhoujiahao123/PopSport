@@ -1,12 +1,15 @@
 package com.nexuslink.presenter;
 
+import com.nexuslink.model.loginmodel.LogInModel;
+import com.nexuslink.ui.view.LoginView;
+
 /**
  * Created by ASUS-NB on 2016/12/19.
  */
 
-public interface LogInPresenter {
+public abstract class LogInPresenter extends BasePresenter<LogInModel,LoginView>{
     //向服务器发起请求
-    void logInToService(String uid,String password);
+    public abstract void logInToService(String uName, String password);
     //服务器返回的结果
-    void logInCheck(boolean trueOrFalse);
+    public abstract void logInCheck(boolean trueOrFalse);
 }

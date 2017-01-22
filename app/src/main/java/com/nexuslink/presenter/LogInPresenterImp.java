@@ -1,8 +1,10 @@
 package com.nexuslink.presenter;
 
-import com.nexuslink.model.LogInModeImp;
-import com.nexuslink.model.LogInModel;
-import com.nexuslink.ui.activity.LogInActivity;
+import android.util.Log;
+
+import com.nexuslink.config.Constants;
+import com.nexuslink.model.loginmodel.LogInModeImp;
+import com.nexuslink.model.loginmodel.LogInModel;
 import com.nexuslink.ui.view.LoginView;
 
 
@@ -10,16 +12,23 @@ import com.nexuslink.ui.view.LoginView;
  * Created by ASUS-NB on 2016/12/19.
  */
 
-public class LogInPresenterImp implements LogInPresenter{
+public class LogInPresenterImp extends LogInPresenter{
     private LoginView loginView;
     private LogInModel logInModel;
-    public LogInPresenterImp(){
-        loginView = new LogInActivity();
-        logInModel = new LogInModeImp(this);
+    public LogInPresenterImp(LoginView loginView){
+        setMV(new LogInModeImp(this),loginView);
     }
+
     @Override
-    public void logInToService(String uid,String password) {
-        logInModel.getLogInInfo();
+    void setMV(LogInModel model, LoginView view) {
+        logInModel = model;
+        loginView = view;
+    }
+
+    @Override
+    public void logInToService(String uName,String password) {
+        Log.e(Constants.TAG,"logInToService");
+        logInModel.getLogInInfo(uName,password);
     }
 
     @Override

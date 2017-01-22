@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.nexuslink.R;
 import com.nexuslink.app.BaseActivity;
+import com.nexuslink.config.Constants;
 import com.nexuslink.presenter.LogInPresenter;
 import com.nexuslink.presenter.LogInPresenterImp;
 import com.nexuslink.ui.view.LoginView;
@@ -53,7 +55,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        presenter = new LogInPresenterImp();
+        presenter = new LogInPresenterImp(this);
     }
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
@@ -97,7 +99,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     @Override
     public void succeedLogIn() {
-        //进入另一个Activity
+        Intent mainViewIntent = new Intent(LogInActivity.this,MainViewActivity.class);
+        startActivity(mainViewIntent);
+        finish();
     }
 
     @Override
@@ -106,22 +110,21 @@ public class LogInActivity extends BaseActivity implements LoginView {
     }
 
     @Override
-    public void logIn(String uid,String password) {
-        presenter.logInToService(uid,password);
+    public void logIn(String uName,String password) {
+        presenter.logInToService(uName,password);
     }
 
     @Override
     public void signIn() {
-        //进入注册activity
+
     }
 
     @OnClick({R.id.btn_login, R.id.btn_sign_in})
     public void onClick1(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                Intent mainViewIntent = new Intent(LogInActivity.this,MainViewActivity.class);
-                startActivity(mainViewIntent);
-                finish();
+                Log.e(Constants.TAG,"btn_login");
+                presenter.logInToService(textInputName.getText().toString(),textInputPassword.getText().toString());
                 break;
             case R.id.btn_sign_in:
                 signIn();

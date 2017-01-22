@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import com.nexuslink.R;
 import com.nexuslink.app.BaseActivity;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.friendmodel.FriendModelImpl;
+import com.nexuslink.presenter.FriendPresenter;
+import com.nexuslink.presenter.FriendPresenterImpl;
 import com.nexuslink.ui.adapter.FriendFragmenPagerAdapter;
 import com.nexuslink.ui.adapter.FriendRecyclerViewAdapter;
 import com.nexuslink.ui.view.FriendView;
@@ -29,6 +32,7 @@ import butterknife.OnClick;
 public class FriendActivity extends BaseActivity implements FriendView,FriendRecyclerViewAdapter.CallbackListener{
     private static FriendActivity activity;
     private FriendFragmenPagerAdapter adapter;
+    private FriendPresenter friendPresenter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.ed_searchfriend)
@@ -61,7 +65,7 @@ public class FriendActivity extends BaseActivity implements FriendView,FriendRec
     protected void onResume() {
         super.onResume();
         FriendRecyclerViewAdapter.setCallbackListener(this);
-        showfragment();
+        showUserfragment();
     }
 
     @Override
@@ -75,14 +79,25 @@ public class FriendActivity extends BaseActivity implements FriendView,FriendRec
     }
 
     @Override
-    public void showfragment() {
+    public void showUserfragment() {
         viewpager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewpager);
+    }
+
+    @Override
+    public void succeedFollow() {
+
+    }
+
+    @Override
+    public void failedFollow() {
+
     }
 
     private void initView() {
         adapter = new FriendFragmenPagerAdapter(getSupportFragmentManager());
         Log.e(Constants.TAG,"initView");
+        friendPresenter = new FriendPresenterImpl(new FriendModelImpl(),this);
     }
 
     @OnClick(R.id.image_search)
@@ -90,7 +105,7 @@ public class FriendActivity extends BaseActivity implements FriendView,FriendRec
     }
 
     @Override
-    public void onItemClicked() {
-        ToastUtil.showToastLong(this,"floatingView is succeed");
+    public void onItemClicked(int uId,int fId) {
+//        friendPresenter.followOne(uId, fId);
     }
 }

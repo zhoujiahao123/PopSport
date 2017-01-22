@@ -4,7 +4,7 @@ package com.nexuslink.ui.view;
  * Created by ASUS-NB on 2016/12/19.
  */
 
-public interface LoginView {
+public interface LoginView extends BaseView{
     //登录成功事件
     void succeedLogIn();
     //登录失败事件
