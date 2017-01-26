@@ -81,4 +81,8 @@ dependencies {
     compile files('libs/weiboSDKCore_3.1.4.jar')
     //图片漂浮处理库
     compile 'com.ufreedom.uikit:FloatingViewLib:1.0.2'
+    compile files('libs/AMap_3DMap_V4.0.1_20160923.jar')
+    compile files('libs/AMap_Location_V2.4.1_20160414.jar')
+    compile files('libs/android-support-v4.jar')
+    compile files('libs/gson-2.2.4.jar')
 }

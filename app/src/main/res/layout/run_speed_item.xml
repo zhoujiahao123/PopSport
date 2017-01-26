@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="0dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/runspeed"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/run_detail_icon_width"
+            android:layout_height="@dimen/run_detail_icon_height" />
+        <TextView
+            android:text="平均速度"
+            android:textColor="@color/white_light"
+            android:layout_gravity="center"
+            android:textSize="@dimen/font_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/run_current_average_speed"
+        android:text="0.0m/s"
+        android:textSize="@dimen/font_larger"
+        android:textColor="@color/white_light"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

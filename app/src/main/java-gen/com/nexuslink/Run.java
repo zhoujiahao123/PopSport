@@ -8,6 +8,11 @@ public class Run {
 
     private Long id;
     private Integer uMileage;
+    private Integer duration;
+    private Integer averageSpeed;
+    private String pathLine;
+    private String startPoint;
+    private String endPoint;
     private String date;
 
     public Run() {
@@ -17,9 +22,14 @@ public class Run {
         this.id = id;
     }
 
-    public Run(Long id, Integer uMileage, String date) {
+    public Run(Long id, Integer uMileage, Integer duration, Integer averageSpeed, String pathLine, String startPoint, String endPoint, String date) {
         this.id = id;
         this.uMileage = uMileage;
+        this.duration = duration;
+        this.averageSpeed = averageSpeed;
+        this.pathLine = pathLine;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
         this.date = date;
     }
 
@@ -37,6 +47,46 @@ public class Run {
 
     public void setUMileage(Integer uMileage) {
         this.uMileage = uMileage;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Integer getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(Integer averageSpeed) {
+        this.averageSpeed = averageSpeed;
+    }
+
+    public String getPathLine() {
+        return pathLine;
+    }
+
+    public void setPathLine(String pathLine) {
+        this.pathLine = pathLine;
+    }
+
+    public String getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(String startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
     }
 
     public String getDate() {

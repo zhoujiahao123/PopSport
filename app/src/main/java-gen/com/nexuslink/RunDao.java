@@ -25,7 +25,12 @@ public class RunDao extends AbstractDao<Run, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property UMileage = new Property(1, Integer.class, "uMileage", false, "U_MILEAGE");
-        public final static Property Date = new Property(2, String.class, "date", false, "DATE");
+        public final static Property Duration = new Property(2, Integer.class, "duration", false, "DURATION");
+        public final static Property AverageSpeed = new Property(3, Integer.class, "averageSpeed", false, "AVERAGE_SPEED");
+        public final static Property PathLine = new Property(4, String.class, "pathLine", false, "PATH_LINE");
+        public final static Property StartPoint = new Property(5, String.class, "startPoint", false, "START_POINT");
+        public final static Property EndPoint = new Property(6, String.class, "endPoint", false, "END_POINT");
+        public final static Property Date = new Property(7, String.class, "date", false, "DATE");
     };
 
 
@@ -43,7 +48,12 @@ public class RunDao extends AbstractDao<Run, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'RUN' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'U_MILEAGE' INTEGER," + // 1: uMileage
-                "'DATE' TEXT);"); // 2: date
+                "'DURATION' INTEGER," + // 2: duration
+                "'AVERAGE_SPEED' INTEGER," + // 3: averageSpeed
+                "'PATH_LINE' TEXT," + // 4: pathLine
+                "'START_POINT' TEXT," + // 5: startPoint
+                "'END_POINT' TEXT," + // 6: endPoint
+                "'DATE' TEXT);"); // 7: date
     }
 
     /** Drops the underlying database table. */
@@ -67,9 +77,34 @@ public class RunDao extends AbstractDao<Run, Long> {
             stmt.bindLong(2, uMileage);
         }
  
+        Integer duration = entity.getDuration();
+        if (duration != null) {
+            stmt.bindLong(3, duration);
+        }
+ 
+        Integer averageSpeed = entity.getAverageSpeed();
+        if (averageSpeed != null) {
+            stmt.bindLong(4, averageSpeed);
+        }
+ 
+        String pathLine = entity.getPathLine();
+        if (pathLine != null) {
+            stmt.bindString(5, pathLine);
+        }
+ 
+        String startPoint = entity.getStartPoint();
+        if (startPoint != null) {
+            stmt.bindString(6, startPoint);
+        }
+ 
+        String endPoint = entity.getEndPoint();
+        if (endPoint != null) {
+            stmt.bindString(7, endPoint);
+        }
+ 
         String date = entity.getDate();
         if (date != null) {
-            stmt.bindString(3, date);
+            stmt.bindString(8, date);
         }
     }
 
@@ -85,7 +120,12 @@ public class RunDao extends AbstractDao<Run, Long> {
         Run entity = new Run( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // uMileage
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // date
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // duration
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // averageSpeed
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // pathLine
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // startPoint
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // endPoint
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // date
         );
         return entity;
     }
@@ -95,7 +135,12 @@ public class RunDao extends AbstractDao<Run, Long> {
     public void readEntity(Cursor cursor, Run entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setUMileage(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setDate(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setDuration(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setAverageSpeed(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setPathLine(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setStartPoint(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setEndPoint(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setDate(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */
