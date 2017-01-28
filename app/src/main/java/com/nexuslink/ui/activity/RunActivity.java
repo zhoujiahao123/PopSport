@@ -1,10 +1,8 @@
 package com.nexuslink.ui.activity;
 
 import android.animation.ValueAnimator;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -42,11 +40,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private static final float MIN_ZOOM_LEVEL = 15f;
     private static final int TOTAL_TIME = 1000 * 60 * 20;//20分钟
     private static final int INTERVAL = 1000;
-    @BindView(R.id.run_title_tv)
-    TextView runTitleTv;
     //定时器
     private TimeCount time;
     //===============================================view
+    @BindView(R.id.run_title_tv)
+    TextView runTitleTv;
     @BindView(R.id.bt_run)
     ToggleButton btRun;
     @BindView(R.id.run_currentMiles)
@@ -105,8 +103,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         }
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,11 +116,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private void initPolyLine() {
         mPolyoptions = new PolylineOptions();
         mPolyoptions.width(10f);
-        mPolyoptions.color(getResources().getColor(R.color.blue_normal, null));
+        mPolyoptions.color(getResources().getColor(R.color.blue_normal));
     }
 
     private void initLocation() {
@@ -172,7 +168,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         uiSettings.setMyLocationButtonEnabled(true);
         //显示定位层
         aMap.setMyLocationEnabled(true);
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);
+        aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+
     }
 
     @Override

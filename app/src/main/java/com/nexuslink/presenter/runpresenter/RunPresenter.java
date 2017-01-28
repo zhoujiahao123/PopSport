@@ -6,7 +6,6 @@ import com.nexuslink.model.runmodel.RunModelImp;
 import com.nexuslink.ui.view.RunView;
 
 import java.util.List;
-
 /**
  * Created by 猿人 on 2017/1/28.
  */
@@ -23,6 +22,7 @@ public class RunPresenter {
     public void saveRecord(List<AMapLocation> list, String date,long endTime){
         mRunModel.setEndTime(endTime);
         mRunModel.saveRecord(list,date);
+        mRunView.startTitleAnim();
     }
     public void startRecord(long startTime){
         mRunView.endTitleAnim();
