@@ -13,7 +13,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
     <TextView
+        android:id="@+id/run_title_tv"
         android:text="运动中..."
         android:textColor="@color/white_light"
         android:layout_gravity="center"
@@ -67,11 +69,21 @@
 
     </LinearLayout>
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.amap.api.maps.MapView>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ToggleButton
+            android:layout_gravity="start"
+            android:id="@+id/bt_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.amap.api.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.amap.api.maps.MapView>
+    </RelativeLayout>
+
 
 </LinearLayout>
 

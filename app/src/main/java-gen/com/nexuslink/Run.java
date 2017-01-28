@@ -7,13 +7,14 @@ package com.nexuslink;
 public class Run {
 
     private Long id;
-    private Integer uMileage;
-    private Integer duration;
-    private Integer averageSpeed;
+    private String uMileage;
+    private String duration;
+    private String averageSpeed;
     private String pathLine;
     private String startPoint;
     private String endPoint;
     private String date;
+    private Float cal;
 
     public Run() {
     }
@@ -22,7 +23,7 @@ public class Run {
         this.id = id;
     }
 
-    public Run(Long id, Integer uMileage, Integer duration, Integer averageSpeed, String pathLine, String startPoint, String endPoint, String date) {
+    public Run(Long id, String uMileage, String duration, String averageSpeed, String pathLine, String startPoint, String endPoint, String date, Float cal) {
         this.id = id;
         this.uMileage = uMileage;
         this.duration = duration;
@@ -31,6 +32,7 @@ public class Run {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.date = date;
+        this.cal = cal;
     }
 
     public Long getId() {
@@ -41,27 +43,27 @@ public class Run {
         this.id = id;
     }
 
-    public Integer getUMileage() {
+    public String getUMileage() {
         return uMileage;
     }
 
-    public void setUMileage(Integer uMileage) {
+    public void setUMileage(String uMileage) {
         this.uMileage = uMileage;
     }
 
-    public Integer getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public Integer getAverageSpeed() {
+    public String getAverageSpeed() {
         return averageSpeed;
     }
 
-    public void setAverageSpeed(Integer averageSpeed) {
+    public void setAverageSpeed(String averageSpeed) {
         this.averageSpeed = averageSpeed;
     }
 
@@ -95,6 +97,14 @@ public class Run {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Float getCal() {
+        return cal;
+    }
+
+    public void setCal(Float cal) {
+        this.cal = cal;
     }
 
 }

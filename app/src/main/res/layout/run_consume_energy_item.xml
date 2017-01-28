@@ -28,7 +28,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/run_current_consume"
-            android:text="0"
+            android:text="0.0"
             android:textSize="@dimen/font_larger"
             android:textColor="@color/white_light"
             android:layout_gravity="center"

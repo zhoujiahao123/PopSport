@@ -25,13 +25,14 @@ public class MyClass {
         //跑步表
         Entity run = schema.addEntity("Run");
         run.addIdProperty().primaryKey();
-        run.addIntProperty("uMileage");
-        run.addIntProperty("duration");
-        run.addIntProperty("averageSpeed");
+        run.addStringProperty("uMileage");
+        run.addStringProperty("duration");
+        run.addStringProperty("averageSpeed");
         run.addStringProperty("pathLine");
         run.addStringProperty("startPoint");
         run.addStringProperty("endPoint");
         run.addStringProperty("date");
+        run.addFloatProperty("cal");
 
         //用户表
         Entity user = schema.addEntity("User");

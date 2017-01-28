@@ -4,6 +4,7 @@ import com.nexuslink.DaoMaster;
 import com.nexuslink.DaoSession;
 import com.nexuslink.RunDao;
 import com.nexuslink.StepsDao;
+import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseApplication;
 
 /**
@@ -25,6 +26,11 @@ public class DBUtil {
         master = new DaoMaster(BaseApplication.db);
         session = master.newSession();
         return session.getRunDao();
+    }
+    public static UserDao getUserDao(){
+        master = new DaoMaster(BaseApplication.db);
+        session = master.newSession();
+        return session.getUserDao();
     }
 
 }
