@@ -50,7 +50,7 @@ public class FriendPresenterImpl extends FriendPresenter implements OnFriendCall
 
     @Override
     public void succeed(FollowInfo followInfo) {
-        if(followInfo.getFollowFlag()==1){
+        if(followInfo.getFollowInfoBean().getFollowFlag()==1){
             view.succeedFollow();
         }
 

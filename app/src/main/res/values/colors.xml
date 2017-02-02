@@ -17,4 +17,8 @@
     <color name="white_thick">#ECF0F1</color>
     <color name="blue_light">#3498DB</color>
     <color name="blue_dark">#29BDB9</color>
+
+    <color name="one_class_text">#222222</color>
+    <color name="two_class_text">#686868</color>
+    <color name="background_gray">#eeeeee</color>
 </resources>

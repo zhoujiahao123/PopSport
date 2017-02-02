@@ -5,6 +5,27 @@ package com.nexuslink.model.data;
  */
 
 public class FollowInfo{
+    private int flag;
+    private FollowInfoBean followInfoBean;
+
+    public FollowInfoBean getFollowInfoBean() {
+        return followInfoBean;
+    }
+
+    public void setFollowInfoBean(FollowInfoBean followInfoBean) {
+        this.followInfoBean = followInfoBean;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+
+
     public static class FollowInfoBean {
         private int followFlag;
         private int fFansNum;
