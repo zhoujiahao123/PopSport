@@ -97,17 +97,6 @@ public class StepAndRunFragment extends Fragment implements View.OnClickListener
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i(TAG,"onDestroyView");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
 
     @Override
     public void onClick(View v) {

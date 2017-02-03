@@ -53,7 +53,7 @@ public class StepService extends Service implements SensorEventListener {
     //===============================================倒计时
     private TimeCount time;
     //===============================================数据库操作
-    private StepsDao stepsDao = DBUtil.getStepsDap();
+    private StepsDao stepsDao = DBUtil.getStepsDao();
     //当前步数
     private int CURRENT_STEPS;
     //计步传感器类型 0-counter 1-detector

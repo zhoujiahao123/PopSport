@@ -12,4 +12,6 @@
     <string name="steps">步数</string>
     <string name="expect_steps_test">目标xxxx步</string>
     <string name="step_menu_setteing">设置</string>
+    <string name="miletext">里程</string>
+    <string name="expect_run_miles">目标xxxx公里</string>
 </resources>
