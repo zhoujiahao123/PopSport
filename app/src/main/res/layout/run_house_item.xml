@@ -18,8 +18,8 @@
             android:layout_gravity="center"
             android:id="@+id/run_house_image"
             android:src="@drawable/fog"
-            android:layout_width="70dp"
-            android:layout_height="70dp" />
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
         <TextView
             android:id="@+id/run_house_current_persons"
             android:layout_gravity="center"

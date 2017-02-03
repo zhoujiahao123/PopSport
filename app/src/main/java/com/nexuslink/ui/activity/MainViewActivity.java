@@ -35,7 +35,6 @@ public class MainViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initView();
 
-
     }
 
     private void initView() {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/two_class_text"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.nexuslink.ui.view.view.headerview.LoadingView
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:loading_renderer="SwapLoadingRenderer"
+        >
+    </com.nexuslink.ui.view.view.headerview.LoadingView>
+
+</LinearLayout>

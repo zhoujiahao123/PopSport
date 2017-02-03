@@ -15,7 +15,7 @@
        app:imageViewTextViewMargin="@dimen/tab_image_text_margin"
        app:tab_imageViewHeight="@dimen/tab_image_heightandwidth"
        app:tab_imageViewWidth="@dimen/tab_image_heightandwidth"
-       app:tab_tabViewDefaultPosition="1"
+       app:tab_tabViewDefaultPosition="0"
        app:tab_tabViewHeight="@dimen/tab_view_height"
        app:tab_textViewSize="@dimen/tab_text_font_size"
        >
