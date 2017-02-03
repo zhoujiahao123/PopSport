@@ -16,7 +16,6 @@ import com.nexuslink.ui.adapter.RunHouseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -28,7 +27,6 @@ public class AppointmentFragment extends Fragment {
     private Toolbar mToolbar;
     private PtrFrameLayout ptrFrameLayout;
     private RecyclerView recyclerView;
-    private Random random = new Random();
     private List<RunHouseInfo.RunHouseBean> data = new ArrayList<>();
 
     public static final String URL = "http://img0.imgtn.bdimg.com/it/u=2320677199,2423076609&fm=21&gp=0.jpg";

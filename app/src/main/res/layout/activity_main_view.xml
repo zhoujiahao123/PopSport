@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nexuslink.ui.activity.MainViewActivity">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager_mainView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v4.view.ViewPager>
+   <com.ycl.tabview.library.TabView
+       android:id="@+id/tav_view"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       app:tab_textViewSelColor="@color/tab_text_sel"
+       app:tab_textViewUnSelColor="@color/tab_text_unsel"
+       app:imageViewTextViewMargin="@dimen/tab_image_text_margin"
+       app:tab_imageViewHeight="@dimen/tab_image_heightandwidth"
+       app:tab_imageViewWidth="@dimen/tab_image_heightandwidth"
+       app:tab_tabViewDefaultPosition="1"
+       app:tab_tabViewHeight="@dimen/tab_view_height"
+       app:tab_textViewSize="@dimen/tab_text_font_size"
+       >
 
-    <eu.long1.spacetablayout.SpaceTabLayout
-        android:id="@+id/spaceTab_mainView"
-        android:layout_alignParentBottom="true"
-        app:tab_color="@color/blue_normal"
-        app:button_color="@color/pink_light"
-        app:icon_one="@drawable/step"
-        app:icon_two="@drawable/appointment"
-        app:icon_three="@drawable/community"
-        app:icon_four="@drawable/personalinfo"
-        app:number_of_tabs="four"
-        app:starting_position="one"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </eu.long1.spacetablayout.SpaceTabLayout>
+   </com.ycl.tabview.library.TabView>
 
-</android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>

@@ -21,4 +21,8 @@
     <color name="one_class_text">#222222</color>
     <color name="two_class_text">#686868</color>
     <color name="background_gray">#eeeeee</color>
+
+    <color name="tab_text_sel">#34C464</color>
+    <color name="tab_text_unsel">#9A9A9A</color>
+
 </resources>
