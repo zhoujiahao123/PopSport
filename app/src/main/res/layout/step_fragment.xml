@@ -8,8 +8,8 @@
             android:layout_centerInParent="true"
             app:mpc_stroke_width="@dimen/step_circle_stoke_width"
             app:mpc_percent="0.5"
-            app:mpc_end_color="@color/yellow_light"
-            app:mpc_start_color="@color/yellow_light"
+            app:mpc_end_color="@color/dark_imperial_blue"
+            app:mpc_start_color="@color/cyan"
             android:layout_width="@dimen/step_circle_size"
             android:layout_height="@dimen/step_circle_size" />
     <LinearLayout

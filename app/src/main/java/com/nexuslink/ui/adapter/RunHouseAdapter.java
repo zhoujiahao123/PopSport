@@ -29,6 +29,28 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
         this.data = data;
         inflater = LayoutInflater.from(mContext);
     }
+    //点击接口
+    public interface OnClickListener{
+        void onItemClickListener(View view,int pos);
+    }
+    private OnClickListener mClickListnter;
+    public void setOnClickListener(OnClickListener listener){
+        this.mClickListnter = listener;
+    }
+
+    /**
+     *add
+     */
+    public void addItems(List<RunHouseInfo.RunHouseBean> list){
+        data.addAll(list);
+        notifyDataSetChanged();
+    }
+    public void deleteItem(int pos){
+        data.remove(pos);
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(0,data.size());
+    }
+
 
     @Override
     public RunHouseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,7 +59,7 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     }
 
     @Override
-    public void onBindViewHolder(RunHouseViewHolder holder, int position) {
+    public void onBindViewHolder(RunHouseViewHolder holder, final int position) {
         holder.runHouseNameTv.setText(data.get(position).getName());
         holder.runHouseStartTimeTv.setText(data.get(position).getStartTime());
         holder.runHouseTypeImage.setImageResource(data.get(position).getRunType()==1?R.drawable.roadtype:R.drawable.timetype);
@@ -45,7 +67,14 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
         holder.currentPersons.setText(data.get(position).getCurrentPersons());
         //加载图片
         Glide.with(mContext).load(data.get(position).getImageUrl()).into(holder.runHouseImage);
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mClickListnter!=null){
+                    mClickListnter.onItemClickListener(v,position);
+                }
+            }
+        });
 
     }
 

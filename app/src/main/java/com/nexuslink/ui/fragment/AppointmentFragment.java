@@ -20,6 +20,7 @@ import com.nexuslink.model.data.RunHouseInfo;
 import com.nexuslink.ui.adapter.RunHouseAdapter;
 import com.nexuslink.ui.view.view.headerview.RunHouseFooter;
 import com.nexuslink.ui.view.view.headerview.RunHouseHeader;
+import com.nexuslink.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +60,17 @@ public class AppointmentFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.appointment_fragment,container,false);
         initView(view);
-        RunHouseAdapter adapter = new RunHouseAdapter(getContext(),data);
+        final RunHouseAdapter adapter = new RunHouseAdapter(getContext(),data);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //点击接口
+        adapter.setOnClickListener(new RunHouseAdapter.OnClickListener() {
+            @Override
+            public void onItemClickListener(View view, int pos) {
+                ToastUtil.showToast(getContext(),pos+"");
+            }
+        });
 
         //设置下拉刷新
         //下拉刷新和上拉加载更多
@@ -88,15 +96,26 @@ public class AppointmentFragment extends Fragment{
                     }
                 },1000);
             }
-
             @Override
             public void onLoadMoreBegin(PtrFrameLayout frame) {
                 ptrFrameLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        List<RunHouseInfo.RunHouseBean> list = new ArrayList<RunHouseInfo.RunHouseBean>();
+                        for(int i = 0;i<4;i++){
+                            RunHouseInfo.RunHouseBean bean = new RunHouseInfo.RunHouseBean();
+                            bean.setName("fff"+i);
+                            list.add(bean);
+                        }
+                        adapter.addItems(list);
                         ptrFrameLayout.refreshComplete();
                     }
                 },1000);
+            }
+        });view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.deleteItem(4);
             }
         });
 

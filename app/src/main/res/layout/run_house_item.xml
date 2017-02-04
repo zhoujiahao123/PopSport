@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_marginTop="@dimen/spacing_tiny"
-
-
+    android:id="@+id/run_house_item"
     android:background="@drawable/run_house_item_backgourd"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">

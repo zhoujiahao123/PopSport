@@ -25,6 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 
@@ -35,7 +39,7 @@
         app:ptr_resistance_header="1.7"
         app:ptr_duration_to_back_footer="300"
         app:ptr_duration_to_back_header="300"
-        app:ptr_duration_to_close_either="1000"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
