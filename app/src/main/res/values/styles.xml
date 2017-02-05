@@ -77,6 +77,10 @@
 
     </style>
 
+    <style name="CustomActionBarTheme" parent="@style/AppTheme">
+        <item name="android:actionBarSize">45dp</item>
+        <item name="actionBarSize">45dp</item>
+    </style>
 
 
 </resources>

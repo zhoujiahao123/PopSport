@@ -25,12 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
 
     <in.srain.cube.views.ptr.PtrFrameLayout
         android:layout_below="@id/actionBar"
@@ -39,7 +33,6 @@
         app:ptr_resistance_header="1.7"
         app:ptr_duration_to_back_footer="300"
         app:ptr_duration_to_back_header="300"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
@@ -52,6 +45,13 @@
         </android.support.v7.widget.RecyclerView>
     </in.srain.cube.views.ptr.PtrFrameLayout>
 
+    <com.nexuslink.ui.view.view.headerview.LoadingView
+        android:id="@+id/progress_appoint"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:loading_renderer="GearLoadingRenderer" />
 
 
 

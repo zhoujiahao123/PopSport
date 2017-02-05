@@ -84,6 +84,9 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     public int getItemCount() {
         return data.size();
     }
+    public long getRunHouseId(int pos){
+        return this.data.get(pos).getRunHouseId();
+    }
 
     class RunHouseViewHolder extends  RecyclerView.ViewHolder{
         ImageView runHouseImage,runHouseTypeImage;
