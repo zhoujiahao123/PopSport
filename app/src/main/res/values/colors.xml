@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#34C464</color>
+    <color name="colorPrimaryDark">#185A2E</color>
+    <color name="colorAccent">#34C464</color>
     <color name="pink_light">#FFCCCC</color>
     <color name="white_light">#FFFFFF</color>
     <color name="white_normal">#e9e7e7</color>
     <color name="gray_normal">#605f5f</color>
     <color name="blue_normal">#99cccc</color>
+    <color name="blue_little_darker">#88cccc</color>
     <color name="yellow_light">#FFCC99</color>
     <color name="yellow_normal_light">#FF9966</color>
 
@@ -16,4 +17,18 @@
     <color name="white_thick">#ECF0F1</color>
     <color name="blue_light">#3498DB</color>
     <color name="blue_dark">#29BDB9</color>
+
+    <color name="one_class_text">#222222</color>
+    <color name="two_class_text">#686868</color>
+    <color name="background_gray">#eeeeee</color>
+
+    <color name="tab_text_sel">#34C464</color>
+    <color name="tab_text_unsel">#9A9A9A</color>
+
+    <!--采用的配色-->
+    <color name="ufo_green">#34C464</color>
+    <color name="dark_imperial_blue">#0B4F6C</color>
+    <color name="cyan">#01BAFF</color>
+    <color name="ghost_white">#FBFBFF</color>
+    <color name="spanish_gray">#9A9A9A</color>
 </resources>

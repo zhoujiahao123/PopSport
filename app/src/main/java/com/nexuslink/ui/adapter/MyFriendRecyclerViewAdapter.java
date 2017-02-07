@@ -34,11 +34,11 @@ public class MyFriendRecyclerViewAdapter extends RecyclerView.Adapter<MyFriendRe
 
     private void initData(FollowedInfo followedInfo){
 
-        for(int i=0;i<followedInfo.getSimpleUserList().size();i++){
-            nickName.add(followedInfo.getSimpleUserList().get(i).getfName());
-            headImg.add(followedInfo.getSimpleUserList().get(i).getfImg());
-            userId.add(followedInfo.getSimpleUserList().get(i).getfId());
-            userAchieve.add(followedInfo.getSimpleUserList().get(i).getfAchievements());
+        for(int i=0;i<followedInfo.getFollowedInfoBean().getSimpleUserList().size();i++){
+            nickName.add(followedInfo.getFollowedInfoBean().getSimpleUserList().get(i).getfName());
+            headImg.add(followedInfo.getFollowedInfoBean().getSimpleUserList().get(i).getfImg());
+            userId.add(followedInfo.getFollowedInfoBean().getSimpleUserList().get(i).getfId());
+            userAchieve.add(followedInfo.getFollowedInfoBean().getSimpleUserList().get(i).getfAchievements());
         }
     }
 

@@ -7,8 +7,14 @@ package com.nexuslink;
 public class Run {
 
     private Long id;
-    private Integer uMileage;
+    private String uMileage;
+    private String duration;
+    private String averageSpeed;
+    private String pathLine;
+    private String startPoint;
+    private String endPoint;
     private String date;
+    private Float cal;
 
     public Run() {
     }
@@ -17,10 +23,16 @@ public class Run {
         this.id = id;
     }
 
-    public Run(Long id, Integer uMileage, String date) {
+    public Run(Long id, String uMileage, String duration, String averageSpeed, String pathLine, String startPoint, String endPoint, String date, Float cal) {
         this.id = id;
         this.uMileage = uMileage;
+        this.duration = duration;
+        this.averageSpeed = averageSpeed;
+        this.pathLine = pathLine;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
         this.date = date;
+        this.cal = cal;
     }
 
     public Long getId() {
@@ -31,12 +43,52 @@ public class Run {
         this.id = id;
     }
 
-    public Integer getUMileage() {
+    public String getUMileage() {
         return uMileage;
     }
 
-    public void setUMileage(Integer uMileage) {
+    public void setUMileage(String uMileage) {
         this.uMileage = uMileage;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(String averageSpeed) {
+        this.averageSpeed = averageSpeed;
+    }
+
+    public String getPathLine() {
+        return pathLine;
+    }
+
+    public void setPathLine(String pathLine) {
+        this.pathLine = pathLine;
+    }
+
+    public String getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(String startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
     }
 
     public String getDate() {
@@ -45,6 +97,14 @@ public class Run {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Float getCal() {
+        return cal;
+    }
+
+    public void setCal(Float cal) {
+        this.cal = cal;
     }
 
 }

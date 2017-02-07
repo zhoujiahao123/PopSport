@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_run"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexuslink.ui.activity.RunActivity">
+
+    <LinearLayout
+        android:paddingTop="30dp"
+        android:background="@color/blue_normal"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/run_title_tv"
+        android:text="运动中..."
+        android:textColor="@color/white_light"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/run_currentMiles"
+            android:textColor="@color/white_thick"
+            android:textStyle="bold"
+            android:text="0.00"
+            android:textSize="@dimen/font_super_huge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_toRightOf="@id/run_currentMiles"
+            android:layout_alignBaseline="@id/run_currentMiles"
+            android:layout_marginLeft="@dimen/spacing_tiny"
+            android:text="公里"
+            android:textSize="@dimen/font_small"
+            android:textColor="@color/white_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:layout_weight = "1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                layout="@layout/run_time_item"></include>
+            <include
+                android:layout_weight = "1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                layout="@layout/run_speed_item"></include>
+            <include
+                android:layout_weight = "1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                layout="@layout/run_consume_energy_item"></include>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ToggleButton
+            android:layout_gravity="start"
+            android:id="@+id/bt_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.amap.api.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.amap.api.maps.MapView>
+    </RelativeLayout>
+
+
+</LinearLayout>
+

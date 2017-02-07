@@ -6,53 +6,76 @@ import java.util.List;
  * Created by ASUS-NB on 2017/1/22.
  */
 
-public class FollowedInfo {
-    private List<SimpleUser> simpleUserList;
+public class FollowedInfo{
 
-    public List<SimpleUser> getSimpleUserList() {
-        return simpleUserList;
+    private int flag;
+    private FollowedInfoBean followedInfoBean;
+
+    public int getFlag() {
+        return flag;
     }
 
-    public void setSimpleUserList(List<SimpleUser> simpleUserList) {
-        this.simpleUserList = simpleUserList;
+    public void setFlag(int flag) {
+        this.flag = flag;
     }
 
-    public static class SimpleUser{
-        private int fId;
-        private String fName;
-        private String fImg;
-        private int[] fAchievements;
+    public FollowedInfoBean getFollowedInfoBean() {
+        return followedInfoBean;
+    }
 
-        public int getfId() {
-            return fId;
+    public void setFollowedInfoBean(FollowedInfoBean followedInfoBean) {
+        this.followedInfoBean = followedInfoBean;
+    }
+
+    public static class FollowedInfoBean {
+        private List<SimpleUser> simpleUserList;
+
+        public List<SimpleUser> getSimpleUserList() {
+            return simpleUserList;
         }
 
-        public void setfId(int fId) {
-            this.fId = fId;
+        public void setSimpleUserList(List<SimpleUser> simpleUserList) {
+            this.simpleUserList = simpleUserList;
         }
 
-        public String getfName() {
-            return fName;
-        }
+        public static class SimpleUser{
+            private int fId;
+            private String fName;
+            private String fImg;
+            private int[] fAchievements;
 
-        public void setfName(String fName) {
-            this.fName = fName;
-        }
+            public int getfId() {
+                return fId;
+            }
 
-        public String getfImg() {
-            return fImg;
-        }
+            public void setfId(int fId) {
+                this.fId = fId;
+            }
 
-        public void setfImg(String fImg) {
-            this.fImg = fImg;
-        }
+            public String getfName() {
+                return fName;
+            }
 
-        public int[] getfAchievements() {
-            return fAchievements;
-        }
+            public void setfName(String fName) {
+                this.fName = fName;
+            }
 
-        public void setfAchievements(int[] fAchievements) {
-            this.fAchievements = fAchievements;
+            public String getfImg() {
+                return fImg;
+            }
+
+            public void setfImg(String fImg) {
+                this.fImg = fImg;
+            }
+
+            public int[] getfAchievements() {
+                return fAchievements;
+            }
+
+            public void setfAchievements(int[] fAchievements) {
+                this.fAchievements = fAchievements;
+            }
         }
     }
+
 }

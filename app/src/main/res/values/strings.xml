@@ -25,4 +25,10 @@
     <string name="weather_wash_car">洗车指数</string>
 
     <string name="weather_failed">亲爱的，请检查您的网络</string>
+    <string name="miletext">里程</string>
+    <string name="expect_run_miles">目标xxxx公里</string>
+
+    //查看好友信息的
+    <string name="friend_title">个人资料</string>
+
 </resources>

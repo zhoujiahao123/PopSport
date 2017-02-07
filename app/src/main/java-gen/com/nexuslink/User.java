@@ -31,6 +31,7 @@ public class User {
 
     public User(Long id, Integer uid, String uName, String uGender, String uImg, Float uHeight, Float uWeight, Integer uFansNum, Integer uExp, Long uHistoryStep, Long uHistoryMileage, Long uBestRecordStep, Long uBestRecordMileage, String uAchievements, Integer uFollowedNum) {
         this.id = id;
+
         this.uid = uid;
         this.uName = uName;
         this.uGender = uGender;
@@ -54,14 +55,13 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-
     public Integer getUid() {
         return uid;
     }
 
     public void setUid(Integer uid) {
-        this.uid = uid;
-    }
+        this.uid = uid;}
+
 
     public String getUName() {
         return uName;

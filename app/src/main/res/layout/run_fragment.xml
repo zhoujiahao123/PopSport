@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.liulishuo.magicprogresswidget.MagicProgressCircle
+        android:id="@+id/runCircle"
+        android:layout_centerInParent="true"
+        app:mpc_stroke_width="@dimen/step_circle_stoke_width"
+        app:mpc_percent="0.5"
+        app:mpc_end_color="@color/yellow_light"
+        app:mpc_start_color="@color/yellow_light"
+        android:layout_width="@dimen/step_circle_size"
+        android:layout_height="@dimen/step_circle_size" />
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_gravity="center"
+            android:text="@string/miletext"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:textColor="@color/yellow_light"
+            android:textSize="@dimen/font_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_currentMiles"
+            android:layout_gravity="center"
+            android:textColor="@color/yellow_normal_light"
+            android:text="0"
+            android:textStyle="bold"
+            android:textSize="@dimen/font_huge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_expectMiles"
+            android:layout_gravity="center"
+            android:text="@string/expect_run_miles"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:textColor="@color/yellow_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/bt_run_start"
+        android:background="@drawable/runbt_start_backgourd"
+        android:text="开始"
+        android:textColor="@color/white_normal"
+        android:layout_below="@id/runCircle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacing_super_huge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />w
+
+</RelativeLayout>

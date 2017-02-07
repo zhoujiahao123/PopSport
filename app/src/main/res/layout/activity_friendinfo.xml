@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingTop="@dimen/padding_top">
+
+    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:text="@string/friend_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white_light"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/friend_head_background"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/friend_head_background"
+        android:layout_below="@id/top_bar">
+        <com.nexuslink.util.CircleImageView
+            android:id="@+id/friend_head_image"
+            android:layout_width="@dimen/friend_head_size"
+            android:layout_height="@dimen/friend_head_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/friend_head_margin_top"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>
