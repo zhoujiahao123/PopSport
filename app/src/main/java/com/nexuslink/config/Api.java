@@ -20,9 +20,8 @@ import rx.Observable;
 
 public interface Api {
     //获取天气信息
-    @GET("query")
-    Observable<WeatherInfo> getWeatherInfo(@Query("cityname") String cityName, @Query("key")String key);
-
+    @GET("onebox/weather/query")
+    Observable<WeatherInfo> getWeatherInfo(@Query("cityname")String cityname, @Query("key")String key);
     //关注某人
     @GET("friend/follow")
     Observable<FollowInfo> getFollowInfo(@Query("uId") int uId,@Query("fId") int fId);
@@ -34,5 +33,5 @@ public interface Api {
     //登录
     @FormUrlEncoded
     @POST("user/login")
-    Observable<User> logIn(@Field("uName")String uName,@Field("uPassword")String uPassword);
+    Observable<User> logIn(@Field("uName")String uName, @Field("uPassword")String uPassword);
 }

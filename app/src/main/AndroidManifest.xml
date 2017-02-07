@@ -73,7 +73,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="561cae6ae0f55abd990035bf"></meta-data>
+            android:value="561cae6ae0f55abd990035bf">
+
+        </meta-data>
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="c8fc875fe295b6bd6073e43fd57b86fb"></meta-data>
 
         <!-- 计步 -->
         <service
@@ -100,6 +103,7 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="false" >
         </activity>
+        <activity android:name=".ui.activity.WeatherActivity"/>
         <!-- 计步 -->
     </application>
 

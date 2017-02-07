@@ -24,7 +24,7 @@ public class UserDao extends AbstractDao<User, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property UId = new Property(1, Integer.class, "uId", false, "U_ID");
+        public final static Property Uid = new Property(1, Integer.class, "uid", false, "UID");
         public final static Property UName = new Property(2, String.class, "uName", false, "U_NAME");
         public final static Property UGender = new Property(3, String.class, "uGender", false, "U_GENDER");
         public final static Property UImg = new Property(4, String.class, "uImg", false, "U_IMG");
@@ -54,7 +54,7 @@ public class UserDao extends AbstractDao<User, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'USER' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'U_ID' INTEGER," + // 1: uId
+                "'UID' INTEGER," + // 1: uid
                 "'U_NAME' TEXT," + // 2: uName
                 "'U_GENDER' TEXT," + // 3: uGender
                 "'U_IMG' TEXT," + // 4: uImg
@@ -86,9 +86,9 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer uId = entity.getUId();
-        if (uId != null) {
-            stmt.bindLong(2, uId);
+        Integer uid = entity.getUid();
+        if (uid != null) {
+            stmt.bindLong(2, uid);
         }
  
         String uName = entity.getUName();
@@ -168,7 +168,7 @@ public class UserDao extends AbstractDao<User, Long> {
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // uId
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // uid
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // uName
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // uGender
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // uImg
@@ -190,7 +190,7 @@ public class UserDao extends AbstractDao<User, Long> {
     @Override
     public void readEntity(Cursor cursor, User entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setUId(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setUid(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setUName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setUGender(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setUImg(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));

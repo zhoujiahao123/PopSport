@@ -1,6 +1,7 @@
 package com.nexuslink.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.nexuslink.R;
+import com.nexuslink.ui.activity.WeatherActivity;
 import com.nexuslink.ui.adapter.StepAndRunFragmentAdapter;
 
 import java.util.ArrayList;
@@ -111,6 +113,7 @@ public class StepAndRunFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(activity, "天气", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), WeatherActivity.class);
+        startActivity(intent);
     }
 }

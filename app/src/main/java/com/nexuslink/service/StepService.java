@@ -24,7 +24,6 @@ import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.config.Constants;
 import com.nexuslink.util.DBUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

@@ -6,7 +6,6 @@ import android.util.Log;
 import com.nexuslink.User;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
-import com.nexuslink.model.loginmodel.LogInModel;
 import com.nexuslink.presenter.LogInPresenterImp;
 import com.nexuslink.util.ApiUtil;
 
@@ -28,6 +27,7 @@ public class LogInModeImp implements LogInModel {
     @Override
     public void getLogInInfo(String uName,String password) {
         Log.e(Constants.TAG,"getLogInInfo");
+        Log.e(Constants.TAG,"thr uName is "+uName+"    the password is "+password);
         ApiUtil.getInstance(Constants.BASE_URL)
                 .logIn(uName,password)
                 .subscribeOn(Schedulers.io())
@@ -45,14 +45,11 @@ public class LogInModeImp implements LogInModel {
 
                     @Override
                     public void onNext(User user) {
-                        if(user.getUId()==0){
+                        if(user.getUid()==0){
                             Log.e(Constants.TAG,"id=0");
                             presenterImp.logInCheck(false);
                         }else {
-                            Log.e(Constants.TAG,"id=8");
-                            User user1 = new User();
-                            user1.setId(user.getId());
-                            BaseApplication.getDaosession().getUserDao().insert(user1);
+                            BaseApplication.getDaosession().getUserDao().insert(user);
                             presenterImp.logInCheck(true);
                         }
                     }
