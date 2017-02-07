@@ -76,6 +76,70 @@
         <item name="android:layout_marginBottom">@dimen/spacing_huger_weather</item>
 
     </style>
+    //
+    <style name="weather_day">
+        <item name="android:textColor">@color/white_light</item>
+        <item name="android:textSize">@dimen/forecast_day_size</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_normal</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+//以下全是forecast的style
+    <style name="weather_image">
+        <item name="android:layout_marginLeft">@dimen/forecast_image_margin_left</item>
+    </style>
+
+    <style name="weather_weather">
+        <item name="android:layout_marginLeft">@dimen/forecast_weather_margin_left</item>
+        <item name="android:textColor">@color/white_light</item>
+        <item name="android:textSize">@dimen/forecast_weather_size</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="weather_temp">
+        <item name="android:layout_marginLeft">@dimen/forecast_temp_margin_left</item>
+        <item name="android:textColor">@color/white_light</item>
+        <item name="android:textSize">@dimen/forecast_temp_size</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+//以上
+    //以下全是life的style
+    <style name="weather_life_left">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_tiny</item>
+        <item name="android:layout_marginRight">@dimen/little_size</item>
+        <item name="android:background">@color/white_light</item>
+    </style>
+    <style name="weather_life_left_top">
+        <item name="android:layout_marginTop">@dimen/spacing_tiny</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_tiny</item>
+        <item name="android:layout_marginRight">@dimen/little_size</item>
+        <item name="android:background">@color/white_light</item>
+    </style>
+
+    <style name="weather_life_right_top">
+        <item name="android:layout_marginTop">@dimen/spacing_tiny</item>
+        <item name="android:layout_marginLeft">@dimen/little_size</item>
+        <item name="android:layout_marginRight">@dimen/spacing_tiny</item>
+        <item name="android:background">@color/white_light</item>
+    </style>
+    <style name="weather_life_right">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginLeft">@dimen/little_size</item>
+        <item name="android:layout_marginRight">@dimen/spacing_tiny</item>
+        <item name="android:background">@color/white_light</item>
+    </style>
+
+    <style name="weather_life_text">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:layout_marginTop">@dimen/spacing_small</item>
+        <item name="android:textColor">@color/white_light</item>
+    </style>
+    <style name="weather_life_text_des">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">@color/white_light</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
 
     <style name="CustomActionBarTheme" parent="@style/AppTheme">
         <item name="android:actionBarSize">45dp</item>

@@ -7,7 +7,7 @@ package com.nexuslink;
 public class User {
 
     private Long id;
-    private Integer uId;
+    private Integer uid;
     private String uName;
     private String uGender;
     private String uImg;
@@ -29,9 +29,10 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, Integer uId, String uName, String uGender, String uImg, Float uHeight, Float uWeight, Integer uFansNum, Integer uExp, Long uHistoryStep, Long uHistoryMileage, Long uBestRecordStep, Long uBestRecordMileage, String uAchievements, Integer uFollowedNum) {
+    public User(Long id, Integer uid, String uName, String uGender, String uImg, Float uHeight, Float uWeight, Integer uFansNum, Integer uExp, Long uHistoryStep, Long uHistoryMileage, Long uBestRecordStep, Long uBestRecordMileage, String uAchievements, Integer uFollowedNum) {
         this.id = id;
-        this.uId = uId;
+
+        this.uid = uid;
         this.uName = uName;
         this.uGender = uGender;
         this.uImg = uImg;
@@ -54,14 +55,13 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Integer getUId() {
-        return uId;
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setUId(Integer uId) {
-        this.uId = uId;
-    }
+    public void setUid(Integer uid) {
+        this.uid = uid;}
+
 
     public String getUName() {
         return uName;

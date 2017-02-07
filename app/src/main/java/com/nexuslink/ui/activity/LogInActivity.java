@@ -127,6 +127,10 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 presenter.logInToService(textInputName.getText().toString(),textInputPassword.getText().toString());
                 break;
             case R.id.btn_sign_in:
+                Intent intent = new Intent(this,WeatherActivity.class);
+                if(intent.resolveActivity(getPackageManager())!=null){
+                    startActivity(intent);
+                }
                 signIn();
                 break;
         }

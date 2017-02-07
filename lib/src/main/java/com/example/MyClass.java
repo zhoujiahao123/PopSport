@@ -16,13 +16,13 @@ public class MyClass {
     }
     public static void createTable(Schema schema){
 
-        //è®¡æ­¥è¡¨
+        //¼Æ²½±í
         Entity steps = schema.addEntity("Steps");
         steps.addIdProperty().primaryKey();
         steps.addIntProperty("uStep");
         steps.addStringProperty("date");
 
-        //è·‘æ­¥è¡¨
+        //ÅÜ²½±í
         Entity run = schema.addEntity("Run");
         run.addIdProperty().primaryKey();
         run.addStringProperty("uMileage");
@@ -34,10 +34,10 @@ public class MyClass {
         run.addStringProperty("date");
         run.addFloatProperty("cal");
 
-        //ç”¨æˆ·è¡¨
+        //ÓÃ»§±í
         Entity user = schema.addEntity("User");
         user.addIdProperty().primaryKey();
-        user.addIntProperty("uId");
+        user.addIntProperty("uid");
         user.addStringProperty("uName");
         user.addStringProperty("uGender");
         user.addStringProperty("uImg");
@@ -52,14 +52,14 @@ public class MyClass {
         user.addStringProperty("uAchievements");
         user.addIntProperty("uFollowedNum");
 
-        //æ¯æ—¥ä»»åŠ¡æ­¥æ•°è¡¨
+        //Ã¿ÈÕÈÎÎñ²½Êı±í
         Entity taskSteps = schema.addEntity("TaskSteps");
         taskSteps.addIdProperty().primaryKey();
         taskSteps.addStringProperty("TaskStepsName");
         taskSteps.addIntProperty("taskFlag");
         taskSteps.addIntProperty("taskNum");
 
-        //æ¯æ—¥ä»»åŠ¡é‡Œç¨‹æ•°è¡¨
+        //Ã¿ÈÕÈÎÎñÀï³ÌÊı±í
         Entity taskMileages = schema.addEntity("TaskMileages");
         taskMileages.addIdProperty().primaryKey();
         taskMileages.addStringProperty("TaskMileagesName");

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.nexuslink.config.Constants;
 import com.nexuslink.ui.fragment.AllUserFragment;
+import com.nexuslink.ui.fragment.MyFriendFragment;
 
 /**
  * Created by ASUS-NB on 2017/1/16.
@@ -25,7 +26,7 @@ public class FriendFragmenPagerAdapter extends FragmentPagerAdapter {
             return AllUserFragment.getInstance();
         }
         Log.e(Constants.TAG,"position=1");
-        return AllUserFragment.getInstance();
+        return MyFriendFragment.getInstance();
     }
 
     @Override

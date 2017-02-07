@@ -1,6 +1,5 @@
 package com.nexuslink.util;
 
-import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseApplication;
 
 /**

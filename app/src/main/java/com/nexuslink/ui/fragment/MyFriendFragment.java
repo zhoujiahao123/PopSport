@@ -62,7 +62,7 @@ public class MyFriendFragment extends BaseFragment implements MyFriendView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alluser, container, false);
+        View view = inflater.inflate(R.layout.fragment_myfriend, container, false);
         ButterKnife.bind(this, view);
         isCreate = true;
         return view;

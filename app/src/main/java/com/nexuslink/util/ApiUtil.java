@@ -11,6 +11,7 @@ import com.nexuslink.config.Constants;
 
 public class ApiUtil {
     private static Api mInstance ;
+    private static Api mWeatherInstance;
 
     public static Api getInstance(String baseUrl){
         if(mInstance==null){
@@ -19,5 +20,13 @@ public class ApiUtil {
         }
         Log.e(Constants.TAG,"getInstance11");
         return mInstance;
+    }
+    public static Api getWeatherInstance(String baseUrl){
+        if(mWeatherInstance==null){
+            mWeatherInstance = RetrofitUtil.getRetrofitInstanceFroWeather(baseUrl).create(Api.class);
+            Log.e(Constants.TAG,"getInstance");
+        }
+        Log.e(Constants.TAG,"getInstance11");
+        return mWeatherInstance;
     }
 }

@@ -3,9 +3,47 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!--天气控件的dimens-->
+    <dimen name="turn_back_image_size">30dp</dimen>
+    <dimen name="air_quality_width">90dp</dimen>
+    <dimen name="air_quality_height">30dp</dimen>
+    <dimen name="air_quality_image_size">20dp</dimen>
+    <dimen name="weather_temp_size">100dp</dimen>
+    <dimen name="weather_temp_margin_top">327dp</dimen>
+    <dimen name="weather_temp_margin_left">20dp</dimen>
+    <dimen name="weather_remind_height">20dp</dimen>
+    <dimen name="weather_remind_margin_left">20dp</dimen>
+    <dimen name="weather_remind_image_width">20dp</dimen>
+    <dimen name="weather_remind_image_height">20dp</dimen>
+    <dimen name="little_size">1dp</dimen>
+    <dimen name="information_image_size">30dp</dimen>
+    <dimen name="humidity_image_size">20dp</dimen>
+    <dimen name="layout_forecast_margin_top">50dp</dimen>
+    <dimen name="forecast_day_size">20sp</dimen>
+    <dimen name="forecast_weather_size">20sp</dimen>
+    <dimen name="forecast_temp_size">20sp</dimen>
+    <dimen name="forecast_image_margin_left">50dp</dimen>
+    <dimen name="forecast_image_size">30dp</dimen>
+    <dimen name="forecast_weather_width">40dp</dimen>
+    <dimen name="forecast_weather_margin_left">40dp</dimen>
+    <dimen name="forecast_temp_margin_left">60dp</dimen>
+    <dimen name="weather_life_height">60dp</dimen>
+    <dimen name="weather_life_image_size">40dp</dimen>
+    <dimen name="weather_life_image_margin_left">25dp</dimen>
+
+    //查看的个人信息
+    <dimen name="friend_head_background">300dp</dimen>
+    <dimen name="friend_head_size">130dp</dimen>
+    <dimen name="friend_head_margin_top">30dp</dimen>
     <!--一些杂乱的-->
+
+    <dimen name="weather_temp">160dp</dimen>
+    <dimen name="weather_temp_num_width">80dp</dimen>
+    <dimen name="weather_temp_num_height">120dp</dimen>
+
     <dimen name="run_detail_icon_width">20dp</dimen>
     <dimen name="run_detail_icon_height">20dp</dimen>
+
     <dimen name="personalInfo_item_height">100dp</dimen>
     <dimen name="step_circle_stoke_width">20dp</dimen>
     <dimen name="step_circle_size">200dp</dimen>

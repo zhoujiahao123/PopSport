@@ -19,6 +19,7 @@ import com.nexuslink.presenter.FriendPresenterImpl;
 import com.nexuslink.ui.adapter.FriendFragmenPagerAdapter;
 import com.nexuslink.ui.adapter.FriendRecyclerViewAdapter;
 import com.nexuslink.ui.view.FriendView;
+import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ToastUtil;
 
 import butterknife.BindView;
@@ -80,6 +81,7 @@ public class FriendActivity extends BaseActivity implements FriendView,FriendRec
 
     @Override
     public void showUserfragment() {
+        Log.e("AG","showUserFragment");
         viewpager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewpager);
     }
