@@ -9,6 +9,7 @@ import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
 import com.nexuslink.StepsDao;
+import com.nexuslink.RunDao;
 import com.nexuslink.UserDao;
 import com.nexuslink.TaskStepsDao;
 import com.nexuslink.TaskMileagesDao;
@@ -23,6 +24,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         StepsDao.createTable(db, ifNotExists);
+        RunDao.createTable(db, ifNotExists);
         UserDao.createTable(db, ifNotExists);
         TaskStepsDao.createTable(db, ifNotExists);
         TaskMileagesDao.createTable(db, ifNotExists);
@@ -31,6 +33,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         StepsDao.dropTable(db, ifExists);
+        RunDao.dropTable(db, ifExists);
         UserDao.dropTable(db, ifExists);
         TaskStepsDao.dropTable(db, ifExists);
         TaskMileagesDao.dropTable(db, ifExists);
@@ -66,6 +69,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
         registerDaoClass(StepsDao.class);
+        registerDaoClass(RunDao.class);
         registerDaoClass(UserDao.class);
         registerDaoClass(TaskStepsDao.class);
         registerDaoClass(TaskMileagesDao.class);

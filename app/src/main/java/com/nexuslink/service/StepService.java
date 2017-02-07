@@ -24,7 +24,6 @@ import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.config.Constants;
 import com.nexuslink.util.DBUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -119,15 +118,15 @@ public class StepService extends Service implements SensorEventListener {
         //===============================================在这里进行数据新的一列的存储
         //通过日期匹配，当数据中有今日步数的行，那么将步数值进行读取，如果没有那么久新增一行，并将CURRENT_STEP存储进去
         QueryBuilder qb = stepsDao.queryBuilder();
-        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
+        qb.where(StepsDao.Properties.Date.eq(getTodayDate()));
         Steps steps = (Steps) qb.unique();
         if(steps!=null){
-            CURRENT_STEPS = steps.getSteps();
+            CURRENT_STEPS = steps.getUStep();
         }else{
             //增加一行
             Steps stepsAdd = new Steps();
-            stepsAdd.setCurrentDate(CURRENT_DATE);
-            stepsAdd.setSteps(0);
+            stepsAdd.setDate(CURRENT_DATE);
+            stepsAdd.setUStep(0);
             stepsDao.insert(stepsAdd);
         }
     }
@@ -282,17 +281,17 @@ public class StepService extends Service implements SensorEventListener {
     private void save() {
         int tempStep = CURRENT_STEPS;
         QueryBuilder qb = stepsDao.queryBuilder();
-        qb.where(StepsDao.Properties.CurrentDate.eq(getTodayDate()));
+        qb.where(StepsDao.Properties.Date.eq(getTodayDate()));
         Steps steps = (Steps) qb.unique();
         //不为空时，说明还未到12点，我们进行更新就行，为空说明为最后一次存储
         if(steps!=null){
-            steps.setSteps(tempStep);
-            steps.setCurrentDate(CURRENT_DATE);
+            steps.setUStep(tempStep);
+            steps.setDate(CURRENT_DATE);
             stepsDao.update(steps);
         }else{
             steps = new Steps();
-            steps.setSteps(tempStep);
-            steps.setCurrentDate(CURRENT_DATE);
+            steps.setUStep(tempStep);
+            steps.setDate(CURRENT_DATE);
             stepsDao.update(steps);
         }
 

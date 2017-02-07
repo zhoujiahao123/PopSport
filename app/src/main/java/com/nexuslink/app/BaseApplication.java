@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.facebook.stetho.Stetho;
 import com.nexuslink.DaoMaster;
+import com.nexuslink.DaoSession;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -46,4 +47,16 @@ public class BaseApplication extends Application {
     public static Context getContext(){
         return mContext;
     }
+
+     public static DaoSession getDaosession(){
+         DaoSession daoSession;
+         DaoMaster daoMaster;
+         DaoMaster.DevOpenHelper helper;
+         SQLiteDatabase database;
+         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
+         database = helper.getWritableDatabase();
+         daoMaster = new DaoMaster(database);
+         daoSession = daoMaster.newSession();
+         return daoSession;
+     }
 }

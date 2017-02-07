@@ -15,6 +15,7 @@ import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.ui.activity.FriendActivity;
 import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.IdUtil;
 import com.ufreedom.floatingview.Floating;
 import com.ufreedom.floatingview.FloatingBuilder;
 import com.ufreedom.floatingview.FloatingElement;
@@ -31,7 +32,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
     private String nickName[]={"周家豪0","周家豪1","周家豪2","周家豪3","周家豪4","周家豪5","周家豪6","周家豪7","周家豪8","周家豪9","周家豪10",
             "周家豪11","周家豪12","周家豪13","周家豪14","周家豪15","周家豪16","周家豪17","周家豪18","周家豪19"};
     public interface CallbackListener{
-        void onItemClicked();
+        void onItemClicked(int uId,int fId);
     }
     private static CallbackListener mListener;
     public static void setCallbackListener(CallbackListener listener){
@@ -108,7 +109,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
                     btnFollow.setBackgroundResource(R.drawable.selector_button_followed);
                     btnFollow.setText("已关注");
                     btnFollow.setClickable(false);
-                    mListener.onItemClicked();
+                    mListener.onItemClicked((int)IdUtil.getuId(),0);
                     }
             });
         }

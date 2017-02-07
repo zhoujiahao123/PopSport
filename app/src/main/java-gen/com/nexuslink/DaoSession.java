@@ -10,11 +10,13 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import com.nexuslink.Steps;
+import com.nexuslink.Run;
 import com.nexuslink.User;
 import com.nexuslink.TaskSteps;
 import com.nexuslink.TaskMileages;
 
 import com.nexuslink.StepsDao;
+import com.nexuslink.RunDao;
 import com.nexuslink.UserDao;
 import com.nexuslink.TaskStepsDao;
 import com.nexuslink.TaskMileagesDao;
@@ -29,11 +31,13 @@ import com.nexuslink.TaskMileagesDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig stepsDaoConfig;
+    private final DaoConfig runDaoConfig;
     private final DaoConfig userDaoConfig;
     private final DaoConfig taskStepsDaoConfig;
     private final DaoConfig taskMileagesDaoConfig;
 
     private final StepsDao stepsDao;
+    private final RunDao runDao;
     private final UserDao userDao;
     private final TaskStepsDao taskStepsDao;
     private final TaskMileagesDao taskMileagesDao;
@@ -45,6 +49,9 @@ public class DaoSession extends AbstractDaoSession {
         stepsDaoConfig = daoConfigMap.get(StepsDao.class).clone();
         stepsDaoConfig.initIdentityScope(type);
 
+        runDaoConfig = daoConfigMap.get(RunDao.class).clone();
+        runDaoConfig.initIdentityScope(type);
+
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
 
@@ -55,11 +62,13 @@ public class DaoSession extends AbstractDaoSession {
         taskMileagesDaoConfig.initIdentityScope(type);
 
         stepsDao = new StepsDao(stepsDaoConfig, this);
+        runDao = new RunDao(runDaoConfig, this);
         userDao = new UserDao(userDaoConfig, this);
         taskStepsDao = new TaskStepsDao(taskStepsDaoConfig, this);
         taskMileagesDao = new TaskMileagesDao(taskMileagesDaoConfig, this);
 
         registerDao(Steps.class, stepsDao);
+        registerDao(Run.class, runDao);
         registerDao(User.class, userDao);
         registerDao(TaskSteps.class, taskStepsDao);
         registerDao(TaskMileages.class, taskMileagesDao);
@@ -67,6 +76,7 @@ public class DaoSession extends AbstractDaoSession {
     
     public void clear() {
         stepsDaoConfig.getIdentityScope().clear();
+        runDaoConfig.getIdentityScope().clear();
         userDaoConfig.getIdentityScope().clear();
         taskStepsDaoConfig.getIdentityScope().clear();
         taskMileagesDaoConfig.getIdentityScope().clear();
@@ -74,6 +84,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public StepsDao getStepsDao() {
         return stepsDao;
+    }
+
+    public RunDao getRunDao() {
+        return runDao;
     }
 
     public UserDao getUserDao() {

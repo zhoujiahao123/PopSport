@@ -12,4 +12,17 @@
     <string name="steps">步数</string>
     <string name="expect_steps_test">目标xxxx步</string>
     <string name="step_menu_setteing">设置</string>
+    <string name="weather_menu_position">定位</string>
+    //天气的一些
+    <string name="weather_remind">今天天气不错哟，出去逛逛</string>
+    <string name="weather_today">今天</string>
+    <string name="weather_tomorrow">明天</string>
+    <string name="weather_sport">运动指数</string>
+    <string name="weather_cloth">穿衣指数</string>
+    <string name="weather_air_condition">空调指数</string>
+    <string name="weather_ray">紫外线</string>
+    <string name="weather_cold">感冒指数</string>
+    <string name="weather_wash_car">洗车指数</string>
+
+    <string name="weather_failed">亲爱的，请检查您的网络</string>
 </resources>
