@@ -37,13 +37,12 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </RelativeLayout>
-    <ImageView
-        android:background="#cccccc"
-        android:layout_width="match_parent"
-        android:layout_height="2px" />
+    <include
+        layout="@layout/divider_line"
+        ></include>
     <!--跑房信息-->
     <LinearLayout
-        android:background="#fff2b1"
+        android:background="#DAF4E2"
         android:gravity="center"
         android:layout_weight="0.8"
         android:orientation="vertical"

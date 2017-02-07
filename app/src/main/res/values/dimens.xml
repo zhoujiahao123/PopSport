@@ -50,4 +50,8 @@
     <dimen name="tab_view_height">48dp</dimen>
     <dimen name="tab_text_font_size">10sp</dimen>
 
+    <dimen name="tab_radius">25dp</dimen>
+    <dimen name="tab_height">50dp</dimen>
+
+
 </resources>

@@ -142,14 +142,16 @@
             android:name="com.amap.api.v2.apikey"
             android:value="ea9a725ff880d7bdd907142465ca7392" />
 
-        <activity android:name=".ui.activity.RunActivity"></activity>
+        <activity android:name=".ui.activity.RunActivity"
+            android:theme="@style/RunActivityActionBarTheme"
+            />
 
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".ui.activity.RunHouseDetailActivity"
-            android:theme="@style/CustomActionBarTheme"
-            >
-        </activity>
+        <activity
+            android:name=".ui.activity.RunHouseDetailActivity"
+            android:theme="@style/CustomActionBarTheme"></activity>
+        <activity android:name=".ui.activity.CreateRunHouseActivity"></activity>
     </application>
 
 </manifest>

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.nexuslink.R;
 import com.nexuslink.model.data.RunHouseInfo;
 import com.nexuslink.presenter.runhousepresenter.RunHousePresenter;
+import com.nexuslink.ui.activity.CreateRunHouseActivity;
 import com.nexuslink.ui.activity.RunHouseDetailActivity;
 import com.nexuslink.ui.adapter.RunHouseAdapter;
 import com.nexuslink.ui.view.RunHouseView;
@@ -151,7 +152,9 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.create_house){
-
+            //跳转
+            Intent intent = new Intent(getActivity(), CreateRunHouseActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
 

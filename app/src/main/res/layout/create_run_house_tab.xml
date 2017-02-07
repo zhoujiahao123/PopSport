@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_margin="@dimen/font_small"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_weight="0.6"
+        android:layout_width="0dp"
+        android:layout_gravity="center"
+        android:layout_height="@dimen/tab_height">
+
+        <LinearLayout
+            android:background="@drawable/create_run_house_tab_background"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="时间跑房"
+                android:layout_marginRight="@dimen/spacing_tiny"
+                android:id="@+id/bt_time_type"
+                android:textColor="@color/tab_text_color"
+                android:background="@drawable/create_run_house_tab"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:text="距离跑房"
+                android:layout_marginLeft="@dimen/spacing_tiny"
+                android:id="@+id/bt_road_type"
+                android:textColor="@color/tab_text_color"
+                android:background="@drawable/create_run_house_tab"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

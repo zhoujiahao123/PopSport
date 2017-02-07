@@ -6,7 +6,7 @@
         android:radius="@dimen/spacing_tiny"
         ></corners>
     <solid
-        android:color="#f4cb00"
+        android:color="#48ca73"
         ></solid>
 
 </shape>

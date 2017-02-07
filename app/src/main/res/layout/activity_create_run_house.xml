@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_create_run_house"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical"
+    tools:context="com.nexuslink.ui.activity.CreateRunHouseActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_create_run_house"
+            android:background="@color/ghost_white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="创建跑房"
+            android:textColor="@color/one_class_text"
+            android:textSize="@dimen/font_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <include
+        layout="@layout/divider_line"
+        ></include>
+    <include
+        layout="@layout/create_run_house_tab"
+        ></include>
+    <include
+        layout="@layout/divider_line"
+        ></include>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_create_run_house"
+        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:background="#ffffff"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_weight="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:text="开始时间"
+            android:textSize="@dimen/font_normal"
+            android:layout_gravity="left|center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="#ffffff"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/font_normal"
+        android:layout_weight="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:text="跑房名字"
+            android:textSize="@dimen/font_normal"
+            android:layout_gravity="left|center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_gravity="center"
+            android:background="@null"
+            android:gravity="right"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/two_class_text"
+            android:paddingRight="@dimen/spacing_tiny"
+            android:hint="为您的跑房取个名字吧"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/post"
+        android:text="提交"
+        android:layout_weight="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+</LinearLayout>

@@ -81,6 +81,9 @@
         <item name="android:actionBarSize">45dp</item>
         <item name="actionBarSize">45dp</item>
     </style>
+    <style name="RunActivityActionBarTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/dark_imperial_blue</item>
+    </style>
 
 
 </resources>
