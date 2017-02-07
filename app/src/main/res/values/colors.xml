@@ -21,6 +21,7 @@
     <color name="divider_line">#eeeeee</color>
     <color name="one_class_text">#222222</color>
     <color name="two_class_text">#686868</color>
+    <color name="three_class_text">#c9c9c9</color>
     <color name="background_gray">#eeeeee</color>
     <color name="background_color">#f8f8f8</color>
 

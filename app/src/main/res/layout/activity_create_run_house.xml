@@ -7,6 +7,7 @@
     android:background="@color/background_color"
     android:orientation="vertical"
     tools:context="com.nexuslink.ui.activity.CreateRunHouseActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,42 +29,55 @@
     <include
         layout="@layout/divider_line"
         ></include>
+
     <include
         layout="@layout/create_run_house_tab"
         ></include>
+
     <include
         layout="@layout/divider_line"
         ></include>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_create_run_house"
-        android:layout_weight="3"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="@dimen/create_run_house_viewpager_height">
     </android.support.v4.view.ViewPager>
 
-    <LinearLayout
+    <RelativeLayout
         android:background="#ffffff"
+        android:id="@+id/start_date_pick"
         android:layout_marginTop="@dimen/spacing_small"
-        android:layout_weight="0.5"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="@dimen/create_run_house_item_height">
         <TextView
             android:layout_marginLeft="@dimen/spacing_normal"
             android:text="开始时间"
             android:textSize="@dimen/font_normal"
-            android:layout_gravity="left|center"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/start_date_show"
+            android:gravity="center"
+            android:text="02月07日 14:23"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/one_class_text"
+           android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:background="#ffffff"
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_marginBottom="@dimen/font_normal"
-        android:layout_weight="0.5"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="@dimen/create_run_house_item_height">
         <TextView
             android:layout_marginLeft="@dimen/spacing_normal"
             android:text="跑房名字"
@@ -77,16 +91,16 @@
             android:gravity="right"
             android:textSize="@dimen/font_normal"
             android:textColor="@color/two_class_text"
-            android:paddingRight="@dimen/spacing_tiny"
+            android:paddingRight="@dimen/spacing_normal"
             android:hint="为您的跑房取个名字吧"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <Button
         android:id="@+id/post"
         android:text="提交"
-        android:layout_weight="0.5"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

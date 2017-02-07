@@ -79,7 +79,8 @@ dependencies {
     //glid
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //下拉刷新
-
     compile 'com.ycl.tabview.library:tabviewlibrary:1.0'
     compile 'in.srain.cube:ptr-load-more:1.0.6'
-}
+    //时间选择器
+    compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
+ }
