@@ -4,10 +4,10 @@
     android:orientation="horizontal"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:layout_margin="@dimen/font_small"
+    android:background="@android:color/white"
     android:weightSum="1">
-
     <RelativeLayout
+        android:layout_margin="@dimen/font_small"
         android:layout_weight="0.6"
         android:layout_width="0dp"
         android:layout_gravity="center"

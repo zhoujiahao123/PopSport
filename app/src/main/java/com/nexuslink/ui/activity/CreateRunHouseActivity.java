@@ -49,6 +49,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     private SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
     private List<Fragment> fragments = new ArrayList<>();
     private CreateRunHouseViewPagerAdapter adapter;
+
     //===============================================常量
     private static final String TAG = "CreateRunHouseActivity";
 
@@ -82,6 +83,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
             }
         });
 
+
         timePickerDialog = new TimePickerDialog.Builder().setCallBack(this)
                 .setCancelStringId("取消")
                 .setSureStringId("确定")
@@ -95,6 +97,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
                 .setWheelItemTextSelectorColor(getResources().getColor(R.color.one_class_text))
                 .setWheelItemTextSize(16)
                 .build();
+        //设置默认时间
         mStartDateShow.setText(df.format(System.currentTimeMillis()));
     }
 

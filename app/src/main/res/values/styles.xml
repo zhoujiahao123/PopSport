@@ -148,6 +148,13 @@
     <style name="RunActivityActionBarTheme" parent="AppTheme">
         <item name="colorPrimaryDark">@color/dark_imperial_blue</item>
     </style>
+    <!--创建跑房中的文字style-->
+    <style name="CreateRUnHouseTextStyle">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/two_class_text</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
 
 
 </resources>
