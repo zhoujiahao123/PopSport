@@ -7,6 +7,7 @@
     <color name="white_light">#FFFFFF</color>
     <color name="white_normal">#e9e7e7</color>
     <color name="gray_normal">#605f5f</color>
+    <color name="gray_light">#c1c0c0</color>
     <color name="blue_normal">#99cccc</color>
     <color name="blue_little_darker">#88cccc</color>
     <color name="yellow_light">#FFCC99</color>

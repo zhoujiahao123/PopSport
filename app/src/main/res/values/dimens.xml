@@ -32,9 +32,15 @@
     <dimen name="weather_life_image_margin_left">25dp</dimen>
 
     //查看的个人信息
-    <dimen name="friend_head_background">300dp</dimen>
+    <dimen name="friend_head_background">350dp</dimen>
     <dimen name="friend_head_size">130dp</dimen>
-    <dimen name="friend_head_margin_top">30dp</dimen>
+    <dimen name="friend_head_margin_top">60dp</dimen>
+    <dimen name="friend_image_size">60dp</dimen>
+    <dimen name="friend_image_size_small">50dp</dimen>
+    <dimen name="friend_image_size_large">70dp</dimen>
+    //修改个人信息的
+    <dimen name="alter_head">100dp</dimen>
+    <dimen name="alter_head_margin_top">8dp</dimen>
     <!--一些杂乱的-->
 
     <dimen name="weather_temp">160dp</dimen>

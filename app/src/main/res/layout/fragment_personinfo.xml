@@ -10,7 +10,7 @@
         android:paddingTop="@dimen/spacing_huge_toolbar"
         android:paddingBottom="@dimen/spacing_huge"
         android:id="@+id/head_relative"
-        android:background="@color/blue_normal"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.nexuslink.util.CircleImageView

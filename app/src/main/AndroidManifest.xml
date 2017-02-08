@@ -137,6 +137,7 @@
         <!-- 计步 -->
 
         <service android:name="com.amap.api.location.APSService"></service>
+        <activity android:name=".ui.activity.FriendInfoActivity"/>
 
     </application>
 

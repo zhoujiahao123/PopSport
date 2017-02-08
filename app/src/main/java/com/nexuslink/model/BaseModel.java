@@ -10,4 +10,8 @@ package com.nexuslink.model;
 public interface BaseModel {
 
     void getError();
+    interface OnCallBackListener{
+        void onSucceed(Object o);
+        void onFailed(Throwable t);
+    }
 }

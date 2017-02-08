@@ -25,12 +25,13 @@ import com.nexuslink.util.ToastUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 /**
  * Created by ASUS-NB on 2017/1/14.
  */
 
-public class FriendActivity extends BaseActivity implements FriendView,FriendRecyclerViewAdapter.CallbackListener{
+public class FriendActivity extends SwipeBackActivity implements FriendView,FriendRecyclerViewAdapter.CallbackListener{
     private static FriendActivity activity;
     private FriendFragmenPagerAdapter adapter;
     private FriendPresenter friendPresenter;
