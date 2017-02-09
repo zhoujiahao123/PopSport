@@ -11,6 +11,8 @@
  import com.umeng.socialize.PlatformConfig;
  import com.umeng.socialize.UMShareAPI;
 
+ import cn.alien95.resthttp.request.RestHttp;
+
 
  /**
  * Created by ASUS-NB on 2016/12/17.
@@ -40,6 +42,8 @@ public class BaseApplication extends Application {
                         .build());
         //创建数据库
         db = new DaoMaster.DevOpenHelper(mContext,"PopSport",null).getWritableDatabase();
+        //舒适化图片加载库
+        RestHttp.initialize(this);
     }
     /*
     提供全局context

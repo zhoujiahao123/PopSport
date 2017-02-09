@@ -155,6 +155,12 @@
         <item name="android:textColor">@color/two_class_text</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
+    <!--toolbar textview style-->
+    <style name="ToolbarTextViewStyle">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textColor">@color/ghost_white</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
 
 
 </resources>

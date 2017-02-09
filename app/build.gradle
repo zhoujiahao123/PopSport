@@ -85,4 +85,7 @@ dependencies {
     compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
     //轮动
     compile 'com.wx.wheelview:wheelview:1.3.3'
+    //九宫格图
+    compile 'cn.alien95:resthttp:1.0.5'
+    compile 'cn.lemon:multiview:1.0.0'
 }
