@@ -139,6 +139,7 @@
         <service android:name="com.amap.api.location.APSService"></service>
         <activity android:name=".ui.activity.FriendInfoActivity"/>
 
+        <activity android:name=".ui.activity.AlterActivity"/>
     </application>
 
 </manifest>

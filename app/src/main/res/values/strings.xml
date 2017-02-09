@@ -40,5 +40,16 @@
     <string name="run_best">最佳跑步</string>
     //修改个人信息
     <string name="title">个人信息</string>
+    <string name="head_image">头像</string>
+    <string name="nick_name">昵称</string>
+    <string name="height">身高</string>
+    <string name="weight">体重</string>
+    <string name="sex">性别</string>
+    <string name="password">登录密码</string>
+
+    //错误界面
+    <string name="error_server">服务器出了一些问题</string>
+    <string name="error_network">您的网络出现了一些问题</string>
+    <string name="pull_refresh">请下拉刷新</string>
 
 </resources>

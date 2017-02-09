@@ -53,6 +53,7 @@ public class FriendActivity extends SwipeBackActivity implements FriendView,Frie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
+        Log.e("TAG","FriednActiivyt");
         activity = this;
         ButterKnife.bind(this);
         initView();

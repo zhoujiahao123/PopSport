@@ -6,6 +6,7 @@ import com.nexuslink.User;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
+import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 
 import retrofit2.http.Field;
@@ -40,4 +41,9 @@ public interface Api {
     @FormUrlEncoded
     @POST("friend/getInfo")
     Observable<FriendInfo> getFriendInfo(@Field("fId")int fId);
+
+    //获取用户个人信息
+    @FormUrlEncoded
+    @POST("user/getInfo")
+    Observable<UserInfo> getUserInfo(@Field("uId")int uId);
 }

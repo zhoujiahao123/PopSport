@@ -12,11 +12,12 @@
     <color name="blue_little_darker">#88cccc</color>
     <color name="yellow_light">#FFCC99</color>
     <color name="yellow_normal_light">#FF9966</color>
+    <color name="green_light">#5bed79</color>
 
     <color name="gray_dark">#2C3E50</color>
     <color name="red_normal">#E74C3C</color>
     <color name="white_thick">#ECF0F1</color>
-    <color name="blue_light">#3498DB</color>
+    <color name="blue_light">#b9d8ed</color>
     <color name="blue_dark">#29BDB9</color>
 
     <color name="one_class_text">#222222</color>
