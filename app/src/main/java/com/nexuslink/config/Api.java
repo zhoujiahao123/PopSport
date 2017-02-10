@@ -3,6 +3,7 @@ package com.nexuslink.config;
 
 
 import com.nexuslink.User;
+import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
@@ -46,4 +47,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("user/getInfo")
     Observable<UserInfo> getUserInfo(@Field("uId")int uId);
+
+    //修改用户的个人信息
+    @FormUrlEncoded
+    @POST("user/changeInfo")
+    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId,@Field("uName") String uName,@Field("uGender")char uGender,@Field("uHeight")float
+            uHeight,@Field("uWeight")float uWeight);
 }

@@ -3,6 +3,7 @@ import android.util.Log;
 
 import com.nexuslink.model.altermodel.AlterModel;
 import com.nexuslink.model.altermodel.OnCallBackListener;
+import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.ui.view.AlterView;
 import com.nexuslink.ui.view.BaseView;
@@ -26,11 +27,18 @@ public class AlterPresenterImpl extends AlterPresenter implements OnCallBackList
     }
 
     @Override
+    public void changeUserInfo(int uId, String uName, char uGender, float uHeight, float uWeight) {
+        model.changeUserInfo(uId,uName,uGender,uHeight,uWeight,this);
+    }
+
+    @Override
     public void onSucceed(Object o) {
         Log.e("TAG","onSucceed");
         if(o instanceof UserInfo){
             Log.e("TAG","is right");
             view.showUserInfo((UserInfo)o);
+        }else if(o instanceof ChangeInfo){
+            view.showChangeUserInfo((ChangeInfo)o);
         }
     }
 
