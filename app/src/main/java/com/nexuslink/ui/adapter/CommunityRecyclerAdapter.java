@@ -10,11 +10,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.nexuslink.R;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.CircleImageView;
 
 import java.util.List;
 
-import cn.lemon.multi.MultiView;
+
 
 /**
  * Created by 猿人 on 2017/2/8.
@@ -50,6 +51,8 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         //话题信息
         holder.mContent.setText(communityBean.getContent());
         holder.imagesContent.setImages(communityBean.getContentImagsUrl());
+
+
     }
 
     @Override

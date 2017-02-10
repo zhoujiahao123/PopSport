@@ -38,7 +38,13 @@ public class CommunityFragment extends Fragment {
     RecyclerView mRecycler;
     //===============================================常量
     private static final String TAG = "CommunityFragment";
-    private static final String IMAGE_URL = "http://img1.imgtn.bdimg.com/it/u=1794894692,1423685501&fm=21&gp=0.jpg";
+    private static final String IMAGE_URL[] = {"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1598552568,4236159349&fm=58",
+    "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=164888333,246711798&fm=116&gp=0.jpg",
+    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4271053251,2424464488&fm=116&gp=0.jpg",
+    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2320677199,2423076609&fm=116&gp=0.jpg",
+    "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=819201812,3553302270&fm=116&gp=0.jpg",
+    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1303680113,133301350&fm=116&gp=0.jpg",
+    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1799345195,2075280808&fm=116&gp=0.jpg"};
     //===============================================一数据
     private List<CommunityInfo.CommunityBean> data = new ArrayList<>();
     private AppCompatActivity compatActivity;
@@ -53,13 +59,13 @@ public class CommunityFragment extends Fragment {
     private void initData() {
         for(int i =0;i<10;i++){
             CommunityInfo.CommunityBean bean = new CommunityInfo.CommunityBean();
-            bean.setUserImageUrl(IMAGE_URL);
+            bean.setUserImageUrl(IMAGE_URL[i%IMAGE_URL.length]);
             bean.setUserName("张兴锐");
             bean.setUserLevel("19");
             bean.setContent("今天和一群傻逼打牌");
             String images[] = new String[11];
             for(int j=0;j<11;j++){
-                images[j] = IMAGE_URL;
+                images[j] = IMAGE_URL[j%IMAGE_URL.length];
             }
             bean.setContentImagsUrl(images);
             data.add(bean);
@@ -83,7 +89,7 @@ public class CommunityFragment extends Fragment {
         return view;
     }
 
-    @Override
+   @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.community_menu,menu);

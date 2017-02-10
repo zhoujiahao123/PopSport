@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <cn.lemon.multi.MultiView
+    <com.nexuslink.ui.view.view.headerview.MultiView
         android:id="@+id/multi_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         app:divideSpace="4dp"
         android:layout_marginBottom="20dp"
         app:placeholder="@drawable/ic_bigrain">
-    </cn.lemon.multi.MultiView>
+    </com.nexuslink.ui.view.view.headerview.MultiView>
 
 
 

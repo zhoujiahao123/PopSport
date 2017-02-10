@@ -162,5 +162,15 @@
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
+    <!--图片详情-->
+    <style name="AppTheme.ActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">#fff</item>
+        <item name="actionMenuTextAppearance">@style/AppTheme.actionMenuTextSize</item>
+    </style>
 
-</resources>
+    <style name="AppTheme.actionMenuTextSize" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    </resources>

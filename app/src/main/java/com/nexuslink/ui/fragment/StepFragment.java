@@ -138,7 +138,7 @@ public class StepFragment extends Fragment implements View.OnClickListener {
         if(!isBind){
             Intent intent = new Intent(activity, StepService.class);
             activity.startService(intent);
-            isBind = getContext().getApplicationContext().bindService(intent,conn, Context.BIND_AUTO_CREATE);
+            isBind = activity.bindService(intent,conn, Context.BIND_AUTO_CREATE);
             Log.i(TAG,"isBind:"+isBind);
             Log.i(TAG,"绑定服务成功");
         }

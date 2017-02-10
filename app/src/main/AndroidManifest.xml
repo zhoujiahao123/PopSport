@@ -94,7 +94,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="561cae6ae0f55abd990035bf"></meta-data>
+            android:value="561cae6ae0f55abd990035bf" />
 
         <!-- 计步 -->
         <service
@@ -136,14 +136,16 @@
             android:theme="@style/CustomActionBarTheme" />
         <activity
             android:name=".ui.activity.CreateRunHouseActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.activity.WeatherActivity" />
         <!-- 计步 -->
         <service android:name="com.amap.api.location.APSService" />
 
+
+        <activity android:name=".ui.activity.WriteMsgActivity" />
         <!-- 图片跳转Activity -->
-        <activity android:name="cn.lemon.multi.ui.ViewImageActivity" />
-        <activity android:name=".ui.activity.WriteMsgActivity"></activity>
+        <activity android:name=".ui.activity.ViewImageShowActivity"
+            ></activity>
     </application>
 
 </manifest>
