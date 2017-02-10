@@ -5,6 +5,8 @@ package com.nexuslink.config;
 import com.nexuslink.User;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
+import com.nexuslink.model.data.FriendInfo;
+import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 
 import retrofit2.http.Field;
@@ -34,4 +36,14 @@ public interface Api {
     @FormUrlEncoded
     @POST("user/login")
     Observable<User> logIn(@Field("uName")String uName, @Field("uPassword")String uPassword);
+
+    //获取好友的个人信息
+    @FormUrlEncoded
+    @POST("friend/getInfo")
+    Observable<FriendInfo> getFriendInfo(@Field("fId")int fId);
+
+    //获取用户个人信息
+    @FormUrlEncoded
+    @POST("user/getInfo")
+    Observable<UserInfo> getUserInfo(@Field("uId")int uId);
 }

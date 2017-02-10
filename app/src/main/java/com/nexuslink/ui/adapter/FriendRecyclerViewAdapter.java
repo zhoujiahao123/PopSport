@@ -1,6 +1,7 @@
 package com.nexuslink.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.ui.activity.FriendActivity;
+import com.nexuslink.ui.activity.FriendInfoActivity;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.IdUtil;
 import com.ufreedom.floatingview.Floating;
@@ -83,6 +85,15 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
             imageHead = (CircleImageView) itemView.findViewById(R.id.image_head);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
             btnFollow = (Button) itemView.findViewById(R.id.btn_follow);
+            imageHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent friendInfoIntent = new Intent(mContext, FriendInfoActivity.class);
+                    if(friendInfoIntent.resolveActivity(mContext.getPackageManager())!=null){
+                        mContext.startActivity(friendInfoIntent);
+                    }
+                }
+            });
             btnFollow.setOnClickListener(new View.OnClickListener() {
 
                 @Override

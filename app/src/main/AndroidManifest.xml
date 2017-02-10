@@ -142,10 +142,15 @@
         <service android:name="com.amap.api.location.APSService" />
 
 
+
         <activity android:name=".ui.activity.WriteMsgActivity" />
         <!-- 图片跳转Activity -->
         <activity android:name=".ui.activity.ViewImageShowActivity"
             ></activity>
+ 
+        <activity android:name=".ui.activity.FriendInfoActivity"/>
+        <activity android:name=".ui.activity.AlterActivity"/>
+
     </application>
 
 </manifest>
