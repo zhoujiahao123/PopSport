@@ -24,6 +24,7 @@ import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.config.Constants;
 import com.nexuslink.util.DBUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -67,6 +68,7 @@ public class StepService extends Service implements SensorEventListener {
     //跨进程通信--使用Messenger方式
     private Messenger messengerFromService = new Messenger(new MessengerHandler());
     private  Messenger messengerFromClient;
+
 
     private class MessengerHandler extends Handler{
         @Override
