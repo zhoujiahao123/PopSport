@@ -26,11 +26,20 @@ public class CommunityInfo {
 
     public static class CommunityBean{
         //头像url
+        private long userId;
         private String userImageUrl;
         private String userName;
         private String userLevel;
         private String content;
         private String[] contentImagsUrl;
+
+        public long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(long userId) {
+            this.userId = userId;
+        }
 
         public String getUserImageUrl() {
             return userImageUrl;

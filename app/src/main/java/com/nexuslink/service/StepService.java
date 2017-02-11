@@ -1,10 +1,13 @@
 package com.nexuslink.service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,11 +23,14 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.nexuslink.R;
 import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.config.Constants;
+import com.nexuslink.ui.activity.MainViewActivity;
 import com.nexuslink.util.DBUtil;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -56,6 +62,8 @@ public class StepService extends Service implements SensorEventListener {
     private StepsDao stepsDao = DBUtil.getStepsDao();
     //当前步数
     private int CURRENT_STEPS;
+    //期望步数
+    private float EXPECT_STEPS;
     //计步传感器类型 0-counter 1-detector
     private static  int stepSensor = -1;
     //是否记录
@@ -85,10 +93,16 @@ public class StepService extends Service implements SensorEventListener {
             }
         }
     }
+    //===============================================通知相关
+    private static final int NOTIFI_ID = 100;
+    //格式管理
+    private DecimalFormat df = new DecimalFormat("#.0");
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+        EXPECT_STEPS = 8000f;
         //初始化广播
         initBroadcastReceiver();
         new Thread(new Runnable() {
@@ -101,6 +115,7 @@ public class StepService extends Service implements SensorEventListener {
         startTimeCount();
         initTodayData();
     }
+
 
     /**
      * 取得今日日期
@@ -131,6 +146,13 @@ public class StepService extends Service implements SensorEventListener {
             stepsAdd.setUStep(0);
             stepsDao.insert(stepsAdd);
         }
+    }
+    /**
+     * 获取当前步数占有率
+     */
+    private String getCurrentOccupancy(){
+        //默认8000，完善时在Service启动的时候进行复制
+        return df.format((float)CURRENT_STEPS/EXPECT_STEPS*100);
     }
 
     /**
@@ -184,12 +206,15 @@ public class StepService extends Service implements SensorEventListener {
                         +" CURRENT_STEP:"+ CURRENT_STEPS);
             }
             sendMessage();
+            setNotification();
 
 //            Toast.makeText(BaseApplication.mContext, tempStep, Toast.LENGTH_SHORT).show();
         }else if(stepSensor == 1){
             if(event.values[0] == 1.0){
                 CURRENT_STEPS++;
                 Log.i(TAG,CURRENT_STEPS+"");
+                sendMessage();
+                setNotification();
             }
         }
     }
@@ -308,7 +333,23 @@ public class StepService extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        setNotification();
         return START_STICKY;
+        //如果被系统kill掉，系统会自动将kill时的状态保留为开始状态，之后进行重连
+    }
+
+    private void setNotification() {
+        PendingIntent pd = PendingIntent.getActivity(this,0,new Intent(this, MainViewActivity.class),0);
+        //在这里进行前台服务
+        Notification.Builder builder = new Notification.Builder(this)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.poplog)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.drawable.poplog))
+                .setContentTitle("当前步数"+CURRENT_STEPS)
+                .setContentText("今日完成百分比"+getCurrentOccupancy()+"%")
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(pd);
+        startForeground(NOTIFI_ID,builder.build());
     }
 
     @Override
@@ -327,6 +368,7 @@ public class StepService extends Service implements SensorEventListener {
         time = new TimeCount(duration,1000);
         time.start();
     }
+
     private class TimeCount extends CountDownTimer{
 
 

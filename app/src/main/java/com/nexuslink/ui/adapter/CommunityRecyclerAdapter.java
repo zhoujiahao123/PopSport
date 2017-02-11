@@ -33,7 +33,14 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         this.mContext = context;
         inflater = LayoutInflater.from(mContext);
     }
-
+    //用户头像点击接口
+    public interface userIconClickListener{
+        void onClickListener(int pos);
+    }
+    private userIconClickListener clickListener;
+    public void setUserIconClickListener(userIconClickListener listener){
+        this.clickListener = listener;
+    }
     @Override
     public CommunityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.community_recyler_item,parent,false);
@@ -41,10 +48,20 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     }
 
     @Override
-    public void onBindViewHolder(CommunityViewHolder holder, int position) {
+    public void onBindViewHolder(CommunityViewHolder holder, final int position) {
         CommunityInfo.CommunityBean communityBean = data.get(position);
         //加载话题头像
         Glide.with(mContext).load(communityBean.getUserImageUrl()).into(holder.userImage);
+        //回调点击接口
+        holder.userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clickListener != null){
+                    clickListener.onClickListener(position);
+                }
+            }
+        });
+
         //用户名字和level
         holder.userName.setText(communityBean.getUserName());
         holder.userLevel.setText("Lv."+communityBean.getUserLevel());
@@ -52,7 +69,13 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         holder.mContent.setText(communityBean.getContent());
         holder.imagesContent.setImages(communityBean.getContentImagsUrl());
 
-
+    }
+    public void addItems(int index,List<CommunityInfo.CommunityBean> list){
+        data.addAll(index,list);
+        notifyDataSetChanged();
+    }
+    public long getUserId(int pos){
+        return data.get(pos).getUserId();
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.nexuslink.R;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.ui.activity.WriteMsgActivity;
 import com.nexuslink.ui.adapter.CommunityRecyclerAdapter;
+import com.nexuslink.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class CommunityFragment extends Fragment {
     //===============================================一数据
     private List<CommunityInfo.CommunityBean> data = new ArrayList<>();
     private AppCompatActivity compatActivity;
+    private CommunityRecyclerAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,9 +79,19 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.community_fragment, container, false);
         ButterKnife.bind(this, view);
-        CommunityRecyclerAdapter adapter = new CommunityRecyclerAdapter(getContext(),data);
+        adapter = new CommunityRecyclerAdapter(getContext(),data);
         mRecycler.setAdapter(adapter);
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        //设置点击监听
+        adapter.setUserIconClickListener(new CommunityRecyclerAdapter.userIconClickListener() {
+            @Override
+            public void onClickListener(int pos) {
+                //根据位置进行获取用户数据（用户id）
+                long userId = adapter.getUserId(pos);
+                //网络请求道个人信息界面。。。。
+                ToastUtil.showToast(getContext(),"点击用户头像");
+            }
+        });
 
         compatActivity.setSupportActionBar(mToolbar);
         compatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);

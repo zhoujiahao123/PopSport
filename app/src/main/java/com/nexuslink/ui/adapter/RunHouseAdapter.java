@@ -41,8 +41,8 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     /**
      *add
      */
-    public void addItems(List<RunHouseInfo.RunHouseBean> list){
-        data.addAll(list);
+    public void addItems(int index,List<RunHouseInfo.RunHouseBean> list){
+        data.addAll(index,list);
         notifyDataSetChanged();
     }
     public void deleteItem(int pos){
