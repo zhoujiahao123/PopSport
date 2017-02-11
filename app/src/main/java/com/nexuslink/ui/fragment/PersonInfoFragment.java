@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.nexuslink.R;
+import com.nexuslink.ui.activity.AlterActivity;
 import com.nexuslink.ui.activity.FriendActivity;
 import com.nexuslink.ui.view.PersonInfoView;
 
@@ -64,6 +65,8 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView {
 
     @Override
     public void showSetting() {
+        Intent intent = new Intent(getContext(), AlterActivity.class);
+        startActivity(intent);
 
     }
 
@@ -91,6 +94,7 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView {
             case R.id.group_runningromm:
                 break;
             case R.id.group_setting:
+                showSetting();
                 break;
             case R.id.group_mytask:
                 break;
