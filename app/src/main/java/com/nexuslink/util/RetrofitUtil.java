@@ -11,7 +11,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitUtil {
     private static Retrofit mInstance;
     private static Retrofit mWeatherInstance;
+    private static Retrofit instance;
 
+
+    /**
+     * 单例化
+     */
+    private RetrofitUtil (String baseUrl){
+        instance = new Retrofit.Builder().baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+    }
+    public static Retrofit getInstance(String baseUrl){
+        if(mInstance == null){
+            new RetrofitUtil(baseUrl);
+        }
+        return instance;
+    }
 
     public static Retrofit getRetrofitInstance(String baseUrl){
         if(mInstance==null){
@@ -31,4 +48,5 @@ public class RetrofitUtil {
         }
         return mWeatherInstance;
     }
+
 }

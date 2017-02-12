@@ -3,11 +3,15 @@ package com.nexuslink.config;
 
 
 import com.nexuslink.User;
+import com.nexuslink.model.data.CommentInfo;
+import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
+
+import java.util.List;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -46,4 +50,31 @@ public interface Api {
     @FormUrlEncoded
     @POST("user/getInfo")
     Observable<UserInfo> getUserInfo(@Field("uId")int uId);
+
+    //发表小话题
+    //还差图片
+    @FormUrlEncoded
+    @POST("article/publish")
+    Observable<Integer> publishArtice(@Field("uId") int userId, @Field("aText") String text);
+
+
+    //获取话题内容
+    @FormUrlEncoded
+    @POST("article/getOne")
+    Observable<List<CommunityInfo>> getArticles(@Field("uId") int userId, @Field("aId") int articleId);
+
+    //评论话题
+    @FormUrlEncoded
+    @POST("article/comment")
+    Observable<CommentInfo> doComment(@Field("uId") int userId,@Field("aId") int articleId,@Field("aComment") String comment);
+
+    //查看某个话题的评论
+    @FormUrlEncoded
+    @POST("article/like")
+    Observable<Integer> getComments(@Field("aId") int articleId);
+
+    //为某个话题点赞
+    @FormUrlEncoded
+    @POST("article/like")
+    Observable<Integer> doLike(@Field("uId") int userId,@Field("aId") int articleId);
 }

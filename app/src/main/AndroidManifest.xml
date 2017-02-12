@@ -101,7 +101,9 @@
             android:name=".service.StepService"
             android:process=":remote" />
 
-        <activity android:name=".ui.activity.MainViewActivity">
+        <activity android:name=".ui.activity.MainViewActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

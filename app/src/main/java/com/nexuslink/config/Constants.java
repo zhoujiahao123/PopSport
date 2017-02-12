@@ -21,5 +21,8 @@ public class Constants {
     //===============================================viewpager image显示常量
     public static final String IMAGE_URL = "image_url";
     public static final String IMAGE_POS = "position";
+    //===============================================Tba状态改变
+    public static final int VISIBLE = 1;
+    public static final int INVISIBLE = 0;
 }
 

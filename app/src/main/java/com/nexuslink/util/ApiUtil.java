@@ -15,7 +15,7 @@ public class ApiUtil {
 
     public static Api getInstance(String baseUrl){
         if(mInstance==null){
-            mInstance = RetrofitUtil.getRetrofitInstance(baseUrl).create(Api.class);
+            mInstance = RetrofitUtil.getInstance(baseUrl).create(Api.class);
             Log.e(Constants.TAG,"getInstance");
         }
         Log.e(Constants.TAG,"getInstance11");

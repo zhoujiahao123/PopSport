@@ -1,5 +1,8 @@
 package com.nexuslink.model.data;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by 猿人 on 2017/2/8.
  */
@@ -25,28 +28,23 @@ public class CommunityInfo {
     }
 
     public static class CommunityBean{
-        //头像url
-        private long userId;
+
+        private int articleId;
+        private int userId;
         private String userImageUrl;
         private String userName;
-        private String userLevel;
-        private String content;
-        private String[] contentImagsUrl;
-
-        public long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(long userId) {
-            this.userId = userId;
-        }
+        private int userLevel;
+        private String text;
+        private List<String> images;
+        private int commentNum;
+        private int likeNum;
+        private int lookNum;
+        private Date date;
+        private Date time;
+        private boolean likeArticle;
 
         public String getUserImageUrl() {
             return userImageUrl;
-        }
-
-        public void setUserImageUrl(String userImageUrl) {
-            this.userImageUrl = userImageUrl;
         }
 
         public String getUserName() {
@@ -57,28 +55,96 @@ public class CommunityInfo {
             this.userName = userName;
         }
 
-        public String getUserLevel() {
+        public int getUserLevel() {
             return userLevel;
         }
 
-        public void setUserLevel(String userLevel) {
+        public void setUserLevel(int userLevel) {
             this.userLevel = userLevel;
         }
 
-        public String getContent() {
-            return content;
+        public void setUserImageUrl(String userImageUrl) {
+            this.userImageUrl = userImageUrl;
         }
 
-        public void setContent(String content) {
-            this.content = content;
+        public int getArticleId() {
+            return articleId;
         }
 
-        public String[] getContentImagsUrl() {
-            return contentImagsUrl;
+        public void setArticleId(int articleId) {
+            this.articleId = articleId;
         }
 
-        public void setContentImagsUrl(String[] contentImagsUrl) {
-            this.contentImagsUrl = contentImagsUrl;
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public List<String> getImages() {
+            return images;
+        }
+
+        public void setImages(List<String> images) {
+            this.images = images;
+        }
+
+        public int getCommentNum() {
+            return commentNum;
+        }
+
+        public void setCommentNum(int commentNum) {
+            this.commentNum = commentNum;
+        }
+
+        public int getLikeNum() {
+            return likeNum;
+        }
+
+        public void setLikeNum(int likeNum) {
+            this.likeNum = likeNum;
+        }
+
+        public int getLookNum() {
+            return lookNum;
+        }
+
+        public void setLookNum(int lookNum) {
+            this.lookNum = lookNum;
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public void setDate(Date date) {
+            this.date = date;
+        }
+
+        public Date getTime() {
+            return time;
+        }
+
+        public void setTime(Date time) {
+            this.time = time;
+        }
+
+        public boolean isLikeArticle() {
+            return likeArticle;
+        }
+
+        public void setLikeArticle(boolean likeArticle) {
+            this.likeArticle = likeArticle;
         }
     }
 }

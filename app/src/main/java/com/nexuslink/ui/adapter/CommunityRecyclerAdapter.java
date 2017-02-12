@@ -5,13 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.nexuslink.R;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.ui.view.likeview.CommentPathAdapter;
+import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.KeyBoardUtils;
 
 import java.util.List;
 
@@ -48,7 +54,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     }
 
     @Override
-    public void onBindViewHolder(CommunityViewHolder holder, final int position) {
+    public void onBindViewHolder(final CommunityViewHolder holder, final int position) {
         CommunityInfo.CommunityBean communityBean = data.get(position);
         //加载话题头像
         Glide.with(mContext).load(communityBean.getUserImageUrl()).into(holder.userImage);
@@ -65,9 +71,51 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         //用户名字和level
         holder.userName.setText(communityBean.getUserName());
         holder.userLevel.setText("Lv."+communityBean.getUserLevel());
+
         //话题信息
-        holder.mContent.setText(communityBean.getContent());
-        holder.imagesContent.setImages(communityBean.getContentImagsUrl());
+        holder.mContent.setText(communityBean.getText());
+        holder.imagesContent.setImages(communityBean.getImages());
+
+        //设置点赞和评论监听
+        holder.likeView.setActivated(communityBean.isLikeArticle());
+        holder.likeView.setNumber(communityBean.getLikeNum());
+        holder.likeView.setCallback(new LikeView.SimpleCallback(){
+                @Override
+                public void activate(LikeView view) {
+                    super.activate(view);
+                }
+
+                @Override
+                public void deactivate(LikeView view) {
+                    super.deactivate(view);
+                }
+            }
+        );
+        //设置评论
+        holder.comment.setNumber(communityBean.getCommentNum());
+        holder.comment.setGraphAdapter(CommentPathAdapter.getInstance());
+        holder.comment.setCallback(new LikeView.SimpleCallback(){
+            @Override
+            public boolean onClick(LikeView view) {
+                //弹出编辑框逻辑
+                holder.linearLayout.setVisibility(View.VISIBLE);
+                holder.commentInput.requestFocus();
+                //弹起输入框
+                KeyBoardUtils.openKeybord(holder.commentInput,mContext);
+                //发送请求
+                return true;
+            }
+        });
+        //设置评论区
+
+        holder.commentPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.linearLayout.setVisibility(View.GONE);
+                KeyBoardUtils.closeKeybord(holder.commentInput,mContext);
+                //请求相应
+            }
+        });
 
     }
     public void addItems(int index,List<CommunityInfo.CommunityBean> list){
@@ -87,6 +135,11 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         CircleImageView userImage;
         TextView userName,userLevel,mContent;
         MultiView imagesContent;
+        LikeView likeView;
+        LikeView comment;
+        EditText commentInput;
+        LinearLayout linearLayout;
+        private Button commentPost;
         public CommunityViewHolder(View itemView) {
             super(itemView);
             userImage = (CircleImageView) itemView.findViewById(R.id.user_image);
@@ -94,6 +147,11 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             userLevel = (TextView) itemView.findViewById(R.id.user_level);
             mContent = (TextView) itemView.findViewById(R.id.tv_content);
             imagesContent = (MultiView) itemView.findViewById(R.id.multi_view);
+            likeView = (LikeView) itemView.findViewById(R.id.like_view);
+            comment = (LikeView) itemView.findViewById(R.id.comment);
+            commentInput = (EditText) itemView.findViewById(R.id.input_comment);
+            commentPost = (Button) itemView.findViewById(R.id.input_send_comment);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.comment_linear);
         }
     }
 }

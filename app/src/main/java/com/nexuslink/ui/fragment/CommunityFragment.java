@@ -63,13 +63,13 @@ public class CommunityFragment extends Fragment {
             CommunityInfo.CommunityBean bean = new CommunityInfo.CommunityBean();
             bean.setUserImageUrl(IMAGE_URL[i%IMAGE_URL.length]);
             bean.setUserName("张兴锐");
-            bean.setUserLevel("19");
-            bean.setContent("今天和一群傻逼打牌");
-            String images[] = new String[11];
+            bean.setUserLevel(19);
+            bean.setText("今天和一群傻逼打牌");
+            List<String> images = new ArrayList<>();
             for(int j=0;j<11;j++){
-                images[j] = IMAGE_URL[j%IMAGE_URL.length];
+                images.add(IMAGE_URL[j%IMAGE_URL.length]);
             }
-            bean.setContentImagsUrl(images);
+            bean.setImages(images);
             data.add(bean);
         }
     }
