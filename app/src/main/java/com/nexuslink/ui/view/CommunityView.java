@@ -9,9 +9,9 @@ import java.util.List;
  */
 
 public interface CommunityView {
-    void showSuccess();
-    void showError();
+    void showSuccess(String str);
+    void showError(String str);
     void addMsgArticle(List<CommunityInfo.CommunityBean> list);
     void addOneComment(String userName,String text);
-    void addCommentNum();
+    void addCommentNum(int pos);
 }

@@ -11,8 +11,6 @@ import com.nexuslink.model.data.FriendInfo;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 
-import java.util.List;
-
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -61,12 +59,12 @@ public interface Api {
     //获取话题内容
     @FormUrlEncoded
     @POST("article/getOne")
-    Observable<List<CommunityInfo>> getArticles(@Field("uId") int userId, @Field("aId") int articleId);
+    Observable<CommunityInfo> getArticles(@Field("uId") int userId, @Field("aId") int articleId);
 
     //评论话题
     @FormUrlEncoded
     @POST("article/comment")
-    Observable<CommentInfo> doComment(@Field("uId") int userId,@Field("aId") int articleId,@Field("aComment") String comment);
+    Observable<CommentInfo> postComment(@Field("uId") int userId,@Field("aId") int articleId,@Field("aComment") String comment);
 
     //查看某个话题的评论
     @FormUrlEncoded
@@ -76,5 +74,10 @@ public interface Api {
     //为某个话题点赞
     @FormUrlEncoded
     @POST("article/like")
-    Observable<Integer> doLike(@Field("uId") int userId,@Field("aId") int articleId);
+    Observable<Integer> postLike(@Field("uId") int userId,@Field("aId") int articleId);
+
+    //取消点赞
+    @FormUrlEncoded
+    @POST("article/dislike")
+    Observable<Integer> postDisLike(@Field("uId") int userId,@Field("aId") int articleId);
 }

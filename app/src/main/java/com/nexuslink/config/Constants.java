@@ -24,5 +24,6 @@ public class Constants {
     //===============================================Tba状态改变
     public static final int VISIBLE = 1;
     public static final int INVISIBLE = 0;
+
 }
 

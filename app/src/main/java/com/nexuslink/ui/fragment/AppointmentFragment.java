@@ -90,7 +90,6 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
         ptrFrameLayout.addPtrUIHandler(runHouseFooter);
         //监听事件
         ptrFrameLayout.setPtrHandler(new PtrDefaultHandler2() {
-
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 ptrFrameLayout.postDelayed(new Runnable() {
@@ -138,6 +137,7 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
         compatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.ptrFrame);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_appoint);
 
     }
@@ -186,7 +186,7 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
 
     @Override
     public void showError() {
-        ToastUtil.showToast(getContext(),"请求出错，请重试");;
+        ToastUtil.showToast(getContext(),"请求出错，请重试");
     }
 
     @Override

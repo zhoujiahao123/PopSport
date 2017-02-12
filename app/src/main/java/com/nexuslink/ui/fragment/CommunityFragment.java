@@ -16,9 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nexuslink.R;
+import com.nexuslink.UserDao;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
+import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
 import com.nexuslink.ui.activity.WriteMsgActivity;
 import com.nexuslink.ui.adapter.CommunityRecyclerAdapter;
+import com.nexuslink.ui.view.CommunityView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -31,7 +36,7 @@ import butterknife.ButterKnife;
  * Created by 猿人 on 2017/1/14.
  */
 
-public class CommunityFragment extends Fragment {
+public class CommunityFragment extends Fragment implements CommunityView {
     //===============================================view
     @BindView(R.id.toolbar_community)
     Toolbar mToolbar;
@@ -50,6 +55,10 @@ public class CommunityFragment extends Fragment {
     private List<CommunityInfo.CommunityBean> data = new ArrayList<>();
     private AppCompatActivity compatActivity;
     private CommunityRecyclerAdapter adapter;
+    //数据库操作
+    private UserDao userDao = DBUtil.getUserDao();
+    //===============================================presenter
+    private CommunityPresenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,8 +87,12 @@ public class CommunityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.community_fragment, container, false);
+        presenter = new CommunityPresenterImpl(this);
         ButterKnife.bind(this, view);
-        adapter = new CommunityRecyclerAdapter(getContext(),data);
+        //首次进入刷新界面
+        presenter.onRefreshData(1);
+
+        adapter = new CommunityRecyclerAdapter(getContext(),null,presenter);
         mRecycler.setAdapter(adapter);
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         //设置点击监听
@@ -116,4 +129,31 @@ public class CommunityFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void showSuccess(String str) {
+        ToastUtil.showToast(getContext(),str);
+    }
+
+    @Override
+    public void showError(String str) {
+        ToastUtil.showToast(getContext(),str);
+    }
+
+    @Override
+    public void addMsgArticle(List<CommunityInfo.CommunityBean> list) {
+        adapter.addItems(0,list);
+    }
+
+    @Override
+    public void addOneComment(String userName, String text) {
+        adapter.addOneComment("张兴锐",text);
+    }
+
+    @Override
+    public void addCommentNum(int pos) {
+        adapter.addCommentNum(pos);
+    }
+
+
 }

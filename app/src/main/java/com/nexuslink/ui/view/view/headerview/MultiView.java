@@ -118,7 +118,7 @@ public class MultiView extends ViewGroup {
                 height = width;
             }
         }
-
+        childWidth =childWidth/3*4;
         childHeight = childWidth;
 
         /**
