@@ -5,16 +5,7 @@ package com.nexuslink.model.data;
  */
 
 public class ChangeInfo {
-    private int changeFlag;
     private int code;
-
-    public int getChangeFlag() {
-        return changeFlag;
-    }
-
-    public void setChangeFlag(int changeFlag) {
-        this.changeFlag = changeFlag;
-    }
 
     public int getCode() {
         return code;

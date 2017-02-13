@@ -86,4 +86,8 @@ dependencies {
     compile 'in.srain.cube:ptr-load-more:1.0.6'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.lai.weavey:dialog:1.3'
+    compile 'com.elvishew:xlog:1.1.0'
+    compile 'com.github.ganfra:material-spinner:1.1.1'
+    compile 'com.github.arimorty:floatingsearchview:2.0.3'
+
 }

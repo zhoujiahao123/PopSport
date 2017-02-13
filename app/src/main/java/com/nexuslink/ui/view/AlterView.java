@@ -1,6 +1,7 @@
 package com.nexuslink.ui.view;
 
 import com.nexuslink.model.data.ChangeInfo;
+import com.nexuslink.model.data.ChangeInfo1;
 import com.nexuslink.model.data.UserInfo;
 
 /**
@@ -12,7 +13,11 @@ public interface AlterView extends BaseView {
 
     void showError();
 
-    void changeUserInfo(int uId, String uName, char uGender, float uHeight, float uWeight);
+    void changeUserInfo(int uId,char uGender, float uHeight, float uWeight);
 
     void showChangeUserInfo(ChangeInfo changeInfo);
+
+    void changeNickName(int uId,String uName);
+
+    void showChangeNickName(ChangeInfo1 changeInfo1);
 }

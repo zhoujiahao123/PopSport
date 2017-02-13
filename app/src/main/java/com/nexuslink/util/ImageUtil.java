@@ -25,4 +25,10 @@ public class ImageUtil {
                 .error(R.drawable.error__photo)
                 .into(imageView);
     }
+    public static void imageDisplayHeadImage(String url ,ImageView imageView){
+        Glide.with(BaseApplication.getContext())
+                .load(url)
+                .error(R.drawable.head_photo)
+                .into(imageView);
+    }
 }

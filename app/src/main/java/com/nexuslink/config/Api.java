@@ -4,9 +4,11 @@ package com.nexuslink.config;
 
 import com.nexuslink.User;
 import com.nexuslink.model.data.ChangeInfo;
+import com.nexuslink.model.data.ChangeInfo1;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
+import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 
@@ -51,6 +53,16 @@ public interface Api {
     //修改用户的个人信息
     @FormUrlEncoded
     @POST("user/changeInfo")
-    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId,@Field("uName") String uName,@Field("uGender")char uGender,@Field("uHeight")float
-            uHeight,@Field("uWeight")float uWeight);
+    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId,@Field("uGender")char uGender,@Field("uHeight")int
+            uHeight,@Field("uWeight")int uWeight);
+
+    //修改用户的头像
+    @FormUrlEncoded
+    @POST("user/cahngeName")
+    Observable<ChangeInfo1> changeNickName(@Field("uId")int uId, @Field("uName")String uName);
+
+    //搜索用户
+    @FormUrlEncoded
+    @POST("friend/search")
+    Observable<SearchInfo> searchUser(@Field("type")int type,@Field("keyword")String keyword);
 }

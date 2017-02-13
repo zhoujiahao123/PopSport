@@ -4,6 +4,8 @@
  import android.content.Context;
  import android.database.sqlite.SQLiteDatabase;
 
+ import com.elvishew.xlog.LogLevel;
+ import com.elvishew.xlog.XLog;
  import com.facebook.stetho.Stetho;
  import com.nexuslink.DaoMaster;
  import com.nexuslink.DaoSession;
@@ -31,6 +33,7 @@ public class BaseApplication extends Application {
         UMShareAPI.get(this);
         Config.DEBUG = true;
         mContext = getApplicationContext();
+        XLog.init(LogLevel.ALL);
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(

@@ -9,13 +9,18 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.elvishew.xlog.XLog;
 import com.litao.android.lib.entity.PhotoEntry;
 import com.nexuslink.R;
 import com.nexuslink.model.altermodel.AlterModelImpl;
 import com.nexuslink.model.data.ChangeInfo;
+import com.nexuslink.model.data.ChangeInfo1;
 import com.nexuslink.model.data.EventEntry;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.alterpresenter.AlterPresenter;
@@ -31,11 +36,24 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by ASUS-NB on 2017/2/9.
@@ -54,6 +72,18 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
     MDEditDialog dialog;
 
     private String nickNamePreper;
+
+    private OkHttpClient okHttpClient = new OkHttpClient();
+
+    private MaterialSpinner heightSpinner;
+    private MaterialSpinner weightSpinner;
+    private MaterialSpinner sexSpinner;
+
+    //暂时保存选择的spinner的位置
+    private int heightSpinnerPosition;
+    private int weightSpinnerPosition;
+    private int sexSpinnerPosition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +126,115 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
 
         ButterKnife.bind(this);
         //设置头像
-        ImageUtil.imageDisplay(userInfo.getUser().getUImg(), circleImageView);
+        ImageUtil.imageDisplayHeadImage(userInfo.getUser().getUImg(), circleImageView);
         //设置昵称
         nickName.setText(userInfo.getUser().getUName());
+        initDataHeight();
+        initDataWeight();
+        initDataSex();
+        XLog.e("身高为"+userInfo.getUser().getUHeight());
+        XLog.e("体重为"+userInfo.getUser().getUWeight());
+        XLog.e("性别为"+userInfo.getUser().getUGender());
+        if(userInfo.getUser().getUHeight()!=null)
+        heightSpinner.setSelection((int)(userInfo.getUser().getUHeight()-60));
+        if(userInfo.getUser().getUWeight()!=null)
+        weightSpinner.setSelection((int)(userInfo.getUser().getUWeight()-30));
+        if(userInfo.getUser().getUGender().equals("M")){
+            sexSpinner.setSelection(0);
+            XLog.e("是男生");
+        }else if(userInfo.getUser().getUGender().equals("W")){
+            sexSpinner.setSelection(1);
+            XLog.e("是女生");
+        }
     }
 
+    /**
+     * 身高spinner的配置
+     */
+    private void initDataHeight(){
+        heightSpinner = (MaterialSpinner) findViewById(R.id.spinner1);
+        String[] items = new String[191];
+        for(int i = 0; i < items.length; i++)
+            items[i] = i+60+"";
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        heightSpinner.setAdapter(adapter);
+        heightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                heightSpinnerPosition=i;
+                if(i!=-1){
+                    presenter.changeUserInfo(8,'M',(float)(i+60),57.0f);
+                    XLog.e("身高选择");
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    /**
+     * 体重spinner的配置
+     * @return
+     */
+    private void initDataWeight(){
+        weightSpinner = (MaterialSpinner) findViewById(R.id.spinner2);
+        String[] items = new String[71];
+        for(int i = 0; i < items.length; i++)
+            items[i] = i+30+"";
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        weightSpinner.setAdapter(adapter);
+        weightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                weightSpinnerPosition = i;
+                if(i!=-1){
+                    presenter.changeUserInfo(8,'M',180.0f,(float)(i+30));
+                    XLog.e("体重选择");
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    /**
+     * 性别spinner的配置
+     * @return
+     */
+    private void initDataSex(){
+        sexSpinner = (MaterialSpinner) findViewById(R.id.spinner3);
+        String[] items = new String[2];
+        items[0]="男";
+        items[1] = "女";
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        sexSpinner.setAdapter(adapter);
+        sexSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                XLog.e("i 是"+l);
+                if(l!=-1){
+                    presenter.changeUserInfo(8,i==0?'M':'W',180.0f,57.0f);
+                    XLog.e("性别选择");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
     private boolean isConnective() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
@@ -127,20 +261,31 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
     }
 
     @Override
-    public void changeUserInfo(int uId, String uName, char uGender, float uHeight, float uWeight) {
-        presenter.changeUserInfo(uId,uName,uGender,uHeight,uWeight);
+    public void changeUserInfo(int uId,  char uGender, float uHeight, float uWeight) {
+        presenter.changeUserInfo(uId,uGender,uHeight,uWeight);
     }
 
     @Override
     public void showChangeUserInfo(ChangeInfo changeInfo) {
-        if(changeInfo.getCode()==200){
-            if(changeInfo.getChangeFlag()==0){
+
+    }
+
+    @Override
+    public void changeNickName(int uId, String uName) {
+        presenter.changeNickName(uId,uName);
+        nickNamePreper = uName;
+    }
+
+    @Override
+    public void showChangeNickName(ChangeInfo1 changeInfo1) {
+        if(changeInfo1.getCode()!=500){
+            XLog.i("修改昵称返回的code为500");
+            if(changeInfo1.getChangeFlag()==1){
+                XLog.i("修改用户名成功");
                 nickName.setText(nickNamePreper);
             }else {
-                ToastUtil.showToast(this,"该用户名已被占用");
+                ToastUtil.showToast(this,"用户名重复");
             }
-        }else {
-            ToastUtil.showToast(this,"未知的错误出现了");
         }
     }
 
@@ -188,7 +333,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
                             }
                             @Override
                             public void clickRightButton(View view, String text) {
-                                changeUserInfo(8,"Jacob",'M',180,57);
+                                changeNickName(8,text);
                                 nickNamePreper = text;
                                 dialogDismiss();
                             }
@@ -217,14 +362,36 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
         String photoPath = eventEntry.photos.get(0).getPath();
         ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
         eventEntry.photos.clear();
+        postPhoto(photoPath);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void photoChoosesEvent(PhotoEntry entry) {
         String photoPath = entry.getPath();
         ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
+        postPhoto(photoPath);
     }
 
+    private void postPhoto(String path){
+        File file  = new File(path);
+        MultipartBody body =new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("uId","8")
+                .addFormDataPart("uImg","uImg",RequestBody.create(MediaType.parse("application/octet-stream"),file)).build();
+        Request request = new Request.Builder().post(body).url("http://120.77.87.78:8080/arti-sports/api/img/changeImg").build();
+        Call call  =  okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                XLog.i("上传头像失败"+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                XLog.i("上传头像成功");
+                XLog.e(response.body().string());
+            }
+        });
+        }
     /**
      * 关闭dialog
      */
