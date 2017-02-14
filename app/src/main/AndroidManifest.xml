@@ -151,6 +151,11 @@
         <activity android:name=".ui.activity.FriendInfoActivity"/>
         <activity android:name=".ui.activity.AlterActivity"/>
 
+        <activity android:name=".ui.activity.AlterPhotoActivity"
+            android:theme="@style/ChoosePhotoStyle"/>
+        <activity android:name=".ui.activity.RankActivity"/>
+        <activity android:name=".ui.activity.AchievementActivity"/>
+
     </application>
 
 </manifest>
