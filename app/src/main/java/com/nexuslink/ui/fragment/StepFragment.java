@@ -155,7 +155,7 @@ public class StepFragment extends Fragment implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         if(isBind){
-            activity.unbindService(conn);
+            getContext().getApplicationContext().unbindService(conn);
         }
     }
 }

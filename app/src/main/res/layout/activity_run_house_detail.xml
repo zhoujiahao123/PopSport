@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_run_house_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.nexuslink.ui.activity.RunHouseDetailActivity">
+
+    <!--标题-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_run_house_detail"
+            android:background="@color/ghost_white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_centerInParent="true"
+                android:textColor="@color/one_class_text"
+                android:textSize="@dimen/font_large"
+                android:text="跑房名"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textSize="@dimen/font_small"
+                android:text="(2/10)"
+                android:textColor="@color/two_class_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+    <include
+        layout="@layout/divider_line"
+        ></include>
+    <!--跑房信息-->
+    <LinearLayout
+        android:background="#DAF4E2"
+        android:gravity="center"
+        android:layout_weight="0.8"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:text="目标:"
+                android:textColor="@color/two_class_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_run_house_expect"
+                android:text="10km"
+                android:textColor="@color/one_class_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+           <TextView
+               android:id="@+id/tv_run_house_start_time"
+               android:text="开始时间:"
+               android:textColor="@color/two_class_text"
+               android:layout_gravity="center_horizontal"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+           <TextView
+               android:text="02月05日 14:00"
+               android:textColor="@color/one_class_text"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+
+    </LinearLayout>
+    <!--内容展示-->
+    <RelativeLayout
+        android:layout_weight="5"
+        android:id="@+id/recycler_run_house_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"></RelativeLayout>
+
+    <LinearLayout
+        android:weightSum="1"
+        android:paddingBottom="@dimen/spacing_large"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bt_join_in"
+            android:text="加入跑房"
+            android:textColor="@color/white_light"
+            android:layout_weight="0.5"
+            android:background="@drawable/bt_run_house_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    
+</LinearLayout>

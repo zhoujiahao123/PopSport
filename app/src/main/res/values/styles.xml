@@ -142,6 +142,36 @@
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
+    <style name="CustomActionBarTheme" parent="@style/AppTheme">
+        <item name="android:actionBarSize">45dp</item>
+        <item name="actionBarSize">45dp</item>
+    </style>
+    <style name="RunActivityActionBarTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/dark_imperial_blue</item>
+    </style>
+    <!--创建跑房中的文字style-->
+    <style name="CreateRUnHouseTextStyle">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/two_class_text</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+    <!--toolbar textview style-->
+    <style name="ToolbarTextViewStyle">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textColor">@color/ghost_white</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
 
+    <!--图片详情-->
+    <style name="AppTheme.ActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">#fff</item>
+        <item name="actionMenuTextAppearance">@style/AppTheme.actionMenuTextSize</item>
+    </style>
 
-</resources>
+    <style name="AppTheme.actionMenuTextSize" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    </resources>

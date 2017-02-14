@@ -3,6 +3,7 @@ package com.nexuslink.ui.view.view.headerview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.nexuslink.R;
@@ -16,6 +17,11 @@ import in.srain.cube.views.ptr.indicator.PtrIndicator;
  */
 
 public class RunHouseFooter extends FrameLayout implements PtrUIHandler {
+    //===============================================常量
+    private static final String TAG = "RunHouseFooter";
+    //===============================================
+    private boolean isComPlete = false;
+    private View view;
     public RunHouseFooter(Context context) {
         this(context,null);
     }
@@ -29,7 +35,7 @@ public class RunHouseFooter extends FrameLayout implements PtrUIHandler {
         initView();
     }
     private void initView(){
-        LayoutInflater.from(getContext()).inflate(R.layout.ruuhouse_footer,this);
+       view = LayoutInflater.from(getContext()).inflate(R.layout.ruuhouse_footer,this);
     }
 
     @Override
@@ -54,6 +60,6 @@ public class RunHouseFooter extends FrameLayout implements PtrUIHandler {
 
     @Override
     public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
-
+//        Log.i(TAG,"pos change");
     }
 }
