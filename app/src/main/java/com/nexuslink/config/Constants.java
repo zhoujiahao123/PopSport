@@ -24,6 +24,12 @@ public class Constants {
     //===============================================Tba状态改变
     public static final int VISIBLE = 1;
     public static final int INVISIBLE = 0;
+    //===============================================到时提醒常量
+    public static final String NOTIFY_PF_NAME = "NotifyName";
+    public static final String NOTIFY_PF_TIME = "NotifyTime";
+    //默认时间，设置为三位是为了区别用户设置的时间
+    public static final String DEFAULT_TIME = "00:00:00";
+    public static final String NOTIFY_SETTING = "NotifySetting";
 
 }
 
