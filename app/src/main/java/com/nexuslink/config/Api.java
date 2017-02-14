@@ -5,6 +5,7 @@ package com.nexuslink.config;
 import com.nexuslink.User;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
+import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
@@ -65,4 +66,9 @@ public interface Api {
     @FormUrlEncoded
     @POST("friend/search")
     Observable<SearchInfo> searchUser(@Field("type")int type,@Field("keyword")String keyword);
+
+    //修改密码
+    @FormUrlEncoded
+    @POST("user/password")
+    Observable<ChangeInfoPassword> changePassword(@Field("uId")int uId,@Field("uOldPassword")String uOldPassword,@Field("uNewPassword")String uNewPassword);
 }

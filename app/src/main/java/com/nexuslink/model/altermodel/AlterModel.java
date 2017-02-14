@@ -13,4 +13,6 @@ public interface AlterModel extends BaseModel {
 
     void changeNickName(int uId, String uName, com.nexuslink.model.altermodel.OnCallBackListener listener);
 
+    void changePassword(int uId,String oldPassword,String newPassword);
+
 }

@@ -19,7 +19,7 @@
         app:floatingSearch_searchHint="Search..."
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_showSearchKey="false"
-        app:floatingSearch_leftActionMode="showSearch"
+        app:floatingSearch_leftActionMode="noLeftAction"
         app:floatingSearch_close_search_on_keyboard_dismiss="true"
         app:floatingSearch_menu="@menu/menu_main"/>
     <android.support.design.widget.TabLayout

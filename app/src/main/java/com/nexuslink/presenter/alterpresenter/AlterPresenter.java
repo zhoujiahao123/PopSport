@@ -19,4 +19,6 @@ public abstract class AlterPresenter extends BasePresenter<AlterModel,AlterView>
 
     public abstract void changeNickName(int uId,String uName);
 
+    public abstract void changePassword(int uId,String oldPassword,String newPassword);
+
 }

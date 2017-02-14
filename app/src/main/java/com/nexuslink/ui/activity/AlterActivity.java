@@ -1,23 +1,27 @@
 package com.nexuslink.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.elvishew.xlog.XLog;
 import com.litao.android.lib.entity.PhotoEntry;
 import com.nexuslink.R;
+import com.nexuslink.config.Constants;
 import com.nexuslink.model.altermodel.AlterModelImpl;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
@@ -25,6 +29,7 @@ import com.nexuslink.model.data.EventEntry;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.presenter.alterpresenter.AlterPresenterImpl;
+import com.nexuslink.ui.dialog.AlterPasswordDialog;
 import com.nexuslink.ui.view.AlterView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.ImageUtil;
@@ -37,8 +42,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +50,6 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -59,7 +61,7 @@ import okhttp3.Response;
  * Created by ASUS-NB on 2017/2/9.
  */
 
-public class AlterActivity extends SwipeBackActivity implements AlterView {
+public class AlterActivity extends SwipeBackActivity implements AlterView,AlterPasswordDialog.OnRightClickListener {
 
     @BindView(R.id.circleImageView)
     CircleImageView circleImageView;
@@ -68,6 +70,8 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
     private Toolbar toolbar;
 
     private AlterPresenter presenter;
+
+    AlterPasswordDialog alterPasswordDialog;
 
     MDEditDialog dialog;
 
@@ -126,23 +130,23 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
 
         ButterKnife.bind(this);
         //设置头像
-        ImageUtil.imageDisplayHeadImage(userInfo.getUser().getUImg(), circleImageView);
+        ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL + userInfo.getUser().getUImg(), circleImageView);
         //设置昵称
         nickName.setText(userInfo.getUser().getUName());
         initDataHeight();
         initDataWeight();
         initDataSex();
-        XLog.e("身高为"+userInfo.getUser().getUHeight());
-        XLog.e("体重为"+userInfo.getUser().getUWeight());
-        XLog.e("性别为"+userInfo.getUser().getUGender());
-        if(userInfo.getUser().getUHeight()!=null)
-        heightSpinner.setSelection((int)(userInfo.getUser().getUHeight()-60));
-        if(userInfo.getUser().getUWeight()!=null)
-        weightSpinner.setSelection((int)(userInfo.getUser().getUWeight()-30));
-        if(userInfo.getUser().getUGender().equals("M")){
+        XLog.e("身高为" + userInfo.getUser().getUHeight());
+        XLog.e("体重为" + userInfo.getUser().getUWeight());
+        XLog.e("性别为" + userInfo.getUser().getUGender());
+        if (userInfo.getUser().getUHeight() != null)
+            heightSpinner.setSelection((int) (userInfo.getUser().getUHeight() - 60));
+        if (userInfo.getUser().getUWeight() != null)
+            weightSpinner.setSelection((int) (userInfo.getUser().getUWeight() - 30));
+        if (userInfo.getUser().getUGender().equals("M")) {
             sexSpinner.setSelection(0);
             XLog.e("是男生");
-        }else if(userInfo.getUser().getUGender().equals("W")){
+        } else if (userInfo.getUser().getUGender().equals("W")) {
             sexSpinner.setSelection(1);
             XLog.e("是女生");
         }
@@ -151,20 +155,20 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
     /**
      * 身高spinner的配置
      */
-    private void initDataHeight(){
+    private void initDataHeight() {
         heightSpinner = (MaterialSpinner) findViewById(R.id.spinner1);
         String[] items = new String[191];
-        for(int i = 0; i < items.length; i++)
-            items[i] = i+60+"";
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        for (int i = 0; i < items.length; i++)
+            items[i] = i + 60 + "";
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         heightSpinner.setAdapter(adapter);
         heightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                heightSpinnerPosition=i;
-                if(i!=-1){
-                    presenter.changeUserInfo(8,'M',(float)(i+60),57.0f);
+                heightSpinnerPosition = i;
+                if (i != -1) {
+                    presenter.changeUserInfo(8, 'M', (float) (i + 60), 57.0f);
                     XLog.e("身高选择");
                 }
 
@@ -179,22 +183,23 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
 
     /**
      * 体重spinner的配置
+     *
      * @return
      */
-    private void initDataWeight(){
+    private void initDataWeight() {
         weightSpinner = (MaterialSpinner) findViewById(R.id.spinner2);
         String[] items = new String[71];
-        for(int i = 0; i < items.length; i++)
-            items[i] = i+30+"";
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        for (int i = 0; i < items.length; i++)
+            items[i] = i + 30 + "";
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         weightSpinner.setAdapter(adapter);
         weightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 weightSpinnerPosition = i;
-                if(i!=-1){
-                    presenter.changeUserInfo(8,'M',180.0f,(float)(i+30));
+                if (i != -1) {
+                    presenter.changeUserInfo(8, 'M', 180.0f, (float) (i + 30));
                     XLog.e("体重选择");
                 }
 
@@ -209,22 +214,23 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
 
     /**
      * 性别spinner的配置
+     *
      * @return
      */
-    private void initDataSex(){
+    private void initDataSex() {
         sexSpinner = (MaterialSpinner) findViewById(R.id.spinner3);
         String[] items = new String[2];
-        items[0]="男";
+        items[0] = "男";
         items[1] = "女";
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         sexSpinner.setAdapter(adapter);
         sexSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                XLog.e("i 是"+l);
-                if(l!=-1){
-                    presenter.changeUserInfo(8,i==0?'M':'W',180.0f,57.0f);
+                XLog.e("i 是" + l);
+                if (l != -1) {
+                    presenter.changeUserInfo(8, i == 0 ? 'M' : 'W', 180.0f, 57.0f);
                     XLog.e("性别选择");
                 }
             }
@@ -235,6 +241,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
             }
         });
     }
+
     private boolean isConnective() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
@@ -261,8 +268,8 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
     }
 
     @Override
-    public void changeUserInfo(int uId,  char uGender, float uHeight, float uWeight) {
-        presenter.changeUserInfo(uId,uGender,uHeight,uWeight);
+    public void changeUserInfo(int uId, char uGender, float uHeight, float uWeight) {
+        presenter.changeUserInfo(uId, uGender, uHeight, uWeight);
     }
 
     @Override
@@ -272,19 +279,19 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
 
     @Override
     public void changeNickName(int uId, String uName) {
-        presenter.changeNickName(uId,uName);
+        presenter.changeNickName(uId, uName);
         nickNamePreper = uName;
     }
 
     @Override
     public void showChangeNickName(ChangeInfo1 changeInfo1) {
-        if(changeInfo1.getCode()!=500){
+        if (changeInfo1.getCode() != 500) {
             XLog.i("修改昵称返回的code为500");
-            if(changeInfo1.getChangeFlag()==1){
+            if (changeInfo1.getChangeFlag() == 1) {
                 XLog.i("修改用户名成功");
                 nickName.setText(nickNamePreper);
-            }else {
-                ToastUtil.showToast(this,"用户名重复");
+            } else {
+                ToastUtil.showToast(this, "用户名重复");
             }
         }
     }
@@ -305,6 +312,31 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
             case R.id.sex_relative:
                 break;
             case R.id.password_relative:
+                AlertDialog.Builder builder =  new AlertDialog.Builder(this);
+                View view1 = LayoutInflater.from(this).inflate(R.layout.dialog_password,null);
+                builder.setView(view1);
+                final TextInputEditText oldPassword = (TextInputEditText) view1.findViewById(R.id.old_password);
+                final TextInputEditText newPassword = (TextInputEditText) view1.findViewById(R.id.new_password);
+                final TextInputEditText newPasswordAgain = (TextInputEditText) view1.findViewById(R.id.new_password_again);
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(oldPassword.getText().equals("")||newPassword.getText().equals("")||newPasswordAgain.getText().equals("")){
+                            ToastUtil.showToast(AlterActivity.this,"请将密码补充完整");
+                        }else if(!newPassword.getText().toString().equals(newPasswordAgain.getText().toString())){
+                            ToastUtil.showToast(AlterActivity.this,"两次输入的密码不一致");
+                        }else {
+                            presenter.changePassword(8,oldPassword.getText().toString(),newPassword.getText().toString());
+                        }
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onDismiss();
+                    }
+                });
+                builder.show();
                 break;
             case R.id.head_relative:
                 startActivity(new Intent(this, AlterPhotoActivity.class));
@@ -331,9 +363,10 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
                             public void clickLeftButton(View view, String text) {
                                 dialogDismiss();
                             }
+
                             @Override
                             public void clickRightButton(View view, String text) {
-                                changeNickName(8,text);
+                                changeNickName(8, text);
                                 nickNamePreper = text;
                                 dialogDismiss();
                             }
@@ -348,6 +381,16 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
 
     @OnClick(R.id.log_off)
     public void onClick() {
+
+    }
+
+    @Override
+    public void onClicked(String oldPssword,String newPassword) {
+
+    }
+
+    @Override
+    public void onDismiss() {
 
     }
 
@@ -372,17 +415,23 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
         postPhoto(photoPath);
     }
 
-    private void postPhoto(String path){
-        File file  = new File(path);
-        MultipartBody body =new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("uId","8")
-                .addFormDataPart("uImg","uImg",RequestBody.create(MediaType.parse("application/octet-stream"),file)).build();
+    private void postPhoto(String path) {
+        String type = "image/jpeg";
+        File file = new File(path);
+        type = file.getPath().split(".")[1];
+        if (type.equals("png")) {
+            type = "image/png";
+        }
+        XLog.e(path);
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("uId", "8")
+                .addFormDataPart("uImg", "uImg", RequestBody.create(MediaType.parse(type), file)).build();
         Request request = new Request.Builder().post(body).url("http://120.77.87.78:8080/arti-sports/api/img/changeImg").build();
-        Call call  =  okHttpClient.newCall(request);
+        Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                XLog.i("上传头像失败"+e.toString());
+                XLog.i("上传头像失败" + e.toString());
             }
 
             @Override
@@ -391,11 +440,14 @@ public class AlterActivity extends SwipeBackActivity implements AlterView {
                 XLog.e(response.body().string());
             }
         });
-        }
+    }
+
     /**
      * 关闭dialog
      */
     private void dialogDismiss() {
         dialog.dismiss();
     }
+
+
 }

@@ -39,6 +39,11 @@ public class AlterPresenterImpl extends AlterPresenter implements OnCallBackList
     }
 
     @Override
+    public void changePassword(int uId, String oldPassword, String newPassword) {
+            model.changePassword(uId,oldPassword,newPassword);
+    }
+
+    @Override
     public void onSucceed(Object o) {
         XLog.i("alterPresenter is onSucceed");
         if(o instanceof ChangeInfo1){

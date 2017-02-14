@@ -1,5 +1,6 @@
 package com.nexuslink.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -103,9 +104,16 @@ public class FriendActivity extends SwipeBackActivity implements FriendView,Frie
     @Override
     public void showSearchUser(SearchInfo searchInfo) {
         XLog.e(searchInfo.getUsers().get(0).getFId());
+        Intent intent = new Intent(this,FriendInfoActivity.class);
+        intent.putExtra("uId",searchInfo.getUsers().get(0).getFId());
+        intent.putExtra("uName",searchInfo.getUsers().get(0).getFName());
+        intent.putExtra("uImg",searchInfo.getUsers().get(0).getFImg());
+        startActivity(intent);
     }
 
     private void initView() {
+        tabLayout.setBackgroundColor(getResources().getColor(R.color.gray_light_more));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.yellow_light),getResources().getColor(R.color.yellow_normal_light));
         adapter = new FriendFragmenPagerAdapter(getSupportFragmentManager());
         Log.e(Constants.TAG,"initView");
         friendPresenter = new FriendPresenterImpl(new FriendModelImpl(),this);

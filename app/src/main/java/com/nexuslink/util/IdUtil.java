@@ -8,12 +8,13 @@ import com.nexuslink.app.BaseApplication;
 
 public class IdUtil {
     public static long getuId(){
-        return BaseApplication.getDaosession()
-                .getUserDao()
-                .queryBuilder()
-                .build()
-                .list()
-                .get(0)
-                .getId();
+//        return BaseApplication.getDaosession()
+//                .getUserDao()
+//                .queryBuilder()
+//                .build()
+//                .list()
+//                .get(0)
+//                .getId();
+        return 8;
     }
 }
