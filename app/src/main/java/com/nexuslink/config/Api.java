@@ -7,6 +7,7 @@ import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
+import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.UpLoadUserImageResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
@@ -89,7 +90,7 @@ public interface Api {
     //为某个话题点赞
     @FormUrlEncoded
     @POST("article/like")
-    Observable<Integer> postLike(@Field("uId") int userId,@Field("aId") int articleId);
+    Observable<PostLikeResult> postLike(@Field("uId") int userId, @Field("aId") int articleId);
 
     //取消点赞
     @FormUrlEncoded

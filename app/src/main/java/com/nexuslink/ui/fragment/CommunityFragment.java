@@ -16,18 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nexuslink.R;
-import com.nexuslink.UserDao;
-import com.nexuslink.model.data.CommunityInfo;
-import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
-import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
 import com.nexuslink.ui.activity.WriteMsgActivity;
 import com.nexuslink.ui.adapter.CommunityRecyclerAdapter;
-import com.nexuslink.ui.view.CommunityView;
-import com.nexuslink.ui.view.UserUtils;
-import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.ToastUtil;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,28 +27,17 @@ import butterknife.ButterKnife;
  * Created by 猿人 on 2017/1/14.
  */
 
-public class CommunityFragment extends Fragment implements CommunityView {
+public class CommunityFragment extends Fragment {
     //===============================================view
     @BindView(R.id.toolbar_community)
     Toolbar mToolbar;
     @BindView(R.id.recycler_community)
     RecyclerView mRecycler;
-    //===============================================常量
-    private static final String TAG = "CommunityFragment";
-    private static final String IMAGE_URL[] = {"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1598552568,4236159349&fm=58",
-    "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=164888333,246711798&fm=116&gp=0.jpg",
-    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4271053251,2424464488&fm=116&gp=0.jpg",
-    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2320677199,2423076609&fm=116&gp=0.jpg",
-    "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=819201812,3553302270&fm=116&gp=0.jpg",
-    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1303680113,133301350&fm=116&gp=0.jpg",
-    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1799345195,2075280808&fm=116&gp=0.jpg"};
     //===============================================一数据
     private AppCompatActivity compatActivity;
     private CommunityRecyclerAdapter adapter;
-    //数据库操作
-    private UserDao userDao = DBUtil.getUserDao();
-    //===============================================presenter
-    private CommunityPresenter presenter;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,12 +51,11 @@ public class CommunityFragment extends Fragment implements CommunityView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.community_fragment, container, false);
-        presenter = new CommunityPresenterImpl(this);
+
         ButterKnife.bind(this, view);
         //首次进入刷新界面
-        presenter.onRefreshData(UserUtils.getUserId());
 
-        adapter = new CommunityRecyclerAdapter(getContext(),presenter);
+        adapter = new CommunityRecyclerAdapter(getContext());
         mRecycler.setAdapter(adapter);
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         //设置点击监听
@@ -114,30 +93,7 @@ public class CommunityFragment extends Fragment implements CommunityView {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void showSuccess(String str) {
-        ToastUtil.showToast(getContext(),str);
-    }
 
-    @Override
-    public void showError(String str) {
-        ToastUtil.showToast(getContext(),str);
-    }
-
-    @Override
-    public void addMsgArticle(List<CommunityInfo.ArticlesBean> list) {
-        adapter.addItems(0,list);
-    }
-
-    @Override
-    public void addOneComment(String userName, String text) {
-        adapter.addOneComment("张兴锐",text);
-    }
-
-    @Override
-    public void addCommentNum(int pos) {
-        adapter.addCommentNum(pos);
-    }
 
 
 }

@@ -5,6 +5,7 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.util.ApiUtil;
 
@@ -50,7 +51,7 @@ public class CommunityModelImpl implements CommunityModel{
         api.postLike(userId,articleId)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Subscriber<Integer>() {
+        .subscribe(new Subscriber<PostLikeResult>() {
             @Override
             public void onCompleted() {
 
@@ -61,9 +62,11 @@ public class CommunityModelImpl implements CommunityModel{
                 listener.onError((Exception) e);
             }
             @Override
-            public void onNext(Integer integer) {
+            public void onNext(PostLikeResult result) {
                 //flag 判断
-                listener.onFinish(integer);
+                if(result.getCode() == Constants.SUCCESS){
+                    listener.onFinish(null);
+                }
             }
         });
 
@@ -94,32 +97,29 @@ public class CommunityModelImpl implements CommunityModel{
 
     @Override
     public void postComment(int userId, int articleId, String text, final CallBackListener listener) {
-        if(text != null){
-            api.postComment(userId,articleId,text).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<CommentInfo>() {
-                        @Override
-                        public void onCompleted() {
+        api.postComment(userId,articleId,text).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<CommentInfo>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError((Exception) e);
+                    }
+                    @Override
+                    public void onNext(CommentInfo commentInfo) {
+                        //进行flag判断然后回调
+                        if(commentInfo.getCode() == Constants.SUCCESS){
+                            listener.onFinish(commentInfo.getComments());
+                        }else{
+                            listener.onError(new Exception("获取评论时出错"));
                         }
-                        @Override
-                        public void onError(Throwable e) {
-                            listener.onError((Exception) e);
-                        }
-                        @Override
-                        public void onNext(CommentInfo commentInfo) {
-                            //进行flag判断然后回调
-                            if(commentInfo.getCode() == Constants.SUCCESS){
-                                listener.onFinish(commentInfo.getComments());
-                            }else{
-                                listener.onError(new Exception("获取评论时出错"));
-                            }
 
-                        }
-                    });
-        }else{
-            listener.onError(null);
+                    }
+                });
         }
-    }
+
 
     @Override
     public void loadUserInfo(int userId, final CallBackListener listener) {
@@ -145,5 +145,10 @@ public class CommunityModelImpl implements CommunityModel{
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getComment(int articleId, CallBackListener listener) {
+
     }
 }
