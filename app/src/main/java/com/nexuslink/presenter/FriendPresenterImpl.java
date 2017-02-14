@@ -1,6 +1,8 @@
 package com.nexuslink.presenter;
 
+import com.elvishew.xlog.XLog;
 import com.nexuslink.model.data.FollowInfo;
+import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.friendmodel.FriendModel;
 import com.nexuslink.model.friendmodel.OnFriendCallBackListener;
 import com.nexuslink.ui.view.FriendView;
@@ -43,21 +45,29 @@ public class FriendPresenterImpl extends FriendPresenter implements OnFriendCall
     }
 
     @Override
+    public void searchUser(int type, String name) {
+        model.searchUser(type,name,this);
+        XLog.e("presenter的searchUser");
+    }
+
+    @Override
     void setMV(FriendModel model, FriendView view) {
         this.view = view;
         this.model = model;
     }
-
     @Override
-    public void succeed(FollowInfo followInfo) {
-        if(followInfo.getFollowFlag()==1){
-            view.succeedFollow();
+    public void onSucceed(Object o) {
+        if(o instanceof FollowInfo){
+            if(((FollowInfo) o).getFlag()==1){
+                view.succeedFollow();
+            }
+        }else if(o instanceof SearchInfo){
+            view.showSearchUser((SearchInfo)o);
         }
-
     }
 
     @Override
-    public void failed(Throwable throwable) {
-        view.failedFollow();
+    public void onFailed(Throwable t) {
+
     }
 }

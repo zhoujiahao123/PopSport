@@ -3,6 +3,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    //错误界面
+    <dimen name="error_image_size">100dp</dimen>
+
     <!--天气控件的dimens-->
     <dimen name="turn_back_image_size">30dp</dimen>
     <dimen name="air_quality_width">90dp</dimen>
@@ -30,10 +33,27 @@
     <dimen name="weather_life_height">60dp</dimen>
     <dimen name="weather_life_image_size">40dp</dimen>
     <dimen name="weather_life_image_margin_left">25dp</dimen>
+
+    //查看的个人信息
+    <dimen name="friend_head_background">350dp</dimen>
+    <dimen name="friend_head_size">130dp</dimen>
+    <dimen name="friend_head_margin_top">60dp</dimen>
+    <dimen name="friend_image_size">60dp</dimen>
+    <dimen name="friend_image_size_small">50dp</dimen>
+    <dimen name="friend_image_size_large">70dp</dimen>
+    //修改个人信息的
+    <dimen name="alter_head">100dp</dimen>
+    <dimen name="alter_head_margin_top">8dp</dimen>
+    <dimen name="alter_image_size">30dp</dimen>
+    <dimen name="alter_image_size_small">30dp</dimen>
+    <dimen name="alter_image_size_large">40dp</dimen>
+    <dimen name="alter_name">60dp</dimen>
     <!--一些杂乱的-->
     <dimen name="weather_temp">160dp</dimen>
     <dimen name="weather_temp_num_width">80dp</dimen>
     <dimen name="weather_temp_num_height">120dp</dimen>
+    <dimen name="run_detail_icon_width">20dp</dimen>
+    <dimen name="run_detail_icon_height">20dp</dimen>
     <dimen name="personalInfo_item_height">100dp</dimen>
     <dimen name="step_circle_stoke_width">20dp</dimen>
     <dimen name="step_circle_size">200dp</dimen>
@@ -49,6 +69,7 @@
     <dimen name="image_dot">20dp</dimen>
     <dimen name="image_size40">40dp</dimen>
     <!--font size-->
+    <dimen name="font_super_huge">34sp</dimen>
     <dimen name="font_huge">28sp</dimen>
     <dimen name="font_larger">22sp</dimen>
     <dimen name="font_large">18sp</dimen>
@@ -59,6 +80,7 @@
     <dimen name="spacing_huger_weather">120dp</dimen>
     <dimen name="spacing_huger_toolbar">120dp</dimen>
     <dimen name="spacing_huge_toolbar">65dp</dimen>
+    <dimen name="spacing_super_huge">60dp</dimen>
     <dimen name="spacing_huge">40dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_normal">14dp</dimen>
@@ -70,5 +92,10 @@
     <dimen name="button_height">50dp</dimen>
     <dimen name="button_height_normal">40dp</dimen>
     <dimen name="button_height_short">32dp</dimen>
+
+    <dimen name="tab_image_text_margin">2dp</dimen>
+    <dimen name="tab_image_heightandwidth">25dp</dimen>
+    <dimen name="tab_view_height">48dp</dimen>
+    <dimen name="tab_text_font_size">10sp</dimen>
 
 </resources>

@@ -1,11 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/background_gray"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:textSize="20sp"
-        android:layout_centerInParent="true"
-        android:text="appoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+  
+    <RelativeLayout
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <android.support.v7.widget.Toolbar
+            android:background="@color/colorPrimary"
+            android:id="@+id/toolbar_appoint"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="跑房大厅"
+            android:textColor="@color/ghost_white"
+            android:textSize="@dimen/font_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+
+    <in.srain.cube.views.ptr.PtrFrameLayout
+        android:layout_below="@id/actionBar"
+        android:id="@+id/ptrFrame"
+        app:ptr_resistance_footer="1.7"
+        app:ptr_resistance_header="1.7"
+        app:ptr_duration_to_back_footer="300"
+        app:ptr_duration_to_back_header="300"
+        app:ptr_duration_to_close_either="1000"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:id="@+id/recycler_appoint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+    </in.srain.cube.views.ptr.PtrFrameLayout>
+
+
+
+
+
+
+
+
+
 </RelativeLayout>

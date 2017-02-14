@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@color/two_class_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.nexuslink.ui.view.view.headerview.LoadingView
+            android:layout_gravity="center_vertical"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:loading_renderer="DanceLoadingRenderer" />
+        <TextView
+            android:id="@+id/run_house_text"
+            android:text="loading..."
+            android:textColor="@color/ghost_white"
+            android:textSize="@dimen/font_normal"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</RelativeLayout>

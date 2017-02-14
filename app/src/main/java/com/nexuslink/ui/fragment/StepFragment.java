@@ -75,7 +75,7 @@ public class StepFragment extends Fragment implements View.OnClickListener {
         }
     }
     //===============================================数据库操作
-    private StepsDao stepsDao = DBUtil.getStepsDap();
+    private StepsDao stepsDao = DBUtil.getStepsDao();
     //===============================================serviceConn
     private ServiceConnection conn = new ServiceConnection() {
         @Override

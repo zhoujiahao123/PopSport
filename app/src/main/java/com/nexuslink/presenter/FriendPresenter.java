@@ -23,4 +23,7 @@ public abstract class FriendPresenter extends BasePresenter<FriendModel,FriendVi
     //获取好友的数据
     public abstract void getFriendInfo();
 
+    //搜索某人
+    public abstract void searchUser(int type,String name);
+
 }

@@ -1,15 +1,17 @@
  package com.nexuslink.app;
 
-import android.app.Application;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+ import android.app.Application;
+ import android.content.Context;
+ import android.database.sqlite.SQLiteDatabase;
 
-import com.facebook.stetho.Stetho;
-import com.nexuslink.DaoMaster;
-import com.nexuslink.DaoSession;
-import com.umeng.socialize.Config;
-import com.umeng.socialize.PlatformConfig;
-import com.umeng.socialize.UMShareAPI;
+ import com.elvishew.xlog.LogLevel;
+ import com.elvishew.xlog.XLog;
+ import com.facebook.stetho.Stetho;
+ import com.nexuslink.DaoMaster;
+ import com.nexuslink.DaoSession;
+ import com.umeng.socialize.Config;
+ import com.umeng.socialize.PlatformConfig;
+ import com.umeng.socialize.UMShareAPI;
 
 
  /**
@@ -31,6 +33,7 @@ public class BaseApplication extends Application {
         UMShareAPI.get(this);
         Config.DEBUG = true;
         mContext = getApplicationContext();
+        XLog.init(LogLevel.ALL);
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(

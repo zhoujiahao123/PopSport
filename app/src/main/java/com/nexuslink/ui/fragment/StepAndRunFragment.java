@@ -96,20 +96,9 @@ public class StepAndRunFragment extends Fragment implements View.OnClickListener
         if(id == R.id.step_menu_setting){
             Toast.makeText(activity, "菜单设置", Toast.LENGTH_SHORT).show();
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i(TAG,"onDestroyView");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
 
     @Override
     public void onClick(View v) {

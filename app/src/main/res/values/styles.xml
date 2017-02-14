@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
     <style name="login_style">
         <item name="android:background">@color/blue_normal</item>
@@ -140,5 +141,7 @@
         <item name="android:textColor">@color/white_light</item>
         <item name="android:textSize">@dimen/font_large</item>
     </style>
+
+
 
 </resources>

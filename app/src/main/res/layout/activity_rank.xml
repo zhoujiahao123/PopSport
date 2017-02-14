@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/head_relative"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/colorPrimary">
+        <com.nexuslink.util.CircleImageView
+            android:id="@+id/head_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/headimage"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/head_image"
+            android:text="255555"
+            android:textColor="@color/white_light"
+            android:textSize="@dimen/font_larger"
+            android:layout_marginTop="@dimen/spacing_tiny"/>
+        <ImageView
+            android:layout_width="@dimen/image_size40"
+            android:layout_height="@dimen/image_size40"
+            android:layout_margin="@dimen/spacing_small"
+            android:src="@drawable/turn_back"/>
+        <ImageView
+            android:layout_width="@dimen/image_size40"
+            android:layout_height="@dimen/image_size40"
+            android:layout_above="@id/head_image"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/king_hat"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_below="@id/head_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>
