@@ -12,5 +12,6 @@ public interface CommunityModel {
     void postLike(int userId,int articleId,CallBackListener listener);
     void postDisLike(int userId,int articleId,CallBackListener listener);
     void postComment(int userId,int articleId,String text,CallBackListener listener);
+    void loadUserInfo(int userId,CallBackListener listener);
 
 }

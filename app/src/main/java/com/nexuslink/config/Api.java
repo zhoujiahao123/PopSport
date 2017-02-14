@@ -66,10 +66,15 @@ public interface Api {
     Observable<Integer> publishArtice(@Field("uId") int userId, @Field("aText") String text);
 
 
-    //获取话题内容
+    //获取话题单一内容
     @FormUrlEncoded
     @POST("article/getOne")
-    Observable<CommunityInfo> getArticles(@Field("uId") int userId, @Field("aId") int articleId);
+    Observable<CommunityInfo> getArticle(@Field("uId") int userId, @Field("aId") int articleId);
+
+    //获取多话题内容
+    @FormUrlEncoded
+    @POST("article/getAll")
+    Observable<CommunityInfo> getArticles(@Field("uId") int userId,@Field("aId") int articleId);
 
     //评论话题
     @FormUrlEncoded

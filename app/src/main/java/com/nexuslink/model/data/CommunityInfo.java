@@ -1,6 +1,5 @@
 package com.nexuslink.model.data;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -8,64 +7,40 @@ import java.util.List;
  */
 
 public class CommunityInfo {
-    private int flag;
-    private CommunityBean communityBean;
 
-    public int getFlag() {
-        return flag;
+
+    private int code;
+    private List<ArticlesBean> articles;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public CommunityBean getCommunityBean() {
-        return communityBean;
+    public List<ArticlesBean> getArticles() {
+        return articles;
     }
 
-    public void setCommunityBean(CommunityBean communityBean) {
-        this.communityBean = communityBean;
+    public void setArticles(List<ArticlesBean> articles) {
+        this.articles = articles;
     }
 
-    public static class CommunityBean{
+    public static class ArticlesBean {
+
 
         private int articleId;
         private int userId;
-        private String userImageUrl;
-        private String userName;
-        private int userLevel;
         private String text;
-        private List<String> images;
         private int commentNum;
         private int likeNum;
         private int lookNum;
-        private Date date;
-        private Date time;
+        private String date;
+        private String time;
         private boolean likeArticle;
-
-        public String getUserImageUrl() {
-            return userImageUrl;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
-
-        public int getUserLevel() {
-            return userLevel;
-        }
-
-        public void setUserLevel(int userLevel) {
-            this.userLevel = userLevel;
-        }
-
-        public void setUserImageUrl(String userImageUrl) {
-            this.userImageUrl = userImageUrl;
-        }
+        private List<String> images;
 
         public int getArticleId() {
             return articleId;
@@ -89,14 +64,6 @@ public class CommunityInfo {
 
         public void setText(String text) {
             this.text = text;
-        }
-
-        public List<String> getImages() {
-            return images;
-        }
-
-        public void setImages(List<String> images) {
-            this.images = images;
         }
 
         public int getCommentNum() {
@@ -123,19 +90,19 @@ public class CommunityInfo {
             this.lookNum = lookNum;
         }
 
-        public Date getDate() {
+        public String getDate() {
             return date;
         }
 
-        public void setDate(Date date) {
+        public void setDate(String date) {
             this.date = date;
         }
 
-        public Date getTime() {
+        public String getTime() {
             return time;
         }
 
-        public void setTime(Date time) {
+        public void setTime(String time) {
             this.time = time;
         }
 
@@ -145,6 +112,14 @@ public class CommunityInfo {
 
         public void setLikeArticle(boolean likeArticle) {
             this.likeArticle = likeArticle;
+        }
+
+        public List<String> getImages() {
+            return images;
+        }
+
+        public void setImages(List<String> images) {
+            this.images = images;
         }
     }
 }

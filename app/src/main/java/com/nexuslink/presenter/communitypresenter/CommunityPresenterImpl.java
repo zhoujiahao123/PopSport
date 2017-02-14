@@ -1,10 +1,17 @@
 package com.nexuslink.presenter.communitypresenter;
 
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.communitymodel.CommunityModel;
 import com.nexuslink.model.communitymodel.CommunityModelImpl;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.model.data.User1;
+import com.nexuslink.ui.view.CommunityUserInfoView;
 import com.nexuslink.ui.view.CommunityView;
+import com.nexuslink.ui.view.UserUtils;
 
 import java.util.List;
 
@@ -15,9 +22,14 @@ import java.util.List;
 public class CommunityPresenterImpl implements CommunityPresenter {
     private CommunityModel mCommunity;
     private CommunityView mCommunityView;
-
+    private CommunityUserInfoView userInfoView;
     public CommunityPresenterImpl(CommunityView mCommunityView) {
         this.mCommunityView = mCommunityView;
+        mCommunity = new CommunityModelImpl();
+    }
+
+    public CommunityPresenterImpl(CommunityUserInfoView userInfoView) {
+        this.userInfoView = userInfoView;
         mCommunity = new CommunityModelImpl();
     }
 
@@ -75,17 +87,38 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
     @Override
     public void onRefreshData(int userId) {
+
         mCommunity.getArticles(userId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
                 mCommunityView.showSuccess("刷新成功");
-                mCommunityView.addMsgArticle((List<CommunityInfo.CommunityBean>) obj);
+                mCommunityView.addMsgArticle((List<CommunityInfo.ArticlesBean>) obj);
             }
 
             @Override
             public void onError(Exception e) {
                 mCommunityView.showError("刷新失败,请重试");
+                e.printStackTrace();
             }
         });
     }
+
+    @Override
+    public void loadUserInfo(final ImageView imageView, final TextView nameText, final TextView levelText, int userId) {
+        mCommunity.loadUserInfo(userId, new CallBackListener() {
+            @Override
+            public void onFinish(Object obj) {
+                User1 user = (User1) obj;
+                userInfoView.loadUserInfo(imageView,nameText,levelText, Constants.PHOTO_BASE_URL+user.getUImg(),user.getUName()
+                , UserUtils.getUserLevel());
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
 }

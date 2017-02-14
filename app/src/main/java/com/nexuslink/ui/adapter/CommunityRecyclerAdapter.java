@@ -8,17 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.nexuslink.R;
+import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
+import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
+import com.nexuslink.ui.view.CommunityUserInfoView;
+import com.nexuslink.ui.view.UserUtils;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.CommunityViewsLoadUtils;
 import com.nexuslink.util.KeyBoardUtils;
 
 import java.util.ArrayList;
@@ -31,25 +36,40 @@ import static com.nexuslink.R.id.comment;
  * Created by 猿人 on 2017/2/8.
  */
 
-public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecyclerAdapter.CommunityViewHolder> {
+public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecyclerAdapter.CommunityViewHolder> implements CommunityUserInfoView{
     //===============================================常量
     private static final String TAG = "CommunityRecycler";
     //===============================================数据
-    private List<CommunityInfo.CommunityBean> data ;
-    private CommunityInfo.CommunityBean communityBean;
+    private List<CommunityInfo.ArticlesBean> data = new ArrayList<>() ;
     private List<String> commenters = new ArrayList<>();
     private List<String> commentTexts = new ArrayList<>();
     private int mLastIndex = 0;
     private Context mContext;
     private LayoutInflater inflater;
+    //用于加载总体
     private CommunityPresenter presenter;
-    public CommunityRecyclerAdapter(Context context, List<CommunityInfo.CommunityBean> data, CommunityPresenter presenter) {
-        this.data = data;
+    //用于加载用户信息的presenter
+    private CommunityPresenter userPresenter;
+    public CommunityRecyclerAdapter(Context context, CommunityPresenter presenter) {
+
         this.mContext = context;
         this.presenter = presenter;
+        userPresenter = new CommunityPresenterImpl(this);
         inflater = LayoutInflater.from(mContext);
 
+
     }
+
+    @Override
+    public void loadUserInfo(ImageView imageView, TextView nameText, TextView levelText, String imageUrl, String userName, String userLevel)
+    {
+        Log.i(TAG,"加载用户信息");
+        CommunityViewsLoadUtils.loadUserImage(mContext,imageView,imageUrl);
+        CommunityViewsLoadUtils.loadUserName(nameText,userName);
+        CommunityViewsLoadUtils.loadUserLevel(levelText,userLevel);
+    }
+
+
     //用户头像点击接口
     public interface userIconClickListener{
         void onClickListener(int pos);
@@ -66,9 +86,10 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
     @Override
     public void onBindViewHolder(final CommunityViewHolder holder, final int position) {
-        communityBean  = data.get(position);
-        //加载话题头像
-        Glide.with(mContext).load(communityBean.getUserImageUrl()).into(holder.userImage);
+
+        Log.i(TAG,"View生成");
+        //进行用户相关信息的加载
+        userPresenter.loadUserInfo(holder.userImage,holder.userName,holder.userLevel, UserUtils.getUserId());
         //回调点击接口
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,33 +100,33 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             }
         });
 
-        //用户名字和level
-        holder.userName.setText(communityBean.getUserName());
-        holder.userLevel.setText("Lv."+communityBean.getUserLevel());
-
         //话题信息
-        holder.mContent.setText(communityBean.getText());
-        holder.imagesContent.setImages(communityBean.getImages());
+        holder.mContent.setText(data.get(position).getText());
+        Log.i(TAG,"pos:"+position);
+        String image[] = getCommunityImages(data.get(position).getImages());
+        for(int i =0;i<image.length;i++){
+            Log.i(TAG,image[i]);
+        }
+        holder.imagesContent.setImages(getCommunityImages(data.get(position).getImages()));
 
         //设置点赞和评论监听
-        holder.likeView.setActivated(communityBean.isLikeArticle());
-        holder.likeView.setNumber(communityBean.getLikeNum());
+        holder.likeView.setActivated(data.get(position).isLikeArticle());
+        holder.likeView.setNumber(data.get(position).getLikeNum());
         holder.likeView.setCallback(new LikeView.SimpleCallback(){
                 @Override
                 public void activate(LikeView view) {
                     super.activate(view);
-                    presenter.postLike(communityBean.getUserId(),communityBean.getArticleId());
+                    presenter.postLike(data.get(position).getUserId(),data.get(position).getArticleId());
                 }
-
                 @Override
                 public void deactivate(LikeView view) {
                     super.deactivate(view);
-                    presenter.postDisLike(communityBean.getUserId(),communityBean.getArticleId());
+                    presenter.postDisLike(data.get(position).getUserId(),data.get(position).getArticleId());
                 }
             }
         );
         //设置评论
-        holder.comment.setNumber(communityBean.getCommentNum());
+        holder.comment.setNumber(data.get(position).getCommentNum());
         holder.comment.setGraphAdapter(CommentPathAdapter.getInstance());
         holder.comment.setCallback(new LikeView.SimpleCallback(){
             @Override
@@ -129,7 +150,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
                 Log.i(TAG,text);
                 KeyBoardUtils.closeKeybord(holder.commentInput,mContext);
                 //请求相应
-                presenter.postComment(communityBean.getUserId(),communityBean.getArticleId(),text,position);
+                presenter.postComment(data.get(position).getUserId(),data.get(position).getArticleId(),text,position);
                 holder.commentInput.setText("");
                 holder.linearLayout.setVisibility(View.GONE);
             }
@@ -150,12 +171,21 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
     }
 
+    private String[] getCommunityImages(List<String> images) {
+        String imageUrls[] = new String[images.size()];
+       for(int i =0;i<imageUrls.length;i++){
+           imageUrls[i] = Constants.PHOTO_BASE_URL+images.get(i);
+       }
+        return imageUrls;
+
+    }
+
     /**
      * 增添数据接口
      * @param index
      * @param list
      */
-    public void addItems(int index,List<CommunityInfo.CommunityBean> list){
+    public void addItems(int index,List<CommunityInfo.ArticlesBean> list){
         data.addAll(index,list);
         notifyDataSetChanged();
     }
@@ -190,7 +220,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
     @Override
     public int getItemCount() {
-        return data==null ? 0:data.size();
+        return data.size();
     }
 
     class CommunityViewHolder extends RecyclerView.ViewHolder{

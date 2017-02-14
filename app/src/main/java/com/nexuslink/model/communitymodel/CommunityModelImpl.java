@@ -5,6 +5,7 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.util.ApiUtil;
 
 import rx.Subscriber;
@@ -25,7 +26,6 @@ public class CommunityModelImpl implements CommunityModel{
         .subscribe(new Subscriber<CommunityInfo>() {
             @Override
             public void onCompleted() {
-
             }
 
             @Override
@@ -36,7 +36,11 @@ public class CommunityModelImpl implements CommunityModel{
             @Override
             public void onNext(CommunityInfo communityInfo) {
                 //进行flag判断
-                listener.onFinish(communityInfo);
+                if(communityInfo.getCode() == Constants.SUCCESS){
+                    listener.onFinish(communityInfo.getArticles());
+                }else {
+                   listener.onError(new Exception("请求时出现错误"));
+                }
             }
         });
     }
@@ -56,7 +60,6 @@ public class CommunityModelImpl implements CommunityModel{
             public void onError(Throwable e) {
                 listener.onError((Exception) e);
             }
-
             @Override
             public void onNext(Integer integer) {
                 //flag 判断
@@ -105,13 +108,42 @@ public class CommunityModelImpl implements CommunityModel{
                         @Override
                         public void onNext(CommentInfo commentInfo) {
                             //进行flag判断然后回调
-                            listener.onFinish(commentInfo.getCommunityBean());
+                            if(commentInfo.getCode() == Constants.SUCCESS){
+                                listener.onFinish(commentInfo.getComments());
+                            }else{
+                                listener.onError(new Exception("获取评论时出错"));
+                            }
+
                         }
                     });
         }else{
             listener.onError(null);
         }
+    }
 
+    @Override
+    public void loadUserInfo(int userId, final CallBackListener listener) {
+        //进行网络的交互
+        api.getUserInfo(userId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UserInfo>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(UserInfo userInfo) {
+                        if(userInfo.getCode() == Constants.SUCCESS){
+                            listener.onFinish(userInfo.getUser());
+                        }else{
+                            listener.onError(new Exception("加载用户信息出错"));
+                        }
+                    }
+                });
     }
 }
