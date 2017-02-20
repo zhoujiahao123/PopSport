@@ -1,6 +1,6 @@
 package com.nexuslink.presenter.communitypresenter;
 
-import android.view.View;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,8 +15,11 @@ import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.User1;
 import com.nexuslink.ui.view.CommunityView;
+import com.nexuslink.ui.view.linearlistview.LinearListView;
 import com.nexuslink.util.UserUtils;
+import com.wuxiaolong.androidutils.library.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,15 +66,15 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postComment(final LinearLayout commentDetialLinear, final View view, final EditText input, final LinearLayout linearLayout, int userId, int articleId, final int pos) {
-        if(!mCommunityView.getInputComment(input).equals("")){
+    public void postComment(final int aId, final EditText input, final LinearLayout linearLayout, int userId, int articleId, final int pos)
+    {
+        if(!TextUtils.isEmpty(mCommunityView.getInputComment(input))){
             mCommunity.postComment(userId, articleId,mCommunityView.getInputComment(input), new CallBackListener() {
                 @Override
                 public void onFinish(Object obj) {
                     mCommunityView.addCommentNum(pos);
                     //getUserName 获取自己的昵称
-
-                    mCommunityView.addOneComment(commentDetialLinear,view,UserUtils.getUserName(),mCommunityView.getInputComment(input));
+                    mCommunityView.addOneComment(aId,UserUtils.getUserName(),mCommunityView.getInputComment(input));
                     mCommunityView.clearInput(linearLayout,input);
                 }
 
@@ -86,6 +89,10 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
     }
 
+    /***
+     * 刷新
+     * @param userId
+     */
     @Override
     public void onRefreshData(int userId) {
 
@@ -104,6 +111,13 @@ public class CommunityPresenterImpl implements CommunityPresenter {
         });
     }
 
+    /**
+     * 加载用户信息
+     * @param imageView
+     * @param nameText
+     * @param levelText
+     * @param userId
+     */
     @Override
     public void loadUserInfo(final ImageView imageView, final TextView nameText, final TextView levelText, int userId) {
         mCommunity.loadUserInfo(userId, null,new CallBackListener() {
@@ -121,13 +135,17 @@ public class CommunityPresenterImpl implements CommunityPresenter {
         });
     }
 
+    /**
+     * 加载评论
+     */
     @Override
-    public void loadComment(final LinearLayout commentDetialLinear, final View view, int articleId, final int pos) {
+    public void loadComment(final LinearListView commentDetialLinear, final int articleId, final int pos) {
         mCommunity.getComments(articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
                 //根绝userId
                 final List<CommentInfo.CommentsBean> commentsBean = (List<CommentInfo.CommentsBean>) obj;
+                final List<CommentItemData> commentItemDatas = new ArrayList<CommentItemData>();
                 //由于一个话题对应有多个comment 所以通过for循环进行加载
                 for(int i =0; i < commentsBean.size();i++){
                     CommentInfo.CommentsBean commmentBean = commentsBean.get(i);
@@ -138,7 +156,14 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                         public void onFinish(Object obj) {
                             CommentItemData data = (CommentItemData) obj;
                             //进行回调
-                            mCommunityView.addOneComment(commentDetialLinear,view,data.getUserName(),data.getCommentText());
+//                            mCommunityView.addOneComment(commentDetialLinear,view,data.getUserName(),data.getCommentText());
+                            commentItemDatas.add(data);
+
+                            if(commentItemDatas.size() == commentsBean.size()){
+                                LogUtil.i("评论已全部加载完成");
+                                mCommunityView.setCommentAdapter(commentDetialLinear,articleId,commentItemDatas);
+                            }
+
                         }
 
                         @Override

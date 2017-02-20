@@ -12,14 +12,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
 import com.nexuslink.ui.view.CommunityView;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
+import com.nexuslink.ui.view.linearlistview.LinearListView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.CommunityViewsLoadUtils;
@@ -28,7 +31,9 @@ import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,6 +54,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     //用于加载用户信息的presenter
     //控制键盘弹起落下变脸
     private boolean isOpen = false;
+    private Map<Integer,CommentAdapter> commentAdapterMap = new HashMap<>();
 
 
     public CommunityRecyclerAdapter(Context context) {
@@ -64,11 +70,11 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
 
     //用户头像点击接口
-    public interface userIconClickListener{
+    public interface UserIconClickListener{
         void onClickListener(int pos);
     }
-    private userIconClickListener clickListener;
-    public void setUserIconClickListener(userIconClickListener listener){
+    private UserIconClickListener clickListener;
+    public void setUserIconClickListener(UserIconClickListener listener){
         this.clickListener = listener;
     }
     @Override
@@ -78,12 +84,24 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     }
 
     @Override
+    public void onViewRecycled(CommunityViewHolder holder) {
+        super.onViewRecycled(holder);
+        Glide.clear(holder.userImage);
+        holder.userLevel.setText("");
+        holder.userName.setText("");
+    }
+
+    @Override
     public void onBindViewHolder(final CommunityViewHolder holder, final int position) {
         articlesBean = data.get(position);
 
         //进行用户相关信息的加载
         Log.i(TAG,"加载:"+position);
+        //设置占位符
+        holder.userImage.setImageDrawable(null);
+        //为userInfo设置tag
         presenter.loadUserInfo(holder.userImage,holder.userName,holder.userLevel,articlesBean.getUserId());
+
         //回调点击接口
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,31 +148,35 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
                 }else{
                     isOpen = false;
                     KeyBoardUtils.closeKeybord(holder.commentInput,mContext);
+                    holder.linearLayout.setVisibility(View.GONE);
                 }
                 return true;
             }
         });
 
+        //设置总评论区
+        if(articlesBean.getCommentNum() > 0) {
+            presenter.loadComment(holder.commentDetialLinear, articlesBean.getArticleId(), position);
+        }else{
+            holder.commentDetialLinear.setVisibility(View.GONE);
+        }
 
         //设置自我评论区
         holder.commentPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"进行评论");
-                String text = holder.commentInput.getText().toString();
-                Log.i(TAG,text);
                 KeyBoardUtils.closeKeybord(holder.commentInput,mContext);
                 //请求相应
-                View view = inflater.inflate(R.layout.comment_item,holder.commentDetialLinear,false);
-                presenter.postComment(holder.commentDetialLinear,view,
-                        holder.commentInput,holder.linearLayout,data.get(position).getUserId(),
-                        data.get(position).getArticleId(),position);
+                presenter.postComment(articlesBean.getArticleId(),holder.commentInput
+                ,holder.linearLayout,UserUtils.getUserId(),articlesBean.getArticleId(),position);
 
             }
         });
 
 
     }
+
 
     /**
      * 封装图片url
@@ -194,6 +216,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     @Override
     public String getInputComment(EditText input) {
         return input.getText().toString();
+
     }
 
     @Override
@@ -209,35 +232,38 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     @Override
     public void loadUserInfo(ImageView imageView, TextView nameText, TextView levelText, String imageUrl, String userName, String userLevel) {
 
-        Log.i(TAG,"加载用户信息");
-        CommunityViewsLoadUtils.loadUserImage(mContext,imageView,imageUrl);
-        CommunityViewsLoadUtils.loadUserName(nameText,userName);
-        CommunityViewsLoadUtils.loadUserLevel(levelText,userLevel);
-
-    }
-
-    @Override
-    public void addOneComment(LinearLayout commentDetialLinear,View view,String userName, String text) {
-        synchronized (this){
-            Log.i(TAG,"添加评论");
-            TextView userNameTv = (TextView) view.findViewById(R.id.commenter_name);
-            TextView commentTv = (TextView) view.findViewById(R.id.comment);
-            userNameTv.setText(userName+":");
-            commentTv.setText(text);
-            commentDetialLinear.addView(view);
+       {
+            CommunityViewsLoadUtils.loadUserImage(mContext,imageView,imageUrl);
+            CommunityViewsLoadUtils.loadUserName(nameText,userName);
+            CommunityViewsLoadUtils.loadUserLevel(levelText,userLevel);
         }
 
     }
 
 
+    @Override
+    public void addOneComment(int articleId,String userName, String text) {
+        CommentItemData commentItemData = new CommentItemData(userName,text);
+        commentAdapterMap.get(articleId).addItem(commentItemData);
+    }
+
+    @Override
+    public void setCommentAdapter(LinearListView linearListView,int articleId,List<CommentItemData> list) {
+        CommentAdapter adapter = new CommentAdapter(mContext,list);
+        commentAdapterMap.put(articleId,adapter);
+        linearListView.setAdapter(adapter);
+    }
+
+
+    /**
+     * 增加点评量
+     * @param pos 指定是哪个话题的评论数量
+     */
     @Override
     public void addCommentNum(int pos) {
-        synchronized (this){
-            int num = data.get(pos).getCommentNum();
-            data.get(pos).setCommentNum(++num);
-            notifyDataSetChanged();
-        }
-
+        int num = data.get(pos).getCommentNum();
+        data.get(pos).setCommentNum(++num);
+        notifyDataSetChanged();
     }
 
     public long getUserId(int pos){
@@ -256,8 +282,10 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         LikeView likeView;
         LikeView comment;
         EditText commentInput;
+        //输入框
         LinearLayout linearLayout;
-        LinearLayout commentDetialLinear;
+        //评论区的内容
+        LinearListView commentDetialLinear;
         private Button commentPost;
         public CommunityViewHolder(View itemView) {
             super(itemView);
@@ -271,7 +299,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             commentInput = (EditText) itemView.findViewById(R.id.input_comment);
             commentPost = (Button) itemView.findViewById(R.id.input_send_comment);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.comment_linear);
-            commentDetialLinear = (LinearLayout) itemView.findViewById(R.id.comment_detail_linear);
+            commentDetialLinear = (LinearListView) itemView.findViewById(R.id.comment_detail_linear);
         }
     }
 

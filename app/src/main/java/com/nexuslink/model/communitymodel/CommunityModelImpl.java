@@ -1,5 +1,6 @@
 package com.nexuslink.model.communitymodel;
 
+import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
@@ -8,8 +9,10 @@ import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.PostLikeResult;
+import com.nexuslink.model.data.User1;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.util.ApiUtil;
+import com.nexuslink.util.ToastUtil;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -141,8 +144,13 @@ public class CommunityModelImpl implements CommunityModel{
                     @Override
                     public void onNext(UserInfo userInfo) {
                         if(userInfo.getCode() == Constants.SUCCESS){
-                            CommentItemData data = new CommentItemData(userInfo.getUser().getUName(),text);
-                            listener.onFinish(data);
+                            if(text == null){
+                                User1 user = userInfo.getUser();
+                                listener.onFinish(user);
+                            }else{
+                                CommentItemData data = new CommentItemData(userInfo.getUser().getUName(),text);
+                                listener.onFinish(data);
+                            }
                         }else{
                             listener.onError(new Exception("加载用户信息出错"));
                         }
@@ -168,9 +176,12 @@ public class CommunityModelImpl implements CommunityModel{
 
                     @Override
                     public void onNext(CommentInfo commentInfo) {
-                        if(commentInfo.getCode() == Constants.SUCCESS){
+                        if((commentInfo.getCode() == Constants.SUCCESS)){
                             listener.onFinish(commentInfo.getComments());
                         }else{
+                            if(commentInfo.getCode() == Constants.FAILED){
+                                ToastUtil.showToastLong(BaseApplication.getContext(),commentInfo.getComments().toString());
+                            }
                             listener.onError(new Exception("请求评论信息时出错"));
                         }
                     }
