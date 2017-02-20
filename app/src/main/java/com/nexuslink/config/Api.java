@@ -3,6 +3,7 @@ package com.nexuslink.config;
 
 import com.nexuslink.User;
 import com.nexuslink.model.data.CommentInfo;
+import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
@@ -80,12 +81,12 @@ public interface Api {
     //评论话题
     @FormUrlEncoded
     @POST("article/comment")
-    Observable<CommentInfo> postComment(@Field("uId") int userId,@Field("aId") int articleId,@Field("aComment") String comment);
+    Observable<CommentResult> postComment(@Field("uId") int userId, @Field("aId") int articleId, @Field("aComment") String comment);
 
     //查看某个话题的评论
     @FormUrlEncoded
-    @POST("article/like")
-    Observable<Integer> getComments(@Field("aId") int articleId);
+    @POST("article/getComment")
+    Observable<CommentInfo> getComment(@Field("aId") int articleId);
 
     //为某个话题点赞
     @FormUrlEncoded

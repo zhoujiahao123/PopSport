@@ -16,5 +16,5 @@ public interface CommunityPresenter {
     void postComment(LinearLayout commentDetialLinear,View view, EditText input, LinearLayout linearLayout,int userId, int articleId, int pos);
     void onRefreshData(int userId);
     void loadUserInfo(ImageView imageView, TextView nameText, TextView levelText,int userId);
-    void loadComment(int articleId,int pos);
+     void loadComment(LinearLayout commentDetialLinear, View view, int articleId, int pos);
 }

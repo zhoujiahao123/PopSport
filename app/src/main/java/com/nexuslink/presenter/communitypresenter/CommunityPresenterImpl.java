@@ -10,10 +10,12 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.communitymodel.CommunityModel;
 import com.nexuslink.model.communitymodel.CommunityModelImpl;
+import com.nexuslink.model.data.CommentInfo;
+import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.User1;
 import com.nexuslink.ui.view.CommunityView;
-import com.nexuslink.ui.view.UserUtils;
+import com.nexuslink.util.UserUtils;
 
 import java.util.List;
 
@@ -68,7 +70,8 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                 public void onFinish(Object obj) {
                     mCommunityView.addCommentNum(pos);
                     //getUserName 获取自己的昵称
-                    mCommunityView.addOneComment(commentDetialLinear,view,"张兴锐",mCommunityView.getInputComment(input));
+
+                    mCommunityView.addOneComment(commentDetialLinear,view,UserUtils.getUserName(),mCommunityView.getInputComment(input));
                     mCommunityView.clearInput(linearLayout,input);
                 }
 
@@ -103,7 +106,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
     @Override
     public void loadUserInfo(final ImageView imageView, final TextView nameText, final TextView levelText, int userId) {
-        mCommunity.loadUserInfo(userId, new CallBackListener() {
+        mCommunity.loadUserInfo(userId, null,new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
                 User1 user = (User1) obj;
@@ -119,18 +122,38 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void loadComment(int articleId, final int pos) {
-        mCommunity.getComment(articleId, new CallBackListener() {
+    public void loadComment(final LinearLayout commentDetialLinear, final View view, int articleId, final int pos) {
+        mCommunity.getComments(articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
-                mCommunityView.addCommentNum(pos);
+                //根绝userId
+                final List<CommentInfo.CommentsBean> commentsBean = (List<CommentInfo.CommentsBean>) obj;
+                //由于一个话题对应有多个comment 所以通过for循环进行加载
+                for(int i =0; i < commentsBean.size();i++){
+                    CommentInfo.CommentsBean commmentBean = commentsBean.get(i);
+                    int userId = commmentBean.getUserId();
+                    //网络请求获取用户名
+                    mCommunity.loadUserInfo(userId, commmentBean.getCommentText(),new CallBackListener() {
+                        @Override
+                        public void onFinish(Object obj) {
+                            CommentItemData data = (CommentItemData) obj;
+                            //进行回调
+                            mCommunityView.addOneComment(commentDetialLinear,view,data.getUserName(),data.getCommentText());
+                        }
 
+                        @Override
+                        public void onError(Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
             }
 
             @Override
             public void onError(Exception e) {
-
+                e.printStackTrace();
             }
+
         });
     }
 

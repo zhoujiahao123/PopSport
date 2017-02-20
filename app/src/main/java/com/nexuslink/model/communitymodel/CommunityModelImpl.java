@@ -4,6 +4,8 @@ import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.CommentInfo;
+import com.nexuslink.model.data.CommentItemData;
+import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.UserInfo;
@@ -99,7 +101,7 @@ public class CommunityModelImpl implements CommunityModel{
     public void postComment(int userId, int articleId, String text, final CallBackListener listener) {
         api.postComment(userId,articleId,text).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<CommentInfo>() {
+                .subscribe(new Subscriber<CommentResult>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -108,12 +110,12 @@ public class CommunityModelImpl implements CommunityModel{
                         listener.onError((Exception) e);
                     }
                     @Override
-                    public void onNext(CommentInfo commentInfo) {
+                    public void onNext(CommentResult commentResult) {
                         //进行flag判断然后回调
-                        if(commentInfo.getCode() == Constants.SUCCESS){
-                            listener.onFinish(commentInfo.getComments());
+                        if(commentResult.getCode() == Constants.SUCCESS){
+                            listener.onFinish(null);
                         }else{
-                            listener.onError(new Exception("获取评论时出错"));
+                            listener.onError(new Exception("进行评论时出错"));
                         }
 
                     }
@@ -122,7 +124,7 @@ public class CommunityModelImpl implements CommunityModel{
 
 
     @Override
-    public void loadUserInfo(int userId, final CallBackListener listener) {
+    public void loadUserInfo(int userId, final String text, final CallBackListener listener) {
         //进行网络的交互
         api.getUserInfo(userId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -139,7 +141,8 @@ public class CommunityModelImpl implements CommunityModel{
                     @Override
                     public void onNext(UserInfo userInfo) {
                         if(userInfo.getCode() == Constants.SUCCESS){
-                            listener.onFinish(userInfo.getUser());
+                            CommentItemData data = new CommentItemData(userInfo.getUser().getUName(),text);
+                            listener.onFinish(data);
                         }else{
                             listener.onError(new Exception("加载用户信息出错"));
                         }
@@ -148,7 +151,29 @@ public class CommunityModelImpl implements CommunityModel{
     }
 
     @Override
-    public void getComment(int articleId, CallBackListener listener) {
+    public void getComments(int articleId, final CallBackListener listener) {
+        api.getComment(articleId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<CommentInfo>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(CommentInfo commentInfo) {
+                        if(commentInfo.getCode() == Constants.SUCCESS){
+                            listener.onFinish(commentInfo.getComments());
+                        }else{
+                            listener.onError(new Exception("请求评论信息时出错"));
+                        }
+                    }
+                });
     }
 }

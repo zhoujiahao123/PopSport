@@ -1,7 +1,6 @@
-package com.nexuslink.ui.view;
+package com.nexuslink.util;
 
 import com.nexuslink.UserDao;
-import com.nexuslink.util.DBUtil;
 
 /**
  * Created by 猿人 on 2017/2/14.
@@ -22,6 +21,12 @@ public class UserUtils {
      */
     public static String getUserLevel(){
         return  "19";
+    }
+    /**
+     * 获取用户昵称
+     */
+    public static String getUserName(){
+        return "张兴锐";
     }
 
 }
