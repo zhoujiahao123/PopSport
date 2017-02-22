@@ -14,9 +14,6 @@ import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.ToastUtil;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -50,15 +47,18 @@ public class AlterModelImpl implements AlterModel {
                     public void onNext(UserInfo userInfo) {
                         listener.onSucceed(userInfo);
                         User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-                        String achievement = Arrays.toString(userInfo.getUser().getUAchievements());
+                        String achievement=new String();
+                        for(int i =0;i<8;i++){
+                            achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
+                        }
                         user.setUAchievements(achievement.substring(1,achievement.length()-1));
                         user.setUExp(userInfo.getUser().getUExp());
                         user.setUFansNum(userInfo.getUser().getUFansNum());
                         user.setUGender(userInfo.getUser().getUGender());
                         user.setUHeight(userInfo.getUser().getUHeight());
                         user.setUImg(userInfo.getUser().getUImg());
-                        user.setUHistoryMileage(userInfo.getUser().getUHistoryMileage());
-                        user.setUHistoryStep(userInfo.getUser().getUHistoryStep());
+                        user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
+                        user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
                         user.setUName(userInfo.getUser().getUName());
                         user.setUWeight(userInfo.getUser().getUWeight());
                         BaseApplication.getDaosession().getUserDao().update(user);
