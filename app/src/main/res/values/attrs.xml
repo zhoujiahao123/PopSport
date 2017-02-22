@@ -72,4 +72,8 @@
             <enum name="start" value="4"/>
         </attr>
     </declare-styleable>
+    <declare-styleable name="LinearListView">
+        <attr name="android:entries" />
+        <attr name="dividerThickness" format="dimension" />
+    </declare-styleable>
 </resources>

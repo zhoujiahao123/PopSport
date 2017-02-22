@@ -59,7 +59,7 @@ public class CommunityFragment extends Fragment {
         mRecycler.setAdapter(adapter);
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         //设置点击监听
-        adapter.setUserIconClickListener(new CommunityRecyclerAdapter.userIconClickListener() {
+        adapter.setUserIconClickListener(new CommunityRecyclerAdapter.UserIconClickListener() {
             @Override
             public void onClickListener(int pos) {
                 //根据位置进行获取用户数据（用户id）

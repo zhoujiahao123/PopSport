@@ -5,19 +5,13 @@
     android:paddingLeft="@dimen/spacing_tiny"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/commenter_name"
-        android:textColor="#295998"
-        android:layout_gravity="center_vertical"
-        android:textSize="@dimen/spacing_normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/comment"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/spacing_tiny"
         android:textSize="@dimen/font_normal"
         android:textColor="#2d2d2d"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

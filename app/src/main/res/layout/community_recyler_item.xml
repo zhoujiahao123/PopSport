@@ -127,10 +127,11 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <LinearLayout
+    <com.nexuslink.ui.view.linearlistview.LinearListView
         android:id="@+id/comment_detail_linear"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
+        android:layout_height="wrap_content">
+    </com.nexuslink.ui.view.linearlistview.LinearListView>
 
 </LinearLayout>
