@@ -65,8 +65,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LogInActivity"
-            >
+        <activity android:name=".ui.activity.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -108,9 +107,12 @@
             android:name=".service.StepService"
             android:process=":remote" />
 
-        <activity android:name=".ui.activity.MainViewActivity">
-
+        <activity
+            android:name=".ui.activity.MainViewActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan">
         </activity>
+
         <activity
             android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -144,10 +146,14 @@
         <!-- 计步 -->
         <service android:name="com.amap.api.location.APSService" />
 
-
-
         <activity android:name=".ui.activity.WriteMsgActivity" />
         <!-- 图片跳转Activity -->
+
+        <!--到点通知-->
+        <service android:name=".service.NotifyService"
+            ></service>
+        <receiver android:name=".broadcast.AlarmReceiver"></receiver>
+
         <activity android:name=".ui.activity.ViewImageShowActivity"
             ></activity>
  

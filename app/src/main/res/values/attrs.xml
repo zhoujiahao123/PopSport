@@ -31,4 +31,49 @@
             <enum name="CoolWaitLoadingRenderer" value="15"/>
         </attr>
     </declare-styleable>
+
+    <!--点赞控件-->
+    <declare-styleable name="LikeView">
+        <!--当前数值,默认0-->
+        <attr name="number" format="integer"/>
+        <!--数字颜色,默认#888888-->
+        <attr name="textColor" format="color"/>
+        <!--图形外边颜色,默认#888888-->
+        <attr name="graphColor" format="color"/>
+        <!--当前激活时图形颜色,默认#ca5f5f-->
+        <attr name="animateColor" format="color"/>
+        <!--字体大小,决定控件高度以及图形大小,默认14sp-->
+        <attr name="textSize" format="dimension"/>
+        <!--动画时间,默认300-->
+        <attr name="animateDuration" format="integer"/>
+        <!--图形与数字间的距离,默认3dp-->
+        <attr name="distance" format="dimension"/>
+        <!--图形与数字高度的比例,默认1.3-->
+        <attr name="graphTextHeightRatio" format="float"/>
+        <!--图形外边绘制宽度,默认3dp-->
+        <attr name="graphStrokeWidth" format="dimension"/>
+        <!--数字绘制宽度,默认2dp-->
+        <attr name="textStrokeWidth" format="dimension"/>
+        <!--是否激活,默认false-->
+        <attr name="isActivated" format="boolean"/>
+        <!--是否自动测量数字修改后的宽度改变,防止更改状态时控件宽度改变,默认开启-->
+        <attr name="autoMeasureMaxWidth" format="boolean"/>
+        <!--是否不允许取消点赞,默认false-->
+        <attr name="notAllowedCancel" format="boolean"/>
+        <!--对齐方式,前三种默认垂直居中-->
+        <attr name="gravity" format="enum">
+            <!--居中-->
+            <enum name="center" value="1"/>
+            <!--左对齐-->
+            <enum name="left" value="2"/>
+            <!--右对齐-->
+            <enum name="right" value="3"/>
+            <!--开始点-->
+            <enum name="start" value="4"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="LinearListView">
+        <attr name="android:entries" />
+        <attr name="dividerThickness" format="dimension" />
+    </declare-styleable>
 </resources>

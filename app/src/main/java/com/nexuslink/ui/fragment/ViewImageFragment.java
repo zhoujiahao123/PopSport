@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 public class ViewImageFragment extends Fragment {
     private String url;
     private Bitmap bitmap;
+    private int pos;
     //===============================================常量
     private static final String TAG = "ViewImageShowActivity";
     private static final int SUCCESS = 1;
@@ -40,13 +41,11 @@ public class ViewImageFragment extends Fragment {
             switch (msg.what){
                 case SUCCESS:
                     imageView.setImageBitmap(bitmap);
-                    Log.i(TAG,"加载成功");
                     if(imageListener != null){
-                        imageListener.onLoadSuccess(bitmap);
+                        imageListener.onLoadSuccess(pos,bitmap);
                     }
                     break;
                 case FAILED:
-                    Log.i(TAG,"失败");
                     if(imageListener != null){
                         imageListener.onLoadFailed("加载异常");
                     }
@@ -65,6 +64,7 @@ public class ViewImageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments()!=null){
             url = getArguments().getString(Constants.IMAGE_URL);
+            pos = getArguments().getInt(Constants.IMAGE_POS);
         }
     }
     @Nullable

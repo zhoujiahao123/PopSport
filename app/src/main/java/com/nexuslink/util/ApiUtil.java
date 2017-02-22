@@ -6,6 +6,8 @@ import com.elvishew.xlog.XLog;
 import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
 
+import retrofit2.http.HEAD;
+
 /**
  * Created by ASUS-NB on 2017/1/15.
  */
@@ -17,6 +19,7 @@ public class ApiUtil {
     public static Api getInstance(String baseUrl){
         if(mInstance==null){
 
+            mInstance = RetrofitUtil.getInstance(baseUrl).create(Api.class);
             Log.e(Constants.TAG,"getInstance");
         }
         Log.e(Constants.TAG,"getInstance11");
