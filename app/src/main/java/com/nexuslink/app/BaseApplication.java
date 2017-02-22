@@ -4,6 +4,8 @@
  import android.content.Context;
  import android.database.sqlite.SQLiteDatabase;
 
+ import com.elvishew.xlog.LogLevel;
+ import com.elvishew.xlog.XLog;
  import com.facebook.stetho.Stetho;
  import com.nexuslink.DaoMaster;
  import com.nexuslink.DaoSession;
@@ -33,6 +35,7 @@ public class BaseApplication extends Application {
         UMShareAPI.get(this);
         Config.DEBUG = true;
         mContext = getApplicationContext();
+        XLog.init(LogLevel.ALL);
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(
@@ -53,14 +56,16 @@ public class BaseApplication extends Application {
     }
 
      public static DaoSession getDaosession(){
-         DaoSession daoSession;
-         DaoMaster daoMaster;
-         DaoMaster.DevOpenHelper helper;
-         SQLiteDatabase database;
-         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
-         database = helper.getWritableDatabase();
-         daoMaster = new DaoMaster(database);
-         daoSession = daoMaster.newSession();
+
+//         DaoSession daoSession;
+//         DaoMaster daoMaster;
+//         DaoMaster.DevOpenHelper helper;
+//         SQLiteDatabase database;
+//         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
+//         database = helper.getWritableDatabase();
+//         daoMaster = new DaoMaster(database);
+//         daoSession = daoMaster.newSession();
+         DaoSession daoSession = new DaoMaster(db).newSession();
          return daoSession;
      }
 }

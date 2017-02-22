@@ -1,5 +1,7 @@
 package com.nexuslink.ui.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +9,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nexuslink.R;
+import com.nexuslink.model.data.ChangeInfo;
+import com.nexuslink.model.data.ChangeInfo1;
+import com.nexuslink.model.data.UserInfo;
+import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.ui.fragment.AppointmentFragment;
 import com.nexuslink.ui.fragment.CommunityFragment;
 import com.nexuslink.ui.fragment.PersonInfoFragment;
 import com.nexuslink.ui.fragment.StepAndRunFragment;
+
 import com.wuxiaolong.androidutils.library.DisplayMetricsUtil;
+
 import com.ycl.tabview.library.TabView;
 import com.ycl.tabview.library.TabViewChild;
 
@@ -20,8 +28,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 
-public class MainViewActivity extends AppCompatActivity implements View.OnLayoutChangeListener {
+public class MainViewActivity extends AppCompatActivity {
 
     //===============================================常量
     private static String TAG = "MainViewActivity";
@@ -31,12 +40,9 @@ public class MainViewActivity extends AppCompatActivity implements View.OnLayout
     LinearLayout rootLayout;
     //===============================================view相关
     private List<TabViewChild> tabViewChildList = new ArrayList<>();
-    //===============================================屏幕
-    //屏幕高度
-    private int screenHeight = 0;
-    //软件盘弹起后所占高度阀值
-    private int keyHeight = 0;
 
+    //===============================================屏幕
+    private AlterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +50,11 @@ public class MainViewActivity extends AppCompatActivity implements View.OnLayout
         setContentView(R.layout.activity_main_view);
         ButterKnife.bind(this);
         initView();
-
-        //获取屏幕高度
-        screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
-        //阀值设置为屏幕高度的1/3
-        keyHeight = screenHeight/3;
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        rootLayout.addOnLayoutChangeListener(this);
     }
 
     private void initView() {
@@ -90,14 +89,5 @@ public class MainViewActivity extends AppCompatActivity implements View.OnLayout
 
 
 
-    @Override
-    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-        //现在认为只要控件将Activity向上推的高度超过了1/3屏幕高，就认为软键盘弹起
-        if(oldBottom != 0 && bottom != 0 &&(oldBottom - bottom > keyHeight)){
 
-
-        }else if(oldBottom != 0 && bottom != 0 &&(bottom - oldBottom > keyHeight)){
-
-        }
-    }
 }

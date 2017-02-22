@@ -8,10 +8,16 @@
     <color name="white_normal">#e9e7e7</color>
     <color name="gray_normal">#605f5f</color>
     <color name="gray_light">#c1c0c0</color>
+    <color name="gray_light_more">#e4e3e3</color>
     <color name="blue_normal">#99cccc</color>
     <color name="blue_little_darker">#88cccc</color>
     <color name="yellow_light">#FFCC99</color>
     <color name="yellow_normal_light">#FF9966</color>
+    <color name="colorControlNormal">#FF78909C</color>
+
+    <color name="blue">#1f65f1</color>
+    <color name="red">#ef4646</color>
+    <color name="yellow">#f59803</color>
     <color name="green_light">#5bed79</color>
 
     <color name="gray_dark">#2C3E50</color>

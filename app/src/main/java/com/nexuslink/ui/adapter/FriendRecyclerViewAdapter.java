@@ -120,7 +120,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
                     btnFollow.setBackgroundResource(R.drawable.selector_button_followed);
                     btnFollow.setText("已关注");
                     btnFollow.setClickable(false);
-                    mListener.onItemClicked((int)IdUtil.getuId(),0);
+                    mListener.onItemClicked(8,0);
                     }
             });
         }

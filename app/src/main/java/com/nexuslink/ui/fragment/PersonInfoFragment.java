@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.nexuslink.R;
+import com.nexuslink.ui.activity.AchievementActivity;
 import com.nexuslink.ui.activity.AlterActivity;
 import com.nexuslink.ui.activity.FriendActivity;
+import com.nexuslink.ui.activity.RankActivity;
+import com.nexuslink.ui.activity.TaskActivity;
 import com.nexuslink.ui.view.PersonInfoView;
 
 import butterknife.BindView;
@@ -55,7 +58,6 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView {
     public void showFriends() {
         Intent friendIntent = new Intent(getContext(), FriendActivity.class);
         startActivity(friendIntent);
-
     }
 
     @Override
@@ -67,22 +69,21 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView {
     public void showSetting() {
         Intent intent = new Intent(getContext(), AlterActivity.class);
         startActivity(intent);
-
     }
 
     @Override
     public void showTask() {
-
+        startActivity(new Intent(getContext(), TaskActivity.class));
     }
 
     @Override
     public void showAchieve() {
-
+        startActivity(new Intent(getContext(), AchievementActivity.class));
     }
 
     @Override
     public void showRank() {
-
+        startActivity(new Intent(getContext(), RankActivity.class));
     }
 
     @OnClick({R.id.group_myfriend, R.id.group_runningromm, R.id.group_setting, R.id.group_mytask, R.id.group_achieve, R.id.group_rank})
@@ -92,15 +93,19 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView {
                 showFriends();
                 break;
             case R.id.group_runningromm:
+                showRunningRoom();
                 break;
             case R.id.group_setting:
                 showSetting();
                 break;
             case R.id.group_mytask:
+                showTask();
                 break;
             case R.id.group_achieve:
+                showAchieve();
                 break;
             case R.id.group_rank:
+                showRank();
                 break;
         }
     }

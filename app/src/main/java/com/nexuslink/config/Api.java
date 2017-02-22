@@ -1,7 +1,9 @@
 package com.nexuslink.config;
 
 
-import com.nexuslink.User;
+import com.nexuslink.model.data.ChangeInfo;
+import com.nexuslink.model.data.ChangeInfo1;
+import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
@@ -9,6 +11,9 @@ import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
 import com.nexuslink.model.data.PostLikeResult;
+import com.nexuslink.model.data.SearchInfo;
+import com.nexuslink.model.data.TaskFlag;
+import com.nexuslink.model.data.UIdInfo;
 import com.nexuslink.model.data.UpLoadUserImageResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
@@ -31,6 +36,7 @@ public interface Api {
     //获取天气信息
     @GET("onebox/weather/query")
     Observable<WeatherInfo> getWeatherInfo(@Query("cityname")String cityname, @Query("key")String key);
+
     //关注某人
     @GET("friend/follow")
     Observable<FollowInfo> getFollowInfo(@Query("uId") int uId,@Query("fId") int fId);
@@ -42,7 +48,7 @@ public interface Api {
     //登录
     @FormUrlEncoded
     @POST("user/login")
-    Observable<User> logIn(@Field("uName")String uName, @Field("uPassword")String uPassword);
+    Observable<UIdInfo> logIn(@Field("uName")String uName, @Field("uPassword")String uPassword);
 
     //获取好友的个人信息
     @FormUrlEncoded
@@ -58,8 +64,6 @@ public interface Api {
     @Multipart
     @POST("img/changeImg")
     Observable<UpLoadUserImageResult> changUserImage(@Query("uId") int uerId, @Part("uImg\"; filename=\"userImage.jpg\"") RequestBody file);
-
-
 
     //发表小话题
     //还差图片
@@ -97,4 +101,37 @@ public interface Api {
     @FormUrlEncoded
     @POST("article/dislike")
     Observable<Integer> postDisLike(@Field("uId") int userId,@Field("aId") int articleId);
+
+    //修改用户的个人信息
+    @FormUrlEncoded
+    @POST("user/changeInfo")
+    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId, @Field("uGender")char uGender, @Field("uHeight")int
+            uHeight, @Field("uWeight")int uWeight);
+
+    //修改用户的头像
+    @FormUrlEncoded
+    @POST("user/cahngeName")
+    Observable<ChangeInfo1> changeNickName(@Field("uId")int uId, @Field("uName")String uName);
+
+    //搜索用户
+    @FormUrlEncoded
+    @POST("friend/search")
+    Observable<SearchInfo> searchUser(@Field("type")int type, @Field("keyword")String keyword);
+
+    //修改密码
+    @FormUrlEncoded
+    @POST("user/changePassword")
+    Observable<ChangeInfoPassword> changePassword(@Field("uId")int uId, @Field("uOldPassword")String uOldPassword, @Field("uNewPassword")String uNewPassword);
+
+    //提交任务
+    @FormUrlEncoded
+    @POST("user/task")
+    Observable<TaskFlag> upLoadTask(@Field("uId")int uId, @Field("type")int type, @Field("taskNum")int taskNum);
+
+    //注册新账号
+    @FormUrlEncoded
+    @POST("user/register")
+    Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
+                                        int uHeight,@Field("uWeight")int uWeight);
+
 }

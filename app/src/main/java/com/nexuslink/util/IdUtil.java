@@ -1,5 +1,6 @@
 package com.nexuslink.util;
 
+import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseApplication;
 
 /**
@@ -11,9 +12,7 @@ public class IdUtil {
         return BaseApplication.getDaosession()
                 .getUserDao()
                 .queryBuilder()
-                .build()
-                .list()
-                .get(0)
-                .getId();
+                .where(UserDao.Properties.Already.eq(1))
+                .unique().getUid();
     }
 }

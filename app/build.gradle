@@ -73,6 +73,7 @@ dependencies {
     //图片漂浮处理库
     compile 'com.ufreedom.uikit:FloatingViewLib:1.0.2'
     compile files('libs/android-support-v4.jar')
+    compile 'com.github.sd6352051:android-image-picker:v1.0.1'
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/AMap_Location_V2.4.1_20160414.jar')
     compile files('libs/Amap_2DMap_V4.2.0_20170120.jar')
@@ -93,5 +94,12 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //工具类
     compile 'com.wuxiaolong.androidutils:androidutils:1.0.6'
-
- }
+    compile 'com.lai.weavey:dialog:1.3'
+    compile 'com.elvishew:xlog:1.1.0'
+    compile 'com.github.ganfra:material-spinner:1.1.1'
+    compile 'com.github.arimorty:floatingsearchview:2.0.3'
+    compile 'com.github.imkarl:CharacterPickerView:v0.2.4'
+    compile files('libs/gson-2.2.4.jar')
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+}

@@ -1,5 +1,7 @@
 package com.nexuslink.util;
 
+import com.elvishew.xlog.XLog;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -37,6 +39,11 @@ public class RetrofitUtil {
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
         }
+        mInstance = new Retrofit.Builder().baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        XLog.e(mInstance);
         return mInstance;
     }
     public static Retrofit getRetrofitInstanceFroWeather(String baseUrl){

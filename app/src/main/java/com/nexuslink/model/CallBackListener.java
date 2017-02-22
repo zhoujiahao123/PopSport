@@ -1,10 +1,11 @@
 package com.nexuslink.model;
 
 /**
- * Created by 猿人 on 2017/2/5.
+ * Created by ASUS-NB on 2017/2/19.
  */
 
 public interface CallBackListener {
-    void onFinish(Object obj);
+    void onFinish(Object o);
+
     void onError(Exception e);
 }

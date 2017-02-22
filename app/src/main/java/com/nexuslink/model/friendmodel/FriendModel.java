@@ -10,4 +10,6 @@ public interface FriendModel extends BaseModel {
     //关注某人
     void followOne(int uId, int fId,OnFriendCallBackListener listener);
 
+    //搜索某人
+    void searchUser(int type,String name,OnFriendCallBackListener listener);
 }
