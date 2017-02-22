@@ -1,14 +1,22 @@
 package com.nexuslink.ui.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nexuslink.R;
+import com.nexuslink.model.data.ChangeInfo;
+import com.nexuslink.model.data.ChangeInfo1;
+import com.nexuslink.model.data.UserInfo;
+import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.ui.fragment.AppointmentFragment;
 import com.nexuslink.ui.fragment.CommunityFragment;
 import com.nexuslink.ui.fragment.PersonInfoFragment;
 import com.nexuslink.ui.fragment.StepAndRunFragment;
+import com.nexuslink.ui.view.AlterView;
+import com.nexuslink.util.IdUtil;
 import com.ycl.tabview.library.TabView;
 import com.ycl.tabview.library.TabViewChild;
 
@@ -17,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 
 public class MainViewActivity extends AppCompatActivity {
 
@@ -26,8 +35,7 @@ public class MainViewActivity extends AppCompatActivity {
     TabView tavView;
     //===============================================view相关
     private List<TabViewChild> tabViewChildList = new ArrayList<>();
-
-
+    private AlterPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +62,6 @@ public class MainViewActivity extends AppCompatActivity {
         tabViewChildList.add(personinfo);
 
         tavView.setTabViewChild(tabViewChildList,getSupportFragmentManager());
-
 
     }
 }

@@ -1,4 +1,4 @@
-package com.nexuslink.presenter;
+package com.nexuslink.presenter.loginpresenter;
 
 import android.util.Log;
 
@@ -16,14 +16,11 @@ public class LogInPresenterImp extends LogInPresenter{
     private LoginView loginView;
     private LogInModel logInModel;
     public LogInPresenterImp(LoginView loginView){
-        setMV(new LogInModeImp(this),loginView);
+        logInModel = new LogInModeImp(this);
+        this.loginView = loginView;
     }
 
-    @Override
-    void setMV(LogInModel model, LoginView view) {
-        logInModel = model;
-        loginView = view;
-    }
+
 
     @Override
     public void logInToService(String uName,String password) {

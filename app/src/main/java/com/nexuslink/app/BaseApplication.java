@@ -56,14 +56,16 @@ public class BaseApplication extends Application {
     }
 
      public static DaoSession getDaosession(){
-         DaoSession daoSession;
-         DaoMaster daoMaster;
-         DaoMaster.DevOpenHelper helper;
-         SQLiteDatabase database;
-         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
-         database = helper.getWritableDatabase();
-         daoMaster = new DaoMaster(database);
-         daoSession = daoMaster.newSession();
+
+//         DaoSession daoSession;
+//         DaoMaster daoMaster;
+//         DaoMaster.DevOpenHelper helper;
+//         SQLiteDatabase database;
+//         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
+//         database = helper.getWritableDatabase();
+//         daoMaster = new DaoMaster(database);
+//         daoSession = daoMaster.newSession();
+         DaoSession daoSession = new DaoMaster(db).newSession();
          return daoSession;
      }
 }

@@ -14,6 +14,7 @@ import com.nexuslink.ui.activity.AchievementActivity;
 import com.nexuslink.ui.activity.AlterActivity;
 import com.nexuslink.ui.activity.FriendActivity;
 import com.nexuslink.ui.activity.RankActivity;
+import com.nexuslink.ui.activity.TaskActivity;
 import com.nexuslink.ui.view.PersonInfoView;
 
 import butterknife.BindView;
@@ -72,7 +73,7 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView {
 
     @Override
     public void showTask() {
-
+        startActivity(new Intent(getContext(), TaskActivity.class));
     }
 
     @Override

@@ -10,6 +10,8 @@ import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
 import com.nexuslink.model.data.SearchInfo;
+import com.nexuslink.model.data.TaskFlag;
+import com.nexuslink.model.data.UIdInfo;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 
@@ -28,6 +30,7 @@ public interface Api {
     //获取天气信息
     @GET("onebox/weather/query")
     Observable<WeatherInfo> getWeatherInfo(@Query("cityname")String cityname, @Query("key")String key);
+
     //关注某人
     @GET("friend/follow")
     Observable<FollowInfo> getFollowInfo(@Query("uId") int uId,@Query("fId") int fId);
@@ -39,7 +42,7 @@ public interface Api {
     //登录
     @FormUrlEncoded
     @POST("user/login")
-    Observable<User> logIn(@Field("uName")String uName, @Field("uPassword")String uPassword);
+    Observable<UIdInfo> logIn(@Field("uName")String uName, @Field("uPassword")String uPassword);
 
     //获取好友的个人信息
     @FormUrlEncoded
@@ -69,6 +72,17 @@ public interface Api {
 
     //修改密码
     @FormUrlEncoded
-    @POST("user/password")
+    @POST("user/changePassword")
     Observable<ChangeInfoPassword> changePassword(@Field("uId")int uId,@Field("uOldPassword")String uOldPassword,@Field("uNewPassword")String uNewPassword);
+
+    //提交任务
+    @FormUrlEncoded
+    @POST("user/task")
+    Observable<TaskFlag> upLoadTask(@Field("uId")int uId,@Field("type")int type,@Field("taskNum")int taskNum);
+
+    //注册新账号
+    @FormUrlEncoded
+    @POST("user/register")
+    Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
+                                        int uHeight,@Field("uWeight")int uWeight);
 }

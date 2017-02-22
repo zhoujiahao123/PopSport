@@ -1,4 +1,4 @@
-package com.nexuslink.presenter;
+package com.nexuslink.presenter.presoninfopresenter;
 
 /**
  * Created by ASUS-NB on 2017/1/14.

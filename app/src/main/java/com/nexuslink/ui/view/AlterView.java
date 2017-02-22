@@ -13,7 +13,7 @@ public interface AlterView extends BaseView {
 
     void showError();
 
-    void changeUserInfo(int uId,char uGender, float uHeight, float uWeight);
+    void changeUserInfo(int uId,char uGender, int uHeight, int uWeight);
 
     void showChangeUserInfo(ChangeInfo changeInfo);
 

@@ -9,20 +9,16 @@
         <item name="android:background">@color/blue_normal</item>
     </style>
     <style name="image_style">
-        <item name="android:src">@drawable/running</item>
-        <item name="android:paddingTop">@dimen/image_pad_top</item>
+        <item name="android:src">@drawable/pop_log2</item>
+        <item name="android:layout_marginTop">@dimen/image_pad_top</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
     <style name="image_name">
-        <item name="android:src">@drawable/username</item>
-        <item name="android:paddingLeft">@dimen/spacing_normal</item>
-        <item name="android:paddingRight">@dimen/spacing_normal</item>
+        <item name="android:src">@drawable/userlogo1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="image_password">
-        <item name="android:src">@drawable/password</item>
-        <item name="android:paddingLeft">@dimen/spacing_normal</item>
-        <item name="android:paddingRight">@dimen/spacing_small</item>
+        <item name="android:src">@drawable/passwordlogo1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="layout_input">
@@ -174,4 +170,22 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    //我的任务
+    <style name="TaskStyleTitle">
+    <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+    <item name="android:layout_marginTop">@dimen/spacing_normal</item>
+    <item name="android:textSize">@dimen/font_large</item>
+    <item name="android:textColor">@color/white_light</item>
+</style>
+
+    <style name="TaskStyleDetail">
+        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+        <item name="android:layout_marginTop">@dimen/spacing_small</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/white_light</item>
+    </style>
+
+    <style name="CustomLineColor" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/blue</item>
+    </style>
     </resources>

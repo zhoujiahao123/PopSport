@@ -52,4 +52,14 @@
     <string name="error_network">您的网络出现了一些问题</string>
     <string name="pull_refresh">请下拉刷新</string>
 
+
+    //我的任务
+    <string name="task_title">我的任务</string>
+    <string name="daily_step_task">每日4000步</string>
+    <string name="daily_detail_task">任务详情:1659步/4000步</string>
+    <string name="daily_run_task">每日2公里</string>
+    <string name="daily_detail_task_run">任务详情:1599米/2000米</string>
+    <string name="addition_task_title">4公里挑战赛</string>
+    <string name="addition_task_detail">任务详情:0米/4000米</string>
+
 </resources>

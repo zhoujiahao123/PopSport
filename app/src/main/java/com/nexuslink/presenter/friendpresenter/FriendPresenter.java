@@ -1,6 +1,7 @@
-package com.nexuslink.presenter;
+package com.nexuslink.presenter.friendpresenter;
 
 import com.nexuslink.model.friendmodel.FriendModel;
+import com.nexuslink.presenter.BasePresenter;
 import com.nexuslink.ui.view.FriendView;
 
 /**

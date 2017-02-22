@@ -1,4 +1,4 @@
-package com.nexuslink.presenter;
+package com.nexuslink.presenter.friendpresenter;
 
 import com.elvishew.xlog.XLog;
 import com.nexuslink.model.data.FollowInfo;
@@ -16,7 +16,8 @@ public class FriendPresenterImpl extends FriendPresenter implements OnFriendCall
     private FriendView view;
 
     public FriendPresenterImpl(FriendModel model, FriendView view) {
-        setMV(model,view);
+        this.view = view;
+        this.model = model;
     }
 
     @Override
@@ -50,11 +51,6 @@ public class FriendPresenterImpl extends FriendPresenter implements OnFriendCall
         XLog.e("presenter的searchUser");
     }
 
-    @Override
-    void setMV(FriendModel model, FriendView view) {
-        this.view = view;
-        this.model = model;
-    }
     @Override
     public void onSucceed(Object o) {
         if(o instanceof FollowInfo){

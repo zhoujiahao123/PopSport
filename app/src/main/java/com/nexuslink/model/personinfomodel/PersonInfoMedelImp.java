@@ -1,4 +1,4 @@
-package com.nexuslink.model;
+package com.nexuslink.model.personinfomodel;
 
 /**
  * Created by ASUS-NB on 2017/1/14.

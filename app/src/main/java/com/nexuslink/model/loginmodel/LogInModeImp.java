@@ -3,11 +3,18 @@ package com.nexuslink.model.loginmodel;
 
 import android.util.Log;
 
+import com.elvishew.xlog.XLog;
+import com.nexuslink.DaoSession;
 import com.nexuslink.User;
+import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
-import com.nexuslink.presenter.LogInPresenterImp;
+import com.nexuslink.model.data.UIdInfo;
+import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
 import com.nexuslink.util.ApiUtil;
+import com.sina.weibo.sdk.api.share.Base;
+
+import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,7 +39,7 @@ public class LogInModeImp implements LogInModel {
                 .logIn(uName,password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<User>() {
+                .subscribe(new Subscriber<UIdInfo>() {
                     @Override
                     public void onCompleted() {
                         Log.e(Constants.TAG,"onCompleted");
@@ -44,12 +51,25 @@ public class LogInModeImp implements LogInModel {
                     }
 
                     @Override
-                    public void onNext(User user) {
-                        if(user.getUid()==0){
-                            Log.e(Constants.TAG,"id=0");
+                    public void onNext(UIdInfo user) {
+                        if(user.getuId()==0){
                             presenterImp.logInCheck(false);
                         }else {
-                            BaseApplication.getDaosession().getUserDao().insert(user);
+                            //标志位：是否存在这一一个uid在我们的数据库里
+                            int flag = 0;
+                            DaoSession daoSession = BaseApplication.getDaosession();
+                            UserDao  userDao = daoSession.getUserDao();
+                            User user1 = new User();
+                            for(int i=0;i<userDao.queryBuilder().list().size();i++){
+                                if(user.getuId()==userDao.queryBuilder().list().get(i).getUid()){
+                                    flag = 1;
+                                }
+                            }
+                            if(flag==0){
+                                user1.setUid(user.getuId());
+                                user1.setAlready(1);
+                                userDao.insert(user1);
+                            }
                             presenterImp.logInCheck(true);
                         }
                     }

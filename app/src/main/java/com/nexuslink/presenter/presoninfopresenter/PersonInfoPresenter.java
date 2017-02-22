@@ -1,10 +1,10 @@
-package com.nexuslink.model;
+package com.nexuslink.presenter.presoninfopresenter;
 
 /**
  * Created by ASUS-NB on 2017/1/14.
  */
 
-public interface PersonInfoModel {
+public interface PersonInfoPresenter {
     //获取好友信息
     void getFriends();
 

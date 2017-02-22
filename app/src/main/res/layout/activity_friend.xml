@@ -4,14 +4,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:paddingTop="@dimen/padding_top"
-
+        android:background="@color/colorPrimary"
         >
-    </android.support.v7.widget.Toolbar>
+    </Toolbar>
+        <TextView
+            android:text="交流一下"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white_light"
+            android:textSize="@dimen/font_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/group_search"
         android:layout_width="match_parent"
@@ -20,13 +31,16 @@
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_showSearchKey="false"
         app:floatingSearch_leftActionMode="noLeftAction"
+        android:background="@color/gray_light"
         app:floatingSearch_close_search_on_keyboard_dismiss="true"
-        app:floatingSearch_menu="@menu/menu_main"/>
+        app:floatingSearch_menu="@menu/menu_main"
+        android:layout_below="@id/top_bar"/>
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/group_search">
+        android:layout_below="@id/group_search"
+        android:background="@color/white_light">
     </android.support.design.widget.TabLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

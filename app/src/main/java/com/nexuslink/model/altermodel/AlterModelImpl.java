@@ -3,6 +3,8 @@ package com.nexuslink.model.altermodel;
 import android.util.Log;
 
 import com.elvishew.xlog.XLog;
+import com.nexuslink.User;
+import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.ChangeInfo;
@@ -11,6 +13,9 @@ import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.ToastUtil;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -24,9 +29,9 @@ public class AlterModelImpl implements AlterModel {
 
     @Override
     public void getUserInfo(int uId, final com.nexuslink.model.altermodel.OnCallBackListener listener) {
-        Log.e("TAG","getUserInfo");
+        XLog.e("这里获得的id为:"+uId);
         ApiUtil.getInstance(Constants.BASE_URL)
-                .getUserInfo(8)
+                .getUserInfo(uId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserInfo>() {
@@ -44,14 +49,27 @@ public class AlterModelImpl implements AlterModel {
                     @Override
                     public void onNext(UserInfo userInfo) {
                         listener.onSucceed(userInfo);
+                        User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
+                        String achievement = Arrays.toString(userInfo.getUser().getUAchievements());
+                        user.setUAchievements(achievement.substring(1,achievement.length()-1));
+                        user.setUExp(userInfo.getUser().getUExp());
+                        user.setUFansNum(userInfo.getUser().getUFansNum());
+                        user.setUGender(userInfo.getUser().getUGender());
+                        user.setUHeight(userInfo.getUser().getUHeight());
+                        user.setUImg(userInfo.getUser().getUImg());
+                        user.setUHistoryMileage(userInfo.getUser().getUHistoryMileage());
+                        user.setUHistoryStep(userInfo.getUser().getUHistoryStep());
+                        user.setUName(userInfo.getUser().getUName());
+                        user.setUWeight(userInfo.getUser().getUWeight());
+                        BaseApplication.getDaosession().getUserDao().update(user);
                     }
                 });
     }
 
     @Override
-    public void changeUserInfo(int uId, char uGender, float uHeight, float uWeight, final com.nexuslink.model.altermodel.OnCallBackListener listener) {
+    public void changeUserInfo(int uId, final char uGender, final int uHeight, final int uWeight, final com.nexuslink.model.altermodel.OnCallBackListener listener) {
         ApiUtil.getInstance(Constants.BASE_URL)
-                .changeUserInfo(uId,uGender,(int)uHeight,(int)uWeight)
+                .changeUserInfo(uId,uGender,uHeight,uWeight)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ChangeInfo>() {
@@ -69,6 +87,12 @@ public class AlterModelImpl implements AlterModel {
                     @Override
                     public void onNext(ChangeInfo changeInfo) {
                         listener.onSucceed(changeInfo);
+                        UserDao userDao = BaseApplication.getDaosession().getUserDao();
+                        User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
+                        user.setUGender(String.valueOf(uGender));
+                        user.setUWeight(uWeight);
+                        user.setUHeight(uHeight);
+                        userDao.update(user);
                     }
                 });
     }

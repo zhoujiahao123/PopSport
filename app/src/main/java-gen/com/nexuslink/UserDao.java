@@ -28,8 +28,8 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property UName = new Property(2, String.class, "uName", false, "U_NAME");
         public final static Property UGender = new Property(3, String.class, "uGender", false, "U_GENDER");
         public final static Property UImg = new Property(4, String.class, "uImg", false, "U_IMG");
-        public final static Property UHeight = new Property(5, Float.class, "uHeight", false, "U_HEIGHT");
-        public final static Property UWeight = new Property(6, Float.class, "uWeight", false, "U_WEIGHT");
+        public final static Property UHeight = new Property(5, Integer.class, "uHeight", false, "U_HEIGHT");
+        public final static Property UWeight = new Property(6, Integer.class, "uWeight", false, "U_WEIGHT");
         public final static Property UFansNum = new Property(7, Integer.class, "uFansNum", false, "U_FANS_NUM");
         public final static Property UExp = new Property(8, Integer.class, "uExp", false, "U_EXP");
         public final static Property UHistoryStep = new Property(9, Long.class, "uHistoryStep", false, "U_HISTORY_STEP");
@@ -38,6 +38,7 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property UBestRecordMileage = new Property(12, Long.class, "uBestRecordMileage", false, "U_BEST_RECORD_MILEAGE");
         public final static Property UAchievements = new Property(13, String.class, "uAchievements", false, "U_ACHIEVEMENTS");
         public final static Property UFollowedNum = new Property(14, Integer.class, "uFollowedNum", false, "U_FOLLOWED_NUM");
+        public final static Property Already = new Property(15, Integer.class, "already", false, "ALREADY");
     };
 
 
@@ -58,8 +59,8 @@ public class UserDao extends AbstractDao<User, Long> {
                 "'U_NAME' TEXT," + // 2: uName
                 "'U_GENDER' TEXT," + // 3: uGender
                 "'U_IMG' TEXT," + // 4: uImg
-                "'U_HEIGHT' REAL," + // 5: uHeight
-                "'U_WEIGHT' REAL," + // 6: uWeight
+                "'U_HEIGHT' INTEGER," + // 5: uHeight
+                "'U_WEIGHT' INTEGER," + // 6: uWeight
                 "'U_FANS_NUM' INTEGER," + // 7: uFansNum
                 "'U_EXP' INTEGER," + // 8: uExp
                 "'U_HISTORY_STEP' INTEGER," + // 9: uHistoryStep
@@ -67,7 +68,8 @@ public class UserDao extends AbstractDao<User, Long> {
                 "'U_BEST_RECORD_STEP' INTEGER," + // 11: uBestRecordStep
                 "'U_BEST_RECORD_MILEAGE' INTEGER," + // 12: uBestRecordMileage
                 "'U_ACHIEVEMENTS' TEXT," + // 13: uAchievements
-                "'U_FOLLOWED_NUM' INTEGER);"); // 14: uFollowedNum
+                "'U_FOLLOWED_NUM' INTEGER," + // 14: uFollowedNum
+                "'ALREADY' INTEGER);"); // 15: already
     }
 
     /** Drops the underlying database table. */
@@ -106,14 +108,14 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindString(5, uImg);
         }
  
-        Float uHeight = entity.getUHeight();
+        Integer uHeight = entity.getUHeight();
         if (uHeight != null) {
-            stmt.bindDouble(6, uHeight);
+            stmt.bindLong(6, uHeight);
         }
  
-        Float uWeight = entity.getUWeight();
+        Integer uWeight = entity.getUWeight();
         if (uWeight != null) {
-            stmt.bindDouble(7, uWeight);
+            stmt.bindLong(7, uWeight);
         }
  
         Integer uFansNum = entity.getUFansNum();
@@ -155,6 +157,11 @@ public class UserDao extends AbstractDao<User, Long> {
         if (uFollowedNum != null) {
             stmt.bindLong(15, uFollowedNum);
         }
+ 
+        Integer already = entity.getAlready();
+        if (already != null) {
+            stmt.bindLong(16, already);
+        }
     }
 
     /** @inheritdoc */
@@ -172,8 +179,8 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // uName
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // uGender
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // uImg
-            cursor.isNull(offset + 5) ? null : cursor.getFloat(offset + 5), // uHeight
-            cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6), // uWeight
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // uHeight
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // uWeight
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // uFansNum
             cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // uExp
             cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // uHistoryStep
@@ -181,7 +188,8 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11), // uBestRecordStep
             cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12), // uBestRecordMileage
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // uAchievements
-            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14) // uFollowedNum
+            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // uFollowedNum
+            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15) // already
         );
         return entity;
     }
@@ -194,8 +202,8 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setUName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setUGender(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setUImg(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setUHeight(cursor.isNull(offset + 5) ? null : cursor.getFloat(offset + 5));
-        entity.setUWeight(cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6));
+        entity.setUHeight(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setUWeight(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setUFansNum(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setUExp(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
         entity.setUHistoryStep(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
@@ -204,6 +212,7 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setUBestRecordMileage(cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12));
         entity.setUAchievements(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setUFollowedNum(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
+        entity.setAlready(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
      }
     
     /** @inheritdoc */

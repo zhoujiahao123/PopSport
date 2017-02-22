@@ -14,7 +14,7 @@ import com.nexuslink.ui.fragment.MyFriendFragment;
  */
 
 public class FriendFragmenPagerAdapter extends FragmentPagerAdapter {
-    private static final String[] mTitle = {"圈子","好友"};
+    private static final String[] mTitle = {"结果","好友"};
     public FriendFragmenPagerAdapter(FragmentManager fm) {
         super(fm);
     }
