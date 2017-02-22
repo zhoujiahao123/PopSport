@@ -39,7 +39,7 @@ public class RunHouseInfo {
         private String startTime;
         private int runType;
         private String runDetail;
-        private int runHouseId;
+        private long runHouseId;
 
         public String getCurrentPersons() {
             return currentPersons;
@@ -57,7 +57,7 @@ public class RunHouseInfo {
             this.runDetail = runDetail;
         }
 
-        public int getRunHouseId() {
+        public long getRunHouseId() {
             return runHouseId;
         }
 

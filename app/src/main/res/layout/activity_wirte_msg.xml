@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_wirte_msg"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context="com.nexuslink.ui.activity.WriteMsgActivity">
+
+    <!--toolbar-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:background="@color/ufo_green"
+            android:id="@+id/toolbar_write_msg"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+        <TextView
+            android:text="编写话题"
+            android:textColor="@color/ghost_white"
+            android:textSize="@dimen/font_large"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <!--内容编辑区-->
+    <EditText
+        android:id="@+id/msg_input_edit"
+        android:gravity="start"
+        android:paddingTop="@dimen/spacing_normal"
+        android:paddingLeft="@dimen/spacing_tiny"
+        android:textSize="@dimen/msg_text_size"
+        android:hint="书写您今天的心情吧"
+        android:background="@color/ghost_white"
+        android:backgroundTint="@color/ghost_white"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <include
+        layout="@layout/divider_line"
+        ></include>
+
+    <LinearLayout
+        android:id="@+id/write_images_linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@color/ghost_white"
+            android:id="@+id/image_linear1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+
+                android:scaleType="center"
+                android:id="@+id/add_image"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:background="@drawable/add_background"
+                android:src="@drawable/camera"
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        layout="@layout/divider_line"
+        ></include>
+
+</LinearLayout>

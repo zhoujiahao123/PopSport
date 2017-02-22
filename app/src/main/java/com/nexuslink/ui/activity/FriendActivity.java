@@ -6,56 +6,56 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Toolbar;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
-import com.nexuslink.app.BaseActivity;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.friendmodel.FriendModelImpl;
-import com.nexuslink.presenter.FriendPresenter;
-import com.nexuslink.presenter.FriendPresenterImpl;
+import com.nexuslink.presenter.friendpresenter.FriendPresenter;
+import com.nexuslink.presenter.friendpresenter.FriendPresenterImpl;
 import com.nexuslink.ui.adapter.FriendFragmenPagerAdapter;
 import com.nexuslink.ui.adapter.FriendRecyclerViewAdapter;
 import com.nexuslink.ui.view.FriendView;
-import com.nexuslink.util.IdUtil;
-import com.nexuslink.util.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 /**
  * Created by ASUS-NB on 2017/1/14.
  */
 
-public class FriendActivity extends SwipeBackActivity implements FriendView,FriendRecyclerViewAdapter.CallbackListener{
+public class FriendActivity extends SwipeBackActivity implements FriendView, FriendRecyclerViewAdapter.CallbackListener {
     private static FriendActivity activity;
-    private FriendFragmenPagerAdapter adapter;
-    private FriendPresenter friendPresenter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private FriendFragmenPagerAdapter adapter;
+    private FriendPresenter friendPresenter;
+
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
     private FloatingSearchView searchView;
-    public static FriendActivity getFriendActivity(){
+
+    public static FriendActivity getFriendActivity() {
         return activity;
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
-        Log.e("TAG","FriednActiivyt");
+        Log.e("TAG", "FriednActiivyt");
         activity = this;
         ButterKnife.bind(this);
         initView();
@@ -70,7 +70,6 @@ public class FriendActivity extends SwipeBackActivity implements FriendView,Frie
     protected void onResume() {
         super.onResume();
         FriendRecyclerViewAdapter.setCallbackListener(this);
-        showUserfragment();
     }
 
     @Override
@@ -79,16 +78,15 @@ public class FriendActivity extends SwipeBackActivity implements FriendView,Frie
     }
 
     @Override
-    public void searchUser(int type,String uName) {
-        friendPresenter.searchUser(type,uName);
+    public void searchUser(int type, String uName) {
+        friendPresenter.searchUser(type, uName);
         XLog.e("searchUser");
     }
 
     @Override
     public void showUserfragment() {
-        Log.e("AG","showUserFragment");
-        viewpager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewpager);
+        Log.e("AG", "showUserFragment");
+
     }
 
     @Override
@@ -104,34 +102,46 @@ public class FriendActivity extends SwipeBackActivity implements FriendView,Frie
     @Override
     public void showSearchUser(SearchInfo searchInfo) {
         XLog.e(searchInfo.getUsers().get(0).getFId());
-        Intent intent = new Intent(this,FriendInfoActivity.class);
-        intent.putExtra("uId",searchInfo.getUsers().get(0).getFId());
-        intent.putExtra("uName",searchInfo.getUsers().get(0).getFName());
-        intent.putExtra("uImg",searchInfo.getUsers().get(0).getFImg());
-        startActivity(intent);
+//        Intent intent = new Intent(this, FriendInfoActivity.class);
+//        intent.putExtra("uId", searchInfo.getUsers().get(0).getFId());
+//        intent.putExtra("uName", searchInfo.getUsers().get(0).getFName());
+//        intent.putExtra("uImg", searchInfo.getUsers().get(0).getFImg());
+//        startActivity(intent);
+        EventBus.getDefault().post(searchInfo);
+        adapter = new FriendFragmenPagerAdapter(getSupportFragmentManager(),searchInfo);
+        viewpager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewpager);
     }
 
     private void initView() {
-        tabLayout.setBackgroundColor(getResources().getColor(R.color.gray_light_more));
-        tabLayout.setTabTextColors(getResources().getColor(R.color.yellow_light),getResources().getColor(R.color.yellow_normal_light));
-        adapter = new FriendFragmenPagerAdapter(getSupportFragmentManager());
-        Log.e(Constants.TAG,"initView");
-        friendPresenter = new FriendPresenterImpl(new FriendModelImpl(),this);
+        setActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.turn_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        tabLayout.setBackgroundColor(getResources().getColor(R.color.white_light));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.yellow_normal_light), getResources().getColor(R.color.yellow_normal_light));
+        Log.e(Constants.TAG, "initView");
+        friendPresenter = new FriendPresenterImpl(new FriendModelImpl(), this);
         searchView = (FloatingSearchView) findViewById(R.id.group_search);
         searchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
                 XLog.e("点击搜索");
-                if(item.getItemId()==R.id.search){
-                    searchUser(1,searchView.getQuery());
+                if (item.getItemId() == R.id.search) {
+                    searchUser(1, searchView.getQuery());
                     searchView.clearQuery();
                     searchView.setSearchFocused(false);
                 }
             }
         });
     }
+
     @Override
-    public void onItemClicked(int uId,int fId) {
+    public void onItemClicked(int uId, int fId) {
 //        friendPresenter.followOne(uId, fId);
     }
 }

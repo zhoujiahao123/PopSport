@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_weight="10"
+    android:gravity="center"
+    android:padding="@dimen/spacing_huge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.wx.wheelview.widget.WheelView
+        android:layout_gravity="center"
+        android:id="@+id/time_wheel_hour"
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        style="@style/CreateRUnHouseTextStyle"
+        android:text="小时"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <com.wx.wheelview.widget.WheelView
+        android:id="@+id/time_wheel_minute"
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+    </com.wx.wheelview.widget.WheelView>
+    <TextView
+        style="@style/CreateRUnHouseTextStyle"
+        android:layout_weight="1"
+        android:text="分钟"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -8,11 +8,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.nexuslink.ui.view.view.headerview.LoadingView
+        android:id="@+id/run_house_footer"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:loading_renderer="SwapLoadingRenderer"
-        >
+        app:loading_renderer="SwapLoadingRenderer">
     </com.nexuslink.ui.view.view.headerview.LoadingView>
 
 </LinearLayout>

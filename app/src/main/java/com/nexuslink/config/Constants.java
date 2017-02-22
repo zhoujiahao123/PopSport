@@ -18,4 +18,7 @@ public class Constants {
     public static final String PHOTO_BASE_URL = "http://120.77.87.78:8080/arti-sports/image/";
     //天气请求的地址
     public static final String WEATHER_BASE_URL="http://op.juhe.cn/";
+    //===============================================viewpager image显示常量
+    public static final String IMAGE_URL = "image_url";
 }
+

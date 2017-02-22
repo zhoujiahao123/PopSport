@@ -11,8 +11,8 @@ public class User {
     private String uName;
     private String uGender;
     private String uImg;
-    private Float uHeight;
-    private Float uWeight;
+    private Integer uHeight;
+    private Integer uWeight;
     private Integer uFansNum;
     private Integer uExp;
     private Long uHistoryStep;
@@ -21,6 +21,7 @@ public class User {
     private Long uBestRecordMileage;
     private String uAchievements;
     private Integer uFollowedNum;
+    private Integer already;
 
     public User() {
     }
@@ -29,9 +30,8 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, Integer uid, String uName, String uGender, String uImg, Float uHeight, Float uWeight, Integer uFansNum, Integer uExp, Long uHistoryStep, Long uHistoryMileage, Long uBestRecordStep, Long uBestRecordMileage, String uAchievements, Integer uFollowedNum) {
+    public User(Long id, Integer uid, String uName, String uGender, String uImg, Integer uHeight, Integer uWeight, Integer uFansNum, Integer uExp, Long uHistoryStep, Long uHistoryMileage, Long uBestRecordStep, Long uBestRecordMileage, String uAchievements, Integer uFollowedNum, Integer already) {
         this.id = id;
-
         this.uid = uid;
         this.uName = uName;
         this.uGender = uGender;
@@ -46,6 +46,7 @@ public class User {
         this.uBestRecordMileage = uBestRecordMileage;
         this.uAchievements = uAchievements;
         this.uFollowedNum = uFollowedNum;
+        this.already = already;
     }
 
     public Long getId() {
@@ -55,13 +56,14 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Integer getUid() {
         return uid;
     }
 
     public void setUid(Integer uid) {
-        this.uid = uid;}
-
+        this.uid = uid;
+    }
 
     public String getUName() {
         return uName;
@@ -87,19 +89,19 @@ public class User {
         this.uImg = uImg;
     }
 
-    public Float getUHeight() {
+    public Integer getUHeight() {
         return uHeight;
     }
 
-    public void setUHeight(Float uHeight) {
+    public void setUHeight(Integer uHeight) {
         this.uHeight = uHeight;
     }
 
-    public Float getUWeight() {
+    public Integer getUWeight() {
         return uWeight;
     }
 
-    public void setUWeight(Float uWeight) {
+    public void setUWeight(Integer uWeight) {
         this.uWeight = uWeight;
     }
 
@@ -165,6 +167,14 @@ public class User {
 
     public void setUFollowedNum(Integer uFollowedNum) {
         this.uFollowedNum = uFollowedNum;
+    }
+
+    public Integer getAlready() {
+        return already;
+    }
+
+    public void setAlready(Integer already) {
+        this.already = already;
     }
 
 }

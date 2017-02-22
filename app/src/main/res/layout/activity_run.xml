@@ -8,8 +8,8 @@
     tools:context="com.nexuslink.ui.activity.RunActivity">
 
     <LinearLayout
-        android:paddingTop="30dp"
-        android:background="@color/blue_normal"
+        android:paddingTop="10dp"
+        android:background="@color/dark_imperial_blue"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

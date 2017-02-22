@@ -15,6 +15,7 @@ import com.nexuslink.R;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.app.BaseFragment;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.ui.adapter.FriendFragmenPagerAdapter;
 import com.nexuslink.ui.adapter.FriendRecyclerViewAdapter;
 import com.nexuslink.ui.view.AllUserView;
@@ -31,8 +32,9 @@ public class AllUserFragment extends BaseFragment implements AllUserView {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     private FriendRecyclerViewAdapter adapter;
+    SearchInfo searchInfo;
 
-    public static AllUserFragment getInstance(){
+    public static AllUserFragment getInstance(SearchInfo searchInfo){
         AllUserFragment fragment = new AllUserFragment();
         return fragment;
     }
@@ -42,7 +44,7 @@ public class AllUserFragment extends BaseFragment implements AllUserView {
         View view = inflater.inflate(R.layout.fragment_alluser, container, false);
         ButterKnife.bind(this, view);
         Log.e(Constants.TAG,"AllUserFragment");
-        adapter = new FriendRecyclerViewAdapter(getActivity());
+        adapter = new FriendRecyclerViewAdapter(getActivity(),searchInfo);
         recyclerview.setAdapter(adapter);
         recyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
         recyclerview.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));

@@ -9,5 +9,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="TranslucentBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@color/blue</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
 </resources>

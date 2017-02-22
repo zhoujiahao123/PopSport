@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,6 +44,7 @@ import okhttp3.Response;
 
 public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoView {
 
+    private final static int BACKGROUD=1;
     @BindView(R.id.first)
     LinearLayout first;
     @BindView(R.id.friend_head_background)
@@ -57,6 +60,18 @@ public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoV
     private FriendInfoPresenter presenter;
     private String headPath;
     private String nickName;
+
+    private InputStream inputStream;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what==BACKGROUD){
+                doBlur(inputStream);
+            }
+
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +132,10 @@ public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoV
             public void onResponse(Call call, Response response) throws IOException {
                 XLog.e("成功");
                 if(response.isSuccessful()){
-                    doBlur(response.body().byteStream());
+                    inputStream = response.body().byteStream();
+                    Message message = new Message();
+                    message.what=BACKGROUD;
+                    handler.sendMessage(message);
                 }
             }
         });

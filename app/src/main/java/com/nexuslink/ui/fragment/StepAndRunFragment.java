@@ -11,12 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.nexuslink.R;
 import com.nexuslink.ui.activity.WeatherActivity;
@@ -83,21 +79,7 @@ public class StepAndRunFragment extends Fragment implements View.OnClickListener
         mToolbar.setNavigationIcon(R.drawable.weather);
         mToolbar.setNavigationOnClickListener(this);
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.step_fragment_menu,menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.step_menu_setting){
-            Toast.makeText(activity, "菜单设置", Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
+    
 
 
     @Override

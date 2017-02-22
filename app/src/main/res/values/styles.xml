@@ -9,20 +9,16 @@
         <item name="android:background">@color/blue_normal</item>
     </style>
     <style name="image_style">
-        <item name="android:src">@drawable/running</item>
-        <item name="android:paddingTop">@dimen/image_pad_top</item>
+        <item name="android:src">@drawable/pop_log2</item>
+        <item name="android:layout_marginTop">@dimen/image_pad_top</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
     <style name="image_name">
-        <item name="android:src">@drawable/username</item>
-        <item name="android:paddingLeft">@dimen/spacing_normal</item>
-        <item name="android:paddingRight">@dimen/spacing_normal</item>
+        <item name="android:src">@drawable/userlogo1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="image_password">
-        <item name="android:src">@drawable/password</item>
-        <item name="android:paddingLeft">@dimen/spacing_normal</item>
-        <item name="android:paddingRight">@dimen/spacing_small</item>
+        <item name="android:src">@drawable/passwordlogo1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="layout_input">
@@ -142,6 +138,54 @@
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
+    <style name="CustomActionBarTheme" parent="@style/AppTheme">
+        <item name="android:actionBarSize">45dp</item>
+        <item name="actionBarSize">45dp</item>
+    </style>
+    <style name="RunActivityActionBarTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/dark_imperial_blue</item>
+    </style>
+    <!--创建跑房中的文字style-->
+    <style name="CreateRUnHouseTextStyle">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/two_class_text</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+    <!--toolbar textview style-->
+    <style name="ToolbarTextViewStyle">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textColor">@color/ghost_white</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
 
+    <!--图片详情-->
+    <style name="AppTheme.ActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">#fff</item>
+        <item name="actionMenuTextAppearance">@style/AppTheme.actionMenuTextSize</item>
+    </style>
 
-</resources>
+    <style name="AppTheme.actionMenuTextSize" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    //我的任务
+    <style name="TaskStyleTitle">
+    <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+    <item name="android:layout_marginTop">@dimen/spacing_normal</item>
+    <item name="android:textSize">@dimen/font_large</item>
+    <item name="android:textColor">@color/white_light</item>
+</style>
+
+    <style name="TaskStyleDetail">
+        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+        <item name="android:layout_marginTop">@dimen/spacing_small</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/white_light</item>
+    </style>
+
+    <style name="CustomLineColor" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/blue</item>
+    </style>
+    </resources>

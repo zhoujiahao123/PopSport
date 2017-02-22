@@ -9,7 +9,7 @@ import com.nexuslink.model.BaseModel;
 public interface AlterModel extends BaseModel {
     void getUserInfo(int uId, com.nexuslink.model.altermodel.OnCallBackListener listener);
 
-    void changeUserInfo(int uId, char uGender, float uHeight, float uWeight, com.nexuslink.model.altermodel.OnCallBackListener listener);
+    void changeUserInfo(int uId, char uGender, int uHeight, int uWeight, com.nexuslink.model.altermodel.OnCallBackListener listener);
 
     void changeNickName(int uId, String uName, com.nexuslink.model.altermodel.OnCallBackListener listener);
 

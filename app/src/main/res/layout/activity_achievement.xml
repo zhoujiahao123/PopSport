@@ -15,7 +15,7 @@
         </Toolbar>
 
         <TextView
-            android:text="我的成就"
+            android:text="荣誉殿堂"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_larger"

@@ -15,6 +15,9 @@
     <color name="yellow_normal_light">#FF9966</color>
     <color name="colorControlNormal">#FF78909C</color>
 
+    <color name="blue">#1f65f1</color>
+    <color name="red">#ef4646</color>
+    <color name="yellow">#f59803</color>
     <color name="green_light">#5bed79</color>
 
     <color name="gray_dark">#2C3E50</color>
@@ -23,9 +26,12 @@
     <color name="blue_light">#b9d8ed</color>
     <color name="blue_dark">#29BDB9</color>
 
+    <color name="divider_line">#eeeeee</color>
     <color name="one_class_text">#222222</color>
     <color name="two_class_text">#686868</color>
+    <color name="three_class_text">#c9c9c9</color>
     <color name="background_gray">#eeeeee</color>
+    <color name="background_color">#f8f8f8</color>
 
     <color name="tab_text_sel">#34C464</color>
     <color name="tab_text_unsel">#9A9A9A</color>
@@ -36,4 +42,9 @@
     <color name="cyan">#01BAFF</color>
     <color name="ghost_white">#FBFBFF</color>
     <color name="spanish_gray">#9A9A9A</color>
+    <!--tablayout自定义颜色-->
+    <color name="tab_unsel">#f1f1f1</color>
+    <color name="tab_sel">#34c464</color>
+
+    <color name="tab_text_color">#8e8e8e</color>
 </resources>

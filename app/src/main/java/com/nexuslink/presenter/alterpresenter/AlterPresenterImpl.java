@@ -29,7 +29,7 @@ public class AlterPresenterImpl extends AlterPresenter implements OnCallBackList
     }
 
     @Override
-    public void changeUserInfo(int uId,char uGender, float uHeight, float uWeight) {
+    public void changeUserInfo(int uId,char uGender, int uHeight, int uWeight) {
         model.changeUserInfo(uId,uGender,uHeight,uWeight,this);
     }
 

@@ -11,11 +11,13 @@ public final class LoadingRendererFactory {
 
     static {
         //circle rotate
-
+        LOADING_RENDERERS.put(0, MaterialLoadingRenderer.class);
+        LOADING_RENDERERS.put(3, GearLoadingRenderer.class);
         //circle jump
         LOADING_RENDERERS.put(4, SwapLoadingRenderer.class);
 
         LOADING_RENDERERS.put(6, DanceLoadingRenderer.class);
+
 
     }
 

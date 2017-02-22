@@ -13,6 +13,8 @@
  import com.umeng.socialize.PlatformConfig;
  import com.umeng.socialize.UMShareAPI;
 
+ import cn.alien95.resthttp.request.RestHttp;
+
 
  /**
  * Created by ASUS-NB on 2016/12/17.
@@ -43,6 +45,8 @@ public class BaseApplication extends Application {
                         .build());
         //创建数据库
         db = new DaoMaster.DevOpenHelper(mContext,"PopSport",null).getWritableDatabase();
+        //舒适化图片加载库
+        RestHttp.initialize(this);
     }
     /*
     提供全局context
@@ -52,14 +56,16 @@ public class BaseApplication extends Application {
     }
 
      public static DaoSession getDaosession(){
-         DaoSession daoSession;
-         DaoMaster daoMaster;
-         DaoMaster.DevOpenHelper helper;
-         SQLiteDatabase database;
-         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
-         database = helper.getWritableDatabase();
-         daoMaster = new DaoMaster(database);
-         daoSession = daoMaster.newSession();
+
+//         DaoSession daoSession;
+//         DaoMaster daoMaster;
+//         DaoMaster.DevOpenHelper helper;
+//         SQLiteDatabase database;
+//         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
+//         database = helper.getWritableDatabase();
+//         daoMaster = new DaoMaster(database);
+//         daoSession = daoMaster.newSession();
+         DaoSession daoSession = new DaoMaster(db).newSession();
          return daoSession;
      }
 }

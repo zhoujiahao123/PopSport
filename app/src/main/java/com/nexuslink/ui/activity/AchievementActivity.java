@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toolbar;
 
 import com.nexuslink.R;
+import com.nexuslink.model.achievementmodel.OnCallBackListener;
 import com.nexuslink.ui.adapter.AchievementRecyclerViewAdapter;
 import com.nexuslink.util.DividerItemDecoration;
 
@@ -19,7 +20,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  * Created by ASUS-NB on 2017/2/13.
  */
 
-public class AchievementActivity extends SwipeBackActivity {
+public class AchievementActivity extends SwipeBackActivity implements OnCallBackListener{
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.toolbar)
@@ -32,14 +33,11 @@ public class AchievementActivity extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievement);
         ButterKnife.bind(this);
-        initView();
+        adapter = new AchievementRecyclerViewAdapter(this,this);
     }
 
     private void initView() {
-        adapter = new AchievementRecyclerViewAdapter(this);
-        recyclerview.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-        recyclerview.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL_LIST));
+        recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerview.setAdapter(adapter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setActionBar(toolbar);
@@ -52,5 +50,10 @@ public class AchievementActivity extends SwipeBackActivity {
             });
         }
         getActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    @Override
+    public void onSucceed() {
+        initView();
     }
 }
