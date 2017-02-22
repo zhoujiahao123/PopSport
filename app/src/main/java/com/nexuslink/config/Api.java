@@ -1,24 +1,30 @@
 package com.nexuslink.config;
 
 
-
-import com.nexuslink.User;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
 import com.nexuslink.model.data.ChangeInfoPassword;
+import com.nexuslink.model.data.CommentInfo;
+import com.nexuslink.model.data.CommentResult;
+import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
+import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.data.TaskFlag;
 import com.nexuslink.model.data.UIdInfo;
+import com.nexuslink.model.data.UpLoadUserImageResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -54,11 +60,53 @@ public interface Api {
     @POST("user/getInfo")
     Observable<UserInfo> getUserInfo(@Field("uId")int uId);
 
+    //更改头像
+    @Multipart
+    @POST("img/changeImg")
+    Observable<UpLoadUserImageResult> changUserImage(@Query("uId") int uerId, @Part("uImg\"; filename=\"userImage.jpg\"") RequestBody file);
+
+    //发表小话题
+    //还差图片
+    @FormUrlEncoded
+    @POST("article/publish")
+    Observable<Integer> publishArtice(@Field("uId") int userId, @Field("aText") String text);
+
+
+    //获取话题单一内容
+    @FormUrlEncoded
+    @POST("article/getOne")
+    Observable<CommunityInfo> getArticle(@Field("uId") int userId, @Field("aId") int articleId);
+
+    //获取多话题内容
+    @FormUrlEncoded
+    @POST("article/getAll")
+    Observable<CommunityInfo> getArticles(@Field("uId") int userId,@Field("aId") int articleId);
+
+    //评论话题
+    @FormUrlEncoded
+    @POST("article/comment")
+    Observable<CommentResult> postComment(@Field("uId") int userId, @Field("aId") int articleId, @Field("aComment") String comment);
+
+    //查看某个话题的评论
+    @FormUrlEncoded
+    @POST("article/getComment")
+    Observable<CommentInfo> getComment(@Field("aId") int articleId);
+
+    //为某个话题点赞
+    @FormUrlEncoded
+    @POST("article/like")
+    Observable<PostLikeResult> postLike(@Field("uId") int userId, @Field("aId") int articleId);
+
+    //取消点赞
+    @FormUrlEncoded
+    @POST("article/dislike")
+    Observable<Integer> postDisLike(@Field("uId") int userId,@Field("aId") int articleId);
+
     //修改用户的个人信息
     @FormUrlEncoded
     @POST("user/changeInfo")
-    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId,@Field("uGender")char uGender,@Field("uHeight")int
-            uHeight,@Field("uWeight")int uWeight);
+    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId, @Field("uGender")char uGender, @Field("uHeight")int
+            uHeight, @Field("uWeight")int uWeight);
 
     //修改用户的头像
     @FormUrlEncoded
@@ -68,21 +116,22 @@ public interface Api {
     //搜索用户
     @FormUrlEncoded
     @POST("friend/search")
-    Observable<SearchInfo> searchUser(@Field("type")int type,@Field("keyword")String keyword);
+    Observable<SearchInfo> searchUser(@Field("type")int type, @Field("keyword")String keyword);
 
     //修改密码
     @FormUrlEncoded
     @POST("user/changePassword")
-    Observable<ChangeInfoPassword> changePassword(@Field("uId")int uId,@Field("uOldPassword")String uOldPassword,@Field("uNewPassword")String uNewPassword);
+    Observable<ChangeInfoPassword> changePassword(@Field("uId")int uId, @Field("uOldPassword")String uOldPassword, @Field("uNewPassword")String uNewPassword);
 
     //提交任务
     @FormUrlEncoded
     @POST("user/task")
-    Observable<TaskFlag> upLoadTask(@Field("uId")int uId,@Field("type")int type,@Field("taskNum")int taskNum);
+    Observable<TaskFlag> upLoadTask(@Field("uId")int uId, @Field("type")int type, @Field("taskNum")int taskNum);
 
     //注册新账号
     @FormUrlEncoded
     @POST("user/register")
     Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
                                         int uHeight,@Field("uWeight")int uWeight);
+
 }

@@ -20,7 +20,7 @@ public class User1 {
         private Long uHistoryMileage;
         private Long uBestRecordStep;
         private Long uBestRecordMileage;
-        private int[] uAchievements;
+        private Boolean[] uAchievements;
         private Integer uFollowedNum;
 
         public User1() {
@@ -30,7 +30,7 @@ public class User1 {
             this.id = id;
         }
 
-        public User1(Long id, Integer uid, String uName, String uGender, String uImg, Integer uHeight, Integer uWeight, Integer uFansNum, Integer uExp, Long uHistoryStep, Long uHistoryMileage, Long uBestRecordStep, Long uBestRecordMileage, int[] uAchievements, Integer uFollowedNum) {
+        public User1(Long id, Integer uid, String uName, String uGender, String uImg, Integer uHeight, Integer uWeight, Integer uFansNum, Integer uExp, Long uHistoryStep, Long uHistoryMileage, Long uBestRecordStep, Long uBestRecordMileage, Boolean[] uAchievements, Integer uFollowedNum) {
             this.id = id;
 
             this.uid = uid;
@@ -152,11 +152,11 @@ public class User1 {
             this.uBestRecordMileage = uBestRecordMileage;
         }
 
-        public int[] getUAchievements() {
+        public Boolean[] getUAchievements() {
             return uAchievements;
         }
 
-        public void setUAchievements(int[] uAchievements) {
+        public void setUAchievements(Boolean[] uAchievements) {
             this.uAchievements = uAchievements;
         }
 

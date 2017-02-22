@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.nexuslink.R;
 import com.nexuslink.ui.activity.ViewImageShowActivity;
 import com.nexuslink.ui.adapter.MultiAdapter;
 
@@ -118,7 +120,6 @@ public class MultiView extends ViewGroup {
                 height = width;
             }
         }
-
         childHeight = childWidth;
 
         /**
@@ -221,14 +222,16 @@ public class MultiView extends ViewGroup {
     public void setImages(List<String> data) {
         isImageURL = true;
         mData = data;
+        removeAllViews();
+
         if (data.size() > 9) {
             for (int i = 0; i < 9; i++) {  //添加9个item
-                addView(getImageView(data.get(i), i), i);
+                addView(_getImageView(data.get(i), i), i);
             }
             addOverNumView(9);  //添加第10个item，覆盖第9个item
         } else {
             for (int i = 0; i < data.size(); i++) {
-                addView(getImageView(data.get(i), i), i);
+                addView(_getImageView(data.get(i), i), i);
             }
         }
     }
@@ -348,6 +351,32 @@ public class MultiView extends ViewGroup {
 
         addView(mTextNum, position);
         Log.i(TAG, "添加最后一个view");
+    }
+
+    /**
+     * 通过Glide方案来实现
+     */
+    public ImageView _getImageView(String url,final int position){
+        ImageView img = new ImageView(getContext());
+        img.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        if(placeholder !=- 1){
+            img.setImageResource(R.drawable.bg_cloudy_night);
+            Glide.with(getContext()).load(url).into(img);
+        }else{
+            Glide.with(getContext()).load(url).into(img);
+        }
+        img.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ViewImageShowActivity.class);
+                intent.putExtra(ViewImageShowActivity.IMAGE_NUM, position);
+                intent.putExtra(ViewImageShowActivity.IMAGES_DATA_LIST, (Serializable) mData);
+                getContext().startActivity(intent);
+            }
+        });
+        return img;
+
     }
 
     //通过图片网络地址生成HttpImageView实例

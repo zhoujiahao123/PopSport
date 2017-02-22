@@ -96,7 +96,7 @@ public class StepService extends Service implements SensorEventListener {
     //===============================================通知相关
     private static final int NOTIFI_ID = 100;
     //格式管理
-    private DecimalFormat df = new DecimalFormat("#.0");
+    private DecimalFormat df = new DecimalFormat("#0.0");
 
 
     @Override
