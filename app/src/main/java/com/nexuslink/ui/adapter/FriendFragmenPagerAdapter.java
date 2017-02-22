@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.ui.fragment.AllUserFragment;
 import com.nexuslink.ui.fragment.MyFriendFragment;
 
@@ -15,15 +16,17 @@ import com.nexuslink.ui.fragment.MyFriendFragment;
 
 public class FriendFragmenPagerAdapter extends FragmentPagerAdapter {
     private static final String[] mTitle = {"结果","好友"};
-    public FriendFragmenPagerAdapter(FragmentManager fm) {
+    private SearchInfo searchInfo;
+    public FriendFragmenPagerAdapter(FragmentManager fm, SearchInfo searchInfo) {
         super(fm);
+        this.searchInfo = searchInfo;
     }
 
     @Override
     public android.support.v4.app.Fragment getItem(int position) {
         if(position==0){
             Log.e(Constants.TAG,"position=0");
-            return AllUserFragment.getInstance();
+            return AllUserFragment.getInstance(searchInfo);
         }
         Log.e(Constants.TAG,"position=1");
         return MyFriendFragment.getInstance();

@@ -23,6 +23,8 @@ import com.nexuslink.ui.adapter.FriendFragmenPagerAdapter;
 import com.nexuslink.ui.adapter.FriendRecyclerViewAdapter;
 import com.nexuslink.ui.view.FriendView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -105,6 +107,8 @@ public class FriendActivity extends SwipeBackActivity implements FriendView, Fri
 //        intent.putExtra("uName", searchInfo.getUsers().get(0).getFName());
 //        intent.putExtra("uImg", searchInfo.getUsers().get(0).getFImg());
 //        startActivity(intent);
+        EventBus.getDefault().post(searchInfo);
+        adapter = new FriendFragmenPagerAdapter(getSupportFragmentManager(),searchInfo);
         viewpager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewpager);
     }
@@ -120,7 +124,6 @@ public class FriendActivity extends SwipeBackActivity implements FriendView, Fri
         });
         tabLayout.setBackgroundColor(getResources().getColor(R.color.white_light));
         tabLayout.setTabTextColors(getResources().getColor(R.color.yellow_normal_light), getResources().getColor(R.color.yellow_normal_light));
-        adapter = new FriendFragmenPagerAdapter(getSupportFragmentManager());
         Log.e(Constants.TAG, "initView");
         friendPresenter = new FriendPresenterImpl(new FriendModelImpl(), this);
         searchView = (FloatingSearchView) findViewById(R.id.group_search);

@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.ui.activity.FriendActivity;
 import com.nexuslink.ui.activity.FriendInfoActivity;
 import com.nexuslink.util.CircleImageView;
@@ -22,6 +24,10 @@ import com.ufreedom.floatingview.Floating;
 import com.ufreedom.floatingview.FloatingBuilder;
 import com.ufreedom.floatingview.FloatingElement;
 import com.ufreedom.floatingview.effect.TranslateFloatingTransition;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by ASUS-NB on 2017/1/16.
@@ -33,6 +39,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
     private String mFollowed[]=new String[20];
     private String nickName[]={"周家豪0","周家豪1","周家豪2","周家豪3","周家豪4","周家豪5","周家豪6","周家豪7","周家豪8","周家豪9","周家豪10",
             "周家豪11","周家豪12","周家豪13","周家豪14","周家豪15","周家豪16","周家豪17","周家豪18","周家豪19"};
+    private SearchInfo searchInfo;
     public interface CallbackListener{
         void onItemClicked(int uId,int fId);
     }
@@ -40,8 +47,9 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
     public static void setCallbackListener(CallbackListener listener){
         mListener  = listener;
     }
-    public FriendRecyclerViewAdapter(Context mContext) {
+    public FriendRecyclerViewAdapter(Context mContext, SearchInfo searchInfo) {
         this.mContext = mContext;
+        EventBus.getDefault().register(this);
     }
 
 
@@ -54,16 +62,17 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
 
     @Override
     public int getItemCount() {
-        return 20;
+        return searchInfo.getUsers().size();
     }
 
     @Override
     public void onBindViewHolder(MyViewHodler holder, int position) {
         Log.e(Constants.TAG,"onBindViewHodler");
-        holder.tvName.setText(nickName[position]);
+        holder.tvName.setText(searchInfo.getUsers().get(position).getFName());
         Glide.with(mContext)
-                .load("http://ojd9gr1l7.bkt.clouddn.com/29well_physed-articleLarge_meitu_2.png")
+                .load(Constants.BASE_URL+searchInfo.getUsers().get(position).getFImg())
                 .into(holder.imageHead);
+        XLog.e(Constants.BASE_URL+searchInfo.getUsers().get(position).getFImg());
         holder.btnFollow.setText("关注");
         holder.btnFollow.setClickable(true);
         holder.btnFollow.setBackgroundResource(R.drawable.selector_button_follow);
@@ -124,5 +133,10 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
                     }
             });
         }
+    }
+    @Subscribe (threadMode = ThreadMode.MAIN)
+    public void receiveSearchInfo(SearchInfo searchInfo){
+        this.searchInfo = searchInfo;
+        EventBus.getDefault().unregister(this);
     }
 }
