@@ -14,6 +14,6 @@ public interface CommunityPresenter {
     void postDisLike(int userId,int articleId);
     void postComment(CommentsList commentsList, EditText input, LinearLayout linearLayout,int userId, int articleId, int pos);
     void onRefreshData(int userId);
-
+    void onLoadMore(int aId);
      void loadComment(CommentsList commentDetialLinear, int articleId, int pos);
 }

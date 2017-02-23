@@ -20,15 +20,12 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
-import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
 import com.nexuslink.ui.view.CommentsList;
-import com.nexuslink.ui.view.CommunityView;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.KeyBoardUtils;
-import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 import com.nexuslink.util.cache.DiskLruCacheHelper;
 
@@ -40,7 +37,7 @@ import java.util.List;
  * Created by 猿人 on 2017/2/8.
  */
 
-public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecyclerAdapter.CommunityViewHolder> implements CommunityView {
+public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecyclerAdapter.CommunityViewHolder> {
     //===============================================常量
     private static final String TAG = "CommunityRecycler";
     //===============================================数据
@@ -57,18 +54,14 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     //===============================================缓存类
     private DiskLruCacheHelper helper = BaseApplication.helper;
     //===============================================辅助变量
-    private List<Boolean> isFirstLoads = new ArrayList<>();
+    public List<Boolean> isFirstLoads = new ArrayList<>();
 
 
-    public CommunityRecyclerAdapter(Context context) {
+    public CommunityRecyclerAdapter(Context context,CommunityPresenter presenter) {
         this.mContext = context;
-        presenter = new CommunityPresenterImpl(this);
+        this.presenter = presenter;
         inflater = LayoutInflater.from(mContext);
-        //初始化时，需要进行刷新
-        presenter.onRefreshData(UserUtils.getUserId());
     }
-
-
 
 
     //用户头像点击接口
@@ -211,74 +204,59 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     /**
      * 增添数据接口
      */
-    public void addItems(int index,List<CommunityInfo.ArticlesBean> list){
+    public void addItems(List<CommunityInfo.ArticlesBean> list){
+        int index = data.size();
         data.addAll(index,list);
+        for(int i =0;i < list.size();i++){
+            isFirstLoads.add(i+index,true);
+        }
+        if(listener!=null){
+            listener.Completed();
+        }
         notifyDataSetChanged();
     }
-
+    //设置刷新回调接口
+    public interface onCompleteListener{
+        void Completed();
+        void Error(String msg);
+    }
+    private onCompleteListener listener;
+    public void setOnCompleteListener(onCompleteListener listener){
+        this.listener = listener;
+    }
+    /**
+     *
+     */
+    public List<CommunityInfo.ArticlesBean> getDatas(){
+        return data;
+    }
     /**
      * 设置数据
      */
-    public void setData(List<CommunityInfo.ArticlesBean> list){
+    public void setDatas(List<CommunityInfo.ArticlesBean> list){
         data.clear();
         data.addAll(list);
-        notifyDataSetChanged();
-    }
 
-
-    @Override
-    public void showSuccess(String str) {
-        ToastUtil.showToast(mContext,str);
-    }
-
-    @Override
-    public void showError(String str) {
-        ToastUtil.showToast(mContext,str);
-    }
-
-
-
-    @Override
-    public void clearInput(LinearLayout linearLayout,EditText input) {
-        input.setText("");
-        linearLayout.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void addMsgArticle(List<CommunityInfo.ArticlesBean> list) {
-        addItems(0,list);
-        //加载辅助变量
+        isFirstLoads.clear();
         for(int i =0;i<list.size();i++){
             isFirstLoads.add(i,true);
         }
+
+        if(listener !=null){
+            listener.Completed();
+        }
+
+        notifyDataSetChanged();
     }
 
-
-
-    @Override
-    public void setCommentsList(CommentsList commentsList,int articleId,List<CommentItemData> commentsLists) {
-        Log.i(TAG,"回调添加一条评论接口");
-        CommentsAdapter adapter = (CommentsAdapter) commentsList.getAdapter();
-        adapter.setDatas(commentsLists);
-    }
-
-    @Override
-    public void setCommentAdapter(CommentsList listView,int articleId,List<CommentItemData> list) {
-        CommentsAdapter adapter = new CommentsAdapter(list,mContext);
-        listView.setAdapter(adapter);
-    }
-
-
-    /**
-     * 增加点评量
-     * @param pos 指定是哪个话题的评论数量
-     */
-    @Override
-    public void addCommentNum(int pos) {
+    public void addCommentNum(int pos){
         int num = data.get(pos).getCommentNum();
         data.get(pos).setCommentNum(++num);
         notifyDataSetChanged();
     }
+
+
+
 
     public long getUserId(int pos){
         return data.get(pos).getUserId();

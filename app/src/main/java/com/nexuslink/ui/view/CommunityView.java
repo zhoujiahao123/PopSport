@@ -20,5 +20,8 @@ public interface CommunityView {
     void setCommentsList(CommentsList commentsList, int aId,List<CommentItemData> commentItemDatas);
     void setCommentAdapter(CommentsList commentListView, int aId, List<CommentItemData> list);
     void addCommentNum(int pos);
+    void showProgress();
+    void hideProgress();
+    void addCommunityItems(List<CommunityInfo.ArticlesBean> list);
 
 }

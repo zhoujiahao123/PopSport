@@ -108,24 +108,43 @@ public class CommunityPresenterImpl implements CommunityPresenter {
      */
     @Override
     public void onRefreshData(int userId) {
-
+        mCommunityView.showProgress();
         mCommunity.getArticles(userId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
+
                 mCommunityView.showSuccess("刷新成功");
+                mCommunityView.hideProgress();
                 mCommunityView.addMsgArticle((List<CommunityInfo.ArticlesBean>) obj);
             }
 
             @Override
             public void onError(Exception e) {
                 mCommunityView.showError("刷新失败,请重试");
+                mCommunityView.hideProgress();
                 e.printStackTrace();
             }
         });
     }
 
+    @Override
+    public void onLoadMore(int aId) {
+        mCommunity.loadMore(aId, new CallBackListener() {
+            @Override
+            public void onFinish(Object o) {
+                List<CommunityInfo.ArticlesBean> list = (List<CommunityInfo.ArticlesBean>) o;
+                if(list == null || list.size() == 0){
+                    mCommunityView.showSuccess("无更多话题");
+                }
+                mCommunityView.addCommunityItems((List<CommunityInfo.ArticlesBean>) o);
+            }
 
+            @Override
+            public void onError(Exception e) {
 
+            }
+        });
+    }
 
 
     /**
