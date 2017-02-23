@@ -99,12 +99,11 @@
 
 
 
-    <com.nexuslink.ui.view.linearlistview.LinearListView
+    <com.nexuslink.ui.view.CommentsList
         android:id="@+id/comment_detail_linear"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.nexuslink.ui.view.linearlistview.LinearListView>
+    </com.nexuslink.ui.view.CommentsList>
     <!--输入框-->
     <LinearLayout
         android:visibility="gone"

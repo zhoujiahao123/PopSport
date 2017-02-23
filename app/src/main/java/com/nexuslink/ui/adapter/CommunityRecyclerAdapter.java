@@ -1,6 +1,7 @@
 package com.nexuslink.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
@@ -19,10 +21,10 @@ import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
+import com.nexuslink.ui.view.CommentsList;
 import com.nexuslink.ui.view.CommunityView;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
-import com.nexuslink.ui.view.linearlistview.LinearListView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.KeyBoardUtils;
@@ -31,9 +33,7 @@ import com.nexuslink.util.UserUtils;
 import com.nexuslink.util.cache.DiskLruCacheHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -53,7 +53,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     //用于加载用户信息的presenter
     //控制键盘弹起落下变脸
     private boolean isOpen = false;
-    private Map<Integer,CommentAdapter> commentAdapterMap = new HashMap<>();
+
     //===============================================缓存类
     private DiskLruCacheHelper helper = BaseApplication.helper;
     //===============================================辅助变量
@@ -160,7 +160,9 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             }
         });
 
+
         //设置总评论区
+        holder.commentDetialLinear.setLayoutManager(new LinearLayoutManager(mContext));
          if(data.get(position).getCommentNum() > 0 &&
                  isFirstLoads.size() != 0 &&
                  isFirstLoads.get(position) == true) {
@@ -172,11 +174,9 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         }else{
              Log.i(TAG,"从缓存中调用");
              List<CommentItemData> commentItemDatas = helper.getAsSerializable(data.get(position).getArticleId()+"comments");
-//             CommentAdapter adapter = new CommentAdapter(mContext,commentItemDatas);
-//             holder.commentDetialLinear.setAdapter(null);
-//             holder.commentDetialLinear.setAdapter(adapter);
-//             commentAdapterMap.put(articlesBean.getArticleId(),adapter);
-             commentAdapterMap.get(data.get(position).getArticleId()).setDatas(commentItemDatas);
+             CommentsAdapter adapter = new CommentsAdapter(commentItemDatas,mContext);
+             //再次绑定
+             holder.commentDetialLinear.setAdapter(adapter);
         }
 
         //设置自我评论区
@@ -186,10 +186,9 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
                 Log.i(TAG,"进行评论");
                 KeyBoardUtils.closeKeybord(holder.commentInput,mContext);
                 //请求响应
-                Log.i(TAG,"aod"+articlesBean.getArticleId()+"");
-                presenter.postComment(holder.commentInput
+                Log.i(TAG,"aod"+data.get(position).getArticleId()+"");
+                presenter.postComment(holder.commentDetialLinear,holder.commentInput
                 ,holder.linearLayout,UserUtils.getUserId(),data.get(position).getArticleId(),position);
-
             }
         });
     }
@@ -211,8 +210,6 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
     /**
      * 增添数据接口
-     * @param index
-     * @param list
      */
     public void addItems(int index,List<CommunityInfo.ArticlesBean> list){
         data.addAll(index,list);
@@ -250,6 +247,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     @Override
     public void addMsgArticle(List<CommunityInfo.ArticlesBean> list) {
         addItems(0,list);
+        //加载辅助变量
         for(int i =0;i<list.size();i++){
             isFirstLoads.add(i,true);
         }
@@ -258,19 +256,16 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
 
     @Override
-    public void addOneComment(int articleId,String userName, String text) {
+    public void setCommentsList(CommentsList commentsList,int articleId,List<CommentItemData> commentsLists) {
         Log.i(TAG,"回调添加一条评论接口");
-        CommentItemData commentItemData = new CommentItemData(userName,text);
-        commentAdapterMap.get(articleId).addItem(commentItemData);
-
+        CommentsAdapter adapter = (CommentsAdapter) commentsList.getAdapter();
+        adapter.setDatas(commentsLists);
     }
 
     @Override
-    public void setCommentAdapter(LinearListView linearListView,int articleId,List<CommentItemData> list) {
-        CommentAdapter adapter = new CommentAdapter(mContext,list);
-        commentAdapterMap.put(articleId,adapter);
-        linearListView.setAdapter(null);
-        linearListView.setAdapter(adapter);
+    public void setCommentAdapter(CommentsList listView,int articleId,List<CommentItemData> list) {
+        CommentsAdapter adapter = new CommentsAdapter(list,mContext);
+        listView.setAdapter(adapter);
     }
 
 
@@ -304,7 +299,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         //输入框
         LinearLayout linearLayout;
         //评论区的内容
-        LinearListView commentDetialLinear;
+        CommentsList commentDetialLinear;
         private Button commentPost;
         public CommunityViewHolder(View itemView) {
             super(itemView);
@@ -318,7 +313,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             commentInput = (EditText) itemView.findViewById(R.id.input_comment);
             commentPost = (Button) itemView.findViewById(R.id.input_send_comment);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.comment_linear);
-            commentDetialLinear = (LinearListView) itemView.findViewById(R.id.comment_detail_linear);
+            commentDetialLinear = (CommentsList) itemView.findViewById(R.id.comment_detail_linear);
         }
     }
 

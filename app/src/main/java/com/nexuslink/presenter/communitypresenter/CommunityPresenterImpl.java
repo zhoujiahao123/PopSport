@@ -11,8 +11,8 @@ import com.nexuslink.model.communitymodel.CommunityModelImpl;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.ui.view.CommentsList;
 import com.nexuslink.ui.view.CommunityView;
-import com.nexuslink.ui.view.linearlistview.LinearListView;
 import com.nexuslink.util.UserUtils;
 import com.nexuslink.util.cache.DiskLruCacheHelper;
 
@@ -67,7 +67,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postComment( final EditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos)
+    public void postComment(final CommentsList commentsList, final EditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos)
     {
         if(!TextUtils.isEmpty(input.getText().toString())){
 
@@ -78,13 +78,14 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                     mCommunityView.addCommentNum(pos);
 
                     //刷新缓存
-                    List<CommentItemData> commentItemDatas = (List<CommentItemData>) helper.get(articleId+"comments");
+                    List<CommentItemData> commentItemDatas = helper.getAsSerializable(articleId+"comments");
+
                     helper.remove(articleId+"comments");
                     commentItemDatas.add(new CommentItemData(UserUtils.getUserName(),input.getText().toString()));
                     helper.put(articleId+"comments", (Serializable) commentItemDatas);
 
                     //回调接口
-                    mCommunityView.addOneComment(articleId, UserUtils.getUserName(),input.getText().toString());
+                    mCommunityView.setCommentsList(commentsList,articleId,commentItemDatas);
 
                     mCommunityView.clearInput(linearLayout,input);
 
@@ -131,11 +132,11 @@ public class CommunityPresenterImpl implements CommunityPresenter {
      * 加载评论
      */
     @Override
-    public void loadComment(final LinearListView commentDetialLinear, final int articleId, final int pos) {
+    public void loadComment(final CommentsList commentDetialLinear, final int articleId, final int pos) {
         mCommunity.getComments(articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
-                //根绝userId
+
                  List<CommentInfo.CommentsBean> commentsBean = (List<CommentInfo.CommentsBean>) obj;
                  List<CommentItemData> commentItemDatas = new ArrayList<CommentItemData>();
                 for(int i =0;i<commentsBean.size();i++){
