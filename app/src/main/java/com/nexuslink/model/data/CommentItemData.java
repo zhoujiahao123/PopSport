@@ -1,10 +1,13 @@
 package com.nexuslink.model.data;
 
+import java.io.Serializable;
+
 /**
  * Created by 猿人 on 2017/2/16.
  */
 
-public class CommentItemData {
+public class CommentItemData implements Serializable {
+    private static final long serialVersionUID = 3829399897837218973L;
     private String userName;
     private String commentText;
 

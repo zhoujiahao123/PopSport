@@ -37,6 +37,7 @@ public class LinearListView extends IcsLinearLayout {
 		@Override
 		public void onChanged() {
 			setupChildren();
+//			addOneItem();
 		}
 
 		@Override
@@ -256,8 +257,20 @@ public class LinearListView extends IcsLinearLayout {
 			if (mAreAllItemsSelectable || mAdapter.isEnabled(i)) {
 				child.setOnClickListener(new InternalOnClickListener(i));
 			}
-			addViewInLayout(child, -1, child.getLayoutParams(), true);
+			addViewInLayout(child, i, child.getLayoutParams(), true);
 		}
+		requestLayout();
+
+
+	}
+
+	private void addOneItem() {
+		int lastIndex = mAdapter.getCount()-1;
+		View child = mAdapter.getView(lastIndex,null,this);
+		if (mAreAllItemsSelectable || mAdapter.isEnabled(lastIndex)) {
+			child.setOnClickListener(new InternalOnClickListener(lastIndex));
+		}
+		addView(child);
 	}
 
 	/**

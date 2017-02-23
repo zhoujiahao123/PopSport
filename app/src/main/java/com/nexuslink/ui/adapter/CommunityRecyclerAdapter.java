@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
+import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
@@ -25,10 +25,10 @@ import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.linearlistview.LinearListView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.CircleImageView;
-import com.nexuslink.util.CommunityViewsLoadUtils;
 import com.nexuslink.util.KeyBoardUtils;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
+import com.nexuslink.util.cache.DiskLruCacheHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,18 +47,20 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     private List<CommunityInfo.ArticlesBean> data = new ArrayList<>() ;
     private Context mContext;
     private LayoutInflater inflater;
-    //单一信息
-    private CommunityInfo.ArticlesBean articlesBean;
+
     //用于加载总体
     private CommunityPresenter presenter;
     //用于加载用户信息的presenter
     //控制键盘弹起落下变脸
     private boolean isOpen = false;
     private Map<Integer,CommentAdapter> commentAdapterMap = new HashMap<>();
+    //===============================================缓存类
+    private DiskLruCacheHelper helper = BaseApplication.helper;
+    //===============================================辅助变量
+    private List<Boolean> isFirstLoads = new ArrayList<>();
 
 
     public CommunityRecyclerAdapter(Context context) {
-
         this.mContext = context;
         presenter = new CommunityPresenterImpl(this);
         inflater = LayoutInflater.from(mContext);
@@ -87,21 +89,24 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     public void onViewRecycled(CommunityViewHolder holder) {
         super.onViewRecycled(holder);
         Glide.clear(holder.userImage);
-        holder.userLevel.setText("");
-        holder.userName.setText("");
+        holder.commentDetialLinear.setAdapter(null);
     }
 
     @Override
     public void onBindViewHolder(final CommunityViewHolder holder, final int position) {
-        articlesBean = data.get(position);
 
         //进行用户相关信息的加载
-        Log.i(TAG,"加载:"+position);
-        //设置占位符
-        holder.userImage.setImageDrawable(null);
-        //为userInfo设置tag
-        presenter.loadUserInfo(holder.userImage,holder.userName,holder.userLevel,articlesBean.getUserId());
-
+        //设置发表话题人的相关信息
+        CommunityInfo.ArticlesBean.UserBeanBean user = data.get(position).getUserBean();
+        //设置头像
+        Glide.with(mContext).load(Constants.PHOTO_BASE_URL+user.getUImg())
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                //设置50%的缩略图
+                .thumbnail(0.5f)
+                .crossFade().into(holder.userImage);
+        //设置其他信息
+        holder.userName.setText(user.getUName());
+        holder.userLevel.setText("Lv."+UserUtils.getUserLevel(user.getUExp()));
         //回调点击接口
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,34 +118,35 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         });
 
         //话题信息 图片和文字
-        holder.mContent.setText(articlesBean.getText());
-        holder.imagesContent.setImages(getCommunityImages(articlesBean.getImages()));
+        holder.mContent.setText(data.get(position).getText());
+        holder.imagesContent.setImages(getCommunityImages(data.get(position).getImages()));
 
         //设置点赞
-        holder.likeView.setActivated(articlesBean.isLikeArticle());
-        holder.likeView.setNumber(articlesBean.getLikeNum());
+        holder.likeView.setActivated(data.get(position).isLikeArticle());
+        holder.likeView.setNumber(data.get(position).getLikeNum());
         holder.likeView.setCallback(new LikeView.SimpleCallback(){
                         @Override
                         public void activate(LikeView view) {
                             super.activate(view);
-                            presenter.postLike(articlesBean.getUserId(),articlesBean.getArticleId());
+                            presenter.postLike(data.get(position).getUserId(),data.get(position).getArticleId());
                         }
                         @Override
                         public void deactivate(LikeView view) {
                             super.deactivate(view);
-                            presenter.postDisLike(articlesBean.getUserId(),articlesBean.getArticleId());
+                            presenter.postDisLike(data.get(position).getUserId(),data.get(position).getArticleId());
                         }
                     }
         );
         //设置评论图标
         //评论区的个数用外部集合个数接口实现
-        holder.comment.setNumber(articlesBean.getCommentNum());
+        holder.comment.setNumber(data.get(position).getCommentNum());
         holder.comment.setGraphAdapter(CommentPathAdapter.getInstance());
         holder.comment.setCallback(new LikeView.SimpleCallback(){
             @Override
             public boolean onClick(LikeView view) {
                 if(!isOpen){
                     isOpen = true;
+
                     holder.linearLayout.setVisibility(View.VISIBLE);
                     holder.commentInput.requestFocus();
                     //弹起输入框
@@ -155,10 +161,22 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         });
 
         //设置总评论区
-        if(articlesBean.getCommentNum() > 0) {
-            presenter.loadComment(holder.commentDetialLinear, articlesBean.getArticleId(), position);
-        }else{
+         if(data.get(position).getCommentNum() > 0 &&
+                 isFirstLoads.size() != 0 &&
+                 isFirstLoads.get(position) == true) {
+             Log.i(TAG,"从网络中进行调用");
+            isFirstLoads.set(position,false);
+            presenter.loadComment(holder.commentDetialLinear, data.get(position).getArticleId(), position);
+        }else if(data.get(position).getCommentNum() <= 0){
             holder.commentDetialLinear.setVisibility(View.GONE);
+        }else{
+             Log.i(TAG,"从缓存中调用");
+             List<CommentItemData> commentItemDatas = helper.getAsSerializable(data.get(position).getArticleId()+"comments");
+//             CommentAdapter adapter = new CommentAdapter(mContext,commentItemDatas);
+//             holder.commentDetialLinear.setAdapter(null);
+//             holder.commentDetialLinear.setAdapter(adapter);
+//             commentAdapterMap.put(articlesBean.getArticleId(),adapter);
+             commentAdapterMap.get(data.get(position).getArticleId()).setDatas(commentItemDatas);
         }
 
         //设置自我评论区
@@ -167,14 +185,13 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             public void onClick(View v) {
                 Log.i(TAG,"进行评论");
                 KeyBoardUtils.closeKeybord(holder.commentInput,mContext);
-                //请求相应
-                presenter.postComment(articlesBean.getArticleId(),holder.commentInput
-                ,holder.linearLayout,UserUtils.getUserId(),articlesBean.getArticleId(),position);
+                //请求响应
+                Log.i(TAG,"aod"+articlesBean.getArticleId()+"");
+                presenter.postComment(holder.commentInput
+                ,holder.linearLayout,UserUtils.getUserId(),data.get(position).getArticleId(),position);
 
             }
         });
-
-
     }
 
 
@@ -202,6 +219,15 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         notifyDataSetChanged();
     }
 
+    /**
+     * 设置数据
+     */
+    public void setData(List<CommunityInfo.ArticlesBean> list){
+        data.clear();
+        data.addAll(list);
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public void showSuccess(String str) {
@@ -213,11 +239,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         ToastUtil.showToast(mContext,str);
     }
 
-    @Override
-    public String getInputComment(EditText input) {
-        return input.getText().toString();
 
-    }
 
     @Override
     public void clearInput(LinearLayout linearLayout,EditText input) {
@@ -228,29 +250,26 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     @Override
     public void addMsgArticle(List<CommunityInfo.ArticlesBean> list) {
         addItems(0,list);
-    }
-    @Override
-    public void loadUserInfo(ImageView imageView, TextView nameText, TextView levelText, String imageUrl, String userName, String userLevel) {
-
-       {
-            CommunityViewsLoadUtils.loadUserImage(mContext,imageView,imageUrl);
-            CommunityViewsLoadUtils.loadUserName(nameText,userName);
-            CommunityViewsLoadUtils.loadUserLevel(levelText,userLevel);
+        for(int i =0;i<list.size();i++){
+            isFirstLoads.add(i,true);
         }
-
     }
+
 
 
     @Override
     public void addOneComment(int articleId,String userName, String text) {
+        Log.i(TAG,"回调添加一条评论接口");
         CommentItemData commentItemData = new CommentItemData(userName,text);
         commentAdapterMap.get(articleId).addItem(commentItemData);
+
     }
 
     @Override
     public void setCommentAdapter(LinearListView linearListView,int articleId,List<CommentItemData> list) {
         CommentAdapter adapter = new CommentAdapter(mContext,list);
         commentAdapterMap.put(articleId,adapter);
+        linearListView.setAdapter(null);
         linearListView.setAdapter(adapter);
     }
 

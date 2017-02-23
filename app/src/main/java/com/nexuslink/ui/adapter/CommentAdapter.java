@@ -31,6 +31,12 @@ public class CommentAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void setDatas(List<CommentItemData> list){
+        mEvaluatereplysList.clear();
+        mEvaluatereplysList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         if (mEvaluatereplysList != null) {

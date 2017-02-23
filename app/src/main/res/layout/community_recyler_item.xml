@@ -97,6 +97,15 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+
+
+    <com.nexuslink.ui.view.linearlistview.LinearListView
+        android:id="@+id/comment_detail_linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.nexuslink.ui.view.linearlistview.LinearListView>
+    <!--输入框-->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/comment_linear"
@@ -126,12 +135,5 @@
             android:layout_width="0dp"
             android:layout_height="match_parent" />
     </LinearLayout>
-
-    <com.nexuslink.ui.view.linearlistview.LinearListView
-        android:id="@+id/comment_detail_linear"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.nexuslink.ui.view.linearlistview.LinearListView>
 
 </LinearLayout>

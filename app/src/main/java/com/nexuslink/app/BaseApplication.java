@@ -9,9 +9,12 @@
  import com.facebook.stetho.Stetho;
  import com.nexuslink.DaoMaster;
  import com.nexuslink.DaoSession;
+ import com.nexuslink.util.cache.DiskLruCacheHelper;
  import com.umeng.socialize.Config;
  import com.umeng.socialize.PlatformConfig;
  import com.umeng.socialize.UMShareAPI;
+
+ import java.io.IOException;
 
  import cn.alien95.resthttp.request.RestHttp;
 
@@ -29,6 +32,8 @@ public class BaseApplication extends Application {
         PlatformConfig.setSinaWeibo("4258197523", "30268867be9ea03cd1f41c8a93f8795f");    }
     //===============================================数据库
     public static  SQLiteDatabase db;
+     //===============================================缓存
+     public static DiskLruCacheHelper helper;
 
     public void onCreate() {
         super.onCreate();
@@ -47,6 +52,12 @@ public class BaseApplication extends Application {
         db = new DaoMaster.DevOpenHelper(mContext,"PopSport",null).getWritableDatabase();
         //舒适化图片加载库
         RestHttp.initialize(this);
+        //初始化缓存
+        try {
+            helper = new DiskLruCacheHelper(getContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     /*
     提供全局context
@@ -56,16 +67,8 @@ public class BaseApplication extends Application {
     }
 
      public static DaoSession getDaosession(){
-
-//         DaoSession daoSession;
-//         DaoMaster daoMaster;
-//         DaoMaster.DevOpenHelper helper;
-//         SQLiteDatabase database;
-//         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
-//         database = helper.getWritableDatabase();
-//         daoMaster = new DaoMaster(database);
-//         daoSession = daoMaster.newSession();
          DaoSession daoSession = new DaoMaster(db).newSession();
          return daoSession;
      }
+
 }

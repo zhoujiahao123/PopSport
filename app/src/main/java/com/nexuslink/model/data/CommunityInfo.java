@@ -29,10 +29,23 @@ public class CommunityInfo {
     }
 
     public static class ArticlesBean {
-
+        /**
+         * articleId : 13
+         * userId : 15
+         * userBean : {"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpg","uHeight":0,"uWeight":0,"uFansnum":0,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}
+         * text : 继续
+         * images : []
+         * commentNum : 3
+         * likeNum : 1
+         * lookNum : 0
+         * date : 2017-02-20
+         * time : 13:17:35
+         * likeArticle : true
+         */
 
         private int articleId;
         private int userId;
+        private UserBeanBean userBean;
         private String text;
         private int commentNum;
         private int likeNum;
@@ -56,6 +69,14 @@ public class CommunityInfo {
 
         public void setUserId(int userId) {
             this.userId = userId;
+        }
+
+        public UserBeanBean getUserBean() {
+            return userBean;
+        }
+
+        public void setUserBean(UserBeanBean userBean) {
+            this.userBean = userBean;
         }
 
         public String getText() {
@@ -120,6 +141,110 @@ public class CommunityInfo {
 
         public void setImages(List<String> images) {
             this.images = images;
+        }
+
+        public static class UserBeanBean {
+
+
+            private int uid;
+            private String uName;
+            private String uGender;
+            private String uImg;
+            private int uHeight;
+            private int uWeight;
+            private int uFansnum;
+            private int uExp;
+            private int uHistoryStep;
+            private int uHistoryMileage;
+            private Object uAchievements;
+
+            public int getUid() {
+                return uid;
+            }
+
+            public void setUid(int uid) {
+                this.uid = uid;
+            }
+
+            public String getUName() {
+                return uName;
+            }
+
+            public void setUName(String uName) {
+                this.uName = uName;
+            }
+
+            public String getUGender() {
+                return uGender;
+            }
+
+            public void setUGender(String uGender) {
+                this.uGender = uGender;
+            }
+
+            public String getUImg() {
+                return uImg;
+            }
+
+            public void setUImg(String uImg) {
+                this.uImg = uImg;
+            }
+
+            public int getUHeight() {
+                return uHeight;
+            }
+
+            public void setUHeight(int uHeight) {
+                this.uHeight = uHeight;
+            }
+
+            public int getUWeight() {
+                return uWeight;
+            }
+
+            public void setUWeight(int uWeight) {
+                this.uWeight = uWeight;
+            }
+
+            public int getUFansnum() {
+                return uFansnum;
+            }
+
+            public void setUFansnum(int uFansnum) {
+                this.uFansnum = uFansnum;
+            }
+
+            public int getUExp() {
+                return uExp;
+            }
+
+            public void setUExp(int uExp) {
+                this.uExp = uExp;
+            }
+
+            public int getUHistoryStep() {
+                return uHistoryStep;
+            }
+
+            public void setUHistoryStep(int uHistoryStep) {
+                this.uHistoryStep = uHistoryStep;
+            }
+
+            public int getUHistoryMileage() {
+                return uHistoryMileage;
+            }
+
+            public void setUHistoryMileage(int uHistoryMileage) {
+                this.uHistoryMileage = uHistoryMileage;
+            }
+
+            public Object getUAchievements() {
+                return uAchievements;
+            }
+
+            public void setUAchievements(Object uAchievements) {
+                this.uAchievements = uAchievements;
+            }
         }
     }
 }
