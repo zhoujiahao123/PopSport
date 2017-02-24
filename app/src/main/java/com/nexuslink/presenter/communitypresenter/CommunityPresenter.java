@@ -13,7 +13,7 @@ public interface CommunityPresenter {
     void postLike(int userId,int articleId);
     void postDisLike(int userId,int articleId);
     void postComment(CommentsList commentsList, EditText input, LinearLayout linearLayout,int userId, int articleId, int pos);
-    void onRefreshData(int userId);
+    void onRefreshData(int userId,boolean autoRefresh);
     void onLoadMore(int aId);
      void loadComment(CommentsList commentDetialLinear, int articleId, int pos);
 }

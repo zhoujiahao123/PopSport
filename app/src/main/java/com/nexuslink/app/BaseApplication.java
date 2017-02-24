@@ -1,22 +1,29 @@
  package com.nexuslink.app;
 
  import android.app.Application;
- import android.content.Context;
- import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 
- import com.elvishew.xlog.LogLevel;
- import com.elvishew.xlog.XLog;
- import com.facebook.stetho.Stetho;
- import com.nexuslink.DaoMaster;
- import com.nexuslink.DaoSession;
- import com.nexuslink.util.cache.DiskLruCacheHelper;
- import com.umeng.socialize.Config;
- import com.umeng.socialize.PlatformConfig;
- import com.umeng.socialize.UMShareAPI;
+import com.elvishew.xlog.LogLevel;
+import com.elvishew.xlog.XLog;
+import com.facebook.stetho.Stetho;
+import com.nexuslink.DaoMaster;
+import com.nexuslink.DaoSession;
+import com.nexuslink.util.GlideImageLoader;
+import com.nexuslink.util.cache.DiskLruCacheHelper;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
- import java.io.IOException;
+import java.io.IOException;
 
- import cn.alien95.resthttp.request.RestHttp;
+import cn.alien95.resthttp.request.RestHttp;
+import cn.finalteam.galleryfinal.CoreConfig;
+import cn.finalteam.galleryfinal.FunctionConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.ImageLoader;
+import cn.finalteam.galleryfinal.ThemeConfig;
 
 
  /**
@@ -58,6 +65,31 @@ public class BaseApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //初始化图片选择器
+       ThemeConfig GREEN = new ThemeConfig.Builder()
+                .setTitleBarBgColor(Color.rgb(0x4C, 0xAF, 0x50))
+                .setFabNornalColor(Color.rgb(0x4C, 0xAF, 0x50))
+                .setFabPressedColor(Color.rgb(0x38, 0x8E, 0x3C))
+                .setCheckSelectedColor(Color.rgb(0x4C, 0xAF, 0x50))
+                .setCropControlColor(Color.rgb(0x4C, 0xAF, 0x50))
+                .build();
+        //配置功能
+        FunctionConfig functionConfig = new FunctionConfig.Builder()
+                .setEnableCamera(true)
+                .setEnableEdit(true)
+                .setEnableCrop(true)
+                .setEnableRotate(true)
+                .setCropSquare(true)
+                .setEnablePreview(true)
+                .build();
+        //配置imageloader
+        ImageLoader imageloader = new GlideImageLoader();
+        //设置核心配置信息
+        CoreConfig coreConfig = new CoreConfig.Builder(getApplicationContext(), imageloader, GREEN)
+                .setFunctionConfig(functionConfig)
+                .build();
+        GalleryFinal.init(coreConfig);
+
     }
     /*
     提供全局context

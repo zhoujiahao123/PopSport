@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +34,9 @@ import com.nexuslink.ui.view.view.headerview.RunHouseHeader;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,6 +60,8 @@ public class CommunityFragment extends Fragment implements CommunityView {
     PtrFrameLayout ptrFrame;
     @BindView(R.id.progress_community)
     LoadingView progress;
+    PtrFrameLayout ptr1;
+    PtrFrameLayout ptr2;
     //===============================================一数据
     private AppCompatActivity compatActivity;
     private CommunityRecyclerAdapter adapter;
@@ -67,8 +73,21 @@ public class CommunityFragment extends Fragment implements CommunityView {
         super.onCreate(savedInstanceState);
         compatActivity = (AppCompatActivity) getActivity();
         presenter = new CommunityPresenterImpl(this);
+        EventBus.getDefault().register(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onRefersh(String str){
+        if(str.equals("刷新")){
+            presenter.onRefreshData(UserUtils.getUserId(),true);
+        }
+    }
 
     @Nullable
     @Override
@@ -92,7 +111,7 @@ public class CommunityFragment extends Fragment implements CommunityView {
         });
 
         //初始化时，需要进行刷新
-        presenter.onRefreshData(UserUtils.getUserId());
+        presenter.onRefreshData(UserUtils.getUserId(),true);
         //设置刷新界面
         //设置下拉刷新
         //下拉刷新和上拉加载更多
@@ -108,37 +127,19 @@ public class CommunityFragment extends Fragment implements CommunityView {
         //监听事件
         ptrFrame.setPtrHandler(new PtrDefaultHandler2() {
             @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
+            public void onRefreshBegin( PtrFrameLayout frame) {
                 //刷新
-                presenter.onRefreshData(UserUtils.getUserId());
-                adapter.setOnCompleteListener(new CommunityRecyclerAdapter.onCompleteListener() {
-                    @Override
-                    public void Completed() {
-                        frame.refreshComplete();
-                    }
-
-                    @Override
-                    public void Error(String msg) {
-                        ToastUtil.showToast(getContext(),msg);
-                    }
-                });
+                Log.i("刷新","刷新");
+                presenter.onRefreshData(UserUtils.getUserId(),false);
+                ptr1 = frame;
             }
 
             @Override
-            public void onLoadMoreBegin(final PtrFrameLayout frame) {
+            public void onLoadMoreBegin( PtrFrameLayout frame) {
+
                 List<CommunityInfo.ArticlesBean> datas = adapter.getDatas();
                 presenter.onLoadMore(datas.get(datas.size()-1).getArticleId());
-                adapter.setOnCompleteListener(new CommunityRecyclerAdapter.onCompleteListener() {
-                    @Override
-                    public void Completed() {
-                        frame.refreshComplete();
-                    }
-
-                    @Override
-                    public void Error(String msg) {
-                        ToastUtil.showToast(getContext(),msg);
-                    }
-                });
+                ptr2 = frame;
             }
         });
 
@@ -170,11 +171,25 @@ public class CommunityFragment extends Fragment implements CommunityView {
     @Override
     public void showSuccess(String str) {
         ToastUtil.showToast(mContext, str);
+        if(ptr1 != null ){
+            ptr1.refreshComplete();
+        }
+        if(ptr2 != null){
+            ptr2.refreshComplete();
+        }
+
+
     }
 
     @Override
     public void showError(String str) {
         ToastUtil.showToast(mContext, str);
+        if(ptr1 != null ){
+            ptr1.refreshComplete();
+        }
+        if(ptr2 != null){
+            ptr2.refreshComplete();
+        }
     }
 
 
@@ -191,8 +206,10 @@ public class CommunityFragment extends Fragment implements CommunityView {
 
     @Override
     public void setCommentsList(CommentsList commentsList, int articleId, List<CommentItemData> commentsLists) {
-        CommentsAdapter adapter = (CommentsAdapter) commentsList.getAdapter();
-        adapter.setDatas(commentsLists);
+
+        CommentsAdapter adapter = new CommentsAdapter(commentsLists,commentsList.getContext());
+        commentsList.setAdapter(null);
+        commentsList.setAdapter(adapter);
     }
 
     @Override

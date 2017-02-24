@@ -365,13 +365,15 @@ public class MultiView extends ViewGroup {
             img.setImageResource(R.drawable.bg_cloudy_night);
             Glide.with(getContext()).load(url)
                     //缓存所有类型
-                    .thumbnail(0.2f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .thumbnail(0.1f)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .crossFade().into(img);
         }else{
             Glide.with(getContext()).load(url)
-                    .thumbnail(0.2f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .thumbnail(0.1f)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .crossFade().into(img);
         }
         img.setOnClickListener(new OnClickListener() {

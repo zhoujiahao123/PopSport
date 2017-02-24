@@ -169,6 +169,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
              List<CommentItemData> commentItemDatas = helper.getAsSerializable(data.get(position).getArticleId()+"comments");
              CommentsAdapter adapter = new CommentsAdapter(commentItemDatas,mContext);
              //再次绑定
+             holder.commentDetialLinear.setAdapter(null);
              holder.commentDetialLinear.setAdapter(adapter);
         }
 

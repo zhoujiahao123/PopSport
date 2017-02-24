@@ -107,21 +107,32 @@ public class CommunityPresenterImpl implements CommunityPresenter {
      * @param userId
      */
     @Override
-    public void onRefreshData(int userId) {
-        mCommunityView.showProgress();
+    public void onRefreshData(int userId, final boolean autoRefresh) {
+        if(autoRefresh){
+            mCommunityView.showProgress();
+        }
+
         mCommunity.getArticles(userId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
 
                 mCommunityView.showSuccess("刷新成功");
-                mCommunityView.hideProgress();
+
+                if (autoRefresh) {
+                    mCommunityView.hideProgress();
+                }
+
                 mCommunityView.addMsgArticle((List<CommunityInfo.ArticlesBean>) obj);
             }
 
             @Override
             public void onError(Exception e) {
                 mCommunityView.showError("刷新失败,请重试");
-                mCommunityView.hideProgress();
+
+                if(autoRefresh){
+                    mCommunityView.hideProgress();
+                }
+
                 e.printStackTrace();
             }
         });
@@ -135,8 +146,11 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                 List<CommunityInfo.ArticlesBean> list = (List<CommunityInfo.ArticlesBean>) o;
                 if(list == null || list.size() == 0){
                     mCommunityView.showSuccess("无更多话题");
+                }else{
+                    mCommunityView.addCommunityItems((List<CommunityInfo.ArticlesBean>) o);
+                    mCommunityView.showSuccess("加载更多成功");
                 }
-                mCommunityView.addCommunityItems((List<CommunityInfo.ArticlesBean>) o);
+
             }
 
             @Override
