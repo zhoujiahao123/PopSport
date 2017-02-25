@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nexuslink.R;
 import com.nexuslink.model.data.CommentItemData;
@@ -24,9 +28,7 @@ import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
 import com.nexuslink.ui.activity.WriteMsgActivity;
-import com.nexuslink.ui.adapter.CommentsAdapter;
 import com.nexuslink.ui.adapter.CommunityRecyclerAdapter;
-import com.nexuslink.ui.view.CommentsList;
 import com.nexuslink.ui.view.CommunityView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.ui.view.view.headerview.RunHouseFooter;
@@ -205,17 +207,30 @@ public class CommunityFragment extends Fragment implements CommunityView {
     }
 
     @Override
-    public void setCommentsList(CommentsList commentsList, int articleId, List<CommentItemData> commentsLists) {
-
-        CommentsAdapter adapter = new CommentsAdapter(commentsLists,commentsList.getContext());
-        commentsList.setAdapter(null);
-        commentsList.setAdapter(adapter);
+    public void setCommentsList(LinearLayout commentsList, int articleId, List<CommentItemData> commentsLists) {
+        commentsList.removeAllViews();
+        for(int i = 0 ;i<commentsLists.size();i++){
+            CommentItemData commentItemData = commentsLists.get(i);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.comment_item,null);
+            SpannableString msg = new SpannableString(commentItemData.getUserName()+":"+commentItemData.getCommentText());
+            msg.setSpan(new ForegroundColorSpan(0xff6b8747),0,commentItemData.getUserName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            TextView tv = (TextView)view.findViewById(R.id.comment);
+            tv.setText(msg);
+            commentsList.addView(view);
+        }
     }
 
     @Override
-    public void setCommentAdapter(CommentsList listView, int articleId, List<CommentItemData> list) {
-        CommentsAdapter adapter = new CommentsAdapter(list, mContext);
-        listView.setAdapter(adapter);
+    public void setCommentAdapter(LinearLayout listView, int articleId, List<CommentItemData> list) {
+        for(int i = 0 ;i<list.size(); i++){
+            CommentItemData commentItemData = list.get(i);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.comment_item,null);
+            SpannableString msg = new SpannableString(commentItemData.getUserName()+":"+commentItemData.getCommentText());
+            msg.setSpan(new ForegroundColorSpan(0xff6b8747),0,commentItemData.getUserName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            TextView tv = (TextView)view.findViewById(R.id.comment);
+            tv.setText(msg);
+            listView.addView(view);
+        }
     }
 
     /**

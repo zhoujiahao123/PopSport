@@ -1,8 +1,11 @@
 package com.nexuslink.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +23,7 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
-import com.nexuslink.ui.view.CommentsList;
+import com.nexuslink.ui.activity.ArticleDetailActivity;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
@@ -82,11 +85,21 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     public void onViewRecycled(CommunityViewHolder holder) {
         super.onViewRecycled(holder);
         Glide.clear(holder.userImage);
-        holder.commentDetialLinear.setAdapter(null);
+        holder.commentDetialLinear.removeAllViews();
     }
 
     @Override
     public void onBindViewHolder(final CommunityViewHolder holder, final int position) {
+
+        //为一个话题item设置点击监听
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(mContext, ArticleDetailActivity.class);
+                intent.putExtra("article", data.get(position));
+                mContext.startActivity(intent);
+            }
+        });
 
         //进行用户相关信息的加载
         //设置发表话题人的相关信息
@@ -155,22 +168,32 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
 
         //设置总评论区
-        holder.commentDetialLinear.setLayoutManager(new LinearLayoutManager(mContext));
+
          if(data.get(position).getCommentNum() > 0 &&
                  isFirstLoads.size() != 0 &&
                  isFirstLoads.get(position) == true) {
              Log.i(TAG,"从网络中进行调用");
             isFirstLoads.set(position,false);
             presenter.loadComment(holder.commentDetialLinear, data.get(position).getArticleId(), position);
-        }else if(data.get(position).getCommentNum() <= 0){
-            holder.commentDetialLinear.setVisibility(View.GONE);
         }else{
              Log.i(TAG,"从缓存中调用");
+
              List<CommentItemData> commentItemDatas = helper.getAsSerializable(data.get(position).getArticleId()+"comments");
-             CommentsAdapter adapter = new CommentsAdapter(commentItemDatas,mContext);
+             if(commentItemDatas != null && commentItemDatas.size() > 0){
+                 for(int i = 0 ;i<commentItemDatas.size();i++){
+                     CommentItemData commentItemData = commentItemDatas.get(i);
+                     View view = inflater.inflate(R.layout.comment_item,null);
+                     SpannableString msg = new SpannableString(commentItemData.getUserName()+":"+commentItemData.getCommentText());
+                     msg.setSpan(new ForegroundColorSpan(0xff6b8747),0,commentItemData.getUserName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                     TextView tv = (TextView)view.findViewById(R.id.comment);
+                     tv.setText(msg);
+                     holder.commentDetialLinear.addView(view);
+                 }
+             }
+
+
              //再次绑定
-             holder.commentDetialLinear.setAdapter(null);
-             holder.commentDetialLinear.setAdapter(adapter);
+
         }
 
         //设置自我评论区
@@ -211,20 +234,10 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         for(int i =0;i < list.size();i++){
             isFirstLoads.add(i+index,true);
         }
-        if(listener!=null){
-            listener.Completed();
-        }
+
         notifyDataSetChanged();
     }
-    //设置刷新回调接口
-    public interface onCompleteListener{
-        void Completed();
-        void Error(String msg);
-    }
-    private onCompleteListener listener;
-    public void setOnCompleteListener(onCompleteListener listener){
-        this.listener = listener;
-    }
+
     /**
      *
      */
@@ -243,9 +256,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             isFirstLoads.add(i,true);
         }
 
-        if(listener !=null){
-            listener.Completed();
-        }
+
 
         notifyDataSetChanged();
     }
@@ -268,6 +279,9 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         return data.size();
     }
 
+    /**
+     * viewholder
+     */
     class CommunityViewHolder extends RecyclerView.ViewHolder{
         CircleImageView userImage;
         TextView userName,userLevel,mContent;
@@ -278,7 +292,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         //输入框
         LinearLayout linearLayout;
         //评论区的内容
-        CommentsList commentDetialLinear;
+        LinearLayout commentDetialLinear;
         private Button commentPost;
         public CommunityViewHolder(View itemView) {
             super(itemView);
@@ -292,7 +306,8 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             commentInput = (EditText) itemView.findViewById(R.id.input_comment);
             commentPost = (Button) itemView.findViewById(R.id.input_send_comment);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.comment_linear);
-            commentDetialLinear = (CommentsList) itemView.findViewById(R.id.comment_detail_linear);
+            commentDetialLinear = (LinearLayout) itemView.findViewById(R.id.comments_detail);
+
         }
     }
 

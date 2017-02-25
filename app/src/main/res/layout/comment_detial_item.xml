@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/spacing_small"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!--头像-->
+
+    <!--详情-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--用户个人信息-->
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/user_name"
+                android:text="张兴锐"
+                android:textSize="@dimen/font_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <!--日期和楼层-->
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/article_date_tv"
+                android:text="2017-111"
+                android:textSize="@dimen/font_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/comment_floor"
+                android:text="1搂"
+                android:textSize="@dimen/font_normal"
+                android:textColor="@color/ufo_green"
+               android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/font_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:text="fdjfkljdljfljadslf"
+            android:textSize="@dimen/font_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

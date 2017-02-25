@@ -1,12 +1,16 @@
 package com.nexuslink.model.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 猿人 on 2017/2/8.
  */
 
-public class CommunityInfo {
+public class CommunityInfo implements Parcelable {
 
 
     private int code;
@@ -28,7 +32,8 @@ public class CommunityInfo {
         this.articles = articles;
     }
 
-    public static class ArticlesBean {
+    public static class ArticlesBean implements Parcelable {
+
         /**
          * articleId : 13
          * userId : 15
@@ -143,7 +148,7 @@ public class CommunityInfo {
             this.images = images;
         }
 
-        public static class UserBeanBean {
+        public static class UserBeanBean implements Parcelable {
 
 
             private int uid;
@@ -156,7 +161,7 @@ public class CommunityInfo {
             private int uExp;
             private int uHistoryStep;
             private int uHistoryMileage;
-            private Object uAchievements;
+            private Boolean[] uAchievements;
 
             public int getUid() {
                 return uid;
@@ -238,13 +243,143 @@ public class CommunityInfo {
                 this.uHistoryMileage = uHistoryMileage;
             }
 
-            public Object getUAchievements() {
+            public Boolean[] getUAchievements() {
                 return uAchievements;
             }
 
-            public void setUAchievements(Object uAchievements) {
+            public void setUAchievements(Boolean[] uAchievements) {
                 this.uAchievements = uAchievements;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(this.uid);
+                dest.writeString(this.uName);
+                dest.writeString(this.uGender);
+                dest.writeString(this.uImg);
+                dest.writeInt(this.uHeight);
+                dest.writeInt(this.uWeight);
+                dest.writeInt(this.uFansnum);
+                dest.writeInt(this.uExp);
+                dest.writeInt(this.uHistoryStep);
+                dest.writeInt(this.uHistoryMileage);
+                dest.writeArray(this.uAchievements);
+            }
+
+            public UserBeanBean() {
+            }
+
+            protected UserBeanBean(Parcel in) {
+                this.uid = in.readInt();
+                this.uName = in.readString();
+                this.uGender = in.readString();
+                this.uImg = in.readString();
+                this.uHeight = in.readInt();
+                this.uWeight = in.readInt();
+                this.uFansnum = in.readInt();
+                this.uExp = in.readInt();
+                this.uHistoryStep = in.readInt();
+                this.uHistoryMileage = in.readInt();
+                this.uAchievements = (Boolean[]) in.readArray(Boolean[].class.getClassLoader());
+            }
+
+            public static final Creator<UserBeanBean> CREATOR = new Creator<UserBeanBean>() {
+                @Override
+                public UserBeanBean createFromParcel(Parcel source) {
+                    return new UserBeanBean(source);
+                }
+
+                @Override
+                public UserBeanBean[] newArray(int size) {
+                    return new UserBeanBean[size];
+                }
+            };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.articleId);
+            dest.writeInt(this.userId);
+            dest.writeParcelable(this.userBean, flags);
+            dest.writeString(this.text);
+            dest.writeInt(this.commentNum);
+            dest.writeInt(this.likeNum);
+            dest.writeInt(this.lookNum);
+            dest.writeString(this.date);
+            dest.writeString(this.time);
+            dest.writeByte(this.likeArticle ? (byte) 1 : (byte) 0);
+            dest.writeStringList(this.images);
+        }
+
+        public ArticlesBean() {
+        }
+
+        protected ArticlesBean(Parcel in) {
+            this.articleId = in.readInt();
+            this.userId = in.readInt();
+            this.userBean = in.readParcelable(UserBeanBean.class.getClassLoader());
+            this.text = in.readString();
+            this.commentNum = in.readInt();
+            this.likeNum = in.readInt();
+            this.lookNum = in.readInt();
+            this.date = in.readString();
+            this.time = in.readString();
+            this.likeArticle = in.readByte() != 0;
+            this.images = in.createStringArrayList();
+        }
+
+        public static final Creator<ArticlesBean> CREATOR = new Creator<ArticlesBean>() {
+            @Override
+            public ArticlesBean createFromParcel(Parcel source) {
+                return new ArticlesBean(source);
+            }
+
+            @Override
+            public ArticlesBean[] newArray(int size) {
+                return new ArticlesBean[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.code);
+        dest.writeList(this.articles);
+    }
+
+    public CommunityInfo() {
+    }
+
+    protected CommunityInfo(Parcel in) {
+        this.code = in.readInt();
+        this.articles = new ArrayList<ArticlesBean>();
+        in.readList(this.articles, ArticlesBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CommunityInfo> CREATOR = new Parcelable.Creator<CommunityInfo>() {
+        @Override
+        public CommunityInfo createFromParcel(Parcel source) {
+            return new CommunityInfo(source);
+        }
+
+        @Override
+        public CommunityInfo[] newArray(int size) {
+            return new CommunityInfo[size];
+        }
+    };
 }

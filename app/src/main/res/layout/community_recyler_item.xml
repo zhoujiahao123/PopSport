@@ -49,7 +49,7 @@
     <TextView
         android:id="@+id/tv_content"
         android:layout_marginTop="@dimen/spacing_small"
-        android:layout_marginLeft="8dp"
+        android:padding="8dp"
         android:text="来访记录的肌肤立ffffffffffffffffafdaf刻就受到了房间里肯定撒减fffffffffffffdfasdfdafdsafsadfdasfdf肥啦是的"
         android:textSize="@dimen/msg_text_size"
         android:textColor="@color/one_class_text"
@@ -64,7 +64,7 @@
         android:background="@color/background_color"
         app:divideSpace="4dp"
         android:layout_marginBottom="1dp"
-        app:placeholder="@drawable/ic_bigrain">
+        >
     </com.nexuslink.ui.view.view.headerview.MultiView>
 
     <include
@@ -98,41 +98,14 @@
     </LinearLayout>
 
 
-
-    <com.nexuslink.ui.view.CommentsList
-        android:id="@+id/comment_detail_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.nexuslink.ui.view.CommentsList>
-    <!--输入框-->
     <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/comment_linear"
-        android:layout_margin="@dimen/spacing_tiny"
-        android:orientation="horizontal"
+        android:id="@+id/comments_detail"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="35dp">
-        <EditText
-
-            android:layout_marginRight="@dimen/spacing_small"
-            android:id="@+id/input_comment"
-            android:layout_weight="8"
-            android:hint="我来说一句..."
-            android:paddingLeft="@dimen/spacing_tiny"
-            android:background="@drawable/input_comment_background"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/font_normal"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <Button
-            android:layout_gravity="center_vertical"
-            android:id="@+id/input_send_comment"
-            android:text="发送"
-            android:textColor="@color/ghost_white"
-            android:background="@drawable/bt_run_house_normal"
-            android:layout_weight="1.5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        android:layout_height="wrap_content"></LinearLayout>
+    <!--输入框-->
+    <include
+        layout="@layout/comment_input"
+        ></include>
 
 </LinearLayout>

@@ -34,15 +34,17 @@ public class WriteArticlePresenterImpl implements WriteArtilcePresenter {
                         public void onFinish(Object o) {
                             mView.hideProgress();
                             mView.showSuccess();
-                            //然后回调
-
                         }
-
                         @Override
                         public void onError(Exception e) {
                             e.printStackTrace();
                         }
                     });
+
+                }else{
+                    //未发表图片
+                    mView.hideProgress();
+                    mView.showSuccess();
                 }
 
             }

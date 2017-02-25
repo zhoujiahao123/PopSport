@@ -11,7 +11,6 @@ import com.nexuslink.model.communitymodel.CommunityModelImpl;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
-import com.nexuslink.ui.view.CommentsList;
 import com.nexuslink.ui.view.CommunityView;
 import com.nexuslink.util.UserUtils;
 import com.nexuslink.util.cache.DiskLruCacheHelper;
@@ -67,7 +66,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postComment(final CommentsList commentsList, final EditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos)
+    public void postComment(final LinearLayout commentsList, final EditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos)
     {
         if(!TextUtils.isEmpty(input.getText().toString())){
 
@@ -79,8 +78,11 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
                     //刷新缓存
                     List<CommentItemData> commentItemDatas = helper.getAsSerializable(articleId+"comments");
-
-                    helper.remove(articleId+"comments");
+                    if(commentItemDatas != null && commentItemDatas.size()>0){
+                        helper.remove(articleId+"comments");
+                    }else{
+                        commentItemDatas = new ArrayList<CommentItemData>();
+                    }
                     commentItemDatas.add(new CommentItemData(UserUtils.getUserName(),input.getText().toString()));
                     helper.put(articleId+"comments", (Serializable) commentItemDatas);
 
@@ -93,6 +95,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
                 @Override
                 public void onError(Exception e) {
+                    e.printStackTrace();
                     mCommunityView.showError("评论时出错，请重试");
                 }
             });
@@ -155,7 +158,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
             @Override
             public void onError(Exception e) {
-
+                mCommunityView.showError("加载过程发生错误，请重试");
             }
         });
     }
@@ -165,7 +168,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
      * 加载评论
      */
     @Override
-    public void loadComment(final CommentsList commentDetialLinear, final int articleId, final int pos) {
+    public void loadComment(final LinearLayout commentDetialLinear, final int articleId, final int pos) {
         mCommunity.getComments(articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {

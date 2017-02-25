@@ -101,7 +101,8 @@ public class CommunityModelImpl implements CommunityModel{
 
     @Override
     public void postComment(int userId, int articleId, String text, final CallBackListener listener) {
-        api.postComment(userId,articleId,text).subscribeOn(Schedulers.io())
+        api.postComment(userId,articleId,text)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<CommentResult>() {
                     @Override
