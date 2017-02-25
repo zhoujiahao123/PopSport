@@ -7,9 +7,12 @@ import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.model.data.CreateRunHouseResult;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
+import com.nexuslink.model.data.JoinRoomResult;
+import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.SearchInfo;
@@ -20,6 +23,7 @@ import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 import com.nexuslink.model.data.WriteArticleResult;
 
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -143,5 +147,32 @@ public interface Api {
     @POST("user/register")
     Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
                                         int uHeight,@Field("uWeight")int uWeight);
+
+    /**
+     * 跑房相关
+     */
+    //创建跑房
+    @FormUrlEncoded
+    @POST("room/createRoom")
+    Observable<CreateRunHouseResult> createRoom(@Field("uId") int uId, @Field("type") int type, @Field("goal")
+            int goal, @Field("roomName") String room, @Field("startTime")Date date);
+
+    //查看所有房间
+    @FormUrlEncoded
+    @POST("room/getRooms")
+    Observable<LoadRoomsResult> getRooms(@Field("startId") int startId);
+
+    //加入跑房
+    @FormUrlEncoded
+    @POST("room/join")
+    Observable<JoinRoomResult> joinRoom(@Field("uId") int uId,@Field("rId") int rId);
+
+    //退出跑房
+    @FormUrlEncoded
+    @POST("room/quit")
+    Observable<Integer> quitRoom(@Field("uId") int uId,@Field("rId") int rId);
+
+
+
 
 }
