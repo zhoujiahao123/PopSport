@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_run_house_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/run_house_name"
                 android:layout_centerInParent="true"
                 android:textColor="@color/one_class_text"
                 android:textSize="@dimen/font_large"
@@ -30,12 +32,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:id="@+id/run_house_personnum"
                 android:textSize="@dimen/font_small"
-                android:text="(2/10)"
                 android:textColor="@color/two_class_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <com.nexuslink.ui.view.view.headerview.LoadingView
+            android:visibility="gone"
+            android:id="@+id/progress_community"
+           android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:loading_renderer="GearLoadingRenderer" />
+
     </RelativeLayout>
     <include
         layout="@layout/divider_line"
@@ -85,11 +97,11 @@
 
     </LinearLayout>
     <!--内容展示-->
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_weight="5"
         android:id="@+id/recycler_run_house_detail"
         android:layout_width="match_parent"
-        android:layout_height="0dp"></RelativeLayout>
+        android:layout_height="0dp"></android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:weightSum="1"

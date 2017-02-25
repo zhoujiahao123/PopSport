@@ -1,5 +1,9 @@
 package com.nexuslink.model.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +37,8 @@ public class LoadRoomsResult {
         this.room = room;
     }
 
-    public static class RoomBean {
+    public static class RoomBean implements Parcelable {
+
         /**
          * roomId : 1
          * roomType : 0
@@ -84,7 +89,7 @@ public class LoadRoomsResult {
             this.roomName = roomName;
         }
 
-        public Object getStartDate() {
+        public Date getStartDate() {
             return startDate;
         }
 
@@ -108,7 +113,8 @@ public class LoadRoomsResult {
             this.users = users;
         }
 
-        public static class UsersBean {
+        public static class UsersBean implements Parcelable {
+
             /**
              * uid : 15
              * uName : 张兴锐
@@ -222,6 +228,99 @@ public class LoadRoomsResult {
             public void setUAchievements(Boolean[] uAchievements) {
                 this.uAchievements = uAchievements;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(this.uid);
+                dest.writeString(this.uName);
+                dest.writeString(this.uGender);
+                dest.writeString(this.uImg);
+                dest.writeInt(this.uHeight);
+                dest.writeInt(this.uWeight);
+                dest.writeInt(this.uFansnum);
+                dest.writeInt(this.uExp);
+                dest.writeInt(this.uHistoryStep);
+                dest.writeInt(this.uHistoryMileage);
+                dest.writeArray(this.uAchievements);
+            }
+
+            public UsersBean() {
+            }
+
+            protected UsersBean(Parcel in) {
+                this.uid = in.readInt();
+                this.uName = in.readString();
+                this.uGender = in.readString();
+                this.uImg = in.readString();
+                this.uHeight = in.readInt();
+                this.uWeight = in.readInt();
+                this.uFansnum = in.readInt();
+                this.uExp = in.readInt();
+                this.uHistoryStep = in.readInt();
+                this.uHistoryMileage = in.readInt();
+                this.uAchievements = (Boolean[]) in.readArray(Boolean[].class.getClassLoader());
+            }
+
+            public static final Creator<UsersBean> CREATOR = new Creator<UsersBean>() {
+                @Override
+                public UsersBean createFromParcel(Parcel source) {
+                    return new UsersBean(source);
+                }
+
+                @Override
+                public UsersBean[] newArray(int size) {
+                    return new UsersBean[size];
+                }
+            };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.roomId);
+            dest.writeInt(this.roomType);
+            dest.writeInt(this.roomGoal);
+            dest.writeString(this.roomName);
+            dest.writeLong(this.startDate != null ? this.startDate.getTime() : -1);
+            dest.writeLong(this.startTime != null ? this.startTime.getTime() : -1);
+            dest.writeList(this.users);
+        }
+
+        public RoomBean() {
+        }
+
+        protected RoomBean(Parcel in) {
+            this.roomId = in.readInt();
+            this.roomType = in.readInt();
+            this.roomGoal = in.readInt();
+            this.roomName = in.readString();
+            long tmpStartDate = in.readLong();
+            this.startDate = tmpStartDate == -1 ? null : new Date(tmpStartDate);
+            long tmpStartTime = in.readLong();
+            this.startTime = tmpStartTime == -1 ? null : new Date(tmpStartTime);
+            this.users = new ArrayList<UsersBean>();
+            in.readList(this.users, UsersBean.class.getClassLoader());
+        }
+
+        public static final Parcelable.Creator<RoomBean> CREATOR = new Parcelable.Creator<RoomBean>() {
+            @Override
+            public RoomBean createFromParcel(Parcel source) {
+                return new RoomBean(source);
+            }
+
+            @Override
+            public RoomBean[] newArray(int size) {
+                return new RoomBean[size];
+            }
+        };
     }
 }

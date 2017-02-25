@@ -32,7 +32,8 @@ public class RoadTypeRunHouseFragment extends Fragment {
     //===============================================数据
     private List<String> wheel1 = new ArrayList<>();
     private List<String> wheel2 = new ArrayList<>();
-
+    private int data1 = 0;
+    private int data2 = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,10 +71,25 @@ public class RoadTypeRunHouseFragment extends Fragment {
         mWheel1.setSkin(WheelView.Skin.Holo);
         mWheel1.setWheelData(wheel1);
         mWheel1.setStyle(style);
+        mWheel1.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, Object o) {
+                data1 = Integer.parseInt(String.valueOf(o));
+            }
+        });
 
         mWheel2.setWheelAdapter(new ArrayWheelAdapter(getContext()));
         mWheel2.setSkin(WheelView.Skin.Holo);
         mWheel2.setWheelData(wheel2);
         mWheel2.setStyle(style);
+        mWheel2.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, Object o) {
+                data2 = Integer.parseInt(String.valueOf(o));
+            }
+        });
+    }
+    public int getGoal(){
+        return data1*1000+data2*100;
     }
 }

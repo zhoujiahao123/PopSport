@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
+    android:padding="@dimen/spacing_small"
     android:layout_marginTop="@dimen/spacing_tiny"
+    android:layout_marginLeft="@dimen/spacing_tiny"
+    android:layout_marginRight="@dimen/spacing_tiny"
     android:id="@+id/run_house_item"
     android:background="@drawable/run_house_item_backgourd"
     android:layout_width="match_parent"
@@ -32,39 +35,50 @@
         android:layout_marginLeft="@dimen/spacing_large"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/run_house_name"
             android:text="跑房名"
             android:textColor="@color/one_class_text"
-            android:paddingBottom="@dimen/spacing_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
+
+        <TextView
                 android:textColor="@color/two_class_text"
                 android:id="@+id/run_house_start_time"
                 android:text="今天 22:00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:layout_marginLeft="@dimen/spacing_huger_weather"
-                    android:src="@drawable/roadtype"
-                    android:id="@+id/run_house_type_image"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp" />
-                <TextView
-                    android:layout_marginLeft="@dimen/spacing_tiny"
-                    android:id="@+id/run_house_detail"
-                    android:text="2.22公里"
-                    android:textColor="@color/two_class_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-        </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/spacing_normal"
+                android:src="@drawable/roadtype"
+                android:id="@+id/run_house_type_image"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+            <TextView
+                android:text="fdsafsdfdfsafa"
+                android:layout_marginLeft="@dimen/spacing_tiny"
+                android:id="@+id/run_house_detail"
+                android:textColor="@color/two_class_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
 </LinearLayout>

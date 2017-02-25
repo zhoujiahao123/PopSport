@@ -31,6 +31,8 @@ public class TimeTypeRunHouseFragment extends Fragment {
     //==============================================数据
     private List<String> housrs = new ArrayList<>();
     private List<String> minutes = new ArrayList<>();
+    private int hour = 0;
+    private int minute = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,12 +74,27 @@ public class TimeTypeRunHouseFragment extends Fragment {
         mWheelHour.setSkin(WheelView.Skin.Holo);
         mWheelHour.setWheelData(housrs);
         mWheelHour.setStyle(style);
+        mWheelHour.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, Object o) {
+                hour = Integer.parseInt((String) o);
+            }
+        });
 
         mWheelMinute.setWheelAdapter(new ArrayWheelAdapter(getContext()));
         mWheelMinute.setSkin(WheelView.Skin.Holo);
         mWheelMinute.setWheelData(minutes);
         mWheelMinute.setStyle(style);
+        mWheelMinute.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, Object o) {
+                minute = Integer.parseInt(String.valueOf(o)) ;
+            }
+        });
 
+    }
+    public int getGoal(){
+        return hour*60+minute;
     }
 
 }
