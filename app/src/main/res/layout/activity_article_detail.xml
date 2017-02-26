@@ -1,0 +1,158 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!--Toolbar-->
+    <RelativeLayout
+        android:id="@+id/toolbar_relative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Toolbar
+            android:background="@color/ufo_green"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </Toolbar>
+
+        <TextView
+            android:text="话题详情"
+            style="@style/ToolbarTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:background="@color/ghost_white"
+            android:paddingTop="10dp"
+            android:paddingLeft="@dimen/spacing_tiny"
+            android:paddingRight="@dimen/spacing_tiny"
+            android:paddingBottom="@dimen/spacing_tiny"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.nexuslink.util.CircleImageView
+                    android:src="@mipmap/ic_luancher"
+                    android:id="@+id/user_image"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/image_size_normal"
+                    android:layout_height="@dimen/image_size_normal" />
+                <LinearLayout
+
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/user_name"
+                            android:text="张兴锐"
+                            android:textSize="@dimen/font_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/user_level"
+                            android:text="Lv.20"
+                            android:textColor="@color/ufo_green"
+                            android:layout_marginLeft="@dimen/spacing_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/article_date_tv"
+                        android:text="2017-111"
+                        android:textSize="@dimen/font_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:padding="8dp"
+                android:text="来访记录的肌肤立ffffffffffffffffafdaf刻就受到了房间里肯定撒减fffffffffffffdfasdfdafdsafsadfdasfdf肥啦是的"
+                android:textSize="@dimen/msg_text_size"
+                android:textColor="@color/one_class_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.nexuslink.ui.view.view.headerview.MultiView
+                android:id="@+id/multi_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/background_color"
+                app:divideSpace="4dp"
+                android:layout_marginBottom="1dp"
+                >
+            </com.nexuslink.ui.view.view.headerview.MultiView>
+
+            <include
+                layout="@layout/divider_line"
+                ></include>
+
+            <LinearLayout
+                android:padding="@dimen/spacing_tiny"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.nexuslink.ui.view.likeview.LikeView
+                    android:id="@+id/like_num"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:animateDuration="300"
+                    app:autoMeasureMaxWidth="true"
+                    app:graphStrokeWidth="3dp"
+                    app:isActivated="false"
+                    app:notAllowedCancel="false"
+                    app:number="0"
+                    />
+                <com.nexuslink.ui.view.likeview.LikeView
+                    android:id="@+id/comment_num"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/comments_detail"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/spacing_large"
+                ></LinearLayout>
+
+            <include
+                layout="@layout/comment_input"
+                ></include>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

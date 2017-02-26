@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_create_run_house"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,6 +25,14 @@
             android:textSize="@dimen/font_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <com.nexuslink.ui.view.view.headerview.LoadingView
+            android:visibility="gone"
+            android:id="@+id/progress_community"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:loading_renderer="GearLoadingRenderer" />
     </RelativeLayout>
 
     <include
@@ -87,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
+            android:id="@+id/room_name_input"
             android:layout_gravity="center"
             android:background="@null"
             android:gravity="right"
@@ -101,6 +111,10 @@
     <Button
         android:id="@+id/post"
         android:text="提交"
+        android:textColor="@color/ghost_white"
+        android:layout_marginLeft="@dimen/spacing_tiny"
+        android:layout_marginRight="@dimen/spacing_tiny"
+        android:background="@drawable/bt_run_house_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

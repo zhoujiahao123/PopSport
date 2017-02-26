@@ -47,4 +47,8 @@
     <color name="tab_sel">#34c464</color>
 
     <color name="tab_text_color">#8e8e8e</color>
+    <!--警告红-->
+    <color name="bt_warn_red1">#E00D0F</color>
+    <color name="tb_warn_red2">#E02338</color>
+
 </resources>

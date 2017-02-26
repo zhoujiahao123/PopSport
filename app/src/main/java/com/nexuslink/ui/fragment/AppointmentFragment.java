@@ -17,16 +17,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nexuslink.R;
-import com.nexuslink.model.data.RunHouseInfo;
+import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.presenter.runhousepresenter.RunHousePresenter;
+import com.nexuslink.presenter.runhousepresenter.RunHousePresenterImpl;
 import com.nexuslink.ui.activity.CreateRunHouseActivity;
-import com.nexuslink.ui.activity.RunHouseDetailActivity;
 import com.nexuslink.ui.adapter.RunHouseAdapter;
 import com.nexuslink.ui.view.RunHouseView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.ui.view.view.headerview.RunHouseFooter;
 import com.nexuslink.ui.view.view.headerview.RunHouseHeader;
 import com.nexuslink.util.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +41,12 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by 猿人 on 2017/1/14.
  */
 
-public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnClickListener, RunHouseView {
+public class AppointmentFragment extends Fragment implements  RunHouseView {
 
     //===============================================view
     private Toolbar mToolbar;
     private RecyclerView recyclerView;
-    private List<RunHouseInfo.RunHouseBean> data = new ArrayList<>();
+    private List<LoadRoomsResult.RoomBean> data = new ArrayList<>();
     private PtrFrameLayout ptrFrameLayout;
     private LoadingView proGress;
     //===============================================常量
@@ -54,15 +57,19 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
     private  RunHouseAdapter adapter;
     private RunHousePresenter mRunHousePresenter;
 
-    public static final String URL = "http://img0.imgtn.bdimg.com/it/u=2320677199,2423076609&fm=21&gp=0.jpg";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         compatActivity = (AppCompatActivity) activity;
-        initData();
-        mRunHousePresenter = new RunHousePresenter(this);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Nullable
@@ -70,12 +77,14 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.appointment_fragment,container,false);
         initView(view);
-        adapter  = new RunHouseAdapter(getContext(),data);
+
+        mRunHousePresenter = new RunHousePresenterImpl(this);
+        //首次进入时进行刷新
+        mRunHousePresenter.onRefresh(0,true);
+
+        adapter  = new RunHouseAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        //点击接口
-        adapter.setOnClickListener(this);
 
         //设置下拉刷新
         //下拉刷新和上拉加载更多
@@ -92,21 +101,16 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
         ptrFrameLayout.setPtrHandler(new PtrDefaultHandler2() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                ptrFrameLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ptrFrameLayout.refreshComplete();
-                    }
-                },1000);
+                mRunHousePresenter.onRefresh(0,false);
             }
             @Override
             public void onLoadMoreBegin(PtrFrameLayout frame) {
-                ptrFrameLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ptrFrameLayout.refreshComplete();
-                    }
-                },1000);
+               int index = adapter.getDatas().size();
+               if(index > 0){
+                   mRunHousePresenter.onLoadMore(adapter.getDatas().get(index-1).getRoomId()+1);
+               }else{
+                   ToastUtil.showToast(getContext(),"加载时出错，请重试");
+               }
             }
         });
 
@@ -115,16 +119,10 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
     }
 
 
-    private void initData() {
-        for(int i =0;i<10;i++){
-            RunHouseInfo.RunHouseBean runHouseBean = new RunHouseInfo.RunHouseBean();
-            runHouseBean.setImageUrl(URL);
-            runHouseBean.setName("房间"+i);
-            runHouseBean.setCurrentPersons("5/20人");
-            runHouseBean.setStartTime("22:22");
-            runHouseBean.setRunType(i%2);
-            runHouseBean.setRunDetail("de");
-            data.add(runHouseBean);
+    @Subscribe
+    public void onRefresh(String str){
+        if (str.equals("刷新跑房")){
+            mRunHousePresenter.onRefresh(0,false);
         }
     }
 
@@ -160,19 +158,6 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
 
     }
 
-    /**
-     * 点击事件处理
-     * @param view
-     * @param pos
-     */
-    @Override
-    public void onItemClickListener(View view, int pos) {
-        //取得数据
-       long runHouseId = adapter.getRunHouseId(pos);
-        //根据id进行请求
-        mRunHousePresenter.loadDetail(runHouseId);
-
-    }
 
     @Override
     public void showProgress() {
@@ -187,12 +172,31 @@ public class AppointmentFragment extends Fragment implements RunHouseAdapter.OnC
     @Override
     public void showError() {
         ToastUtil.showToast(getContext(),"请求出错，请重试");
+        ptrFrameLayout.refreshComplete();
     }
 
     @Override
-    public void intentDetailActivity() {
-        Intent intent = new Intent(activity, RunHouseDetailActivity.class);
-        //跑房名，跑房人信息，头像，总公里数，跑房房主
-        startActivity(intent);
+    public void showSuccess() {
+        ToastUtil.showToast(getContext(),"刷新成功");
+        ptrFrameLayout.refreshComplete();
     }
+
+    @Override
+    public void showNoMore() {
+        ToastUtil.showToast(getContext(),"没有更多了");
+        ptrFrameLayout.refreshComplete();
+    }
+
+    @Override
+    public void setRunHouseDatas(List<LoadRoomsResult.RoomBean> list) {
+        adapter.setDatas(list);
+        ptrFrameLayout.refreshComplete();
+    }
+
+    @Override
+    public void addRunHouse(List<LoadRoomsResult.RoomBean> list) {
+        adapter.addItems(list);
+        ptrFrameLayout.refreshComplete();
+    }
+
 }

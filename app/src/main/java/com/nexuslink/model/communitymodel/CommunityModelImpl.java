@@ -5,14 +5,12 @@ import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.CommentInfo;
-import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.PostLikeResult;
-import com.nexuslink.model.data.User1;
-import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.UserUtils;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -50,6 +48,7 @@ public class CommunityModelImpl implements CommunityModel{
             }
         });
     }
+
 
     @Override
     public void postLike(int userId, int articleId, final CallBackListener listener) {
@@ -102,7 +101,8 @@ public class CommunityModelImpl implements CommunityModel{
 
     @Override
     public void postComment(int userId, int articleId, String text, final CallBackListener listener) {
-        api.postComment(userId,articleId,text).subscribeOn(Schedulers.io())
+        api.postComment(userId,articleId,text)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<CommentResult>() {
                     @Override
@@ -125,38 +125,31 @@ public class CommunityModelImpl implements CommunityModel{
                 });
         }
 
-
     @Override
-    public void loadUserInfo(int userId, final String text, final CallBackListener listener) {
-        //进行网络的交互
-        api.getUserInfo(userId).subscribeOn(Schedulers.io())
+    public void loadMore(int aId, final CallBackListener listener) {
+        api.getArticles(UserUtils.getUserId(),aId)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserInfo>() {
+                .subscribe(new Subscriber<CommunityInfo>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        listener.onError((Exception) e);
                     }
 
                     @Override
-                    public void onNext(UserInfo userInfo) {
-                        if(userInfo.getCode() == Constants.SUCCESS){
-                            if(text == null){
-                                User1 user = userInfo.getUser();
-                                listener.onFinish(user);
-                            }else{
-                                CommentItemData data = new CommentItemData(userInfo.getUser().getUName(),text);
-                                listener.onFinish(data);
-                            }
-                        }else{
-                            listener.onError(new Exception("加载用户信息出错"));
+                    public void onNext(CommunityInfo communityInfo) {
+                        if(communityInfo.getCode() == Constants.SUCCESS){
+                            listener.onFinish(communityInfo.getArticles());
                         }
                     }
                 });
     }
+
 
     @Override
     public void getComments(int articleId, final CallBackListener listener) {
