@@ -46,11 +46,9 @@ import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ImageUtil;
 import com.nexuslink.util.ToastUtil;
 import com.wevey.selector.dialog.MDEditDialog;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -124,9 +122,12 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (isConnective()) {
+            presenter = new AlterPresenterImpl(new AlterModelImpl(), this);
             load();
         } else {
+            presenter = new AlterPresenterImpl(new AlterModelImpl(), this);
             setContentView(R.layout.activity_error_network);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -141,6 +142,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 });
             }
         }
+
     }
 
     @Override
@@ -430,7 +432,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         UserDao userDao = BaseApplication.getDaosession().getUserDao();
         User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
         if(user.getUName()==null){
-            presenter = new AlterPresenterImpl(new AlterModelImpl(), this);
             presenter.getUserInfo((int) IdUtil.getuId());
         }else {
             showUserInfo(user);
@@ -508,7 +509,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 
                             @Override
                             public void clickRightButton(View view, String text) {
-                                changeNickName(8, text);
+                                changeNickName((int) IdUtil.getuId(), text);
                                 nickNamePreper = text;
                                 dialogDismiss();
                             }
@@ -598,12 +599,10 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                     message.obj=imgInfo.getUserImg();
                     handler.sendMessage(message);
                     BaseApplication.getDaosession().getUserDao().update(user);
-                    XLog.e("这里已经把头像插进去了");
                 }
             }
         });
     }
-
     /**
      * 关闭dialog
      */

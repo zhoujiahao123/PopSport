@@ -22,7 +22,7 @@
             android:layout_below="@id/head_image"
             android:text="255555"
             android:textColor="@color/white_light"
-            android:textSize="@dimen/font_larger"
+            android:textSize="@dimen/font_huge"
             android:layout_marginTop="@dimen/spacing_tiny"/>
         <ImageView
             android:layout_width="@dimen/image_size40"

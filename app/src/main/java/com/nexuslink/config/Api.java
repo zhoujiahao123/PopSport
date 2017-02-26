@@ -8,11 +8,8 @@ import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
-<<<<<<< HEAD
 import com.nexuslink.model.data.FansInfo;
-=======
 import com.nexuslink.model.data.CreateRunHouseResult;
->>>>>>> 42a1186448145378461f7e3874a9fbec61ee2327
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
@@ -130,9 +127,9 @@ public interface Api {
     Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId, @Field("uGender")char uGender, @Field("uHeight")int
             uHeight, @Field("uWeight")int uWeight);
 
-    //修改用户的头像
+    //修改用户的昵称
     @FormUrlEncoded
-    @POST("user/cahngeName")
+    @POST("user/changeName")
     Observable<ChangeInfo1> changeNickName(@Field("uId")int uId, @Field("uName")String uName);
 
     //搜索用户
@@ -156,7 +153,6 @@ public interface Api {
     Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
                                         int uHeight,@Field("uWeight")int uWeight);
 
-<<<<<<< HEAD
     //获取用户的粉丝
     @FormUrlEncoded
     @POST("friend/fans")
@@ -166,7 +162,6 @@ public interface Api {
     @FormUrlEncoded
     @POST("article/getHis")
     Observable<AticalInfo> getAtical(@Field("uId")int uId,@Field("writerId")int  writeId);
-=======
     /**
      * 跑房相关
      */
@@ -191,8 +186,5 @@ public interface Api {
     @POST("room/quit")
     Observable<QuiteRoomResult> quitRoom(@Field("uId") int uId, @Field("rId") int rId);
 
-
-
->>>>>>> 42a1186448145378461f7e3874a9fbec61ee2327
 
 }

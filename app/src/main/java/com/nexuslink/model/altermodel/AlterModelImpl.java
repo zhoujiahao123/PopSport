@@ -98,7 +98,7 @@ public class AlterModelImpl implements AlterModel {
     }
 
     @Override
-    public void changeNickName(int uId, String uName, final com.nexuslink.model.altermodel.OnCallBackListener listener) {
+    public void changeNickName(int uId, final String uName, final com.nexuslink.model.altermodel.OnCallBackListener listener) {
         ApiUtil.getInstance(Constants.BASE_URL)
                 .changeNickName(uId,uName)
                 .subscribeOn(Schedulers.io())
@@ -117,7 +117,18 @@ public class AlterModelImpl implements AlterModel {
 
                     @Override
                     public void onNext(ChangeInfo1 changeInfo) {
-                        listener.onSucceed(changeInfo);
+                        if(changeInfo.getCode()==500){
+                            ToastUtil.showToast(BaseApplication.getContext(),"服务器出现了问题");
+                        }else if(changeInfo.getChangeFlag()==0){
+                            ToastUtil.showToast(BaseApplication.getContext(),"用户名重复");
+                        }else {
+                            listener.onSucceed(changeInfo);
+                            UserDao userDao = BaseApplication.getDaosession().getUserDao();
+                            User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
+                            user.setUName(uName);
+                            userDao.update(user);
+                        }
+
                     }
                 });
     }

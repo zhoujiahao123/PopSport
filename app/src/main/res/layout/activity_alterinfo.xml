@@ -32,11 +32,11 @@
         android:layout_height="@dimen/alter_head"
         android:layout_below="@id/top_bar"
         android:layout_marginTop="@dimen/alter_head_margin_top"
-        android:background="@drawable/friendinfo_selector"
+        android:background="@drawable/selector_rank"
         >
         <ImageView
             android:id="@+id/alter_head"
-            android:src="@drawable/head_image_logo"
+            android:src="@drawable/headlogp5"
             android:layout_width="@dimen/alter_image_size"
             android:layout_height="@dimen/alter_image_size"
             android:layout_centerVertical="true"
@@ -85,13 +85,13 @@
         android:id="@+id/name_relative"
         android:layout_width="match_parent"
         android:layout_height="@dimen/alter_name"
-        android:background="@drawable/friendinfo_selector"
+        android:background="@drawable/selector_rank"
         android:layout_below="@+id/division"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <ImageView
             android:id="@+id/alter_name"
-            android:src="@drawable/userlogo1"
+            android:src="@drawable/nicknamelogo"
             android:layout_width="@dimen/alter_image_size"
             android:layout_height="@dimen/alter_image_size"
             android:layout_centerVertical="true"
@@ -133,7 +133,7 @@
         >
     <ImageView
         android:id="@+id/alter_info"
-        android:src="@drawable/heightlogo1"
+        android:src="@drawable/heightlogo"
         android:layout_width="@dimen/alter_image_size"
         android:layout_height="@dimen/alter_image_size"
         android:layout_centerVertical="true"
@@ -181,7 +181,7 @@
         android:layout_alignParentStart="true">
         <ImageView
             android:id="@+id/alter_weight"
-            android:src="@drawable/weightlogo2"
+            android:src="@drawable/weightlogo"
             android:layout_width="@dimen/alter_image_size"
             android:layout_height="@dimen/alter_image_size"
             android:layout_centerVertical="true"
@@ -221,7 +221,7 @@
         >
         <ImageView
             android:id="@+id/alter_sex"
-            android:src="@drawable/genderlogo"
+            android:src="@drawable/genderlogo8"
             android:layout_width="@dimen/alter_image_size"
             android:layout_height="@dimen/alter_image_size"
             android:layout_centerVertical="true"
@@ -253,11 +253,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/alter_name"
         android:layout_below="@id/sex_relative"
-        android:background="@drawable/friendinfo_selector"
+        android:background="@drawable/selector_rank"
         android:layout_marginTop="@dimen/spacing_small">
         <ImageView
             android:id="@+id/alter_password"
-            android:src="@drawable/passwordlogo1"
+            android:src="@drawable/passwordlogo8"
             android:layout_width="@dimen/alter_image_size"
             android:layout_height="@dimen/alter_image_size"
             android:layout_centerVertical="true"
