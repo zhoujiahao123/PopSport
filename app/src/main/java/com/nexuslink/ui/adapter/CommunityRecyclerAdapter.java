@@ -24,6 +24,7 @@ import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.ui.activity.ArticleDetailActivity;
+import com.nexuslink.ui.activity.FriendInfoActivity;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
@@ -113,13 +114,17 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         //设置其他信息
         holder.userName.setText(user.getUName());
         holder.userLevel.setText("Lv."+UserUtils.getUserLevel(user.getUExp()));
-        //回调点击接口
+        //点击跳转
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(clickListener != null){
-                    clickListener.onClickListener(position);
-                }
+               Intent intent = new Intent(mContext, FriendInfoActivity.class);
+                //uImg uName uId
+                CommunityInfo.ArticlesBean.UserBeanBean userBeanBean = data.get(position).getUserBean();
+                intent.putExtra("uImg",userBeanBean.getUImg());
+                intent.putExtra("uName",userBeanBean.getUName());
+                intent.putExtra("uId",userBeanBean.getUid());
+                mContext.startActivity(intent);
             }
         });
 

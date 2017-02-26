@@ -1,6 +1,7 @@
 package com.nexuslink.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.ui.activity.FriendInfoActivity;
 
 import java.util.List;
 
@@ -74,12 +76,23 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
     }
 
     @Override
-    public void onBindViewHolder(RunHouseDetialViewHolder holder, int position) {
+    public void onBindViewHolder(RunHouseDetialViewHolder holder, final int position) {
         //设置用户信息
         Glide.with(mContext).load(Constants.PHOTO_BASE_URL+usersList.get(position).getUImg()).
                  crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(holder.userImage);
+        holder.userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, FriendInfoActivity.class);
+                LoadRoomsResult.RoomBean.UsersBean usersBean = usersList.get(position);
+                intent.putExtra("uImg",usersBean.getUImg());
+                intent.putExtra("uId",usersBean.getUid());
+                intent.putExtra("uName",usersBean.getUName());
+                mContext.startActivity(intent);
+            }
+        });
         holder.userName.setText(usersList.get(position).getUName());
         holder.historyMiles.setText(usersList.get(position).getUHistoryMileage()+"km");
     }

@@ -10,12 +10,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.MainThread;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +39,7 @@ import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.presenter.alterpresenter.AlterPresenterImpl;
 import com.nexuslink.ui.dialog.AlterPasswordDialog;
 import com.nexuslink.ui.view.AlterView;
+import com.nexuslink.util.BitmapCompressUpUtils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ImageUtil;
@@ -112,12 +111,14 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     private String pickerFlag = null;
     int uWeight;
     int uHeight;
-
+    private static final int COMPRESS_IMAGE_SUCCESS = 2;
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what==1){
-                ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+msg.obj,circleImageView);
+                ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+String.valueOf(msg.obj),circleImageView);
+            }else if(msg.what == COMPRESS_IMAGE_SUCCESS){
+                postPhoto((String) msg.obj);
             }
         }
     };
@@ -552,11 +553,20 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void photoChooseEvent(EventEntry eventEntry) {
-        String photoPath = eventEntry.photos.get(0).getPath();
+
+
+        final String photoPath = eventEntry.photos.get(0).getPath();
 //        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
         eventEntry.photos.clear();
         XLog.e("上面这个执行了");
-        postPhoto(photoPath);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String str = BitmapCompressUpUtils.compressImage(photoPath,photoPath+"111",50);
+                Message msg = Message.obtain(null,COMPRESS_IMAGE_SUCCESS,str);
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -566,7 +576,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         postPhoto(photoPath);
     }
 
-    private void postPhoto(String path) {
+    private void postPhoto(final String path) {
         String type = "image/jpeg";
         File file = new File(path);
         String str = file.getName().split("\\.")[1];
@@ -581,6 +591,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                deletePhoto(path);
             }
 
             @Override
@@ -590,6 +601,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 ImgInfo imgInfo =gson.fromJson(response.body().string(),ImgInfo.class);
                 if(imgInfo.getCode()==500){
                     Snackbar.make(container,"未知的错误发生了",Snackbar.LENGTH_SHORT).show();
+                    deletePhoto(path);
                 }else {
                     user.setUImg(imgInfo.getUserImg());
                     XLog.e("");
@@ -599,9 +611,19 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                     handler.sendMessage(message);
                     BaseApplication.getDaosession().getUserDao().update(user);
                     XLog.e("这里已经把头像插进去了");
+                    deletePhoto(path);
                 }
             }
+
+
         });
+    }
+
+    private void deletePhoto(String path) {
+        File file = new File(path);
+        if(file.exists()){
+            file.delete();
+        }
     }
 
     /**

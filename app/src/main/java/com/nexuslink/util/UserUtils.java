@@ -1,5 +1,6 @@
 package com.nexuslink.util;
 
+import com.nexuslink.User;
 import com.nexuslink.UserDao;
 
 /**
@@ -7,14 +8,14 @@ import com.nexuslink.UserDao;
  */
 
 public class UserUtils {
-    private static UserDao userDao = DBUtil.getUserDao();
+    public static  User user = (User)DBUtil.getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
 
     /**
      * 取得用户id
      * @return
      */
     public static int getUserId(){
-        return 15;
+        return user.getUid();
     }
     /**
      * 计算user的等级
@@ -26,7 +27,7 @@ public class UserUtils {
      * 获取用户昵称
      */
     public static String getUserName(){
-        return "张兴锐";
+        return user.getUName();
     }
 
 }
