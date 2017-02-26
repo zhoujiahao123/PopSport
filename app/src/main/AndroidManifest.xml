@@ -133,7 +133,8 @@
 
         <activity
             android:name=".ui.activity.RunActivity"
-            android:theme="@style/RunActivityActionBarTheme" />
+            android:theme="@style/RunActivityActionBarTheme"
+           />
         <activity
             android:name=".ui.activity.RunHouseDetailActivity"
             android:theme="@style/CustomActionBarTheme" />

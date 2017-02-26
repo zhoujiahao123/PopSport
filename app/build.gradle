@@ -10,6 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi"
+        }
     }
     buildTypes {
         release {
@@ -93,6 +96,7 @@ dependencies {
     //EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
     //工具类
+
     //本地图片选择库
     compile 'cn.finalteam:galleryfinal:1.4.3'
     compile 'com.github.lazylibrary:lazylibrary:1.0.2'
@@ -105,4 +109,11 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.wuxiaolong.androidutils:androidutils:1.0.6'
+    compile files('libs/SocialSDK_QQ_Simplify.jar')
+    compile files('libs/SocialSDK_Sina_Full.jar')
+    compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
 }

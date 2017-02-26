@@ -7,82 +7,142 @@
     android:layout_height="match_parent"
     tools:context="com.nexuslink.ui.activity.RunActivity">
 
-    <LinearLayout
-        android:paddingTop="10dp"
-        android:background="@color/dark_imperial_blue"
-        android:orientation="vertical"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:background="@color/toolbar_color"
+        android:layout_height="?attr/actionBarSize">
 
-    <TextView
-        android:id="@+id/run_title_tv"
-        android:text="运动中..."
-        android:textColor="@color/white_light"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <RelativeLayout
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/run_currentMiles"
-            android:textColor="@color/white_thick"
-            android:textStyle="bold"
-            android:text="0.00"
-            android:textSize="@dimen/font_super_huge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_toRightOf="@id/run_currentMiles"
-            android:layout_alignBaseline="@id/run_currentMiles"
-            android:layout_marginLeft="@dimen/spacing_tiny"
-            android:text="公里"
-            android:textSize="@dimen/font_small"
-            android:textColor="@color/white_light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/spacing_tiny"
-            android:orientation="horizontal"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map_view"
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </com.amap.api.maps.MapView>
+
+
+    <LinearLayout
+        android:background="@color/bottom_background_color"
+        android:orientation="vertical"
+        android:layout_weight="1.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_height="0dp">
 
             <include
-                android:layout_weight = "1"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                layout="@layout/run_time_item"></include>
+                layout="@layout/run_time_item"
+                ></include>
+
             <include
-                android:layout_weight = "1"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                layout="@layout/run_speed_item"></include>
+                layout="@layout/run_distance_item"
+                ></include>
+
             <include
-                android:layout_weight = "1"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                layout="@layout/run_consume_energy_item"></include>
+                layout="@layout/run_col_item"
+                ></include>
         </LinearLayout>
 
-    </LinearLayout>
+        <include
+            layout="@layout/divider_line"
+            ></include>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ToggleButton
-            android:layout_gravity="start"
-            android:id="@+id/bt_run"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <com.amap.api.maps.MapView
-            android:id="@+id/map_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </com.amap.api.maps.MapView>
-    </RelativeLayout>
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <TextView
+                android:text="最大速度"
+                style="@style/RunActivityLeftTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                style="@style/RunActivityRightTextStyle"
+                android:id="@+id/max_speed_tv"
+                android:text="10m/s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <TextView
+                android:text="平均速度"
+                style="@style/RunActivityLeftTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/run_current_speed"
+                android:text="10m/s"
+                style="@style/RunActivityRightTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:weightSum="0.5"
+                android:gravity="center"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/start_or_pause"
+                    android:layout_weight="0.45"
+                    android:layout_gravity="center"
+                    android:text="开始"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:background="@drawable/bt_run_start"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="0.5"
+                android:weightSum="0.5"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/finish"
+                    android:text="结束"
+                    android:clickable="false"
+                    android:background="@drawable/bt_run_finish"
+                    android:textColor="@color/white"
+                    android:layout_weight="0.45"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

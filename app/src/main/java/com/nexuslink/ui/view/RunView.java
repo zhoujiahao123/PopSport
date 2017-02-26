@@ -5,9 +5,7 @@ package com.nexuslink.ui.view;
  */
 
 public interface RunView {
-    //标题动画
-    void startTitleAnim();
-    void endTitleAnim();
+
     //时间
     void setCurrentTime(String realTime);
     //速度

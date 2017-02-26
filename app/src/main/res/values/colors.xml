@@ -51,4 +51,11 @@
     <color name="bt_warn_red1">#E00D0F</color>
     <color name="tb_warn_red2">#E02338</color>
 
+    <!--运动activity需要颜色-->
+    <color name="toolbar_color">#42B2EB</color>
+    <color name="bottom_background_color">#FFFFFF</color>
+    <color name="one_class_text_color">#747274</color>
+    <color name="two_class_text_color">#9A989A</color>
+    <color name="three_class_text_color">#727072</color>
+    <color name="four_class_text_color">#CECCCE</color>
 </resources>

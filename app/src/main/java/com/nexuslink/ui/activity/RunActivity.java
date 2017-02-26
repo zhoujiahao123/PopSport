@@ -1,12 +1,14 @@
 package com.nexuslink.ui.activity;
 
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -40,21 +42,28 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private static final float MIN_ZOOM_LEVEL = 15f;
     private static final int TOTAL_TIME = 1000 * 60 * 20;//20分钟
     private static final int INTERVAL = 1000;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.run_current_time)
+    TextView mCurrentTime;
+    @BindView(R.id.run_current_distance)
+    TextView mCurrentDistance;
+    @BindView(R.id.run_current_col)
+    TextView mCurrentKcol;
+    @BindView(R.id.max_speed_tv)
+    TextView maxSppedTv;
+    @BindView(R.id.run_current_speed)
+    TextView mAverageSpeedTv;
+    @BindView(R.id.start_or_pause)
+    Button mStartOrPauseBt;
+    @BindView(R.id.finish)
+    Button mFinish;
+    @BindView(R.id.activity_run)
+    LinearLayout activityRun;
     //定时器
     private TimeCount time;
     //===============================================view
-    @BindView(R.id.run_title_tv)
-    TextView runTitleTv;
-    @BindView(R.id.bt_run)
-    ToggleButton btRun;
-    @BindView(R.id.run_currentMiles)
-    TextView CurrentMiles;
-    @BindView(R.id.run_current_time)
-    TextView CurrentTimeTv;
-    @BindView(R.id.run_current_average_speed)
-    TextView CurrentAverageSpeedTv;
-    @BindView(R.id.run_current_consume)
-    TextView CurrentConsume;
+
     //===============================================轨迹线
     private PolylineOptions mPolyoptions;
     private PathRecord record;
@@ -62,7 +71,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private RunPresenter mRunPresenter;
     //===============================================地图层
     private MapView mMapView;
-    private AMap aMap ;
+    private AMap aMap;
     //===============================================定位
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -81,7 +90,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     LatLng myLocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation));
                     //根据条件判断是否启动路线轨迹记录
-                    if (btRun.isChecked()) {
+                    if (mStartOrPauseBt.getText().toString().equals("暂停")) {
                         record.addpoint(aMapLocation);
                         mPolyoptions.add(myLocation);
                         redrawLine();
@@ -97,6 +106,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
 
     };
+
     private void redrawLine() {
         if (mPolyoptions.getPoints().size() > 0) {
             aMap.addPolyline(mPolyoptions);
@@ -108,6 +118,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         ButterKnife.bind(this);
+        initViews();
         initMapView(savedInstanceState);
         initPolyLine();
         initLocation();
@@ -115,11 +126,22 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mLocationClient.startLocation();
     }
 
+    private void initViews() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(getCurrentDate(System.currentTimeMillis()));
+        mToolbar.setNavigationIcon(R.drawable.back_white_small);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
 
 
     private void initPolyLine() {
         mPolyoptions = new PolylineOptions();
-        mPolyoptions.width(10f);
+        mPolyoptions.width(13f);
         mPolyoptions.color(getResources().getColor(R.color.blue_normal));
     }
 
@@ -145,7 +167,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(25000);
+        mLocationOption.setHttpTimeOut(30000);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
     }
@@ -165,7 +187,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         aMap.setLocationSource(this);
         UiSettings uiSettings = aMap.getUiSettings();
         //显示定位按钮
-        uiSettings.setMyLocationButtonEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(false);
         //显示定位层
         aMap.setMyLocationEnabled(true);
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
@@ -177,8 +199,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         super.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
-        time.cancel();
-        time = null;
+        if (time != null) {
+            time.cancel();
+            time = null;
+        }
+
     }
 
     @Override
@@ -217,25 +242,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mLocationClient = null;
     }
 
-    @OnClick(R.id.bt_run)
-    public void onClick() {
-        if (btRun.isChecked()) {
-            aMap.clear();
-            if (record != null) {
-                record = null;
-            }
-            time = new TimeCount(TOTAL_TIME, INTERVAL);
-            time.start();
-            record = new PathRecord();
-            long mStartTime = System.currentTimeMillis();
-            mRunPresenter.startRecord(mStartTime);
-            record.setDate(getCurrentDate(mStartTime));
-        } else {
-            time.cancel();
-            long mEndTime = System.currentTimeMillis();
-            mRunPresenter.saveRecord(record.getPathline(),record.getDate(),mEndTime);
-        }
-    }
+
+
     private String getCurrentDate(long time) {
         SimpleDateFormat formatter = new SimpleDateFormat(
                 "yyyy-MM-dd  HH:mm:ss ");
@@ -244,50 +252,65 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         return date;
     }
 
-    ValueAnimator animator;
-    @Override
-    public void startTitleAnim() {
-        final int DURATION = 1000;
-        runTitleTv.setText("等待开始...");
-        animator = new ValueAnimator().ofInt(0,1).setDuration(DURATION);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = animation.getAnimatedFraction();
-                runTitleTv.setAlpha(fraction);
-            }
-        });
-        animator.setRepeatCount(INTERVAL);
-        animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.start();
-    }
-    @Override
-    public void endTitleAnim() {
-        animator.end();
-        runTitleTv.setText("继续加油哦...");
-    }
+
     @Override
     public void setCurrentTime(String realTime) {
-        if(realTime.length()>5){
-            CurrentMiles.setTextSize(getResources().getDimension(R.dimen.font_large));
+        if (realTime.length() > 5) {
+            //  CurrentMiles.setTextSize(getResources().getDimension(R.dimen.font_large));
         }
-         CurrentTimeTv.setText(realTime);
+        //     CurrentTimeTv.setText(realTime);
+        mCurrentTime.setText(realTime);
     }
 
     @Override
     public void setCurrentSpeed(String speed) {
-        CurrentAverageSpeedTv.setText(speed+"m/s");
+        //    CurrentAverageSpeedTv.setText(speed+"m/s");
+        mAverageSpeedTv.setText(speed+"m/s");
     }
 
     @Override
     public void setCurrentCol(String col) {
-        CurrentConsume.setText(col);
+        //       CurrentConsume.setText(col);
+        mCurrentKcol.setText(col);
     }
 
     @Override
     public void setCurrentDistance(String miles) {
-        CurrentMiles.setText(miles);
+        //  CurrentMiles.setText(miles);
+        mCurrentDistance.setText(miles);
     }
+
+    @OnClick({R.id.start_or_pause, R.id.finish})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.start_or_pause:
+                if (mStartOrPauseBt.getText().toString().equals("开始")) {
+                    //改变按钮的状态
+                    mStartOrPauseBt.setText("暂停");
+                    mFinish.setClickable(true);
+                    aMap.clear();
+                    if (record != null) {
+                        record = null;
+                    }
+                    time = new TimeCount(TOTAL_TIME, INTERVAL);
+                    time.start();
+                    record = new PathRecord();
+                    long mStartTime = System.currentTimeMillis();
+                    mRunPresenter.startRecord(mStartTime);
+                    record.setDate(getCurrentDate(mStartTime));
+                } else {
+                    mStartOrPauseBt.setText("开始");
+                    time.cancel();
+                }
+                break;
+            case R.id.finish:
+                //弹窗
+                long mEndTime = System.currentTimeMillis();
+                mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
+                break;
+        }
+    }
+
     /**
      * 倒计时类，用于统计时间
      */
@@ -295,10 +318,12 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
+
         @Override
         public void onTick(long millisUntilFinished) {
             mRunPresenter.refreshUI(record.getPathline());
         }
+
         @Override
         public void onFinish() {
             time.start();

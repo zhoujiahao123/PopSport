@@ -142,9 +142,8 @@
         <item name="android:actionBarSize">45dp</item>
         <item name="actionBarSize">45dp</item>
     </style>
-    <style name="RunActivityActionBarTheme" parent="AppTheme">
-        <item name="colorPrimaryDark">@color/dark_imperial_blue</item>
-    </style>
+
+
     <!--创建跑房中的文字style-->
     <style name="CreateRUnHouseTextStyle">
         <item name="android:layout_gravity">center</item>
@@ -198,4 +197,38 @@
        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
+    <!--RunActivity 文字style-->
+    <style name="RunActivityLeftTextStyle" >
+        <item name="android:textColor">@color/three_class_text_color</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_large</item>
+    </style>
+    <style name="RunActivityRightTextStyle">
+        <item name="android:textColor">@color/two_class_text_color</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/spacing_normal</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="RunActivityActionBarTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">#2B698F</item>
+        <item name="actionBarStyle">@style/RunActivityActionBarStyle</item>
+    </style>
+
+    <style name="RunActivityActionBarStyle">
+        <item name="android:titleTextStyle">@style/MyTitleTextSyle</item>
+    </style>
+    <style name="MyTitleTextSyle">
+        <item name="android:textSize">@dimen/spacing_normal</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="myToolbarNavigationButtonStyle" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
     </resources>
