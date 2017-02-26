@@ -1,5 +1,6 @@
 package com.nexuslink.ui.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,9 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.nexuslink.R;
 import com.nexuslink.model.data.PathRecord;
@@ -129,7 +132,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private void initViews() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getCurrentDate(System.currentTimeMillis()));
-        mToolbar.setNavigationIcon(R.drawable.back_white_small);
+        mToolbar.setNavigationIcon(R.drawable.back_white);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,10 +190,23 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         aMap.setLocationSource(this);
         UiSettings uiSettings = aMap.getUiSettings();
         //显示定位按钮
-        uiSettings.setMyLocationButtonEnabled(false);
+        uiSettings.setMyLocationButtonEnabled(true);
+
+        // 自定义系统定位小蓝点
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+                .fromResource(R.drawable.location_icon));// 设置小蓝点的图标
+        myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));// 设置圆形的边框颜色
+        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));// 设置圆形的填充颜色
+        myLocationStyle.strokeWidth(0f);// 设置圆形的边框粗细
+        aMap.setMyLocationStyle(myLocationStyle);
+
         //显示定位层
         aMap.setMyLocationEnabled(true);
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+
+        aMap.setMinZoomLevel(MIN_ZOOM_LEVEL);
+        aMap.setMaxZoomLevel(MAX_ZOOM_LEVEL);
 
     }
 
@@ -304,6 +320,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 }
                 break;
             case R.id.finish:
+                mFinish.setClickable(false);
                 //弹窗
                 long mEndTime = System.currentTimeMillis();
                 mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);

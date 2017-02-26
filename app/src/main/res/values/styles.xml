@@ -215,16 +215,11 @@
 
     <style name="RunActivityActionBarTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimaryDark">#2B698F</item>
-        <item name="actionBarStyle">@style/RunActivityActionBarStyle</item>
+    </style>
+    <style name="RunActivityToolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/spacing_normal</item>
     </style>
 
-    <style name="RunActivityActionBarStyle">
-        <item name="android:titleTextStyle">@style/MyTitleTextSyle</item>
-    </style>
-    <style name="MyTitleTextSyle">
-        <item name="android:textSize">@dimen/spacing_normal</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
 
     <style name="myToolbarNavigationButtonStyle" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
         <item name="android:minWidth">0dp</item>

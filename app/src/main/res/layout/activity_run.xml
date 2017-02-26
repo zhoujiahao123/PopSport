@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_run"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nexuslink.ui.activity.RunActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:background="@color/toolbar_color"
-        android:layout_height="?attr/actionBarSize">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:background="@color/toolbar_color"
+            app:titleTextAppearance="@style/RunActivityToolbar.TitleText"
+            android:layout_height="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+
 
     <com.amap.api.maps.MapView
         android:id="@+id/map_view"
