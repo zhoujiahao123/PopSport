@@ -1,6 +1,7 @@
 package com.nexuslink.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
-import com.nexuslink.model.data.RunHouseInfo;
+import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.ui.activity.RunHouseDetailActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,13 +26,23 @@ import java.util.List;
 
 public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHouseViewHolder> {
 
-    private List<RunHouseInfo.RunHouseBean> data;
+    /**
+     * 数据
+     */
+    private List<LoadRoomsResult.RoomBean> datas = new ArrayList<>();
+    /**
+     * 格式控制
+     */
+    private SimpleDateFormat dfDate = new SimpleDateFormat("MM:dd");
+    private SimpleDateFormat dfDay = new SimpleDateFormat("HH:mm");
+    /**
+     * 初始化需要
+     */
     private Context mContext;
     private LayoutInflater inflater;
 
-    public RunHouseAdapter(Context context,List<RunHouseInfo.RunHouseBean> data) {
+    public RunHouseAdapter(Context context) {
         this.mContext = context;
-        this.data = data;
         inflater = LayoutInflater.from(mContext);
     }
     //点击接口
@@ -39,16 +55,28 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     }
 
     /**
-     *add
+     *增添数据
      */
-    public void addItems(int index,List<RunHouseInfo.RunHouseBean> list){
-        data.addAll(index,list);
+    public void addItems(List<LoadRoomsResult.RoomBean> list){
+        int index = datas.size();
+        datas.addAll(index,list);
         notifyDataSetChanged();
     }
-    public void deleteItem(int pos){
-        data.remove(pos);
-        notifyItemRemoved(pos);
-        notifyItemRangeChanged(0,data.size());
+
+    /**
+     *设置数据
+     */
+    public void setDatas(List<LoadRoomsResult.RoomBean> list){
+        datas.clear();
+        datas.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    /**
+     *提供外部接口调用数据
+     */
+    public List<LoadRoomsResult.RoomBean> getDatas(){
+        return datas;
     }
 
 
@@ -60,19 +88,27 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
 
     @Override
     public void onBindViewHolder(RunHouseViewHolder holder, final int position) {
-        holder.runHouseNameTv.setText(data.get(position).getName());
-        holder.runHouseStartTimeTv.setText(data.get(position).getStartTime());
-        holder.runHouseTypeImage.setImageResource(data.get(position).getRunType()==1?R.drawable.roadtype:R.drawable.timetype);
-        holder.runHouseDetail.setText(data.get(position).getRunDetial());
-        holder.currentPersons.setText(data.get(position).getCurrentPersons());
+
+        holder.runHouseNameTv.setText(datas.get(position).getRoomName());
+//        holder.runHouseStartTimeTv.setText(dfDate.format(datas.get(position).getStartDate())+" "+dfDay.format(datas.get(position).getStartTime()));
+        holder.runHouseTypeImage.setImageResource(datas.get(position).getRoomType()==1?R.drawable.roadtype:R.drawable.timetype);
+        String str = datas.get(position).getRoomType() == 1 ? "米":"分钟";
+        holder.runHouseDetail.setText(datas.get(position).getRoomGoal()+str);
+        holder.currentPersons.setText(datas.get(position).getUsers().size()+"人");
         //加载图片
-        Glide.with(mContext).load(data.get(position).getImageUrl()).into(holder.runHouseImage);
+        if(datas.get(position).getUsers() != null && datas.get(position).getUsers().size() >0){
+            Glide.with(mContext).load(Constants.PHOTO_BASE_URL+datas.get(position).getUsers().get(0)
+                    .getUImg())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(holder.runHouseImage);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mClickListnter!=null){
-                    mClickListnter.onItemClickListener(v,position);
-                }
+               //点击进入详细界面
+                Intent intent = new Intent(mContext, RunHouseDetailActivity.class);
+                intent.putExtra("roominfo",datas.get(position));
+                mContext.startActivity(intent);
             }
         });
 
@@ -82,11 +118,9 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return datas.size();
     }
-    public long getRunHouseId(int pos){
-        return this.data.get(pos).getRunHouseId();
-    }
+
 
     class RunHouseViewHolder extends  RecyclerView.ViewHolder{
         ImageView runHouseImage,runHouseTypeImage;

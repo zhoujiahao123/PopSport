@@ -19,7 +19,7 @@ public class UserUtils {
     /**
      * 计算user的等级
      */
-    public static String getUserLevel(){
+    public static String getUserLevel(int Exp){
         return  "19";
     }
     /**

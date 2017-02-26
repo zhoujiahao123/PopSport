@@ -8,4 +8,6 @@ public interface CallBackListener {
     void onFinish(Object o);
 
     void onError(Exception e);
+
+
 }

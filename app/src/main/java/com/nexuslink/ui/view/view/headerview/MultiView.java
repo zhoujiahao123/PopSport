@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.ui.activity.ViewImageShowActivity;
 import com.nexuslink.ui.adapter.MultiAdapter;
@@ -362,9 +363,18 @@ public class MultiView extends ViewGroup {
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if(placeholder !=- 1){
             img.setImageResource(R.drawable.bg_cloudy_night);
-            Glide.with(getContext()).load(url).into(img);
+            Glide.with(getContext()).load(url)
+                    //缓存所有类型
+                    .thumbnail(0.1f)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .crossFade().into(img);
         }else{
-            Glide.with(getContext()).load(url).into(img);
+            Glide.with(getContext()).load(url)
+                    .thumbnail(0.1f)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .crossFade().into(img);
         }
         img.setOnClickListener(new OnClickListener() {
             @Override

@@ -188,4 +188,14 @@
     <style name="CustomLineColor" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/blue</item>
     </style>
+    <!--编写话题的toolbar 样式-->
+    <style name="WriteMsgToolbarCanUse" parent="AppTheme.ActionBar">
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+    <style name="WriteMsgToolbarCannotUse" parent="AppTheme.ActionBar">
+        <item name="actionMenuTextColor">@color/gray_light</item>
+       <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
     </resources>
