@@ -12,4 +12,7 @@ public interface FriendModel extends BaseModel {
 
     //搜索某人
     void searchUser(int type,String name,OnFriendCallBackListener listener);
+
+    //获取关注的好友
+    void getFollowed(int uId,OnFriendCallBackListener listener);
 }

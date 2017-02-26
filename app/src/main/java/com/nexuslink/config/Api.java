@@ -1,12 +1,14 @@
 package com.nexuslink.config;
 
 
+import com.nexuslink.model.data.AticalInfo;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
 import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
@@ -38,12 +40,14 @@ public interface Api {
     Observable<WeatherInfo> getWeatherInfo(@Query("cityname")String cityname, @Query("key")String key);
 
     //关注某人
-    @GET("friend/follow")
-    Observable<FollowInfo> getFollowInfo(@Query("uId") int uId,@Query("fId") int fId);
+    @FormUrlEncoded
+    @POST("friend/follow")
+    Observable<FollowInfo> getFollowInfo(@Field("uId") int uId,@Field("fId") int fId);
 
     //获取已关注的好友
-    @GET("friend/mine")
-    Observable<FollowedInfo> getFollowedInfo(@Query("uId") int uId);
+    @FormUrlEncoded
+    @POST("friend/mine")
+    Observable<FollowedInfo> getFollowedInfo(@Field("uId") int uId);
 
     //登录
     @FormUrlEncoded
@@ -133,5 +137,15 @@ public interface Api {
     @POST("user/register")
     Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
                                         int uHeight,@Field("uWeight")int uWeight);
+
+    //获取用户的粉丝
+    @FormUrlEncoded
+    @POST("friend/fans")
+    Observable<FansInfo> getFans(@Field("uId")int uId);
+
+    //获取用户的话题
+    @FormUrlEncoded
+    @POST("article/getHis")
+    Observable<AticalInfo> getAtical(@Field("uId")int uId,@Field("writerId")int  writeId);
 
 }
