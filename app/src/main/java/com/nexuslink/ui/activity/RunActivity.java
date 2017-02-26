@@ -130,6 +130,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     }
 
     private void initViews() {
+        //toolbar
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getCurrentDate(System.currentTimeMillis()));
         mToolbar.setNavigationIcon(R.drawable.back_white);
@@ -139,6 +140,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 onBackPressed();
             }
         });
+        //button
+        changToUnClickable();
     }
 
 
@@ -303,7 +306,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 if (mStartOrPauseBt.getText().toString().equals("开始")) {
                     //改变按钮的状态
                     mStartOrPauseBt.setText("暂停");
-                    mFinish.setClickable(true);
+                    changToClickable();
                     aMap.clear();
                     if (record != null) {
                         record = null;
@@ -320,12 +323,21 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 }
                 break;
             case R.id.finish:
-                mFinish.setClickable(false);
+                changToUnClickable();
                 //弹窗
                 long mEndTime = System.currentTimeMillis();
                 mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
                 break;
         }
+    }
+
+    private void changToClickable() {
+        mFinish.setClickable(true);
+        mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_click));
+    }
+    private  void changToUnClickable(){
+        mFinish.setClickable(false);
+        mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_unclick));
     }
 
     /**

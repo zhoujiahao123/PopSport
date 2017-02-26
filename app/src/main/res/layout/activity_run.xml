@@ -128,7 +128,6 @@
                 <Button
                     android:id="@+id/finish"
                     android:text="结束"
-                    android:clickable="false"
                     android:background="@drawable/bt_run_finish"
                     android:textColor="@color/white"
                     android:layout_weight="0.45"
