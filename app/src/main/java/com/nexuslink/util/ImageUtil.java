@@ -4,8 +4,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.signature.StringSignature;
-import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
 import com.nexuslink.app.BaseApplication;
 
@@ -37,8 +35,8 @@ public class ImageUtil {
         Glide.with(BaseApplication.getContext())
                 .load(url)
                 .error(R.drawable.head_photo)
-                .diskCacheStrategy(DiskCacheStrategy.NONE).
-                skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(imageView);
     }
 }
