@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
 import com.nexuslink.app.BaseFragment;
 import com.nexuslink.model.data.FollowedInfo;
@@ -17,6 +18,10 @@ import com.nexuslink.presenter.myfriendpresenter.MyFriendPresenterImpl;
 import com.nexuslink.ui.adapter.MyFriendRecyclerViewAdapter;
 import com.nexuslink.ui.view.MyFriendView;
 import com.nexuslink.util.DividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -35,13 +40,15 @@ public class MyFriendFragment extends BaseFragment implements MyFriendView {
     private boolean isCreate=false;
     private MyFriendRecyclerViewAdapter adapter;
 
+
+
     public static MyFriendFragment getInstance() {
         MyFriendFragment friendFragment = new MyFriendFragment();
         return friendFragment;
     }
     private void load(){
         isCreate=false;
-        presenter= new MyFriendPresenterImpl(new MyFriendModelImpl(),this);
+        presenter=new MyFriendPresenterImpl(new MyFriendModelImpl(),this);
         presenter.setFriendInfo();
     }
 
@@ -49,6 +56,14 @@ public class MyFriendFragment extends BaseFragment implements MyFriendView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isCreate=true;
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 
     @Override
@@ -80,6 +95,7 @@ public class MyFriendFragment extends BaseFragment implements MyFriendView {
 
     @Override
     public void showFriend(FollowedInfo followedInfo) {
+        XLog.e("showFriend    aaaaa" );
         adapter = new MyFriendRecyclerViewAdapter(getContext(),followedInfo);
         recyclerview.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.HORIZONTAL_LIST));
@@ -91,4 +107,5 @@ public class MyFriendFragment extends BaseFragment implements MyFriendView {
     public void showFriendError() {
 
     }
+
 }

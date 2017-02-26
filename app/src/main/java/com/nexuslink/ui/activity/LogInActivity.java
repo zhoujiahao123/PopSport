@@ -113,7 +113,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                XLog.e(e.toString());
             }
 
             @Override

@@ -5,46 +5,39 @@ package com.nexuslink.model.data;
  */
 
 public class FollowInfo{
-    private int flag;
-    private FollowInfoBean followInfoBean;
 
-    public FollowInfoBean getFollowInfoBean() {
-        return followInfoBean;
+    /**
+     * code : 200
+     * fFansNum : 0
+     * followFlag : 0
+     */
+
+    private int code;
+    private int fFansNum;
+    private int followFlag;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setFollowInfoBean(FollowInfoBean followInfoBean) {
-        this.followInfoBean = followInfoBean;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public int getFlag() {
-        return flag;
+    public int getFFansNum() {
+        return fFansNum;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
+    public void setFFansNum(int fFansNum) {
+        this.fFansNum = fFansNum;
     }
 
+    public int getFollowFlag() {
+        return followFlag;
+    }
 
-
-    public static class FollowInfoBean {
-        private int followFlag;
-        private int fFansNum;
-
-        public int getFollowFlag() {
-            return followFlag;
-        }
-
-        public void setFollowFlag(int followFlag) {
-            this.followFlag = followFlag;
-        }
-
-        public int getfFansNum() {
-            return fFansNum;
-        }
-
-        public void setfFansNum(int fFansNum) {
-            this.fFansNum = fFansNum;
-        }
+    public void setFollowFlag(int followFlag) {
+        this.followFlag = followFlag;
     }
 }
 

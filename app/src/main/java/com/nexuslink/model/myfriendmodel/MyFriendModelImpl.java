@@ -1,5 +1,6 @@
 package com.nexuslink.model.myfriendmodel;
 
+import com.elvishew.xlog.XLog;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.util.ApiUtil;
@@ -31,11 +32,13 @@ public class MyFriendModelImpl implements MyFriendModel {
                     @Override
                     public void onError(Throwable e) {
                         listener.failed(e);
+                        XLog.e("我的好友请求失败"+e.toString());
                     }
 
                     @Override
                     public void onNext(FollowedInfo followedInfo) {
                         listener.succeed(followedInfo);
+                        XLog.e("我的好友请求成功");
                     }
                 });
     }

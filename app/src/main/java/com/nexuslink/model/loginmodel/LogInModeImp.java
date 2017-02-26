@@ -47,7 +47,7 @@ public class LogInModeImp implements LogInModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(Constants.TAG,e.toString());
+                        XLog.e(e.toString());
                     }
 
                     @Override
