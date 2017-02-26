@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.LoadRoomsResult;
@@ -95,7 +96,12 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
         holder.runHouseDetail.setText(datas.get(position).getRoomGoal()+str);
         holder.currentPersons.setText(datas.get(position).getUsers().size()+"人");
         //加载图片
-        Glide.with(mContext).load(Constants.PHOTO_BASE_URL+datas.get(position).getUsers().get(0).getUImg()).into(holder.runHouseImage);
+        if(datas.get(position).getUsers() != null && datas.get(position).getUsers().size() >0){
+            Glide.with(mContext).load(Constants.PHOTO_BASE_URL+datas.get(position).getUsers().get(0)
+                    .getUImg())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(holder.runHouseImage);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

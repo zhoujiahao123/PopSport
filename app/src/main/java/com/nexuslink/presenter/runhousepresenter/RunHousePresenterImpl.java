@@ -36,8 +36,8 @@ public class RunHousePresenterImpl implements RunHousePresenter {
             public void onFinish(Object o) {
                 if(autoRefresh){
                     mView.hideProgress();
+                    mView.showSuccess();
                 }
-                mView.showSuccess();
                 List<LoadRoomsResult.RoomBean> list = (List<LoadRoomsResult.RoomBean>) o;
                 mView.setRunHouseDatas(list);
             }

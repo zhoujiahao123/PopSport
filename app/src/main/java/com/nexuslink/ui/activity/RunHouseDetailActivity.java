@@ -18,6 +18,9 @@ import com.nexuslink.ui.adapter.RunHouseDetailAdapter;
 import com.nexuslink.ui.view.RunHouseDetailView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.UserUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -57,6 +60,10 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
      */
     private RunHouseDetailPresenter presenter;
     /**
+     * 辅助变量
+     */
+    private boolean isDataChanged = false;
+    /**
      * 格式控制
      */
     private SimpleDateFormat dfDate = new SimpleDateFormat("MM月dd日");
@@ -78,6 +85,20 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
 
     private void initDatas() {
         roomBean = getIntent().getParcelableExtra("roominfo");
+        if(roomBean == null){
+            ToastUtil.showToast(this,"出现未知错误，请重试");
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if(isDataChanged){
+            EventBus.getDefault().post("刷新跑房");
+        }
+
     }
 
     private void initViews() {
@@ -88,31 +109,55 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               onBackPressed();
             }
         });
         //reyclerview设置
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         //进行界面的设置
-        if (roomBean != null) {
-            //toolbar上信息设置
-            runHouseName.setText(roomBean.getRoomName());
-            mPersonNum.setText(roomBean.getUsers().size()+"人");
-            //跑房目标框设置
-
-            String str = roomBean.getRoomType() == 1 ? "米" : "分钟";
-            mRunHouseExpectTv.setText(roomBean.getRoomGoal() + str);
-            //由于还在测试，这部分等后台完成在继续
+        //toolbar上信息设置
+        runHouseName.setText(roomBean.getRoomName());
+        mPersonNum.setText(roomBean.getUsers().size()+"人");
+        //跑房目标框设置
+        String str = roomBean.getRoomType() == 1 ? "米" : "分钟";
+        mRunHouseExpectTv.setText(roomBean.getRoomGoal() + str);
+        //由于还在测试，这部分等后台完成在继续
 //             mRunHouseStartTimeTv.setText(dfDate.format(roomBean.getStartDate())+" "+dfDay.format(roomBean.getStartTime()));
-            //users设置
-            adapter = new RunHouseDetailAdapter(this, roomBean.getUsers());
-            mRecyclerView.setAdapter(adapter);
+        //users设置
+        adapter = new RunHouseDetailAdapter(this, roomBean.getUsers());
+        mRecyclerView.setAdapter(adapter);
+        //bt设置
+        List<LoadRoomsResult.RoomBean.UsersBean> users = roomBean.getUsers();
+        for(int i =0;i<users.size();i++){
+            if(users.get(i).getUid() == UserUtils.getUserId()){
+                changToQuit();
+                break;
+            }
         }
+
+    }
+
+    private void changToQuit() {
+        mJoinInBt.setText("退出跑房");
+        //0xE00D0F
+        mJoinInBt.setBackground(getDrawable(R.drawable.bt_run_house_warn));
+    }
+    private void changToJoin(){
+        mJoinInBt.setText("加入跑房");
+        mJoinInBt.setBackground(getDrawable(R.drawable.bt_run_house_background));
     }
 
     @OnClick(R.id.bt_join_in)
     public void onClick() {
-        presenter.joinRoom(roomBean.getRoomId());
+        if(mJoinInBt.getText().toString().equals("加入跑房")){
+            presenter.joinRoom(roomBean.getRoomId());
+
+
+        }else if(mJoinInBt.getText().toString().equals("退出跑房")){
+            presenter.quitRoom(roomBean.getRoomId());
+
+        }
+
     }
 
     @Override
@@ -132,11 +177,22 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
 
     @Override
     public void showError() {
-        ToastUtil.showToast(this,"加入失败");
+        ToastUtil.showToast(this,"出错啦(╥╯^╰╥)");
     }
 
     @Override
     public void setDatas(List<LoadRoomsResult.RoomBean.UsersBean> users) {
         adapter.setDatas(users);
+        mPersonNum.setText(adapter.getItemCount()+"人");
+        changToQuit();
+        isDataChanged = true;
+    }
+
+    @Override
+    public void removeItem(int userId) {
+        adapter.remoteItem(userId);
+        mPersonNum.setText(adapter.getItemCount()+"人");
+        changToJoin();
+        isDataChanged = true;
     }
 }

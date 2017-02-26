@@ -84,7 +84,7 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
 
         adapter  = new RunHouseAdapter(getContext());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,true));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //设置下拉刷新
         //下拉刷新和上拉加载更多
@@ -122,7 +122,7 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
     @Subscribe
     public void onRefresh(String str){
         if (str.equals("刷新跑房")){
-            mRunHousePresenter.onRefresh(0,true);
+            mRunHousePresenter.onRefresh(0,false);
         }
     }
 
@@ -157,7 +157,6 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
         return super.onOptionsItemSelected(item);
 
     }
-
 
 
     @Override

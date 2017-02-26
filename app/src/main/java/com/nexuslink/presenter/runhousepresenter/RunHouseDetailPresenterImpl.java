@@ -5,6 +5,7 @@ import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.runhousemodel.RunHoseDetailModelImpl;
 import com.nexuslink.model.runhousemodel.RunHouseDetailModel;
 import com.nexuslink.ui.view.RunHouseDetailView;
+import com.nexuslink.util.UserUtils;
 
 import java.util.List;
 
@@ -39,6 +40,24 @@ public class RunHouseDetailPresenterImpl implements RunHouseDetailPresenter {
             @Override
             public void onError(Exception e) {
                 mView.hideProgress();
+                mView.showError();
+            }
+        });
+    }
+
+    @Override
+    public void quitRoom(int rId) {
+        mView.showProgress();
+        runHouseDetailModel.quitRoom(rId, new CallBackListener() {
+            @Override
+            public void onFinish(Object o) {
+                mView.hideProgress();
+                mView.removeItem(UserUtils.getUserId());
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
                 mView.showError();
             }
         });

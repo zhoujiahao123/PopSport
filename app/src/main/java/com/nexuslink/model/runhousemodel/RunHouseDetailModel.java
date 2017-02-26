@@ -8,4 +8,5 @@ import com.nexuslink.model.CallBackListener;
 
 public interface RunHouseDetailModel {
     void joinRoom(int roomId, CallBackListener listener);
+    void quitRoom(int rId,CallBackListener listener);
 }

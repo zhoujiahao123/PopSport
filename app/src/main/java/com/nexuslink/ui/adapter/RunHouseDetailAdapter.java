@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.LoadRoomsResult;
@@ -38,13 +39,25 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
         //数据更新
         notifyDataSetChanged();
     }
+    /**
+     * 移除item接口
+     */
+    public void remoteItem(int id){
+        for(int i =0;i<usersList.size();i++){
+            if(usersList.get(i).getUid() == id){
+                usersList.remove(i);
+                notifyDataSetChanged();
+                break;
+            }
+        }
+    }
 
     /**
      * 设置数据接口
      */
-    public void setDatas(List<LoadRoomsResult.RoomBean.UsersBean> usersList){
+    public void setDatas(List<LoadRoomsResult.RoomBean.UsersBean> users){
         usersList.clear();
-        usersList.addAll(usersList);
+        usersList.addAll(users);
         notifyDataSetChanged();
     }
 
@@ -63,7 +76,10 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
     @Override
     public void onBindViewHolder(RunHouseDetialViewHolder holder, int position) {
         //设置用户信息
-        Glide.with(mContext).load(Constants.PHOTO_BASE_URL+usersList.get(position).getUImg()).crossFade().into(holder.userImage);
+        Glide.with(mContext).load(Constants.PHOTO_BASE_URL+usersList.get(position).getUImg()).
+                 crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(holder.userImage);
         holder.userName.setText(usersList.get(position).getUName());
         holder.historyMiles.setText(usersList.get(position).getUHistoryMileage()+"km");
     }

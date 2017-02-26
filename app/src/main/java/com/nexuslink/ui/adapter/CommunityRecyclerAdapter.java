@@ -106,7 +106,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         CommunityInfo.ArticlesBean.UserBeanBean user = data.get(position).getUserBean();
         //设置头像
         Glide.with(mContext).load(Constants.PHOTO_BASE_URL+user.getUImg())
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 //设置50%的缩略图
                 .thumbnail(0.5f)
                 .crossFade().into(holder.userImage);

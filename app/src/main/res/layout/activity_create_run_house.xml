@@ -111,6 +111,10 @@
     <Button
         android:id="@+id/post"
         android:text="提交"
+        android:textColor="@color/ghost_white"
+        android:layout_marginLeft="@dimen/spacing_tiny"
+        android:layout_marginRight="@dimen/spacing_tiny"
+        android:background="@drawable/bt_run_house_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

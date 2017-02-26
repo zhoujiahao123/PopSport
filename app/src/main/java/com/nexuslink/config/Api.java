@@ -15,6 +15,7 @@ import com.nexuslink.model.data.JoinRoomResult;
 import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
+import com.nexuslink.model.data.QuiteRoomResult;
 import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.data.TaskFlag;
 import com.nexuslink.model.data.UIdInfo;
@@ -170,7 +171,7 @@ public interface Api {
     //退出跑房
     @FormUrlEncoded
     @POST("room/quit")
-    Observable<Integer> quitRoom(@Field("uId") int uId,@Field("rId") int rId);
+    Observable<QuiteRoomResult> quitRoom(@Field("uId") int uId, @Field("rId") int rId);
 
 
 

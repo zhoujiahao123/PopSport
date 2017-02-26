@@ -14,4 +14,5 @@ public interface RunHouseDetailView {
     void showSuccess();
     void showError();
     void setDatas(List<LoadRoomsResult.RoomBean.UsersBean> users);
+    void removeItem(int userId);
 }

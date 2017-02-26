@@ -6,4 +6,5 @@ package com.nexuslink.presenter.runhousepresenter;
 
 public interface RunHouseDetailPresenter {
     void joinRoom(int rId);
+    void quitRoom(int rId);
 }

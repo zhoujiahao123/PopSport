@@ -4,9 +4,11 @@ import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.JoinRoomResult;
+import com.nexuslink.model.data.QuiteRoomResult;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.UserUtils;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -32,5 +34,34 @@ public class RunHoseDetailModelImpl implements RunHouseDetailModel {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void quitRoom(int rId, final CallBackListener listener) {
+        api.quitRoom(UserUtils.getUserId(),rId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<QuiteRoomResult>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError((Exception) e);
+                    }
+
+                    @Override
+                    public void onNext(QuiteRoomResult integer) {
+                        if(integer.getCode() == Constants.SUCCESS){
+                            listener.onFinish(null);
+                        }else{
+                            listener.onError(new Exception("退出跑房时出错"));
+                        }
+                    }
+                });
+
+
     }
 }
