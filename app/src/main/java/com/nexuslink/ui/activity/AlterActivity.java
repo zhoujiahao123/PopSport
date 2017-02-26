@@ -8,6 +8,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.MainThread;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
@@ -107,15 +110,21 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 
     //作为标志位，标志是哪一个选择器正在起作用
     private String pickerFlag = null;
-
-
     int uWeight;
     int uHeight;
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what==1){
+                ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+msg.obj,circleImageView);
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (isConnective()) {
-            Log.e("TAG", "true");
             load();
         } else {
             setContentView(R.layout.activity_error_network);
@@ -132,6 +141,17 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 });
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL + BaseApplication.getDaosession().getUserDao().queryBuilder().where(
+                UserDao.Properties.Already.eq(1)
+        ).unique().getUImg(), circleImageView);
+        nickName.setText(BaseApplication.getDaosession().getUserDao().queryBuilder().where(
+                UserDao.Properties.Already.eq(1)
+        ).unique().getUName());
     }
 
     @Override
@@ -397,9 +417,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     @Override
     public void showChangeNickName(ChangeInfo1 changeInfo1) {
         if (changeInfo1.getCode() != 500) {
-            XLog.i("修改昵称返回的code为500");
             if (changeInfo1.getChangeFlag() == 1) {
-                XLog.i("修改用户名成功");
                 nickName.setText(nickNamePreper);
             } else {
                 ToastUtil.showToast(this, "用户名重复");
@@ -412,7 +430,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         UserDao userDao = BaseApplication.getDaosession().getUserDao();
         User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
         if(user.getUName()==null){
-            XLog.e("user的getUName是空的");
             presenter = new AlterPresenterImpl(new AlterModelImpl(), this);
             presenter.getUserInfo((int) IdUtil.getuId());
         }else {
@@ -536,15 +553,16 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void photoChooseEvent(EventEntry eventEntry) {
         String photoPath = eventEntry.photos.get(0).getPath();
-        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
+//        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
         eventEntry.photos.clear();
+        XLog.e("上面这个执行了");
         postPhoto(photoPath);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void photoChoosesEvent(PhotoEntry entry) {
         String photoPath = entry.getPath();
-        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
+//        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
         postPhoto(photoPath);
     }
 
@@ -555,8 +573,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         if (str.equals("png")) {
             type = "image/png";
         }
-        XLog.e(path);
-        XLog.e(type);
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("uId", String.valueOf(IdUtil.getuId()))
                 .addFormDataPart("uImg", "uImg", RequestBody.create(MediaType.parse(type), file)).build();
@@ -565,12 +581,10 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                XLog.i("上传头像失败" + e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                XLog.i("上传头像成功");
                 User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
                 Gson gson = new Gson();
                 ImgInfo imgInfo =gson.fromJson(response.body().string(),ImgInfo.class);
@@ -578,7 +592,13 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                     Snackbar.make(container,"未知的错误发生了",Snackbar.LENGTH_SHORT).show();
                 }else {
                     user.setUImg(imgInfo.getUserImg());
+                    XLog.e("");
+                    Message message = new Message();
+                    message.what =1;
+                    message.obj=imgInfo.getUserImg();
+                    handler.sendMessage(message);
                     BaseApplication.getDaosession().getUserDao().update(user);
+                    XLog.e("这里已经把头像插进去了");
                 }
             }
         });

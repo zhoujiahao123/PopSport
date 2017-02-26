@@ -1,84 +1,125 @@
 package com.nexuslink.model.data;
 
+import java.util.List;
+
 /**
  * Created by 猿人 on 2017/2/8.
  */
 
 public class CommunityInfo {
-    private int flag;
-    private CommunityBean communityBean;
 
-    public int getFlag() {
-        return flag;
+
+    private int code;
+    private List<ArticlesBean> articles;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public CommunityBean getCommunityBean() {
-        return communityBean;
+    public List<ArticlesBean> getArticles() {
+        return articles;
     }
 
-    public void setCommunityBean(CommunityBean communityBean) {
-        this.communityBean = communityBean;
+    public void setArticles(List<ArticlesBean> articles) {
+        this.articles = articles;
     }
 
-    public static class CommunityBean{
-        //头像url
-        private long userId;
-        private String userImageUrl;
-        private String userName;
-        private String userLevel;
-        private String content;
-        private String[] contentImagsUrl;
+    public static class ArticlesBean {
 
-        public long getUserId() {
+
+        private int articleId;
+        private int userId;
+        private String text;
+        private int commentNum;
+        private int likeNum;
+        private int lookNum;
+        private String date;
+        private String time;
+        private boolean likeArticle;
+        private List<String> images;
+
+        public int getArticleId() {
+            return articleId;
+        }
+
+        public void setArticleId(int articleId) {
+            this.articleId = articleId;
+        }
+
+        public int getUserId() {
             return userId;
         }
 
-        public void setUserId(long userId) {
+        public void setUserId(int userId) {
             this.userId = userId;
         }
 
-        public String getUserImageUrl() {
-            return userImageUrl;
+        public String getText() {
+            return text;
         }
 
-        public void setUserImageUrl(String userImageUrl) {
-            this.userImageUrl = userImageUrl;
+        public void setText(String text) {
+            this.text = text;
         }
 
-        public String getUserName() {
-            return userName;
+        public int getCommentNum() {
+            return commentNum;
         }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
+        public void setCommentNum(int commentNum) {
+            this.commentNum = commentNum;
         }
 
-        public String getUserLevel() {
-            return userLevel;
+        public int getLikeNum() {
+            return likeNum;
         }
 
-        public void setUserLevel(String userLevel) {
-            this.userLevel = userLevel;
+        public void setLikeNum(int likeNum) {
+            this.likeNum = likeNum;
         }
 
-        public String getContent() {
-            return content;
+        public int getLookNum() {
+            return lookNum;
         }
 
-        public void setContent(String content) {
-            this.content = content;
+        public void setLookNum(int lookNum) {
+            this.lookNum = lookNum;
         }
 
-        public String[] getContentImagsUrl() {
-            return contentImagsUrl;
+        public String getDate() {
+            return date;
         }
 
-        public void setContentImagsUrl(String[] contentImagsUrl) {
-            this.contentImagsUrl = contentImagsUrl;
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+
+        public boolean isLikeArticle() {
+            return likeArticle;
+        }
+
+        public void setLikeArticle(boolean likeArticle) {
+            this.likeArticle = likeArticle;
+        }
+
+        public List<String> getImages() {
+            return images;
+        }
+
+        public void setImages(List<String> images) {
+            this.images = images;
         }
     }
 }

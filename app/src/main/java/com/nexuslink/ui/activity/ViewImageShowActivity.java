@@ -30,7 +30,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +52,7 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
     private int position;
     private int dataLength = 0;
     private List<Fragment> fragments = new ArrayList<>();
-    private Bitmap bitmap;
+    private Map<Integer,Bitmap> imagesMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
             ViewImageFragment fragment = new ViewImageFragment();
             Bundle arg =new Bundle();
             arg.putString(Constants.IMAGE_URL,data.get(i));
+            arg.putInt(Constants.IMAGE_POS,i);
             fragment.setArguments(arg);
             //增加监听
             fragment.setSaveImageListener(this);
@@ -124,7 +127,8 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
         int id = item.getItemId();
         boolean isSave = false;
         if(id == R.id.save_image){
-            if(bitmap != null){
+            Bitmap bitmap = imagesMap.get(mViewPager.getCurrentItem());
+            if( bitmap != null){
                 //进行文件的保存
                 isSave = saveImageToGallery(this,bitmap);
                 if(isSave){
@@ -185,8 +189,8 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
     }
 
     @Override
-    public void onLoadSuccess(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void onLoadSuccess(int pos,Bitmap bitmap) {
+        imagesMap.put(pos,bitmap);
     }
     @Override
     public void onLoadFailed(String str) {

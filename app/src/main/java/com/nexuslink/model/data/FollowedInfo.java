@@ -8,74 +8,74 @@ import java.util.List;
 
 public class FollowedInfo{
 
-    private int flag;
-    private FollowedInfoBean followedInfoBean;
 
-    public int getFlag() {
-        return flag;
+    /**
+     * code : 200
+     * users : [{"fId":19,"fName":"好哥哥啊","fImg":null,"fAchievements":[false,false,false,false,false,false,false,false]},{"fId":22,"fName":"好哥哥哦","fImg":null,"fAchievements":[false,false,false,false,false,false,false,false]},{"fId":18,"fName":"好哥哥","fImg":"user18.jpeg","fAchievements":[false,false,false,false,false,false,false,false]},{"fId":1,"fName":"哇哈哈","fImg":"user1.jpeg","fAchievements":[true,true,false,false,false,false,false,true]},{"fId":23,"fName":"哇哦","fImg":null,"fAchievements":[false,false,false,false,false,false,false,false]}]
+     */
+
+    private int code;
+    /**
+     * fId : 19
+     * fName : 好哥哥啊
+     * fImg : null
+     * fAchievements : [false,false,false,false,false,false,false,false]
+     */
+
+    private List<UsersBean> users;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public FollowedInfoBean getFollowedInfoBean() {
-        return followedInfoBean;
+    public List<UsersBean> getUsers() {
+        return users;
     }
 
-    public void setFollowedInfoBean(FollowedInfoBean followedInfoBean) {
-        this.followedInfoBean = followedInfoBean;
+    public void setUsers(List<UsersBean> users) {
+        this.users = users;
     }
 
-    public static class FollowedInfoBean {
-        private List<SimpleUser> simpleUserList;
+    public static class UsersBean {
+        private int fId;
+        private String fName;
+        private String fImg;
+        private List<Boolean> fAchievements;
 
-        public List<SimpleUser> getSimpleUserList() {
-            return simpleUserList;
+        public int getFId() {
+            return fId;
         }
 
-        public void setSimpleUserList(List<SimpleUser> simpleUserList) {
-            this.simpleUserList = simpleUserList;
+        public void setFId(int fId) {
+            this.fId = fId;
         }
 
-        public static class SimpleUser{
-            private int fId;
-            private String fName;
-            private String fImg;
-            private int[] fAchievements;
+        public String getFName() {
+            return fName;
+        }
 
-            public int getfId() {
-                return fId;
-            }
+        public void setFName(String fName) {
+            this.fName = fName;
+        }
 
-            public void setfId(int fId) {
-                this.fId = fId;
-            }
+        public String getFImg() {
+            return fImg;
+        }
 
-            public String getfName() {
-                return fName;
-            }
+        public void setFImg(String fImg) {
+            this.fImg = fImg;
+        }
 
-            public void setfName(String fName) {
-                this.fName = fName;
-            }
+        public List<Boolean> getFAchievements() {
+            return fAchievements;
+        }
 
-            public String getfImg() {
-                return fImg;
-            }
-
-            public void setfImg(String fImg) {
-                this.fImg = fImg;
-            }
-
-            public int[] getfAchievements() {
-                return fAchievements;
-            }
-
-            public void setfAchievements(int[] fAchievements) {
-                this.fAchievements = fAchievements;
-            }
+        public void setFAchievements(List<Boolean> fAchievements) {
+            this.fAchievements = fAchievements;
         }
     }
-
 }

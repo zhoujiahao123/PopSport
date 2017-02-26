@@ -7,6 +7,6 @@ import android.graphics.Bitmap;
  */
 
 public interface SaveImageListener {
-    void onLoadSuccess(Bitmap bitmap);
+    void onLoadSuccess(int pos,Bitmap bitmap);
     void onLoadFailed(String str);
 }

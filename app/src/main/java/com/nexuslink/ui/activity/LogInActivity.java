@@ -7,15 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elvishew.xlog.XLog;
@@ -26,7 +21,6 @@ import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseActivity;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
-import com.nexuslink.model.data.User1;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.loginpresenter.LogInPresenter;
 import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
@@ -37,7 +31,6 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -120,7 +113,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                XLog.e(e.toString());
             }
 
             @Override
@@ -131,15 +124,18 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 UserInfo userInfo = gson.fromJson(content,UserInfo.class);
                 UserDao userDao = BaseApplication.getDaosession().getUserDao();
                 User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-                String achievement = Arrays.toString(userInfo.getUser().getUAchievements());
+                String achievement=new String();
+                for(int i =0;i<8;i++){
+                    achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
+                }
                 user.setUAchievements(achievement.substring(1,achievement.length()-1));
                 user.setUExp(userInfo.getUser().getUExp());
                 user.setUFansNum(userInfo.getUser().getUFansNum());
                 user.setUGender(userInfo.getUser().getUGender());
                 user.setUHeight(userInfo.getUser().getUHeight());
                 user.setUImg(userInfo.getUser().getUImg());
-                user.setUHistoryMileage(userInfo.getUser().getUHistoryMileage());
-                user.setUHistoryStep(userInfo.getUser().getUHistoryStep());
+                user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
+                user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
                 user.setUName(userInfo.getUser().getUName());
                 user.setUWeight(userInfo.getUser().getUWeight());
                 userDao.update(user);

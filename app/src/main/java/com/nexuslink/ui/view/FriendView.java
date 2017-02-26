@@ -1,5 +1,6 @@
 package com.nexuslink.ui.view;
 
+import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.SearchInfo;
 
 /**
@@ -13,6 +14,9 @@ public interface FriendView extends BaseView{
     //显示fragment
     void showUserfragment();
 
+    //关注某人
+    void startFollow(int uId,int fId);
+
     //关注成功
     void succeedFollow();
 
@@ -20,4 +24,10 @@ public interface FriendView extends BaseView{
     void failedFollow();
 
     void showSearchUser(SearchInfo searchInfo);
+
+    //获取关注的好友
+    void getFollowed();
+
+    //获取关注好友成功
+    void getFollowedSucceed(FollowedInfo followedInfo);
 }

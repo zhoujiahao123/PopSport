@@ -15,11 +15,10 @@ import com.nexuslink.ui.fragment.MyFriendFragment;
  */
 
 public class FriendFragmenPagerAdapter extends FragmentPagerAdapter {
-    private static final String[] mTitle = {"结果","好友"};
+    private static final String[] mTitle = {"搜索结果","好友"};
     private SearchInfo searchInfo;
-    public FriendFragmenPagerAdapter(FragmentManager fm, SearchInfo searchInfo) {
+    public FriendFragmenPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.searchInfo = searchInfo;
     }
 
     @Override
