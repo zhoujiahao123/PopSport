@@ -3,9 +3,11 @@ package com.nexuslink.ui.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -54,7 +56,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     @BindView(R.id.run_current_col)
     TextView mCurrentKcol;
     @BindView(R.id.max_speed_tv)
-    TextView maxSppedTv;
+    TextView maxSpeedTv;
     @BindView(R.id.run_current_speed)
     TextView mAverageSpeedTv;
     @BindView(R.id.start_or_pause)
@@ -63,9 +65,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     Button mFinish;
     @BindView(R.id.activity_run)
     LinearLayout activityRun;
+
     //定时器
     private TimeCount time;
-    //===============================================view
+    //===============================================辅助变量
+    private boolean isFirstLoc = true;
 
     //===============================================轨迹线
     private PolylineOptions mPolyoptions;
@@ -91,7 +95,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     mListener.onLocationChanged(aMapLocation);
                     //取得具体坐标，经纬度
                     LatLng myLocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation));
+                    //关闭自动回到定位点
+                    if (isFirstLoc) {
+                        aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation));
+                        isFirstLoc = false;
+                    }
                     //根据条件判断是否启动路线轨迹记录
                     if (mStartOrPauseBt.getText().toString().equals("暂停")) {
                         record.addpoint(aMapLocation);
@@ -262,7 +270,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     }
 
 
-
     private String getCurrentDate(long time) {
         SimpleDateFormat formatter = new SimpleDateFormat(
                 "yyyy-MM-dd  HH:mm:ss ");
@@ -284,7 +291,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     @Override
     public void setCurrentSpeed(String speed) {
         //    CurrentAverageSpeedTv.setText(speed+"m/s");
-        mAverageSpeedTv.setText(speed+"m/s");
+        mAverageSpeedTv.setText(speed);
     }
 
     @Override
@@ -299,6 +306,13 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mCurrentDistance.setText(miles);
     }
 
+    @Override
+    public void setMaxSpeed(String maxSpeed) {
+        maxSpeedTv.setText(maxSpeed);
+    }
+
+    private boolean isStart = false;
+
     @OnClick({R.id.start_or_pause, R.id.finish})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -307,26 +321,49 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     //改变按钮的状态
                     mStartOrPauseBt.setText("暂停");
                     changToClickable();
-                    aMap.clear();
                     if (record != null) {
                         record = null;
                     }
-                    time = new TimeCount(TOTAL_TIME, INTERVAL);
+                    if (!isStart) {
+                        time = new TimeCount(TOTAL_TIME, INTERVAL);
+                        record = new PathRecord();
+                        long mStartTime = System.currentTimeMillis();
+                        mRunPresenter.startRecord(mStartTime);
+                        record.setDate(getCurrentDate(mStartTime));
+                        isStart = true;
+                    }
                     time.start();
-                    record = new PathRecord();
-                    long mStartTime = System.currentTimeMillis();
-                    mRunPresenter.startRecord(mStartTime);
-                    record.setDate(getCurrentDate(mStartTime));
                 } else {
                     mStartOrPauseBt.setText("开始");
                     time.cancel();
                 }
                 break;
             case R.id.finish:
-                changToUnClickable();
                 //弹窗
-                long mEndTime = System.currentTimeMillis();
-                mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                final View dialogview = LayoutInflater.from(this).inflate(R.layout.run_wran_dialog, null);
+                final TextView confirm  = (TextView) dialogview.findViewById(R.id.confirm);
+                final TextView cancel = (TextView) dialogview.findViewById(R.id.cancel);
+                builder.setView(dialogview);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        changToUnClickable();
+                        long mEndTime = System.currentTimeMillis();
+                        mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
+                        //同时进行网络的上传和数据分析界面的打开
+                    }
+                });
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
                 break;
         }
     }
@@ -335,7 +372,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mFinish.setClickable(true);
         mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_click));
     }
-    private  void changToUnClickable(){
+
+    private void changToUnClickable() {
         mFinish.setClickable(false);
         mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_unclick));
     }

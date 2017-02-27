@@ -69,7 +69,7 @@
             <TextView
                 style="@style/RunActivityRightTextStyle"
                 android:id="@+id/max_speed_tv"
-                android:text="10m/s"
+                android:text="0m/s"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/run_current_speed"
-                android:text="10m/s"
+                android:text="0m/s"
                 style="@style/RunActivityRightTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

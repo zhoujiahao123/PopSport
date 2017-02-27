@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/run_current_distance"
-        android:text="4.08"
+        android:text="0.0"
         android:textSize="@dimen/font_larger"
         android:textColor="@color/one_class_text_color"
         android:layout_gravity="center"

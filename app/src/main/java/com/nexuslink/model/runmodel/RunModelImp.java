@@ -8,10 +8,12 @@ import com.amap.api.maps.model.LatLng;
 import com.nexuslink.Run;
 import com.nexuslink.RunDao;
 import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.UserUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
+import static android.R.attr.format;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -23,6 +25,7 @@ public class RunModelImp implements RunModel {
     private long mStartTime;
     private long mEndTime;
     private int seconds,minutes,hours;
+    private float maxSpeed = 0 ;
     DecimalFormat df = new DecimalFormat("#0.0");
 
     //===============================================数据库
@@ -70,15 +73,23 @@ public class RunModelImp implements RunModel {
         return distance;
     }
 
-
+    /**
+     * 单位 m/s
+     * @param distance 单位m
+     * @return
+     */
     public String getCurrentAverage(float distance) {
         long nowTime = System.currentTimeMillis();
-        return df.format(distance / ((nowTime - mStartTime) / 1000f));
+        float nowSpeed = distance / ((nowTime - mStartTime) / 1000f);
+        if (maxSpeed<nowSpeed){
+            maxSpeed = nowSpeed;
+        }
+        return df.format(maxSpeed)+"m/s";
     }
 
 
     public String getAverage(float distance) {
-        return String.valueOf(distance / ((float) (mEndTime - mStartTime) / 1000f));
+        return df.format(distance / ((float) (mEndTime - mStartTime) / 1000f));
     }
 
 
@@ -150,15 +161,18 @@ public class RunModelImp implements RunModel {
         }
     }
 
-
+    /**
+     * 单位kcol
+     * @param distance 单位m
+     * @return
+     */
     public String getCurrentCol(float distance) {
-        int weight =getWeight();
-        return df.format(weight * distance * 1.036f);
+        final int weight = UserUtils.getUserWeight();
+        return df.format(weight * distance * 1.036f/1000);
     }
 
     public String getCurrentMiles(float distance) {
-        final DecimalFormat format = new DecimalFormat("#0.00");
-        return format.format(distance/1000f);
+        return df.format(distance);
     }
 
     @Override
@@ -171,9 +185,12 @@ public class RunModelImp implements RunModel {
         this.mEndTime = endTime;
     }
 
-    private int getWeight(){
-        return 60;
+    @Override
+    public String getMaxSpeed() {
+        return maxSpeed+"m/s";
     }
+
+
     private String getRealTime(int time) {
         String realTime = String.valueOf(time);
         if (time < 10) {

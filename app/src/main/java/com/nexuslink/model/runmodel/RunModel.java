@@ -19,5 +19,6 @@ public interface RunModel {
     String getCurrentMiles(float distance);
     void setStartTime(long startTime);
     void setEndTime(long endTime);
+    String getMaxSpeed();
 
 }

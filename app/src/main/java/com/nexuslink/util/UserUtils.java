@@ -30,4 +30,11 @@ public class UserUtils {
         return user.getUName();
     }
 
+    /**
+     * 取得用户体重
+     */
+    public static int getUserWeight(){
+        return user.getUWeight();
+    }
+
 }

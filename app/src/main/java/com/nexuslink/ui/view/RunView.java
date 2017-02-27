@@ -14,4 +14,6 @@ public interface RunView {
     void setCurrentCol(String col);
     //设置当前公里数
     void setCurrentDistance(String miles);
+    //设置最大速度
+    void setMaxSpeed(String maxSpeed);
 }
