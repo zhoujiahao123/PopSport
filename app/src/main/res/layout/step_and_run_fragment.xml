@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
-            android:background="@color/colorPrimary"
+            android:background="@color/pink_background_color"
             android:id="@+id/toolbar_step_and_run"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
@@ -18,6 +18,14 @@
             android:text="运动中心"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/weather_image"
+            android:src="@drawable/weather"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny" />
     </RelativeLayout>
 
 
@@ -28,13 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </android.support.v4.view.ViewPager>
-    <android.support.design.widget.TabLayout
-        android:layout_marginTop="@dimen/spacing_huger_toolbar"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/tabLayout_step_and_run"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </android.support.design.widget.TabLayout>
+
 
 
 

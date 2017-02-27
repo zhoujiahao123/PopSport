@@ -58,4 +58,10 @@
     <color name="two_class_text_color">#9A989A</color>
     <color name="three_class_text_color">#727072</color>
     <color name="four_class_text_color">#CECCCE</color>
+
+    <!-- step and run fragment-->
+    <color name="pink_dark_top">#FF9469</color>
+    <color name="pink_background_color">#FF6469</color>
+    <color name="line_bar_fill_color">#FBDD6C</color>
+    <color name="small_title">#E2464B</color>
 </resources>

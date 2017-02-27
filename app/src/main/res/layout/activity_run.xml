@@ -8,14 +8,44 @@
     android:layout_height="match_parent"
     tools:context="com.nexuslink.ui.activity.RunActivity">
 
+    <RelativeLayout
+        android:background="@color/toolbar_color"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <ImageView
+            android:id="@+id/back_icon"
+            android:src="@drawable/back_white"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny" />
+        <LinearLayout
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:background="@color/toolbar_color"
-            app:titleTextAppearance="@style/RunActivityToolbar.TitleText"
-            android:layout_height="?attr/actionBarSize">
-        </android.support.v7.widget.Toolbar>
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/back_icon"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/run_date"
+                android:layout_gravity="start"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/run_time"
+                android:layout_gravity="start"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
 
 
     <com.amap.api.maps.MapView

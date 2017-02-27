@@ -213,7 +213,7 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="RunActivityActionBarTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="RunActivityActionBarTheme" parent="AppTheme">
         <item name="colorPrimaryDark">#2B698F</item>
     </style>
     <style name="RunActivityToolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
@@ -226,4 +226,11 @@
         <item name="android:padding">12dp</item>
         <item name="android:scaleType">centerInside</item>
     </style>
-    </resources>
+
+    <!--dialog-->
+    <style name="run_dialog" parent="android:Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

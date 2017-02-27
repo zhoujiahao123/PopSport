@@ -1,48 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <com.liulishuo.magicprogresswidget.MagicProgressCircle
-            android:id="@+id/stepCircle"
-            android:layout_centerInParent="true"
-            app:mpc_stroke_width="@dimen/step_circle_stoke_width"
-            app:mpc_percent="0.5"
-            app:mpc_end_color="@color/dark_imperial_blue"
-            app:mpc_start_color="@color/cyan"
-            android:layout_width="@dimen/step_circle_size"
-            android:layout_height="@dimen/step_circle_size" />
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--头部-->
     <LinearLayout
-            android:layout_centerInParent="true"
+        android:background="@color/pink_background_color"
+
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/current_steps_tv"
+            android:gravity="center"
+            android:text="10"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_super_huger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="当前步数"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/small_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_weight="1"
+        android:background="@color/pink_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/history_average_steps"
                 android:layout_gravity="center"
-                android:text="@string/steps"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:textColor="@color/yellow_light"
-                android:textSize="@dimen/font_large"
+                android:textColor="@color/white"
+                android:text="10"
+                android:textSize="@dimen/font_larger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <TextView
-                android:id="@+id/tv_currentSteps"
+                android:text="历史平均"
+                android:textColor="@color/small_title"
+                android:textSize="@dimen/font_small"
                 android:layout_gravity="center"
-                android:textColor="@color/yellow_normal_light"
-                android:text="0"
-                android:textStyle="bold"
-                android:textSize="@dimen/font_huge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tv_expectSteps"
-                android:layout_gravity="center"
-                android:text="@string/expect_steps_test"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:textColor="@color/yellow_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/history_best_steps"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="10"
+                android:textSize="@dimen/font_larger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="历史最佳"
+                android:textColor="@color/small_title"
+                android:textSize="@dimen/font_small"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </RelativeLayout>
+
+    <!--柱形图-->
+    <RelativeLayout
+
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" >
+        <com.hrules.charter.CharterBar
+            android:id="@+id/charter_steps"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+</LinearLayout>
 

@@ -116,4 +116,6 @@ dependencies {
     compile files('libs/umeng_social_net.jar')
     compile files('libs/umeng_social_tool.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
+    //柱状图图
+    compile 'com.hrules:charter:1.5.1'
 }

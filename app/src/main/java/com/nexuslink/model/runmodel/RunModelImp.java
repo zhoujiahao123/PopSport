@@ -13,7 +13,6 @@ import com.nexuslink.util.UserUtils;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import static android.R.attr.format;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -27,7 +26,10 @@ public class RunModelImp implements RunModel {
     private int seconds,minutes,hours;
     private float maxSpeed = 0 ;
     DecimalFormat df = new DecimalFormat("#0.0");
-
+    /**
+     * 消除最大速度误差
+     */
+    private int removeErrorMsg = 0;
     //===============================================数据库
     private RunDao mRunDao = DBUtil.getRunDao();
 
@@ -43,7 +45,7 @@ public class RunModelImp implements RunModel {
             AMapLocation lastLocation = list.get(list.size() - 1);
             String startPoint = amapLocationToString(firstLocation);
             String endPoint = amapLocationToString(lastLocation);
-            float cal = Float.parseFloat(getCol(distance));
+            float cal = Float.parseFloat(getCurrentCol(distance));
             insertNewRecord(String.valueOf(distance), duration, average, pathLineString, startPoint,
                     endPoint, date, cal);
 
@@ -78,13 +80,19 @@ public class RunModelImp implements RunModel {
      * @param distance 单位m
      * @return
      */
+
     public String getCurrentAverage(float distance) {
         long nowTime = System.currentTimeMillis();
         float nowSpeed = distance / ((nowTime - mStartTime) / 1000f);
-        if (maxSpeed<nowSpeed){
-            maxSpeed = nowSpeed;
+        //最开始的5次定位不进行记录
+        if(removeErrorMsg > 5){
+            if (maxSpeed<nowSpeed){
+                maxSpeed = nowSpeed;
+            }
+        }else{
+            removeErrorMsg++;
         }
-        return df.format(maxSpeed)+"m/s";
+        return df.format(nowSpeed)+"m/s";
     }
 
 
@@ -122,14 +130,6 @@ public class RunModelImp implements RunModel {
     }
 
 
-    private String getCol(float distance) {
-        //跑步热量（cal）＝体重（kg）×距离（m）×1.036
-//        User user = mUserDao.queryBuilder().unique();
-//        float weight = user.getUWeight();
-        //这里做测试，所以将weight设置为60
-        float weight = 60;
-        return df.format(weight * distance * 1.036f);
-    }
 
 
     public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date, float cal) {
@@ -187,7 +187,7 @@ public class RunModelImp implements RunModel {
 
     @Override
     public String getMaxSpeed() {
-        return maxSpeed+"m/s";
+        return df.format(maxSpeed)+"m/s";
     }
 
 

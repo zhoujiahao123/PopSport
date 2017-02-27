@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,12 +43,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     //===============================================常量
     private static final String TAG = "RunActivity";
-    private static final float MAX_ZOOM_LEVEL = 18f;
+    private static final float MAX_ZOOM_LEVEL = 19f;
     private static final float MIN_ZOOM_LEVEL = 15f;
     private static final int TOTAL_TIME = 1000 * 60 * 20;//20分钟
     private static final int INTERVAL = 1000;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.run_current_time)
     TextView mCurrentTime;
     @BindView(R.id.run_current_distance)
@@ -65,6 +63,12 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     Button mFinish;
     @BindView(R.id.activity_run)
     LinearLayout activityRun;
+    @BindView(R.id.back_icon)
+    ImageView backIcon;
+    @BindView(R.id.run_date)
+    TextView runDate;
+    @BindView(R.id.run_time)
+    TextView runTime;
 
     //定时器
     private TimeCount time;
@@ -139,15 +143,15 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     private void initViews() {
         //toolbar
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getCurrentDate(System.currentTimeMillis()));
-        mToolbar.setNavigationIcon(R.drawable.back_white);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+        String time = getCurrentDate(System.currentTimeMillis());
+        runDate.setText(time.split(" ")[0]);
+        runTime.setText(time.split(" ")[1]);
         //button
         changToUnClickable();
     }
@@ -272,7 +276,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     private String getCurrentDate(long time) {
         SimpleDateFormat formatter = new SimpleDateFormat(
-                "yyyy-MM-dd  HH:mm:ss ");
+                "yyyy-MM-dd HH:mm:ss ");
         Date curDate = new Date(time);
         String date = formatter.format(curDate);
         return date;
@@ -318,6 +322,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         switch (view.getId()) {
             case R.id.start_or_pause:
                 if (mStartOrPauseBt.getText().toString().equals("开始")) {
+                    //开启自动回到定位处
+                    isFirstLoc = true;
                     //改变按钮的状态
                     mStartOrPauseBt.setText("暂停");
                     changToClickable();
@@ -339,33 +345,36 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 }
                 break;
             case R.id.finish:
-                //弹窗
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                final View dialogview = LayoutInflater.from(this).inflate(R.layout.run_wran_dialog, null);
-                final TextView confirm  = (TextView) dialogview.findViewById(R.id.confirm);
-                final TextView cancel = (TextView) dialogview.findViewById(R.id.cancel);
-                builder.setView(dialogview);
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-                confirm.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        changToUnClickable();
-                        long mEndTime = System.currentTimeMillis();
-                        mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
-                        //同时进行网络的上传和数据分析界面的打开
-                    }
-                });
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
+                onBackPressed();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //弹窗
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.run_wran_dialog, null);
+        builder.setView(dialogView);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        dialogView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialogView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changToUnClickable();
+                long mEndTime = System.currentTimeMillis();
+                mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
+                dialog.dismiss();
+                finish();
+            }
+        });
     }
 
     private void changToClickable() {
@@ -377,6 +386,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mFinish.setClickable(false);
         mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_unclick));
     }
+
+
 
     /**
      * 倒计时类，用于统计时间

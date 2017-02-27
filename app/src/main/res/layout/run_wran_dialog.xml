@@ -1,56 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+
     <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:background="#676567"
+        android:orientation="vertical"
+        android:background="#F05E33"
         android:gravity="center"
-        android:layout_height="0dp">
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
         <ImageView
-            android:src="@drawable/msg"
+            android:src="@drawable/warn"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:layout_width="@dimen/image_size_normal"
-            android:layout_height="@dimen/image_size_normal" />
+            android:layout_width="@dimen/image_size_small"
+            android:layout_height="@dimen/image_size_small"
+            android:id="@+id/imageView" />
+
     </LinearLayout>
 
     <TextView
         android:gravity="center"
+        android:textColor="#424042"
         android:textSize="@dimen/font_normal"
-        android:text="您确定已经达到疲劳吗?"
-        android:layout_weight="1"
+        android:text="要不要再坚持会儿呢?"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="80dp"
+        android:id="@+id/textView" />
+
     <include
         layout="@layout/divider_line"
         ></include>
-    <LinearLayout
-        android:layout_weight="0.5"
-        android:layout_gravity="end"
-        android:gravity="center"
+
+    <RelativeLayout
+        android:padding="@dimen/spacing_normal"
         android:paddingRight="@dimen/spacing_large"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:text="继续"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/font_normal"
+            android:textColor="#656365"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/confirm"
-            android:textColor="#E66C96"
-            android:text="确定"
+            android:textColor="#333133"
+            android:text="不了，我累了"
+            android:layout_toLeftOf="@id/cancel"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/spacing_large"
             android:textSize="@dimen/font_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/cancel"
-            android:text="取消"
-            android:textSize="@dimen/font_normal"
-            android:textColor="#E66C96"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+
+
+    </RelativeLayout>
 
 </LinearLayout>
