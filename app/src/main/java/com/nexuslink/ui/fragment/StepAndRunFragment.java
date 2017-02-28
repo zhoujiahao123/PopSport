@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nexuslink.R;
+import com.nexuslink.ui.activity.RunActivity;
+import com.nexuslink.ui.activity.StepAndRunHistoryActivity;
 import com.nexuslink.ui.activity.WeatherActivity;
 import com.nexuslink.ui.adapter.StepAndRunFragmentAdapter;
 
@@ -32,7 +34,7 @@ public class StepAndRunFragment extends Fragment  {
     private Activity activity;
     private AppCompatActivity appCompatActivity;
     //===============================================view
-    private ImageView weatherImage;
+    private ImageView weatherImage,histroyImage,startRunImage;
     private ViewPager mViewPager;
 
     //===============================================Fragments的相关设置
@@ -68,6 +70,7 @@ public class StepAndRunFragment extends Fragment  {
         Log.i(TAG,fragments.size()+"");
     }
 
+
     private void initView(View v) {
 
         mViewPager = (ViewPager) v.findViewById(R.id.viewPager_step_and_run);
@@ -78,6 +81,23 @@ public class StepAndRunFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), WeatherActivity.class);
+                startActivity(intent);
+            }
+        });
+        //历史界面跳转
+        histroyImage = (ImageView) v.findViewById(R.id.history_image);
+        histroyImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, StepAndRunHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+        startRunImage = (ImageView) v.findViewById(R.id.start_run_image);
+        startRunImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, RunActivity.class);
                 startActivity(intent);
             }
         });

@@ -72,6 +72,8 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
         EventBus.getDefault().unregister(this);
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

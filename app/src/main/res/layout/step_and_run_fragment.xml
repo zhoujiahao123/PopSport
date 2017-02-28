@@ -26,6 +26,22 @@
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_width="@dimen/image_size_tiny"
             android:layout_height="@dimen/image_size_tiny" />
+        <ImageView
+            android:id="@+id/history_image"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/history_image"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny" />
+        <ImageView
+            android:id="@+id/start_run_image"
+            android:src="@drawable/start_run"
+            android:layout_toLeftOf="@id/history_image"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny" />
     </RelativeLayout>
 
 

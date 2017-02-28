@@ -110,7 +110,7 @@
         <activity
             android:name=".ui.activity.MainViewActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -133,8 +133,7 @@
 
         <activity
             android:name=".ui.activity.RunActivity"
-            android:theme="@style/RunActivityActionBarTheme"
-           />
+            android:theme="@style/RunActivityActionBarTheme" />
         <activity
             android:name=".ui.activity.RunHouseDetailActivity"
             android:theme="@style/CustomActionBarTheme" />
@@ -174,9 +173,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".ui.activity.ArticleDetailActivity"
-            android:windowSoftInputMode="adjustPan"
-            ></activity>
+        <activity
+            android:name=".ui.activity.ArticleDetailActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.activity.StepAndRunHistoryActivity"></activity>
     </application>
 
 </manifest>

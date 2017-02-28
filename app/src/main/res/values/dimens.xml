@@ -78,6 +78,7 @@
     <dimen name="font_super_huger">50sp</dimen>
     <dimen name="font_super_huge">34sp</dimen>
     <dimen name="font_huge">28sp</dimen>
+    <dimen name="font_below_huge">25sp</dimen>
     <dimen name="font_larger">22sp</dimen>
     <dimen name="font_large">18sp</dimen>
     <dimen name="font_normal">15sp</dimen>

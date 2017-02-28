@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,16 +21,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hrules.charter.CharterLine;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.nexuslink.R;
 import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.config.Constants;
 import com.nexuslink.service.StepService;
-import com.nexuslink.ui.view.ViewColor;
 import com.nexuslink.util.DBUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,14 +54,15 @@ public class StepFragment extends Fragment {
     TextView mHistoryAverageSteps;
     @BindView(R.id.history_best_steps)
     TextView mHistoryBestSteps;
-    @BindView(R.id.charter_steps)
-    CharterLine charterSteps;
+    @BindView(R.id.charter)
+    BarChart mChart;
+
     //===============================================辅助变量
     private boolean isBind = false;
     private Activity activity;
     private int historyBestStep = 0;
     private int historyAverageStep = 0;
-    private float[] values = new float[7];
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     Calendar calendar = Calendar.getInstance();
     //===============================================Messenger
@@ -78,7 +83,7 @@ public class StepFragment extends Fragment {
             switch (msg.what) {
                 case Constants.MSG_FROM_SERVICE:
                     // currentStepsTv.setText(msg.getData().getInt("currentSteps")+"");
-                    mCurrentStepsTv.setText(msg.getData().getInt("currentSteps")+"");
+                    mCurrentStepsTv.setText(msg.getData().getInt("currentSteps") + "");
                     break;
                 default:
                     break;
@@ -121,7 +126,6 @@ public class StepFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
-        ViewColor.setColor(activity,activity.getResources().getColor(R.color.pink_dark_top));
         ButterKnife.bind(this, view);
         initDate();
         return view;
@@ -132,9 +136,9 @@ public class StepFragment extends Fragment {
         qb.where(StepsDao.Properties.Date.eq(getTodayDate()));
         Steps steps = (Steps) qb.unique();
         if (steps != null) {
-            mCurrentStepsTv.setText(steps.getUStep()+"");
+            mCurrentStepsTv.setText(steps.getUStep() + "");
         } else {
-            mCurrentStepsTv.setText(0+"");
+            mCurrentStepsTv.setText(0 + "");
         }
         //计算所需数据
         caclulate();
@@ -151,68 +155,93 @@ public class StepFragment extends Fragment {
      */
     private void initCharter() {
 
-
+        SimpleDateFormat df = new SimpleDateFormat("MM-dd");
         //日期回滚七天
-        calendar.roll(Calendar.DATE,-8);
-        Date date = new Date();
+        calendar.roll(Calendar.DATE, -8);
         //找到数据 区间在一个星期之内
         List<Steps> list = stepsDao.queryBuilder()
-                .where(StepsDao.Properties.Date.lt(sdf.format(date)),StepsDao.Properties.Date.ge(sdf.format(calendar.getTime())))
+                .where(StepsDao.Properties.Date.lt(sdf.format(System.currentTimeMillis())), StepsDao.Properties.Date.ge(sdf.format(calendar.getTime())))
+                .orderAsc(StepsDao.Properties.Date)
                 .list();
-        int index = 0;
-        if(list != null && list.size() > 0){
-            for(int i=0;i<7;i++){
+        //x轴数据
+        List<String> xList = new ArrayList<>();
+        //y轴数据
+        List<BarEntry> yBarEnties = new ArrayList<>();
+        // 数据获得
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < 7; i++) {
                 String str = sdf.format(calendar.getTime());
-                if(str.equals(list.get(i).getDate())){
+                if (str.equals(list.get(i).getDate())) {
                     //满足条件就进行复制
-                    values[index] =(float) list.get(i).getUStep();
-                    index++;
-                }else{
+                    yBarEnties.add(new BarEntry(list.get(i).getUStep(),i));
+                } else {
                     //不满足条件就进行插入
-                    Steps steps = new Steps(null,0,str);
-                    stepsDao.insert(steps);
-                    list.add(i,steps);
+//                    Steps steps = new Steps(null, 0, str);
+                    list.add(i, null);
                 }
-                calendar.set(Calendar.DATE,i-8+1);
+                calendar.roll(Calendar.DATE, 1);
+                xList.add(df.format(calendar.getTime()));
             }
-        }else{
-            //如果还没有数据，那么就进行0赋值
-            for(int i =0;i<7;i++){
-                values[i] = 0.0f;
+        } else {
+//            如果还没有数据，那么就进行0赋值
+            for (int i = 0; i < 7; i++) {
+                yBarEnties.add(new BarEntry(1000,i));
+                calendar.roll(Calendar.DATE, 1);
+                xList.add(df.format(calendar.getTime()));
             }
         }
 
         //对表格进行初始化
-        charterSteps.setValues(values);
-        charterSteps.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
+        BarDataSet barDataSet = new BarDataSet(yBarEnties,"步数");
+        BarData barData = new BarData(xList,barDataSet);
+        mChart.setData(barData);
+        mChart.setDescription("运动周数据");
+        //设置空数据
+        mChart.setNoDataTextDescription("您暂时还没有数据可以显示哦，快去运动吧");
+        //===============================================属性设置
+        //设置Y方向上动画animateY(int time);
+        mChart.animateY(3000);
+        // 设置是否可以触摸
+        mChart.setTouchEnabled(false);
+        //设置背景颜色
+        mChart.setBackgroundColor(getResources().getColor(R.color.white));
+        // 如果打开，背景矩形将出现在已经画好的绘图区域的后边。
+        mChart.setDrawGridBackground(false);
+        // 集拉杆阴影
+        mChart.setDrawBarShadow(false);
+        // 网格背景颜色
+        mChart.setGridBackgroundColor(Color.parseColor("#00000000"));
+        // 是否显示表格颜色
+        mChart.setDrawGridBackground(false);
+        // 设置边框颜色
+        mChart.setBorderColor(Color.parseColor("#00000000"));
+        // 说明颜色
+        mChart.setDescriptionColor(Color.parseColor("#00000000"));
+        // 图例
+        mChart.getLegend().setEnabled(false);
 
-            }
-        });
-        charterSteps.show();
     }
 
     private void caclulate() {
         //加载昨天及昨天以前的数据
         List<Steps> list = stepsDao.queryBuilder().where(StepsDao.Properties.Date.lt(sdf.format(calendar.getTime()))).list();
-        if (list != null &&list.size() > 0){
-            for(int i =0;i<list.size();i++){
-                if(list.get(i).getUStep() > historyBestStep){
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getUStep() > historyBestStep) {
                     historyBestStep = list.get(i).getUStep();
                 }
                 historyAverageStep += list.get(i).getUStep();
             }
-            historyAverageStep/=list.size();
+            historyAverageStep /= list.size();
         }
     }
 
     private void setHistoryBeset() {
-        mHistoryBestSteps.setText(historyBestStep+"");
+        mHistoryBestSteps.setText(historyBestStep + "");
     }
 
     private void setHistoryAverageTv() {
-        mHistoryAverageSteps.setText(historyAverageStep+"");
+        mHistoryAverageSteps.setText(historyAverageStep + "");
     }
 
     /**
