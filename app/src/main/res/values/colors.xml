@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#699E39</color>
+    <color name="colorPrimary">#34C464</color>
     <color name="colorPrimaryDark">#185A2E</color>
     <color name="colorAccent">#34C464</color>
     <color name="pink_light">#FFCCCC</color>
@@ -37,7 +37,7 @@
     <color name="tab_text_unsel">#9A9A9A</color>
 
     <!--采用的配色-->
-    <color name="ufo_green">#699E39</color>
+    <color name="ufo_green">#34C464</color>
     <color name="dark_imperial_blue">#0B4F6C</color>
     <color name="cyan">#01BAFF</color>
     <color name="ghost_white">#FBFBFF</color>

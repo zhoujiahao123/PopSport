@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -67,6 +68,12 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.back_image)
+    ImageView backImage;
+    @BindView(R.id.input_comment)
+    EditText inputComment;
+    @BindView(R.id.input_send_comment)
+    Button inputSendComment;
 
 
 
@@ -119,20 +126,14 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
                 } else {
                     ToastUtil.showToast(ArticleDetailActivity.this, "上传时出错啦");
                 }
-                KeyBoardUtils.closeKeybord(commentInput,ArticleDetailActivity.this);
+                KeyBoardUtils.closeKeybord(commentInput, ArticleDetailActivity.this);
             }
         });
         //toolbar
 
         setActionBar(mToolbar);
         getActionBar().setDisplayShowTitleEnabled(false);
-        mToolbar.setNavigationIcon(R.drawable.cancle);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
     }
 
     /**
@@ -186,15 +187,17 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
                 }
                 return true;
             }
+
             @Override
             public void activate(LikeView view) {
             }
+
             @Override
             public void deactivate(LikeView view) {
             }
         });
         //加载评论
-        if(commentNumber > 0){
+        if (commentNumber > 0) {
             presenter.loadComments(article.getArticleId());
         }
 
@@ -213,10 +216,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         return urls;
     }
 
-    @OnClick(R.id.user_image)
-    public void onClick() {
-        //进行用户详情跳转
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -278,5 +278,10 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     public void clear() {
         commentInput.setText("");
         commentLinear.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.back_image)
+    public void onClick() {
+        onBackPressed();
     }
 }

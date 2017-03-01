@@ -25,6 +25,14 @@
             style="@style/ToolbarTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/cancle"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/back_image"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
     </RelativeLayout>
 
     <ScrollView
