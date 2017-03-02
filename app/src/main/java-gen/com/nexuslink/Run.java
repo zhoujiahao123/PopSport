@@ -14,6 +14,7 @@ public class Run {
     private String startPoint;
     private String endPoint;
     private String date;
+    private String time;
     private Float cal;
 
     public Run() {
@@ -23,7 +24,7 @@ public class Run {
         this.id = id;
     }
 
-    public Run(Long id, String uMileage, String duration, String averageSpeed, String pathLine, String startPoint, String endPoint, String date, Float cal) {
+    public Run(Long id, String uMileage, String duration, String averageSpeed, String pathLine, String startPoint, String endPoint, String date, String time, Float cal) {
         this.id = id;
         this.uMileage = uMileage;
         this.duration = duration;
@@ -32,6 +33,7 @@ public class Run {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.date = date;
+        this.time = time;
         this.cal = cal;
     }
 
@@ -97,6 +99,14 @@ public class Run {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Float getCal() {

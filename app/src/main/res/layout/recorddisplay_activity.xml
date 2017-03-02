@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+
+            android:background="@color/ufo_green"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:src="@drawable/back_white"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_width="@dimen/turn_back_image_size"
+            android:layout_height="@dimen/turn_back_image_size" />
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="轨迹回放"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.amap.api.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+        </com.amap.api.maps.MapView>
+
+        <RadioGroup
+            android:id="@+id/record_show_activity_trace_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/record_show_activity_origin_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="原始轨迹" />
+
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/colorAccent"
+                    android:paddingLeft="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/record_show_activity_grasp_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="轨迹纠偏" />
+
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="13dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/grasp_flag"
+                    android:paddingLeft="15dp" >
+                </View>
+            </LinearLayout>
+        </RadioGroup>
+
+        <ImageView
+            android:layout_marginBottom="20dp"
+            android:id="@+id/displaybtn"
+            android:layout_width="@dimen/image_size_normal"
+            android:layout_height="@dimen/image_size_normal"
+            android:layout_alignBaseline="@id/record_show_activity_trace_group"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/play"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter">
+        </ImageView>
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

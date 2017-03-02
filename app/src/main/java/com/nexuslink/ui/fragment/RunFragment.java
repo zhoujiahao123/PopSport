@@ -84,7 +84,7 @@ public class RunFragment extends Fragment {
     private void setChart() {
         //设置表格
         //日期回滚七天
-        calendar.roll(Calendar.DATE, -6);
+        calendar.roll(Calendar.DATE, -7);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         runList = null;
         //大于8天前，小于昨天
@@ -145,7 +145,8 @@ public class RunFragment extends Fragment {
         //设置今日已走
         //从数据库中取到跑步的公里数
         float currentMiles = 0.0f;
-         runList = runDao.queryBuilder().where(RunDao.Properties.Date.ge(df.format(System.currentTimeMillis()))).list();
+        //匹配当前日期
+         runList = runDao.queryBuilder().where(RunDao.Properties.Date.eq(df.format(System.currentTimeMillis()))).list();
         if(runList != null && runList.size() > 0){
             for(int i = 0;i<runList.size();i++){
                 currentMiles+= Float.valueOf(runList.get(i).getUMileage());

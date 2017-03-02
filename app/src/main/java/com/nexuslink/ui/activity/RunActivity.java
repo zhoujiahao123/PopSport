@@ -74,6 +74,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private TimeCount time;
     //===============================================辅助变量
     private boolean isFirstLoc = true;
+    private boolean hasStartRun = false;
 
     //===============================================轨迹线
     private PolylineOptions mPolyoptions;
@@ -102,7 +103,9 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     //关闭自动回到定位点
                     if (isFirstLoc) {
                         aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation));
-                        isFirstLoc = false;
+                        if(!hasStartRun){
+                            isFirstLoc = false;
+                        }
                     }
                     //根据条件判断是否启动路线轨迹记录
                     if (mStartOrPauseBt.getText().toString().equals("暂停")) {
@@ -322,6 +325,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         switch (view.getId()) {
             case R.id.start_or_pause:
                 if (mStartOrPauseBt.getText().toString().equals("开始")) {
+                    //用户开启了轨迹记录功能
+                    hasStartRun = true;
                     //开启自动回到定位处
                     isFirstLoc = true;
                     //改变按钮的状态
@@ -352,29 +357,34 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     @Override
     public void onBackPressed() {
-        //弹窗
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        final View dialogView = LayoutInflater.from(this).inflate(R.layout.run_wran_dialog, null);
-        builder.setView(dialogView);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-        dialogView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialogView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changToUnClickable();
-                long mEndTime = System.currentTimeMillis();
-                mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
-                dialog.dismiss();
-                finish();
-            }
-        });
+        if(hasStartRun){
+            //弹窗
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true);
+            final View dialogView = LayoutInflater.from(this).inflate(R.layout.run_wran_dialog, null);
+            builder.setView(dialogView);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+            dialogView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialogView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changToUnClickable();
+                    long mEndTime = System.currentTimeMillis();
+                    mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+        }else{
+            finish();
+        }
+
     }
 
     private void changToClickable() {

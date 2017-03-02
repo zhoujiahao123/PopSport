@@ -31,7 +31,8 @@ public class RunDao extends AbstractDao<Run, Long> {
         public final static Property StartPoint = new Property(5, String.class, "startPoint", false, "START_POINT");
         public final static Property EndPoint = new Property(6, String.class, "endPoint", false, "END_POINT");
         public final static Property Date = new Property(7, String.class, "date", false, "DATE");
-        public final static Property Cal = new Property(8, Float.class, "cal", false, "CAL");
+        public final static Property Time = new Property(8, String.class, "time", false, "TIME");
+        public final static Property Cal = new Property(9, Float.class, "cal", false, "CAL");
     };
 
 
@@ -55,7 +56,8 @@ public class RunDao extends AbstractDao<Run, Long> {
                 "'START_POINT' TEXT," + // 5: startPoint
                 "'END_POINT' TEXT," + // 6: endPoint
                 "'DATE' TEXT," + // 7: date
-                "'CAL' REAL);"); // 8: cal
+                "'TIME' TEXT," + // 8: time
+                "'CAL' REAL);"); // 9: cal
     }
 
     /** Drops the underlying database table. */
@@ -109,9 +111,14 @@ public class RunDao extends AbstractDao<Run, Long> {
             stmt.bindString(8, date);
         }
  
+        String time = entity.getTime();
+        if (time != null) {
+            stmt.bindString(9, time);
+        }
+ 
         Float cal = entity.getCal();
         if (cal != null) {
-            stmt.bindDouble(9, cal);
+            stmt.bindDouble(10, cal);
         }
     }
 
@@ -133,7 +140,8 @@ public class RunDao extends AbstractDao<Run, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // startPoint
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // endPoint
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // date
-            cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8) // cal
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // time
+            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9) // cal
         );
         return entity;
     }
@@ -149,7 +157,8 @@ public class RunDao extends AbstractDao<Run, Long> {
         entity.setStartPoint(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setEndPoint(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setDate(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setCal(cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8));
+        entity.setTime(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setCal(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
      }
     
     /** @inheritdoc */

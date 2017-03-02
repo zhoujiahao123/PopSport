@@ -46,8 +46,10 @@ public class RunModelImp implements RunModel {
             String startPoint = amapLocationToString(firstLocation);
             String endPoint = amapLocationToString(lastLocation);
             float cal = Float.parseFloat(getCurrentCol(distance));
+            String _date = date.split(" ")[0];
+            String time = date.split(" ")[1];
             insertNewRecord(String.valueOf(distance), duration, average, pathLineString, startPoint,
-                    endPoint, date, cal);
+                    endPoint, _date,time, cal);
 
         }
     }
@@ -130,12 +132,10 @@ public class RunModelImp implements RunModel {
     }
 
 
-
-
-    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date, float cal) {
+    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date,String time, float cal) {
         Run run = new Run((long) mRunDao.loadAll().size(), distance,
                 duration, average, pathLineString,
-                startPoint, endPoint, date, cal);
+                startPoint, endPoint, date,time, cal);
         mRunDao.insert(run);
     }
 

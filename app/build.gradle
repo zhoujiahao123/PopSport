@@ -79,7 +79,6 @@ dependencies {
     compile 'com.github.sd6352051:android-image-picker:v1.0.1'
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/AMap_Location_V2.4.1_20160414.jar')
-    compile files('libs/Amap_2DMap_V4.2.0_20170120.jar')
     compile files('libs/Android_Map3D_SDK_V4.1.3_20161208.jar')
     //glid
     compile 'com.github.bumptech.glide:glide:3.7.0'
