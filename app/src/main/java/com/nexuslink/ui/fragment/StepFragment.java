@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -156,11 +155,11 @@ public class StepFragment extends Fragment {
     private void initCharter() {
 
         SimpleDateFormat df = new SimpleDateFormat("MM-dd");
-        //日期回滚七天
-        calendar.roll(Calendar.DATE, -8);
+        //日期回滚七天,包含今天
+        calendar.add(Calendar.DATE, -6);
         //找到数据 区间在一个星期之内
         List<Steps> list = stepsDao.queryBuilder()
-                .where(StepsDao.Properties.Date.lt(sdf.format(System.currentTimeMillis())), StepsDao.Properties.Date.ge(sdf.format(calendar.getTime())))
+                .where(StepsDao.Properties.Date.le(sdf.format(System.currentTimeMillis())), StepsDao.Properties.Date.ge(sdf.format(calendar.getTime())))
                 .orderAsc(StepsDao.Properties.Date)
                 .list();
         //x轴数据
@@ -171,15 +170,13 @@ public class StepFragment extends Fragment {
         if (list != null && list.size() > 0) {
             for (int i = 0; i < 7; i++) {
                 String str = sdf.format(calendar.getTime());
+                calendar.add(Calendar.DATE, 1);
                 if (str.equals(list.get(i).getDate())) {
-                    //满足条件就进行复制
+                    //满足条件就进行赋值
                     yBarEnties.add(new BarEntry(list.get(i).getUStep(),i));
                 } else {
-                    //不满足条件就进行插入
-//                    Steps steps = new Steps(null, 0, str);
                     list.add(i, null);
                 }
-                calendar.roll(Calendar.DATE, 1);
                 xList.add(df.format(calendar.getTime()));
             }
         } else {
@@ -209,22 +206,19 @@ public class StepFragment extends Fragment {
         mChart.setDrawGridBackground(false);
         // 集拉杆阴影
         mChart.setDrawBarShadow(false);
-        // 网格背景颜色
-        mChart.setGridBackgroundColor(Color.parseColor("#00000000"));
         // 是否显示表格颜色
         mChart.setDrawGridBackground(false);
         // 设置边框颜色
-        mChart.setBorderColor(Color.parseColor("#00000000"));
+        mChart.setBorderColor(getResources().getColor(R.color.one_class_text_color));
         // 说明颜色
-        mChart.setDescriptionColor(Color.parseColor("#00000000"));
-        // 图例
-        mChart.getLegend().setEnabled(false);
+        mChart.setDescriptionColor(getResources().getColor(R.color.one_class_text_color));
+
 
     }
 
     private void caclulate() {
-        //加载昨天及昨天以前的数据
-        List<Steps> list = stepsDao.queryBuilder().where(StepsDao.Properties.Date.lt(sdf.format(calendar.getTime()))).list();
+        //加载今天及今天以前的数据
+        List<Steps> list = stepsDao.queryBuilder().where(StepsDao.Properties.Date.le(sdf.format(calendar.getTime()))).list();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getUStep() > historyBestStep) {

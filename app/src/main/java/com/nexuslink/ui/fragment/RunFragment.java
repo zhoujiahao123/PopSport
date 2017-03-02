@@ -1,6 +1,5 @@
 package com.nexuslink.ui.fragment;
 
-import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -46,9 +45,9 @@ public class RunFragment extends Fragment {
     /**
      * 格式控制
      */
-    private SimpleDateFormat monthDf = new SimpleDateFormat("MM-dd");
-    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private DecimalFormat df1 = new DecimalFormat("#0.0");
+    private SimpleDateFormat monthsdf = new SimpleDateFormat("MM-dd");
+    private SimpleDateFormat yeaersdf = new SimpleDateFormat("yyyy-MM-dd");
+    private DecimalFormat df = new DecimalFormat("#0.0");
     /**
      * 数据库操作
      */
@@ -84,11 +83,11 @@ public class RunFragment extends Fragment {
     private void setChart() {
         //设置表格
         //日期回滚七天
-        calendar.roll(Calendar.DATE, -7);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        calendar.add(Calendar.DATE, -6);
         runList = null;
         //大于8天前，小于昨天
-        runList = runDao.loadAll();
+        runList = runDao.queryBuilder().where(RunDao.Properties.Date.ge(yeaersdf.format(calendar.getTime()))
+                ,RunDao.Properties.Date.le(yeaersdf.format(System.currentTimeMillis()))).list();
         //x轴数据
         List<String> xList = new ArrayList<>();
         //y轴数据
@@ -96,16 +95,16 @@ public class RunFragment extends Fragment {
 
         if (runList != null && runList.size() > 0) {
             for (int i = 0; i < 7; i++) {
-                String str = df.format(calendar.getTime());
-                if (str.equals(runList.get(i).getDate().split(" ")[0])) {
+                String str = yeaersdf.format(calendar.getTime());
+                if (str.equals(runList.get(i).getDate())) {
                     //满足条件就进行复制
                     yBarEnties.add(new BarEntry(Float.parseFloat(runList.get(i).getUMileage()),i));
                 } else {
                     //不满足条件就进行插入
                     runList.add(i, null);
                 }
-                calendar.roll(Calendar.DATE, 1);
-                xList.add(monthDf.format(calendar.getTime()));
+                calendar.add(Calendar.DATE, 1);
+                xList.add(monthsdf.format(calendar.getTime()));
             }
         }
         //对表格进行初始化
@@ -126,16 +125,13 @@ public class RunFragment extends Fragment {
         mChart.setDrawGridBackground(false);
         // 集拉杆阴影
         mChart.setDrawBarShadow(false);
-        // 网格背景颜色
-        mChart.setGridBackgroundColor(Color.parseColor("#00000000"));
         // 是否显示表格颜色
         mChart.setDrawGridBackground(false);
         // 设置边框颜色
-        mChart.setBorderColor(Color.parseColor("#00000000"));
+        mChart.setBorderColor(getResources().getColor(R.color.one_class_text_color));
         // 说明颜色
-        mChart.setDescriptionColor(Color.parseColor("#00000000"));
-        // 图例
-        mChart.getLegend().setEnabled(false);
+        mChart.setDescriptionColor(getResources().getColor(R.color.one_class_text_color));
+
     }
 
     /**
@@ -146,18 +142,18 @@ public class RunFragment extends Fragment {
         //从数据库中取到跑步的公里数
         float currentMiles = 0.0f;
         //匹配当前日期
-         runList = runDao.queryBuilder().where(RunDao.Properties.Date.eq(df.format(System.currentTimeMillis()))).list();
+         runList = runDao.queryBuilder().where(RunDao.Properties.Date.eq(yeaersdf.format(System.currentTimeMillis()))).list();
         if(runList != null && runList.size() > 0){
             for(int i = 0;i<runList.size();i++){
                 currentMiles+= Float.valueOf(runList.get(i).getUMileage());
             }
         }
-        mCurrentMeilsTv.setText(df1.format(currentMiles)+"");
+        mCurrentMeilsTv.setText(df.format(currentMiles)+"");
         //设置平均
         float avergeMiles = 0.0f;
         float bestMiels  = 0.0f;
         runList = null;
-        runList = runDao.queryBuilder().where(RunDao.Properties.Date.lt(df.format(System.currentTimeMillis()))).list();
+        runList = runDao.queryBuilder().where(RunDao.Properties.Date.le(yeaersdf.format(System.currentTimeMillis()))).list();
         if(runList != null && runList.size() > 0){
             for(int i =0;i<runList.size();i++){
                 float miles = Float.valueOf(runList.get(i).getUMileage());
@@ -168,9 +164,9 @@ public class RunFragment extends Fragment {
             }
             avergeMiles/=runList.size();
         }
-        mHistoryAverageMiles.setText(df1.format(avergeMiles)+"");
+        mHistoryAverageMiles.setText(df.format(avergeMiles)+"");
         //设置最佳
-        mHistoryBestMiles.setText(df1.format(bestMiels)+"");
+        mHistoryBestMiles.setText(df.format(bestMiels)+"");
     }
 
 
