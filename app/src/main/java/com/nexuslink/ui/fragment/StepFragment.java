@@ -62,7 +62,6 @@ public class StepFragment extends Fragment {
     private int historyBestStep = 0;
     private int historyAverageStep = 0;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     Calendar calendar = Calendar.getInstance();
     //===============================================Messenger
     private Messenger messengerService;
@@ -152,40 +151,30 @@ public class StepFragment extends Fragment {
     /**
      * 初始化列表
      */
+    SimpleDateFormat yearsdf = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat monthsdf = new SimpleDateFormat("MM-dd");
     private void initCharter() {
-
-        SimpleDateFormat df = new SimpleDateFormat("MM-dd");
         //日期回滚七天,包含今天
         calendar.add(Calendar.DATE, -6);
         //找到数据 区间在一个星期之内
-        List<Steps> list = stepsDao.queryBuilder()
-                .where(StepsDao.Properties.Date.le(sdf.format(System.currentTimeMillis())), StepsDao.Properties.Date.ge(sdf.format(calendar.getTime())))
-                .orderAsc(StepsDao.Properties.Date)
-                .list();
+        Steps steps = null;
         //x轴数据
         List<String> xList = new ArrayList<>();
         //y轴数据
         List<BarEntry> yBarEnties = new ArrayList<>();
         // 数据获得
-        if (list != null && list.size() > 0) {
-            for (int i = 0; i < 7; i++) {
-                String str = sdf.format(calendar.getTime());
-                calendar.add(Calendar.DATE, 1);
-                if (str.equals(list.get(i).getDate())) {
-                    //满足条件就进行赋值
-                    yBarEnties.add(new BarEntry(list.get(i).getUStep(),i));
-                } else {
-                    list.add(i, null);
-                }
-                xList.add(df.format(calendar.getTime()));
+        //加载7天数据
+        for(int i =0;i<7;i++){
+            steps = stepsDao.queryBuilder().where(StepsDao.Properties.Date.eq(yearsdf.format(calendar.getTime()))).unique();
+            //进行判断
+            if(steps != null){
+                yBarEnties.add(new BarEntry(steps.getUStep(),i));
+            }else{
+                yBarEnties.add(new BarEntry(0,i));
             }
-        } else {
-//            如果还没有数据，那么就进行0赋值
-            for (int i = 0; i < 7; i++) {
-                yBarEnties.add(new BarEntry(1000,i));
-                calendar.roll(Calendar.DATE, 1);
-                xList.add(df.format(calendar.getTime()));
-            }
+            //输入x轴
+            xList.add(monthsdf.format(calendar.getTime()));
+            calendar.add(Calendar.DATE,1);
         }
 
         //对表格进行初始化
@@ -218,7 +207,7 @@ public class StepFragment extends Fragment {
 
     private void caclulate() {
         //加载今天及今天以前的数据
-        List<Steps> list = stepsDao.queryBuilder().where(StepsDao.Properties.Date.le(sdf.format(calendar.getTime()))).list();
+        List<Steps> list = stepsDao.queryBuilder().where(StepsDao.Properties.Date.le(yearsdf.format(calendar.getTime()))).list();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getUStep() > historyBestStep) {

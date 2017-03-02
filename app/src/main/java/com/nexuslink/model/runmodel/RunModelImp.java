@@ -22,7 +22,7 @@ import static android.content.ContentValues.TAG;
 public class RunModelImp implements RunModel {
     //===============================================辅助变量
     private long mStartTime;
-    private long mEndTime;
+    private int duration;
     private int seconds,minutes,hours;
     private float maxSpeed = 0 ;
     DecimalFormat df = new DecimalFormat("#0.0");
@@ -45,18 +45,23 @@ public class RunModelImp implements RunModel {
             AMapLocation lastLocation = list.get(list.size() - 1);
             String startPoint = amapLocationToString(firstLocation);
             String endPoint = amapLocationToString(lastLocation);
-            float cal = Float.parseFloat(getCurrentCol(distance));
+            float kcal = Float.parseFloat(getCurrentCol(distance));
             String _date = date.split(" ")[0];
             String time = date.split(" ")[1];
             insertNewRecord(String.valueOf(distance), duration, average, pathLineString, startPoint,
-                    endPoint, _date,time, cal);
+                    endPoint, _date,time, kcal);
 
         }
     }
 
     @Override
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+
     public String getDuration() {
-        return String.valueOf((mEndTime - mStartTime) / 1000f);
+        return String.valueOf(this.duration);
     }
 
     @Override
@@ -97,9 +102,13 @@ public class RunModelImp implements RunModel {
         return df.format(nowSpeed)+"m/s";
     }
 
-
+    /**
+     * m/s
+     * @param distance
+     * @return
+     */
     public String getAverage(float distance) {
-        return df.format(distance / ((float) (mEndTime - mStartTime) / 1000f));
+        return df.format(distance / duration);
     }
 
 
@@ -132,10 +141,10 @@ public class RunModelImp implements RunModel {
     }
 
 
-    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date,String time, float cal) {
+    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date,String time, float kcal) {
         Run run = new Run((long) mRunDao.loadAll().size(), distance,
                 duration, average, pathLineString,
-                startPoint, endPoint, date,time, cal);
+                startPoint, endPoint, date,time, kcal,false);
         mRunDao.insert(run);
     }
 
@@ -154,11 +163,9 @@ public class RunModelImp implements RunModel {
 
     @Override
     public String getRealCurrentTime() {
-        if(hours == 0){
-            return getRealTime(minutes)+":"+getRealTime(seconds);
-        }else{
-            return getRealTime(hours)+":"+getRealTime(minutes)+":"+getRealTime(seconds);
-        }
+
+        return getRealTime(hours)+":"+getRealTime(minutes)+":"+getRealTime(seconds);
+
     }
 
     /**
@@ -180,10 +187,7 @@ public class RunModelImp implements RunModel {
         this.mStartTime = startTime;
     }
 
-    @Override
-    public void setEndTime(long endTime) {
-        this.mEndTime = endTime;
-    }
+
 
     @Override
     public String getMaxSpeed() {

@@ -16,7 +16,11 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.nexuslink.R;
 import com.nexuslink.Run;
 import com.nexuslink.RunDao;
+import com.nexuslink.ui.activity.RunViewFresh;
 import com.nexuslink.util.DBUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -55,7 +59,7 @@ public class RunFragment extends Fragment {
     /**
      * 日期辅助
      */
-    private Calendar calendar  = Calendar.getInstance();
+
     /**
      * 数据
      */
@@ -68,11 +72,13 @@ public class RunFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.run_fragment, container, false);
         ButterKnife.bind(this, view);
-        initViews();
+        initViews(null);
+        //注册EventBus
+        EventBus.getDefault().register(this);
         return view;
     }
-
-    private void initViews() {
+    @Subscribe
+    public void initViews(RunViewFresh runViewFresh) {
         setFragmentHead();
         setChart();
     }
@@ -80,33 +86,39 @@ public class RunFragment extends Fragment {
     /**
      * 设置表格
      */
+
     private void setChart() {
         //设置表格
         //日期回滚七天
+        Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -6);
         runList = null;
-        //大于8天前，小于昨天
-        runList = runDao.queryBuilder().where(RunDao.Properties.Date.ge(yeaersdf.format(calendar.getTime()))
-                ,RunDao.Properties.Date.le(yeaersdf.format(System.currentTimeMillis()))).list();
         //x轴数据
         List<String> xList = new ArrayList<>();
         //y轴数据
         List<BarEntry> yBarEnties = new ArrayList<>();
 
-        if (runList != null && runList.size() > 0) {
-            for (int i = 0; i < 7; i++) {
-                String str = yeaersdf.format(calendar.getTime());
-                if (str.equals(runList.get(i).getDate())) {
-                    //满足条件就进行复制
-                    yBarEnties.add(new BarEntry(Float.parseFloat(runList.get(i).getUMileage()),i));
-                } else {
-                    //不满足条件就进行插入
-                    runList.add(i, null);
+        //加载七天的数据
+        for(int i =0;i<7;i++){
+            runList = runDao.queryBuilder().where(RunDao.Properties.Date.eq(yeaersdf.format(calendar.getTime()))).list();
+            //如果runlist不为空，代表有改天的数据，那么就将它进行循环相加
+            if(runList != null && runList.size() > 0){
+                float oneDayTotalMlies = 0.0f;
+                for(int j = 0;j<runList.size();j++){
+                    oneDayTotalMlies+=Float.valueOf(runList.get(j).getUMileage());
                 }
-                calendar.add(Calendar.DATE, 1);
-                xList.add(monthsdf.format(calendar.getTime()));
+                //相加完成后就进行y轴数据复制
+                yBarEnties.add(new BarEntry(oneDayTotalMlies,i));
+            }else{
+                //如果没有就手动添加一个为0的值
+                yBarEnties.add(new BarEntry(0.0f,i));
             }
+            //最后为x轴赋值
+            xList.add(monthsdf.format(calendar.getTime()));
+            //日期加1
+            calendar.add(Calendar.DATE,1);
         }
+
         //对表格进行初始化
         BarDataSet barDataSet = new BarDataSet(yBarEnties,"运动量");
         BarData barData = new BarData(xList,barDataSet);
@@ -137,6 +149,7 @@ public class RunFragment extends Fragment {
     /**
      * 设置顶部界面
      */
+
     private void setFragmentHead() {
         //设置今日已走
         //从数据库中取到跑步的公里数
@@ -169,5 +182,9 @@ public class RunFragment extends Fragment {
         mHistoryBestMiles.setText(df.format(bestMiels)+"");
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

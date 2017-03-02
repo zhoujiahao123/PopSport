@@ -18,8 +18,8 @@ public class RunPresenter {
         this.mRunView = mRunView;
         mRunModel = new RunModelImp();
     }
-    public void saveRecord(List<AMapLocation> list, String date,long endTime){
-        mRunModel.setEndTime(endTime);
+    public void saveRecord(List<AMapLocation> list, String date,int duration){
+        mRunModel.setDuration(duration);
         mRunModel.saveRecord(list,date);
     }
     public void startRecord(long startTime){

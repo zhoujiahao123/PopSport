@@ -53,7 +53,7 @@ public class RunHistoryAdapter extends RecyclerView.Adapter<RunHistoryAdapter.Ru
         String date = run.getDate()+" "+run.getTime();
         holder.dateTv.setText(date);
         holder.milesTv.setText(df.format(Float.valueOf(run.getUMileage()))+"m");
-        holder.durationTv.setText(df.format(Float.valueOf(run.getDuration()))+"s");
+        holder.durationTv.setText(Integer.valueOf(run.getDuration())+"s");
     }
 
     @Override

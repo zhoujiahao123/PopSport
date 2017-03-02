@@ -176,9 +176,9 @@
         <activity
             android:name=".ui.activity.ArticleDetailActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.activity.StepAndRunHistoryActivity"></activity>
-
-        <activity android:name=".ui.activity.RecordShowActivity"></activity>
+        <activity android:name=".ui.activity.StepAndRunHistoryActivity" />
+        <activity android:name=".ui.activity.RecordShowActivity" />
+        <activity android:name=".ui.activity.PermissionsActivity"></activity>
     </application>
 
 </manifest>

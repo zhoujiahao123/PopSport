@@ -1,8 +1,13 @@
 package com.nexuslink.ui.activity;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,10 +32,16 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.nexuslink.R;
+import com.nexuslink.RunDao;
 import com.nexuslink.model.data.PathRecord;
 import com.nexuslink.presenter.runpresenter.RunPresenter;
 import com.nexuslink.ui.view.RunView;
+import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.GPSUtil;
+import com.nexuslink.util.PermissionsChecker;
 import com.nexuslink.util.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,13 +80,24 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     TextView runDate;
     @BindView(R.id.run_time)
     TextView runTime;
+    //===============================================权限相关
+    private static final int REQUEST_CODE = 0; // 请求码
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+    };
+    private PermissionsChecker mPermissionsChecker; // 权限检测器
 
     //定时器
     private TimeCount time;
     //===============================================辅助变量
     private boolean isFirstLoc = true;
     private boolean hasStartRun = false;
-
+    /**
+     * 数据库操作
+     */
+    private RunDao runDao = DBUtil.getRunDao();
     //===============================================轨迹线
     private PolylineOptions mPolyoptions;
     private PathRecord record;
@@ -136,12 +158,50 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         ButterKnife.bind(this);
+        mPermissionsChecker = new PermissionsChecker(this);
         initViews();
         initMapView(savedInstanceState);
         initPolyLine();
         initLocation();
         mRunPresenter = new RunPresenter(this);
         mLocationClient.startLocation();
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+            startPermissionsActivity();
+        }else{
+            //如何拥有权限，检查是否打开了GPS
+            if(!GPSUtil.isOPen(this)){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("提示");
+                builder.setCancelable(false);
+                builder.setMessage("您当前尚未打开GPS");
+                builder.setPositiveButton("好的，带我去打开", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("算了，下次再来", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.show();
+            }
+        }
+    }
+
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this,REQUEST_CODE,PERMISSIONS);
     }
 
     private void initViews() {
@@ -157,6 +217,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         runTime.setText(time.split(" ")[1]);
         //button
         changToUnClickable();
+
     }
 
 
@@ -318,34 +379,39 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         maxSpeedTv.setText(maxSpeed);
     }
 
-    private boolean isStart = false;
+
 
     @OnClick({R.id.start_or_pause, R.id.finish})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_or_pause:
                 if (mStartOrPauseBt.getText().toString().equals("开始")) {
-                    //用户开启了轨迹记录功能
-                    hasStartRun = true;
-                    //开启自动回到定位处
-                    isFirstLoc = true;
-                    //改变按钮的状态
-                    mStartOrPauseBt.setText("暂停");
-                    changToClickable();
-                    if (record != null) {
-                        record = null;
-                    }
-                    if (!isStart) {
+
+                    if(hasStartRun){
+                        mLocationClient.startLocation();
+                    } else{
+                        //用户开启了轨迹记录功能
+                        hasStartRun = true;
+                        //开启自动回到定位处
+                        isFirstLoc = true;
+                        //打开结束开关
+                        changToClickable();
+                        if (record != null) {
+                            record = null;
+                        }
                         time = new TimeCount(TOTAL_TIME, INTERVAL);
                         record = new PathRecord();
                         long mStartTime = System.currentTimeMillis();
                         mRunPresenter.startRecord(mStartTime);
                         record.setDate(getCurrentDate(mStartTime));
-                        isStart = true;
                     }
+                    //改变按钮的状态
+                    mStartOrPauseBt.setText("暂停");
                     time.start();
+
                 } else {
                     mStartOrPauseBt.setText("开始");
+                    mLocationClient.stopLocation();
                     time.cancel();
                 }
                 break;
@@ -357,6 +423,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     @Override
     public void onBackPressed() {
+
         if(hasStartRun){
             //弹窗
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -375,9 +442,27 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 @Override
                 public void onClick(View v) {
                     changToUnClickable();
-                    long mEndTime = System.currentTimeMillis();
-                    mRunPresenter.saveRecord(record.getPathline(), record.getDate(), mEndTime);
+                    String durationStr[] = mCurrentTime.getText().toString().split(":");
+                    int hour = Integer.parseInt(durationStr[0]);
+                    int minute = Integer.parseInt(durationStr[1]);
+                    int second = Integer.parseInt(durationStr[2]);
+                    int duration = hour*60*60+minute*60+second;
+                    mRunPresenter.saveRecord(record.getPathline(), record.getDate(), duration);
                     dialog.dismiss();
+                    //通知首界面进行更新
+                    EventBus.getDefault().post(new RunViewFresh());
+
+                   /* //在这里进行上传，如果上传成功，就将数据库中的匹配到时间的更新，否则就进行提示
+                    //分解时间进行数据库的查找
+                    String date = record.getDate().split(" ")[0];
+                    String time = record.getDate().split(" ")[1];
+                    //===============================================网络请求进行上传，上传成功，就更新
+
+                    //进行查找
+                    Run run = runDao.queryBuilder().where(RunDao.Properties.Date.eq(date),RunDao.Properties.Time.eq(time)).unique();
+                    run.setHasUpLoad(true);
+                    runDao.update(run);*/
+
                     finish();
                 }
             });

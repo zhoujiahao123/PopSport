@@ -21,6 +21,7 @@ public class MyClass {
         steps.addIdProperty().primaryKey();
         steps.addIntProperty("uStep");
         steps.addStringProperty("date");
+        steps.addBooleanProperty("hasUpLoad");
 
         //≈‹≤Ω
         Entity run = schema.addEntity("Run");
@@ -33,7 +34,8 @@ public class MyClass {
         run.addStringProperty("endPoint");
         run.addStringProperty("date");
         run.addStringProperty("time");
-        run.addFloatProperty("cal");
+        run.addFloatProperty("kcal");
+        run.addBooleanProperty("hasUpLoad");
 
         //”√ªß
         Entity user = schema.addEntity("User");

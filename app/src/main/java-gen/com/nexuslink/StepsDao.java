@@ -26,6 +26,7 @@ public class StepsDao extends AbstractDao<Steps, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property UStep = new Property(1, Integer.class, "uStep", false, "U_STEP");
         public final static Property Date = new Property(2, String.class, "date", false, "DATE");
+        public final static Property HasUpLoad = new Property(3, Boolean.class, "hasUpLoad", false, "HAS_UP_LOAD");
     };
 
 
@@ -43,7 +44,8 @@ public class StepsDao extends AbstractDao<Steps, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'STEPS' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'U_STEP' INTEGER," + // 1: uStep
-                "'DATE' TEXT);"); // 2: date
+                "'DATE' TEXT," + // 2: date
+                "'HAS_UP_LOAD' INTEGER);"); // 3: hasUpLoad
     }
 
     /** Drops the underlying database table. */
@@ -71,6 +73,11 @@ public class StepsDao extends AbstractDao<Steps, Long> {
         if (date != null) {
             stmt.bindString(3, date);
         }
+ 
+        Boolean hasUpLoad = entity.getHasUpLoad();
+        if (hasUpLoad != null) {
+            stmt.bindLong(4, hasUpLoad ? 1l: 0l);
+        }
     }
 
     /** @inheritdoc */
@@ -85,7 +92,8 @@ public class StepsDao extends AbstractDao<Steps, Long> {
         Steps entity = new Steps( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // uStep
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // date
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // date
+            cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0 // hasUpLoad
         );
         return entity;
     }
@@ -96,6 +104,7 @@ public class StepsDao extends AbstractDao<Steps, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setUStep(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setDate(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setHasUpLoad(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
      }
     
     /** @inheritdoc */

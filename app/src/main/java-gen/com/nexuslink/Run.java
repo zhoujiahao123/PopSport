@@ -15,7 +15,8 @@ public class Run {
     private String endPoint;
     private String date;
     private String time;
-    private Float cal;
+    private Float kcal;
+    private Boolean hasUpLoad;
 
     public Run() {
     }
@@ -24,7 +25,7 @@ public class Run {
         this.id = id;
     }
 
-    public Run(Long id, String uMileage, String duration, String averageSpeed, String pathLine, String startPoint, String endPoint, String date, String time, Float cal) {
+    public Run(Long id, String uMileage, String duration, String averageSpeed, String pathLine, String startPoint, String endPoint, String date, String time, Float kcal, Boolean hasUpLoad) {
         this.id = id;
         this.uMileage = uMileage;
         this.duration = duration;
@@ -34,7 +35,8 @@ public class Run {
         this.endPoint = endPoint;
         this.date = date;
         this.time = time;
-        this.cal = cal;
+        this.kcal = kcal;
+        this.hasUpLoad = hasUpLoad;
     }
 
     public Long getId() {
@@ -109,12 +111,20 @@ public class Run {
         this.time = time;
     }
 
-    public Float getCal() {
-        return cal;
+    public Float getKcal() {
+        return kcal;
     }
 
-    public void setCal(Float cal) {
-        this.cal = cal;
+    public void setKcal(Float kcal) {
+        this.kcal = kcal;
+    }
+
+    public Boolean getHasUpLoad() {
+        return hasUpLoad;
+    }
+
+    public void setHasUpLoad(Boolean hasUpLoad) {
+        this.hasUpLoad = hasUpLoad;
     }
 
 }
