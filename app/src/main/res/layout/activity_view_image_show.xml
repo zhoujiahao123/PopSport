@@ -34,13 +34,25 @@
         </android.support.v4.view.ViewPager>
     </RelativeLayout>
 
-    <android.support.v7.widget.Toolbar
-        app:theme="@style/AppTheme.ActionBar"
-        android:layout_marginTop="@dimen/spacing_huge"
-        android:id="@+id/toolbar_view_show"
+    <RelativeLayout
+        android:layout_marginTop="@dimen/spacing_normal"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
-    </android.support.v7.widget.Toolbar>
+        <ImageView
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_centerVertical="true"
+            android:id="@+id/back_icon"
+            android:src="@drawable/back_white"
+            android:layout_width="@dimen/turn_back_image_size"
+            android:layout_height="@dimen/turn_back_image_size" />
+        <android.support.v7.widget.Toolbar
+            app:theme="@style/AppTheme.ActionBar"
+            android:id="@+id/toolbar_view_show"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
+
 
 
 </RelativeLayout>

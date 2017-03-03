@@ -47,7 +47,6 @@ public class ViewImageFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case SUCCESS:
-                    imageView.setImageBitmap(bitmap);
                     if (imageListener != null) {
                         imageListener.onLoadSuccess(pos, bitmap);
                     }
@@ -97,6 +96,7 @@ public class ViewImageFragment extends Fragment {
         public void run() {
             try {
                 bitmap = Glide.with(getContext()).load(url).asBitmap().listener(requestListener).into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+                Glide.with(getContext()).load(url).crossFade().into(imageView);
                 if (bitmap != null) {
                     //加载成功
                     handler.sendEmptyMessage(SUCCESS);

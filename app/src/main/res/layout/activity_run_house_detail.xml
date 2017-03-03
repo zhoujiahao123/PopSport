@@ -14,10 +14,16 @@
         android:layout_height="?attr/actionBarSize">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_run_house_detail"
-            android:background="@color/ghost_white"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            android:layout_width="@dimen/turn_back_image_size"
+            android:layout_height="@dimen/turn_back_image_size" />
         <LinearLayout
             android:layout_centerInParent="true"
             android:orientation="horizontal"
@@ -26,7 +32,7 @@
             <TextView
                 android:id="@+id/run_house_name"
                 android:layout_centerInParent="true"
-                android:textColor="@color/one_class_text"
+                android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_large"
                 android:text="跑房名"
                 android:layout_width="wrap_content"
@@ -49,10 +55,7 @@
             app:loading_renderer="GearLoadingRenderer" />
 
     </RelativeLayout>
-    <include
-        layout="@layout/divider_line"
-        ></include>
-    <!--跑房信息-->
+
     <LinearLayout
         android:background="#DAF4E2"
         android:gravity="center"
@@ -67,13 +70,13 @@
             <TextView
                 android:layout_gravity="center_horizontal"
                 android:text="目标:"
-                android:textColor="@color/two_class_text"
+                android:textColor="@color/primary_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_run_house_expect"
                 android:text="10km"
-                android:textColor="@color/one_class_text"
+                android:textColor="@color/secondary_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -84,18 +87,23 @@
            <TextView
                android:id="@+id/tv_run_house_start_time"
                android:text="开始时间:"
-               android:textColor="@color/two_class_text"
+               android:textColor="@color/primary_text"
                android:layout_gravity="center_horizontal"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" />
            <TextView
                android:text="02月05日 14:00"
-               android:textColor="@color/one_class_text"
+               android:textColor="@color/secondary_text"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" />
        </LinearLayout>
 
     </LinearLayout>
+
+    <include
+        layout="@layout/divider_line"
+        ></include>
+    <!--跑房信息-->
     <!--内容展示-->
     <android.support.v7.widget.RecyclerView
         android:layout_weight="5"

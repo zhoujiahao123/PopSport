@@ -13,9 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nexuslink.R;
@@ -36,6 +36,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ViewImageShowActivity extends AppCompatActivity implements SaveImageListener {
 
@@ -47,12 +48,14 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
     ViewPager mViewPager;
     @BindView(R.id.page)
     TextView page;
+    @BindView(R.id.back_icon)
+    ImageView backIcon;
 
     private List<String> data;
     private int position;
     private int dataLength = 0;
     private List<Fragment> fragments = new ArrayList<>();
-    private Map<Integer,Bitmap> imagesMap = new HashMap<>();
+    private Map<Integer, Bitmap> imagesMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,32 +71,23 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
     }
 
     private void setUpView() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationIcon(R.drawable.back_white);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
 
         data = (List<String>) getIntent().getSerializableExtra(IMAGES_DATA_LIST);
         position = getIntent().getIntExtra(IMAGE_NUM, -1);
         dataLength = data.size();
 
-        for(int i =0;i<dataLength;i++){
+        for (int i = 0; i < dataLength; i++) {
             ViewImageFragment fragment = new ViewImageFragment();
-            Bundle arg =new Bundle();
-            arg.putString(Constants.IMAGE_URL,data.get(i));
-            arg.putInt(Constants.IMAGE_POS,i);
+            Bundle arg = new Bundle();
+            arg.putString(Constants.IMAGE_URL, data.get(i));
+            arg.putInt(Constants.IMAGE_POS, i);
             fragment.setArguments(arg);
             //增加监听
             fragment.setSaveImageListener(this);
             fragments.add(fragment);
         }
-        mViewPager.setAdapter(new ViewImageShowAdapter(getSupportFragmentManager(),fragments));
+        mViewPager.setAdapter(new ViewImageShowAdapter(getSupportFragmentManager(), fragments));
         mViewPager.setCurrentItem(position);
         page.setText(position + 1 + "/" + dataLength);
 
@@ -118,7 +112,7 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.image_show_menu,menu);
+        getMenuInflater().inflate(R.menu.image_show_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -126,16 +120,16 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         boolean isSave = false;
-        if(id == R.id.save_image){
+        if (id == R.id.save_image) {
             Bitmap bitmap = imagesMap.get(mViewPager.getCurrentItem());
-            if( bitmap != null){
+            if (bitmap != null) {
                 //进行文件的保存
-                isSave = saveImageToGallery(this,bitmap);
-                if(isSave){
-                    ToastUtil.showToast(this,"图片保存成功");
+                isSave = saveImageToGallery(this, bitmap);
+                if (isSave) {
+                    ToastUtil.showToast(this, "图片保存成功");
                 }
-            }else{
-                ToastUtil.showToast(this,"加载失败,无法保存");
+            } else {
+                ToastUtil.showToast(this, "加载失败,无法保存");
             }
 
         }
@@ -147,7 +141,7 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsoluteFile();
         //小米手机必须这样获得public绝对路径
         String filesName = "Pop图片";
-        File appDir = new File(file ,filesName);
+        File appDir = new File(file, filesName);
         if (!appDir.exists()) {
             appDir.mkdirs();
         }
@@ -189,11 +183,17 @@ public class ViewImageShowActivity extends AppCompatActivity implements SaveImag
     }
 
     @Override
-    public void onLoadSuccess(int pos,Bitmap bitmap) {
-        imagesMap.put(pos,bitmap);
+    public void onLoadSuccess(int pos, Bitmap bitmap) {
+        imagesMap.put(pos, bitmap);
     }
+
     @Override
     public void onLoadFailed(String str) {
-        ToastUtil.showToast(this,str);
+        ToastUtil.showToast(this, str);
+    }
+
+    @OnClick(R.id.back_icon)
+    public void onClick() {
+        finish();
     }
 }

@@ -68,9 +68,6 @@
 
 
 
-    <include
-        layout="@layout/divider_line"
-        ></include>
 
     <LinearLayout
         android:padding="@dimen/spacing_tiny"

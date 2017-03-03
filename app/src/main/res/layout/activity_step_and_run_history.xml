@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
-            android:background="@color/history_toolbar_color"
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
         <ImageView
@@ -37,7 +37,7 @@
         app:tabIndicatorColor="@color/white"
         app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/HistroyTabTextAppearance"
-        android:background="@color/history_toolbar_color"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="40dp">
     </android.support.design.widget.TabLayout>

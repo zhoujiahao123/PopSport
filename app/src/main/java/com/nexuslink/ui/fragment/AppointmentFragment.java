@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +50,8 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
     private List<LoadRoomsResult.RoomBean> data = new ArrayList<>();
     private PtrFrameLayout ptrFrameLayout;
     private LoadingView proGress;
+    private FloatingActionButton fab;
+
     //===============================================常量
     private static final String TAG = "AppointFramgment";
     //===============================================变量
@@ -139,6 +142,7 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
         ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.ptrFrame);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_appoint);
+
 
     }
 

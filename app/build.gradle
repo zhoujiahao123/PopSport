@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.nexuslink"
@@ -55,9 +55,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:design:24.0.0'
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.facebook.stetho:stetho:1.0.1'
@@ -117,4 +118,6 @@ dependencies {
     compile files('libs/weiboSDKCore_3.1.4.jar')
     //柱状图图
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+
+
 }
