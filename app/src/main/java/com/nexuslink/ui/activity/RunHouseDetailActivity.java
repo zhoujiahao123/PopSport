@@ -195,6 +195,9 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         mPersonNum.setText(adapter.getItemCount() + "人");
         changToJoin();
         isDataChanged = true;
+        if(adapter.getItemCount() == 0){
+           onBackPressed();
+        }
     }
 
 }

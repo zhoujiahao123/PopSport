@@ -254,7 +254,7 @@ public class RecordShowActivity extends Activity implements
 	private void addOriginTrace(LatLng startPoint, LatLng endPoint,
 			List<LatLng> originList) {
 		mOriginPolyline = mAMap.addPolyline(new PolylineOptions().color(
-				getResources().getColor(R.color.colorAccent)).addAll(originList));
+				getResources().getColor(R.color.colorPrimary)).addAll(originList));
 		mOriginStartMarker = mAMap.addMarker(new MarkerOptions().position(
 				startPoint).icon(
 				BitmapDescriptorFactory.fromResource(R.drawable.start)));

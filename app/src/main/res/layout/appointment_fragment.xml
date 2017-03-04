@@ -68,7 +68,7 @@
         app:layout_anchorGravity="right|bottom"
         app:layout_behavior="com.nexuslink.ui.view.fab.MyFabBehavior"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />w
+        android:layout_height="wrap_content" />
 
 
     </android.support.design.widget.CoordinatorLayout>

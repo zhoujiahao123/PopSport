@@ -30,18 +30,22 @@ public class MyFabBehavior extends FloatingActionButton.Behavior {
         if(child.getVisibility() == View.VISIBLE && viewY == 0){
             viewY = coordinatorLayout.getHeight() - child.getY();
         }
-
         return  (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;//判断是否竖直滚动;
     }
 
-    //在嵌套滑动进行,对象消费滚动距离时回调
-    @Override
-    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dx, int dy, int[] consumed) {
-        //dy大于0是向上滚动 小于0是向下滚动
+//    //在嵌套滑动进行,对象消费滚动距离时回调
+//    @Override
+//    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dx, int dy, int[] consumed) {
+//        //dy大于0是向上滚动 小于0是向下滚动
+//
+//
+//    }
 
-        if (dy >=0&&!isAnim&&child.getVisibility()==View.VISIBLE) {
+    @Override
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+        if (dyConsumed >=0&&!isAnim&&child.getVisibility()==View.VISIBLE) {
             hide(child);
-        } else if (dy <0&&!isAnim&&child.getVisibility()==View.GONE) {
+        } else if (dyConsumed <0&&!isAnim&&child.getVisibility()==View.GONE) {
             show(child);
         }
     }
