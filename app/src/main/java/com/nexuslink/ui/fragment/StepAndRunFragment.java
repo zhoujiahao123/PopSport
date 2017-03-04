@@ -4,17 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.nexuslink.R;
+import com.nexuslink.ui.activity.RunActivity;
+import com.nexuslink.ui.activity.StepAndRunHistoryActivity;
 import com.nexuslink.ui.activity.WeatherActivity;
 import com.nexuslink.ui.adapter.StepAndRunFragmentAdapter;
 
@@ -25,7 +26,7 @@ import java.util.List;
  * Created by 猿人 on 2017/1/15.
  */
 
-public class StepAndRunFragment extends Fragment implements View.OnClickListener {
+public class StepAndRunFragment extends Fragment  {
 
     //===============================================常量
     private final String TAG = "StepAndRunFragment";
@@ -33,9 +34,9 @@ public class StepAndRunFragment extends Fragment implements View.OnClickListener
     private Activity activity;
     private AppCompatActivity appCompatActivity;
     //===============================================view
-    private Toolbar mToolbar;
+    private ImageView weatherImage,histroyImage,startRunImage;
     private ViewPager mViewPager;
-    private TabLayout mTabLayout;
+
     //===============================================Fragments的相关设置
     private List<Fragment> fragments = new ArrayList<>();
 
@@ -66,25 +67,44 @@ public class StepAndRunFragment extends Fragment implements View.OnClickListener
     private void initViewPagerAndTab() {
         StepAndRunFragmentAdapter adapter = new StepAndRunFragmentAdapter(getFragmentManager(),fragments);
         mViewPager.setAdapter(adapter);
-        mTabLayout.setupWithViewPager(mViewPager);
         Log.i(TAG,fragments.size()+"");
     }
 
+
     private void initView(View v) {
-        mToolbar = (Toolbar) v.findViewById(R.id.toolbar_step_and_run);
+
         mViewPager = (ViewPager) v.findViewById(R.id.viewPager_step_and_run);
-        mTabLayout = (TabLayout) v.findViewById(R.id.tabLayout_step_and_run);
-        appCompatActivity.setSupportActionBar(mToolbar);
-        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbar.setNavigationIcon(R.drawable.weather);
-        mToolbar.setNavigationOnClickListener(this);
+
+        //天气界面跳转
+        weatherImage = (ImageView) v.findViewById(R.id.weather_image);
+        weatherImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), WeatherActivity.class);
+                startActivity(intent);
+            }
+        });
+        //历史界面跳转
+        histroyImage = (ImageView) v.findViewById(R.id.history_image);
+        histroyImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, StepAndRunHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+        startRunImage = (ImageView) v.findViewById(R.id.start_run_image);
+        startRunImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, RunActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
     
 
 
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(getContext(), WeatherActivity.class);
-        startActivity(intent);
-    }
+
 }

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <Toolbar
-            android:background="@color/ufo_green"
+            android:background="@color/colorPrimary"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
@@ -25,6 +25,14 @@
             style="@style/ToolbarTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/back_white"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/back_image"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
     </RelativeLayout>
 
     <ScrollView

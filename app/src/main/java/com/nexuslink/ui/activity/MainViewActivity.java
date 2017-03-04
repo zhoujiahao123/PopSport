@@ -11,6 +11,8 @@ import com.nexuslink.ui.fragment.AppointmentFragment;
 import com.nexuslink.ui.fragment.CommunityFragment;
 import com.nexuslink.ui.fragment.PersonInfoFragment;
 import com.nexuslink.ui.fragment.StepAndRunFragment;
+import com.nexuslink.util.UpLoadDatasUtils;
+import com.sina.weibo.sdk.utils.NetworkHelper;
 import com.ycl.tabview.library.TabView;
 import com.ycl.tabview.library.TabViewChild;
 
@@ -40,6 +42,13 @@ public class MainViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_view);
         ButterKnife.bind(this);
         initView();
+        //每次用户打开应用程序就进行一些数据的上传
+        //检查用户联网否
+        if(NetworkHelper.isNetworkAvailable(this)){
+            //进行数据上传
+            UpLoadDatasUtils.upLoadSteps();
+            UpLoadDatasUtils.upLoadRunDatas();
+        }
     }
 
     @Override

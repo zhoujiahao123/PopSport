@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,6 +57,10 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     LoadingView progress;
     @BindView(R.id.room_name_input)
     EditText roomNameInput;
+    @BindView(R.id.back_icon)
+    ImageView backIcon;
+    @BindView(R.id.activity_create_run_house)
+    LinearLayout activityCreateRunHouse;
     //===============================================view
 
     private TimePickerDialog timePickerDialog;
@@ -71,7 +77,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     /***
      * 三分钟的毫秒数
      */
-    private static final long THREE_MINUTES =  1000*60*3;
+    private static final long THREE_MINUTES = 1000 * 60 * 3;
     private static final String TAG = "CreateRunHouseActivity";
 
     @Override
@@ -95,23 +101,19 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
         //设置默认页
         changToTime();
         //设置toolbar
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbar.setNavigationIcon(R.drawable.back);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
 
-
         timePickerDialog = new TimePickerDialog.Builder().setCallBack(this)
                 .setCancelStringId("取消")
                 .setSureStringId("确定")
                 .setTitleStringId("开始时间")
                 .setCyclic(false)
-                .setMinMillseconds(System.currentTimeMillis()+THREE_MINUTES)
+                .setMinMillseconds(System.currentTimeMillis() + THREE_MINUTES)
                 .setCurrentMillseconds(System.currentTimeMillis())
                 .setThemeColor(getResources().getColor(R.color.ufo_green))
                 .setType(Type.MONTH_DAY_HOUR_MIN)
@@ -120,7 +122,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
                 .setWheelItemTextSize(16)
                 .build();
         //设置默认时间
-        mStartDateShow.setText(df.format(System.currentTimeMillis()+THREE_MINUTES));
+        mStartDateShow.setText(df.format(System.currentTimeMillis() + THREE_MINUTES));
     }
 
 
@@ -225,7 +227,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
 
     @Override
     public int getGoal() {
-        int goal ;
+        int goal;
         if (mViewPager.getCurrentItem() == 0) {
             TimeTypeRunHouseFragment fragment = (TimeTypeRunHouseFragment) fragments.get(0);
             goal = fragment.getGoal();

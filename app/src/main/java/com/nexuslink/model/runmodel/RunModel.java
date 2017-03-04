@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RunModel {
     void  saveRecord(List<AMapLocation> list, String date);
-    String getDuration();
+    void setDuration(int duration);
     float getDistance(List<AMapLocation> list);
     String getCurrentAverage(float distance);
     void calculateCurrentTime();
@@ -18,6 +18,7 @@ public interface RunModel {
     String getCurrentCol(float distance);
     String getCurrentMiles(float distance);
     void setStartTime(long startTime);
-    void setEndTime(long endTime);
+
+    String getMaxSpeed();
 
 }

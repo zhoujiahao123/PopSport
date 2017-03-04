@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.nexuslink"
@@ -10,6 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi"
+        }
     }
     buildTypes {
         release {
@@ -52,9 +55,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:design:24.0.0'
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.facebook.stetho:stetho:1.0.1'
@@ -76,7 +80,6 @@ dependencies {
     compile 'com.github.sd6352051:android-image-picker:v1.0.1'
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/AMap_Location_V2.4.1_20160414.jar')
-    compile files('libs/Amap_2DMap_V4.2.0_20170120.jar')
     compile files('libs/Android_Map3D_SDK_V4.1.3_20161208.jar')
     //glid
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -93,6 +96,7 @@ dependencies {
     //EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
     //工具类
+
     //本地图片选择库
     compile 'cn.finalteam:galleryfinal:1.4.3'
     compile 'com.github.lazylibrary:lazylibrary:1.0.2'
@@ -105,4 +109,15 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.wuxiaolong.androidutils:androidutils:1.0.6'
+    compile files('libs/SocialSDK_QQ_Simplify.jar')
+    compile files('libs/SocialSDK_Sina_Full.jar')
+    compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
+    //柱状图图
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+
+
 }

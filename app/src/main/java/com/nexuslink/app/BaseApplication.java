@@ -18,7 +18,6 @@ import com.umeng.socialize.UMShareAPI;
 
 import java.io.IOException;
 
-import cn.alien95.resthttp.request.RestHttp;
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -57,8 +56,6 @@ public class BaseApplication extends Application {
                         .build());
         //创建数据库
         db = new DaoMaster.DevOpenHelper(mContext,"PopSport",null).getWritableDatabase();
-        //舒适化图片加载库
-        RestHttp.initialize(this);
         //初始化缓存
         try {
             helper = new DiskLruCacheHelper(getContext());

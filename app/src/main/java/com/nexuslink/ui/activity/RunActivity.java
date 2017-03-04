@@ -1,12 +1,22 @@
 package com.nexuslink.ui.activity;
 
-import android.animation.ValueAnimator;
+import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -17,13 +27,21 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.nexuslink.R;
+import com.nexuslink.RunDao;
 import com.nexuslink.model.data.PathRecord;
 import com.nexuslink.presenter.runpresenter.RunPresenter;
 import com.nexuslink.ui.view.RunView;
+import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.GPSUtil;
+import com.nexuslink.util.PermissionsChecker;
 import com.nexuslink.util.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,25 +54,50 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     //===============================================常量
     private static final String TAG = "RunActivity";
-    private static final float MAX_ZOOM_LEVEL = 18f;
+    private static final float MAX_ZOOM_LEVEL = 19f;
     private static final float MIN_ZOOM_LEVEL = 15f;
     private static final int TOTAL_TIME = 1000 * 60 * 20;//20分钟
     private static final int INTERVAL = 1000;
+    @BindView(R.id.run_current_time)
+    TextView mCurrentTime;
+    @BindView(R.id.run_current_distance)
+    TextView mCurrentDistance;
+    @BindView(R.id.run_current_col)
+    TextView mCurrentKcol;
+    @BindView(R.id.max_speed_tv)
+    TextView maxSpeedTv;
+    @BindView(R.id.run_current_speed)
+    TextView mAverageSpeedTv;
+    @BindView(R.id.start_or_pause)
+    Button mStartOrPauseBt;
+    @BindView(R.id.finish)
+    Button mFinish;
+    @BindView(R.id.activity_run)
+    LinearLayout activityRun;
+    @BindView(R.id.back_icon)
+    ImageView backIcon;
+    @BindView(R.id.run_date)
+    TextView runDate;
+    @BindView(R.id.run_time)
+    TextView runTime;
+    //===============================================权限相关
+    private static final int REQUEST_CODE = 0; // 请求码
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+    };
+    private PermissionsChecker mPermissionsChecker; // 权限检测器
+
     //定时器
     private TimeCount time;
-    //===============================================view
-    @BindView(R.id.run_title_tv)
-    TextView runTitleTv;
-    @BindView(R.id.bt_run)
-    ToggleButton btRun;
-    @BindView(R.id.run_currentMiles)
-    TextView CurrentMiles;
-    @BindView(R.id.run_current_time)
-    TextView CurrentTimeTv;
-    @BindView(R.id.run_current_average_speed)
-    TextView CurrentAverageSpeedTv;
-    @BindView(R.id.run_current_consume)
-    TextView CurrentConsume;
+    //===============================================辅助变量
+    private boolean isFirstLoc = true;
+    private boolean hasStartRun = false;
+    /**
+     * 数据库操作
+     */
+    private RunDao runDao = DBUtil.getRunDao();
     //===============================================轨迹线
     private PolylineOptions mPolyoptions;
     private PathRecord record;
@@ -62,7 +105,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private RunPresenter mRunPresenter;
     //===============================================地图层
     private MapView mMapView;
-    private AMap aMap ;
+    private AMap aMap;
     //===============================================定位
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -79,9 +122,15 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     mListener.onLocationChanged(aMapLocation);
                     //取得具体坐标，经纬度
                     LatLng myLocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation));
+                    //关闭自动回到定位点
+                    if (isFirstLoc) {
+                        aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation));
+                        if(!hasStartRun){
+                            isFirstLoc = false;
+                        }
+                    }
                     //根据条件判断是否启动路线轨迹记录
-                    if (btRun.isChecked()) {
+                    if (mStartOrPauseBt.getText().toString().equals("暂停")) {
                         record.addpoint(aMapLocation);
                         mPolyoptions.add(myLocation);
                         redrawLine();
@@ -97,6 +146,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
 
     };
+
     private void redrawLine() {
         if (mPolyoptions.getPoints().size() > 0) {
             aMap.addPolyline(mPolyoptions);
@@ -108,6 +158,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         ButterKnife.bind(this);
+        mPermissionsChecker = new PermissionsChecker(this);
+        initViews();
         initMapView(savedInstanceState);
         initPolyLine();
         initLocation();
@@ -115,11 +167,63 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mLocationClient.startLocation();
     }
 
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+            startPermissionsActivity();
+        }else{
+            //如何拥有权限，检查是否打开了GPS
+            if(!GPSUtil.isOPen(this)){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("提示");
+                builder.setCancelable(false);
+                builder.setMessage("您当前尚未打开GPS");
+                builder.setPositiveButton("好的，带我去打开", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("算了，下次再来", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.show();
+            }
+        }
+    }
+
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this,REQUEST_CODE,PERMISSIONS);
+    }
+
+    private void initViews() {
+        //toolbar
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        String time = getCurrentDate(System.currentTimeMillis());
+        runDate.setText(time.split(" ")[0]);
+        runTime.setText(time.split(" ")[1]);
+        //button
+        changToUnClickable();
+
+    }
 
 
     private void initPolyLine() {
         mPolyoptions = new PolylineOptions();
-        mPolyoptions.width(10f);
+        mPolyoptions.width(13f);
         mPolyoptions.color(getResources().getColor(R.color.blue_normal));
     }
 
@@ -145,7 +249,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(25000);
+        mLocationOption.setHttpTimeOut(30000);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
     }
@@ -166,9 +270,22 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         UiSettings uiSettings = aMap.getUiSettings();
         //显示定位按钮
         uiSettings.setMyLocationButtonEnabled(true);
+
+        // 自定义系统定位小蓝点
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+                .fromResource(R.drawable.location_icon));// 设置小蓝点的图标
+        myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));// 设置圆形的边框颜色
+        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));// 设置圆形的填充颜色
+        myLocationStyle.strokeWidth(0f);// 设置圆形的边框粗细
+        aMap.setMyLocationStyle(myLocationStyle);
+
         //显示定位层
         aMap.setMyLocationEnabled(true);
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+
+        aMap.setMinZoomLevel(MIN_ZOOM_LEVEL);
+        aMap.setMaxZoomLevel(MAX_ZOOM_LEVEL);
 
     }
 
@@ -177,8 +294,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         super.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
-        time.cancel();
-        time = null;
+        if (time != null) {
+            time.cancel();
+            time = null;
+        }
+
     }
 
     @Override
@@ -217,77 +337,153 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mLocationClient = null;
     }
 
-    @OnClick(R.id.bt_run)
-    public void onClick() {
-        if (btRun.isChecked()) {
-            aMap.clear();
-            if (record != null) {
-                record = null;
-            }
-            time = new TimeCount(TOTAL_TIME, INTERVAL);
-            time.start();
-            record = new PathRecord();
-            long mStartTime = System.currentTimeMillis();
-            mRunPresenter.startRecord(mStartTime);
-            record.setDate(getCurrentDate(mStartTime));
-        } else {
-            time.cancel();
-            long mEndTime = System.currentTimeMillis();
-            mRunPresenter.saveRecord(record.getPathline(),record.getDate(),mEndTime);
-        }
-    }
+
     private String getCurrentDate(long time) {
         SimpleDateFormat formatter = new SimpleDateFormat(
-                "yyyy-MM-dd  HH:mm:ss ");
+                "yyyy-MM-dd HH:mm:ss ");
         Date curDate = new Date(time);
         String date = formatter.format(curDate);
         return date;
     }
 
-    ValueAnimator animator;
-    @Override
-    public void startTitleAnim() {
-        final int DURATION = 1000;
-        runTitleTv.setText("等待开始...");
-        animator = new ValueAnimator().ofInt(0,1).setDuration(DURATION);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = animation.getAnimatedFraction();
-                runTitleTv.setAlpha(fraction);
-            }
-        });
-        animator.setRepeatCount(INTERVAL);
-        animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.start();
-    }
-    @Override
-    public void endTitleAnim() {
-        animator.end();
-        runTitleTv.setText("继续加油哦...");
-    }
+
     @Override
     public void setCurrentTime(String realTime) {
-        if(realTime.length()>5){
-            CurrentMiles.setTextSize(getResources().getDimension(R.dimen.font_large));
+        if (realTime.length() > 5) {
+            //  CurrentMiles.setTextSize(getResources().getDimension(R.dimen.font_large));
         }
-         CurrentTimeTv.setText(realTime);
+        //     CurrentTimeTv.setText(realTime);
+        mCurrentTime.setText(realTime);
     }
 
     @Override
     public void setCurrentSpeed(String speed) {
-        CurrentAverageSpeedTv.setText(speed+"m/s");
+        //    CurrentAverageSpeedTv.setText(speed+"m/s");
+        mAverageSpeedTv.setText(speed);
     }
 
     @Override
     public void setCurrentCol(String col) {
-        CurrentConsume.setText(col);
+        //       CurrentConsume.setText(col);
+        mCurrentKcol.setText(col);
     }
 
     @Override
     public void setCurrentDistance(String miles) {
-        CurrentMiles.setText(miles);
+        //  CurrentMiles.setText(miles);
+        mCurrentDistance.setText(miles);
     }
+
+    @Override
+    public void setMaxSpeed(String maxSpeed) {
+        maxSpeedTv.setText(maxSpeed);
+    }
+
+
+
+    @OnClick({R.id.start_or_pause, R.id.finish})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.start_or_pause:
+                if (mStartOrPauseBt.getText().toString().equals("开始")) {
+
+                    if(hasStartRun){
+                        mLocationClient.startLocation();
+                    } else{
+                        //用户开启了轨迹记录功能
+                        hasStartRun = true;
+                        //开启自动回到定位处
+                        isFirstLoc = true;
+                        //打开结束开关
+                        changToClickable();
+                        if (record != null) {
+                            record = null;
+                        }
+                        time = new TimeCount(TOTAL_TIME, INTERVAL);
+                        record = new PathRecord();
+                        long mStartTime = System.currentTimeMillis();
+                        mRunPresenter.startRecord(mStartTime);
+                        record.setDate(getCurrentDate(mStartTime));
+                    }
+                    //改变按钮的状态
+                    mStartOrPauseBt.setText("暂停");
+                    time.start();
+
+                } else {
+                    mStartOrPauseBt.setText("开始");
+                    mLocationClient.stopLocation();
+                    time.cancel();
+                }
+                break;
+            case R.id.finish:
+                onBackPressed();
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(hasStartRun){
+            //弹窗
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true);
+            final View dialogView = LayoutInflater.from(this).inflate(R.layout.run_wran_dialog, null);
+            builder.setView(dialogView);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+            dialogView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialogView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changToUnClickable();
+                    String durationStr[] = mCurrentTime.getText().toString().split(":");
+                    int hour = Integer.parseInt(durationStr[0]);
+                    int minute = Integer.parseInt(durationStr[1]);
+                    int second = Integer.parseInt(durationStr[2]);
+                    int duration = hour*60*60+minute*60+second;
+                    mRunPresenter.saveRecord(record.getPathline(), record.getDate(), duration);
+                    dialog.dismiss();
+                    //通知首界面进行更新
+                    EventBus.getDefault().post(new RunViewFresh());
+
+                   /* //在这里进行上传，如果上传成功，就将数据库中的匹配到时间的更新，否则就进行提示
+                    //分解时间进行数据库的查找
+                    String date = record.getDate().split(" ")[0];
+                    String time = record.getDate().split(" ")[1];
+                    //===============================================网络请求进行上传，上传成功，就更新
+
+                    //进行查找
+                    Run run = runDao.queryBuilder().where(RunDao.Properties.Date.eq(date),RunDao.Properties.Time.eq(time)).unique();
+                    run.setHasUpLoad(true);
+                    runDao.update(run);*/
+
+                    finish();
+                }
+            });
+        }else{
+            finish();
+        }
+
+    }
+
+    private void changToClickable() {
+        mFinish.setClickable(true);
+        mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_click));
+    }
+
+    private void changToUnClickable() {
+        mFinish.setClickable(false);
+        mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_unclick));
+    }
+
+
+
     /**
      * 倒计时类，用于统计时间
      */
@@ -295,10 +491,12 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
+
         @Override
         public void onTick(long millisUntilFinished) {
             mRunPresenter.refreshUI(record.getPathline());
         }
+
         @Override
         public void onFinish() {
             time.start();
