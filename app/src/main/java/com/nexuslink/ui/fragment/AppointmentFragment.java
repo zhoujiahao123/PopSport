@@ -11,9 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,6 +32,8 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrDefaultHandler2;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -42,7 +41,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by 猿人 on 2017/1/14.
  */
 
-public class AppointmentFragment extends Fragment implements  RunHouseView {
+public class AppointmentFragment extends Fragment implements RunHouseView {
 
     //===============================================view
     private Toolbar mToolbar;
@@ -57,7 +56,7 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
     //===============================================变量
     private Activity activity;
     private AppCompatActivity compatActivity;
-    private  RunHouseAdapter adapter;
+    private RunHouseAdapter adapter;
     private RunHousePresenter mRunHousePresenter;
 
 
@@ -76,18 +75,17 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
     }
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.appointment_fragment,container,false);
+        View view = inflater.inflate(R.layout.appointment_fragment, container, false);
         initView(view);
 
         mRunHousePresenter = new RunHousePresenterImpl(this);
         //首次进入时进行刷新
-        mRunHousePresenter.onRefresh(0,true);
+        mRunHousePresenter.onRefresh(0, true);
 
-        adapter  = new RunHouseAdapter(getContext());
+        adapter = new RunHouseAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -106,28 +104,30 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
         ptrFrameLayout.setPtrHandler(new PtrDefaultHandler2() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                mRunHousePresenter.onRefresh(0,false);
+                mRunHousePresenter.onRefresh(0, false);
             }
+
             @Override
             public void onLoadMoreBegin(PtrFrameLayout frame) {
-               int index = adapter.getDatas().size();
-               if(index > 0){
-                   mRunHousePresenter.onLoadMore(adapter.getDatas().get(index-1).getRoomId()+1);
-               }else{
-                   ToastUtil.showToast(getContext(),"加载时出错，请重试");
-               }
+                int index = adapter.getDatas().size();
+                if (index > 0) {
+                    mRunHousePresenter.onLoadMore(adapter.getDatas().get(index - 1).getRoomId() + 1);
+                } else {
+                    ToastUtil.showToast(getContext(), "加载时出错，请重试");
+                }
             }
         });
 
         setHasOptionsMenu(true);
+        ButterKnife.bind(this, view);
         return view;
     }
 
 
     @Subscribe
-    public void onRefresh(String str){
-        if (str.equals("刷新跑房")){
-            mRunHousePresenter.onRefresh(0,false);
+    public void onRefresh(String str) {
+        if (str.equals("刷新跑房")) {
+            mRunHousePresenter.onRefresh(0, false);
         }
     }
 
@@ -146,24 +146,6 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.runhouse_menu,menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.create_house){
-            //跳转
-            Intent intent = new Intent(getActivity(), CreateRunHouseActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-
-    }
-
 
     @Override
     public void showProgress() {
@@ -177,19 +159,19 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
 
     @Override
     public void showError() {
-        ToastUtil.showToast(getContext(),"请求出错，请重试");
+        ToastUtil.showToast(getContext(), "请求出错，请重试");
         ptrFrameLayout.refreshComplete();
     }
 
     @Override
     public void showSuccess() {
-        ToastUtil.showToast(getContext(),"刷新成功");
+        ToastUtil.showToast(getContext(), "刷新成功");
         ptrFrameLayout.refreshComplete();
     }
 
     @Override
     public void showNoMore() {
-        ToastUtil.showToast(getContext(),"没有更多了");
+        ToastUtil.showToast(getContext(), "没有更多了");
         ptrFrameLayout.refreshComplete();
     }
 
@@ -205,4 +187,10 @@ public class AppointmentFragment extends Fragment implements  RunHouseView {
         ptrFrameLayout.refreshComplete();
     }
 
+    @OnClick(R.id.fab)
+    public void onClick() {
+        //跳转
+        Intent intent = new Intent(getActivity(), CreateRunHouseActivity.class);
+        startActivity(intent);
+    }
 }

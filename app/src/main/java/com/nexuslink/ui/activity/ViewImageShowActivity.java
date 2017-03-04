@@ -41,7 +41,7 @@ public class ViewImageShowActivity extends AppCompatActivity implements ViewImag
     private int dataLength = 0;
     private List<ViewImageFragment> fragments = new ArrayList<>();
     //===============================================辅助变量
-    private TimeCount timeCount = new TimeCount(1500,1000);
+    private TimeCount timeCount = new TimeCount(1000,1000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

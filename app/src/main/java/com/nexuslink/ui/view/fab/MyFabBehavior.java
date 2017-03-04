@@ -30,22 +30,17 @@ public class MyFabBehavior extends FloatingActionButton.Behavior {
         if(child.getVisibility() == View.VISIBLE && viewY == 0){
             viewY = coordinatorLayout.getHeight() - child.getY();
         }
-        return  (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;//判断是否竖直滚动;
+        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL
+                || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);//判断是否竖直滚动;
     }
 
-//    //在嵌套滑动进行,对象消费滚动距离时回调
-//    @Override
-//    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dx, int dy, int[] consumed) {
-//        //dy大于0是向上滚动 小于0是向下滚动
-//
-//
-//    }
 
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        if (dyConsumed >=0&&!isAnim&&child.getVisibility()==View.VISIBLE) {
+
+        if (dyConsumed >=0 && child.getVisibility() == View.VISIBLE && !isAnim) {
             hide(child);
-        } else if (dyConsumed <0&&!isAnim&&child.getVisibility()==View.GONE) {
+        } else  if(dyConsumed < 0 && child.getVisibility() == View.INVISIBLE && !isAnim){
             show(child);
         }
     }
@@ -66,7 +61,8 @@ public class MyFabBehavior extends FloatingActionButton.Behavior {
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                hide(child);
+                isAnim = false;
+                child.hide();
             }
 
             @Override
@@ -74,12 +70,12 @@ public class MyFabBehavior extends FloatingActionButton.Behavior {
 
             }
         });
+
         animator.start();
     }
 
     private void hide(final FloatingActionButton child) {
         ViewPropertyAnimator animator = child.animate().translationY(viewY).setInterpolator(INTERPOLATOR);
-
         animator.setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -88,13 +84,14 @@ public class MyFabBehavior extends FloatingActionButton.Behavior {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                child.setVisibility(View.GONE);
+                child.setVisibility(View.INVISIBLE);
                 isAnim = false;
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                show(child);
+                isAnim = false;
+                child.show();
             }
 
             @Override

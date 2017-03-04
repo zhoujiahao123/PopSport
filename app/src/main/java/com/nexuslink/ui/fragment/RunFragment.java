@@ -121,6 +121,7 @@ public class RunFragment extends Fragment {
 
         //对表格进行初始化
         BarDataSet barDataSet = new BarDataSet(yBarEnties,"运动量");
+        barDataSet.setColor(getResources().getColor(R.color.yellow_500));
         BarData barData = new BarData(xList,barDataSet);
         mChart.setData(barData);
         mChart.setDescription("运动周数据");
