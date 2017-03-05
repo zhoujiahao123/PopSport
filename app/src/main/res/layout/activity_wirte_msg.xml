@@ -60,7 +60,7 @@
         android:layout_height="wrap_content">
 
         <!--内容编辑区-->
-        <com.vanniktech.emoji.EmojiEditText
+        <com.nexuslink.ui.view.KeyEmojiEditText
             android:id="@+id/msg_input_edit"
             android:gravity="start"
             android:paddingTop="@dimen/spacing_normal"

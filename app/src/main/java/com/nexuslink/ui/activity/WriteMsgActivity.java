@@ -19,11 +19,11 @@ import com.nexuslink.R;
 import com.nexuslink.presenter.writearticlepresenter.WriteArticlePresenterImpl;
 import com.nexuslink.presenter.writearticlepresenter.WriteArtilcePresenter;
 import com.nexuslink.ui.adapter.PhotoChooseResultAdapter;
+import com.nexuslink.ui.view.KeyEmojiEditText;
 import com.nexuslink.ui.view.WriteArticleView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.ToastUtil;
-import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,7 +61,7 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
     @BindView(R.id.toolbar_write_msg)
     Toolbar mToolbar;
     @BindView(R.id.msg_input_edit)
-    EmojiEditText mInput;
+    KeyEmojiEditText mInput;
     @BindView(R.id.post_article_tv)
     TextView postArticleTv;
     @BindView(R.id.cancel_article_tv)
@@ -165,8 +165,28 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
 
                 if(emojiPopup.isShowing()){
                     emojiPopup.dismiss();
+                    mInput.isEmojiPoupShown = false;
                 }else{
                     emojiPopup.toggle();
+                    mInput.isEmojiPoupShown = true;
+                }
+            }
+        });
+        mInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(emojiPopup.isShowing()){
+                    emojiPopup.dismiss();
+                    mInput.isEmojiPoupShown = false;
+                }
+            }
+        });
+        mInput.setOnCancelEmojiLisnter(new KeyEmojiEditText.OnCancelEmojiPoupListener() {
+            @Override
+            public void onCancel() {
+                if(emojiPopup.isShowing()){
+                    emojiPopup.dismiss();
+                    mInput.isEmojiPoupShown = false;
                 }
             }
         });
@@ -189,11 +209,12 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
         }
     }
 
+
+
     @Override
     public void onBackPressed() {
-        if(emojiPopup.isShowing()){
-            emojiPopup.dismiss();
-        }else if (!isPosting) {
+        //在这里进行poup的关闭
+       if (!isPosting) {
             finish();
         } else {
             ToastUtil.showToast(this, "正在上传，暂时不能退出哦");
@@ -224,6 +245,7 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
         EventBus.getDefault().post(new String("刷新"));
         if(emojiPopup.isShowing()){
             emojiPopup.dismiss();
+            mInput.isEmojiPoupShown = false;
         }
         onBackPressed();
     }
