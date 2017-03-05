@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.nexuslink.R;
 import com.nexuslink.model.data.CommentItemData;
@@ -34,6 +33,7 @@ import com.nexuslink.ui.view.view.headerview.RunHouseFooter;
 import com.nexuslink.ui.view.view.headerview.RunHouseHeader;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
+import com.vanniktech.emoji.EmojiTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -178,6 +178,9 @@ public class CommunityFragment extends Fragment implements CommunityView {
     public void clearInput(LinearLayout linearLayout, EditText input) {
         input.setText("");
         linearLayout.setVisibility(View.GONE);
+        //设置button可点击
+        linearLayout.getChildAt(1).setClickable(true);
+        linearLayout.getChildAt(1).setBackground(getResources().getDrawable(R.drawable.bt_run_house_normal));
     }
 
     @Override
@@ -193,7 +196,7 @@ public class CommunityFragment extends Fragment implements CommunityView {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.comment_item, null);
             SpannableString msg = new SpannableString(commentItemData.getUserName() + ":" + commentItemData.getCommentText());
             msg.setSpan(new ForegroundColorSpan(0xff6b8747), 0, commentItemData.getUserName().length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            TextView tv = (TextView) view.findViewById(R.id.comment);
+            EmojiTextView tv = (EmojiTextView) view.findViewById(R.id.comment);
             tv.setText(msg);
             commentsList.addView(view);
         }
@@ -206,7 +209,7 @@ public class CommunityFragment extends Fragment implements CommunityView {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.comment_item, null);
             SpannableString msg = new SpannableString(commentItemData.getUserName() + ":" + commentItemData.getCommentText());
             msg.setSpan(new ForegroundColorSpan(0xff6b8747), 0, commentItemData.getUserName().length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            TextView tv = (TextView) view.findViewById(R.id.comment);
+            EmojiTextView tv = (EmojiTextView) view.findViewById(R.id.comment);
             tv.setText(msg);
             listView.addView(view);
         }

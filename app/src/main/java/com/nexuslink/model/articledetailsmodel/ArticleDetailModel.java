@@ -11,4 +11,5 @@ public interface ArticleDetailModel {
     void postDisLike(int userId,int articleId,CallBackListener listener);
     void postComment(int userId,int articleId,String text,CallBackListener listener);
     void getComments(int articleId,CallBackListener listener);
+    void getArticle(int articleId, CallBackListener listener);
 }

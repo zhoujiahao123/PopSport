@@ -24,6 +24,7 @@
             <TextView
                 android:id="@+id/user_name"
                 android:text="张兴锐"
+                android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/article_date_tv"
-                android:text="2017-111"
+                android:textColor="@color/secondary_text"
                 android:textSize="@dimen/font_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -53,8 +54,9 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
-        <TextView
+        <com.vanniktech.emoji.EmojiTextView
             android:id="@+id/comment_text"
+            android:textColor="@color/primary_text"
             android:text="fdjfkljdljfljadslf"
             android:textSize="@dimen/font_normal"
             android:layout_width="match_parent"

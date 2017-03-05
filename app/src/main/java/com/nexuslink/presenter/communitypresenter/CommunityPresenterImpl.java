@@ -1,7 +1,6 @@
 package com.nexuslink.presenter.communitypresenter;
 
 import android.text.TextUtils;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.nexuslink.app.BaseApplication;
@@ -12,8 +11,10 @@ import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.ui.view.CommunityView;
+import com.nexuslink.util.Base64Utils;
 import com.nexuslink.util.UserUtils;
 import com.nexuslink.util.cache.DiskLruCacheHelper;
+import com.vanniktech.emoji.EmojiEditText;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -66,11 +67,11 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postComment(final LinearLayout commentsList, final EditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos)
+    public void postComment(final LinearLayout commentsList, final EmojiEditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos)
     {
         if(!TextUtils.isEmpty(input.getText().toString())){
-
-            mCommunity.postComment(userId, articleId,input.getText().toString(), new CallBackListener() {
+            //加密后进行上传
+            mCommunity.postComment(userId, articleId, Base64Utils.encode(input.getText().toString()), new CallBackListener() {
                 @Override
                 public void onFinish(Object obj) {
 
@@ -177,7 +178,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                  List<CommentItemData> commentItemDatas = new ArrayList<CommentItemData>();
                 for(int i =0;i<commentsBean.size();i++){
                     CommentInfo.CommentsBean commentsBean1 = commentsBean.get(i);
-                    CommentItemData commentItemData = new CommentItemData(commentsBean1.getUserName(),commentsBean1.getCommentText());
+                    CommentItemData commentItemData = new CommentItemData(commentsBean1.getUserName(),Base64Utils.decode(commentsBean1.getCommentText()));
                     commentItemDatas.add(commentItemData);
                 }
                 //进行缓存

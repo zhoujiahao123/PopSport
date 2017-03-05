@@ -19,6 +19,7 @@ import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
 import com.nexuslink.model.data.SearchInfo;
+import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.model.data.TaskFlag;
 import com.nexuslink.model.data.UIdInfo;
 import com.nexuslink.model.data.UpLoadUserImageResult;
@@ -94,7 +95,7 @@ public interface Api {
     //获取话题单一内容
     @FormUrlEncoded
     @POST("article/getOne")
-    Observable<CommunityInfo> getArticle(@Field("uId") int userId, @Field("aId") int articleId);
+    Observable<SingleCommunityInfo> getArticle(@Field("uId") int userId, @Field("aId") int articleId);
 
     //获取多话题内容
     @FormUrlEncoded

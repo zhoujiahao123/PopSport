@@ -1,28 +1,30 @@
  package com.nexuslink.app;
 
  import android.app.Application;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
+ import android.content.Context;
+ import android.database.sqlite.SQLiteDatabase;
+ import android.graphics.Color;
 
-import com.elvishew.xlog.LogLevel;
-import com.elvishew.xlog.XLog;
-import com.facebook.stetho.Stetho;
-import com.nexuslink.DaoMaster;
-import com.nexuslink.DaoSession;
-import com.nexuslink.util.GlideImageLoader;
-import com.nexuslink.util.cache.DiskLruCacheHelper;
-import com.umeng.socialize.Config;
-import com.umeng.socialize.PlatformConfig;
-import com.umeng.socialize.UMShareAPI;
+ import com.elvishew.xlog.LogLevel;
+ import com.elvishew.xlog.XLog;
+ import com.facebook.stetho.Stetho;
+ import com.nexuslink.DaoMaster;
+ import com.nexuslink.DaoSession;
+ import com.nexuslink.util.GlideImageLoader;
+ import com.nexuslink.util.cache.DiskLruCacheHelper;
+ import com.umeng.socialize.Config;
+ import com.umeng.socialize.PlatformConfig;
+ import com.umeng.socialize.UMShareAPI;
+ import com.vanniktech.emoji.EmojiManager;
+ import com.vanniktech.emoji.ios.IosEmojiProvider;
 
-import java.io.IOException;
+ import java.io.IOException;
 
-import cn.finalteam.galleryfinal.CoreConfig;
-import cn.finalteam.galleryfinal.FunctionConfig;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.ImageLoader;
-import cn.finalteam.galleryfinal.ThemeConfig;
+ import cn.finalteam.galleryfinal.CoreConfig;
+ import cn.finalteam.galleryfinal.FunctionConfig;
+ import cn.finalteam.galleryfinal.GalleryFinal;
+ import cn.finalteam.galleryfinal.ImageLoader;
+ import cn.finalteam.galleryfinal.ThemeConfig;
 
 
  /**
@@ -86,6 +88,10 @@ public class BaseApplication extends Application {
                 .setFunctionConfig(functionConfig)
                 .build();
         GalleryFinal.init(coreConfig);
+        /**
+         * emoji表情
+         */
+        EmojiManager.install(new IosEmojiProvider());
 
     }
     /*

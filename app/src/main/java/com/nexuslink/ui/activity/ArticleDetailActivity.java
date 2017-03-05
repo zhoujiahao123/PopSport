@@ -14,17 +14,21 @@ import com.bumptech.glide.Glide;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.CommentInfo;
-import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.presenter.articlepresenter.ArticleDetailPresenter;
 import com.nexuslink.presenter.articlepresenter.ArticleDetailPresenterImpl;
 import com.nexuslink.ui.view.ArticleDetailView;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
+import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
+import com.nexuslink.util.Base64Utils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.KeyBoardUtils;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,7 +56,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     TextView articleDateTv;
 
     @BindView(R.id.tv_content)
-    TextView tvContent;
+    EmojiTextView tvContent;
 
     @BindView(R.id.multi_view)
     MultiView multiView;
@@ -74,18 +78,20 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     EditText inputComment;
     @BindView(R.id.input_send_comment)
     Button inputSendComment;
-
+    @BindView(R.id.progressbar)
+    LoadingView progressbar;
 
 
     private LinearLayout commentLinear;
-    private EditText commentInput;
+    private EmojiEditText commentInput;
     private Button postComment;
 
 
     /**
      * 数据
      */
-    private CommunityInfo.ArticlesBean article;
+    private int articleId;
+    private SingleCommunityInfo.ArticleBean article;
     private int commentNumber;
     private boolean isOpen = false;
     /**
@@ -102,12 +108,12 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         inflater = LayoutInflater.from(this);
         presenter = new ArticleDetailPresenterImpl(this);
         initViews();
-        //得到从外部传来的article信息
-        article = getIntent().getParcelableExtra("article");
-
-        if (article != null) {
-            //进行view的装载和评论的请求以及装载
-            setUpViews();
+        //得到从外部传来的articleId
+        articleId = getIntent().getIntExtra("articleId", -1);
+        //进行加载
+        if (articleId != -1) {
+            //进行网络请求并开始装载view
+            presenter.loadArticle(articleId);
         } else {
             ToastUtil.showToast(this, "出现未知错误，请重试");
             onBackPressed();
@@ -116,13 +122,15 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
 
     private void initViews() {
         commentLinear = (LinearLayout) findViewById(R.id.comment_linear);
-        commentInput = (EditText) findViewById(R.id.input_comment);
+        commentInput = (EmojiEditText) findViewById(R.id.input_comment);
         postComment = (Button) findViewById(R.id.input_send_comment);
         postComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (article != null) {
                     presenter.postComment(article.getArticleId());
+                    postComment.setClickable(false);
+                    postComment.setBackground(getResources().getDrawable(R.drawable.bt_unclickable));
                 } else {
                     ToastUtil.showToast(ArticleDetailActivity.this, "上传时出错啦");
                 }
@@ -137,19 +145,19 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     }
 
     /**
-     * 如果article不为空，那么就进行设置相关的信息
+     * 信息的加载
      */
     private void setUpViews() {
         //设置用户个人信息
-        CommunityInfo.ArticlesBean.UserBeanBean user = article.getUserBean();
+        SingleCommunityInfo.ArticleBean.UserBeanBean user = article.getUserBean();
         //头像加载
         Glide.with(this).load(Constants.PHOTO_BASE_URL + user.getUImg()).crossFade().into(userImage);
         userName.setText(user.getUName());
-        userLevel.setText(UserUtils.getUserLevel(user.getUExp()));
+        userLevel.setText("Lv."+UserUtils.getUserLevel(user.getUExp()));
         //设置发表日期
         articleDateTv.setText(article.getDate() + " " + article.getTime());
         //设置文本内容
-        tvContent.setText(article.getText());
+        tvContent.setText(Base64Utils.decode(article.getText()));
         //设置图片集合
         multiView.setImages(getImagesUrl(article.getImages()));
         //设置点赞数目和评论数目
@@ -159,7 +167,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             @Override
             public void activate(LikeView view) {
                 super.activate(view);
-                presenter.postLike();
+                presenter.postLike(article.getArticleId());
             }
 
             @Override
@@ -217,7 +225,6 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     }
 
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -245,11 +252,11 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         TextView commenterName = (TextView) view.findViewById(R.id.user_name);
         TextView commentDateTv = (TextView) view.findViewById(R.id.article_date_tv);
         TextView commentFloor = (TextView) view.findViewById(R.id.comment_floor);
-        TextView commentText = (TextView) view.findViewById(R.id.comment_text);
+        EmojiTextView commentText = (EmojiTextView) view.findViewById(R.id.comment_text);
         commenterName.setText(commentsBean.getUserName());
         commentDateTv.setText(commentsBean.getDate() + " " + commentsBean.getTime());
         commentFloor.setText(commentsBean.getCommentFloor() + "楼");
-        commentText.setText(commentsBean.getCommentText());
+        commentText.setText(Base64Utils.decode(commentsBean.getCommentText()));
     }
 
     @Override
@@ -260,6 +267,27 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     @Override
     public void showError(String str) {
         ToastUtil.showToast(this, str);
+    }
+
+    @Override
+    public void showSuccess(String str) {
+        ToastUtil.showToast(this, str);
+    }
+
+    @Override
+    public void showProgress() {
+        progressbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressbar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void setUpViews(SingleCommunityInfo.ArticleBean articlesBean) {
+        article = articlesBean;
+        setUpViews();
     }
 
     @Override
@@ -278,6 +306,8 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     public void clear() {
         commentInput.setText("");
         commentLinear.setVisibility(View.GONE);
+        postComment.setClickable(true);
+        postComment.setBackground(getResources().getDrawable(R.drawable.bt_run_house_normal));
     }
 
     @OnClick(R.id.back_image)

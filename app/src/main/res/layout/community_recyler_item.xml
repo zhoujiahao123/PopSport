@@ -18,7 +18,6 @@
         android:layout_height="wrap_content">
         
         <com.nexuslink.util.CircleImageView
-            android:src="@mipmap/ic_luancher"
             android:id="@+id/user_image"
             android:layout_gravity="center"
             android:layout_width="@dimen/image_size_normal"
@@ -32,13 +31,12 @@
                 android:layout_marginLeft="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_tiny"
                 android:id="@+id/user_name"
-                android:text="张兴锐"
+                android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/user_level"
-                android:text="Lv.20"
                 android:textColor="@color/ufo_green"
                 android:layout_marginLeft="@dimen/spacing_normal"
                 android:layout_width="wrap_content"
@@ -46,11 +44,11 @@
         </LinearLayout>
     </LinearLayout>
     
-    <TextView
+    <com.vanniktech.emoji.EmojiTextView
         android:id="@+id/tv_content"
         android:padding="8dp"
         android:textSize="@dimen/msg_text_size"
-        android:textColor="@color/one_class_text"
+        android:textColor="@color/primary_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

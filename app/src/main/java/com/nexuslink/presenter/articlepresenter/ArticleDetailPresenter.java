@@ -7,5 +7,6 @@ package com.nexuslink.presenter.articlepresenter;
 public interface ArticleDetailPresenter {
     void loadComments(int articleId);
     void postComment(int articleId);
-    void postLike();
+    void postLike(int articleId);
+    void loadArticle(int articleId);
 }
