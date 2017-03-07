@@ -8,8 +8,8 @@ import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
-import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.model.data.CreateRunHouseResult;
+import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
@@ -27,7 +27,6 @@ import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 import com.nexuslink.model.data.WriteArticleResult;
 
-import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -172,7 +171,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("room/createRoom")
     Observable<CreateRunHouseResult> createRoom(@Field("uId") int uId, @Field("type") int type, @Field("goal")
-            int goal, @Field("roomName") String room, @Field("startTime")Date date);
+            int goal, @Field("roomName") String room, @Field("startTime")String startTime);
 
     //查看所有房间
     @FormUrlEncoded

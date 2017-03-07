@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.nexuslink.R;
 import com.nexuslink.ui.activity.RunActivity;
+import com.nexuslink.ui.activity.RunHouseResultActivity;
 import com.nexuslink.ui.activity.StepAndRunHistoryActivity;
 import com.nexuslink.ui.activity.WeatherActivity;
 import com.nexuslink.ui.adapter.StepAndRunFragmentAdapter;
@@ -22,19 +24,25 @@ import com.nexuslink.ui.adapter.StepAndRunFragmentAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by 猿人 on 2017/1/15.
  */
 
-public class StepAndRunFragment extends Fragment  {
+public class StepAndRunFragment extends Fragment {
 
     //===============================================常量
     private final String TAG = "StepAndRunFragment";
+    @BindView(R.id.test)
+    Button test;
     //===============================================辅助变量
     private Activity activity;
     private AppCompatActivity appCompatActivity;
     //===============================================view
-    private ImageView weatherImage,histroyImage,startRunImage;
+    private ImageView weatherImage, histroyImage, startRunImage;
     private ViewPager mViewPager;
 
     //===============================================Fragments的相关设置
@@ -57,17 +65,18 @@ public class StepAndRunFragment extends Fragment  {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.step_and_run_fragment,container,false);
+        View view = inflater.inflate(R.layout.step_and_run_fragment, container, false);
         initView(view);
         initViewPagerAndTab();
         setHasOptionsMenu(true);
+        ButterKnife.bind(this, view);
         return view;
     }
 
     private void initViewPagerAndTab() {
-        StepAndRunFragmentAdapter adapter = new StepAndRunFragmentAdapter(getFragmentManager(),fragments);
+        StepAndRunFragmentAdapter adapter = new StepAndRunFragmentAdapter(getFragmentManager(), fragments);
         mViewPager.setAdapter(adapter);
-        Log.i(TAG,fragments.size()+"");
+        Log.i(TAG, fragments.size() + "");
     }
 
 
@@ -103,8 +112,11 @@ public class StepAndRunFragment extends Fragment  {
         });
 
     }
-    
 
 
-
+    @OnClick(R.id.test)
+    public void onClick() {
+        Intent intent = new Intent(getContext(), RunHouseResultActivity.class);
+        startActivity(intent);
+    }
 }

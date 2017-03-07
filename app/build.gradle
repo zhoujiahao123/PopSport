@@ -121,4 +121,5 @@ dependencies {
     compile 'com.android.support:support-v13:25.1.0'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
 }

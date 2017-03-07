@@ -171,13 +171,16 @@
 
         <activity
             android:name=".ui.activity.ArticleDetailActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustUnspecified"/>
+            android:windowSoftInputMode="stateUnchanged|adjustUnspecified" />
         <activity android:name=".ui.activity.StepAndRunHistoryActivity" />
         <activity android:name=".ui.activity.RecordShowActivity" />
         <activity android:name=".ui.activity.PermissionsActivity" />
+        <activity
+            android:name=".ui.activity.RunHouseResultActivity"
+            android:label="@string/title_activity_run_house_result"
+            android:theme="@style/AppTheme">
 
-
-
+        </activity>
     </application>
 
 </manifest>

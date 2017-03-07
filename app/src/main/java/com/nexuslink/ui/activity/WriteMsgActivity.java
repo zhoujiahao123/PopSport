@@ -148,6 +148,8 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
 
 
     private void initView() {
+        //设置上传textview不可点击
+        postArticleTv.setClickable(false);
         //设置toolbar
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

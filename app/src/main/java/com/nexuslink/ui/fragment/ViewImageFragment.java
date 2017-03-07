@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -118,49 +117,49 @@ public class ViewImageFragment extends Fragment {
     public void saveImage(){
         if(url != null){
             new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // 首先保存图片
-                    File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsoluteFile();
-                    //小米手机必须这样获得public绝对路径
-                    String filesName = "Pop图片";
-                    File appDir = new File(file, filesName);
-                    if (!appDir.exists()) {
-                        appDir.mkdirs();
-                    }
-                    String fileName = System.currentTimeMillis() + ".jpg";
-                    File currentFile = new File(appDir, fileName);
-
-                    File picCacheFile = Glide.with(getContext()).load(url).downloadOnly(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL).get();
-                    FileUtils.copyFile(picCacheFile.getPath(),currentFile.getPath());
-                    //保存成功
-                    handler.sendEmptyMessage(SUCCESS);
-                    //其次把文件插入到系统图库
+                @Override
+                public void run() {
                     try {
-                        MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
-                                currentFile.getAbsolutePath(), fileName, null);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    // 最后通知图库更新
-                    getContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                            Uri.fromFile(new File(currentFile.getPath()))));
+                        // 首先保存图片
+                        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsoluteFile();
+                        //小米手机必须这样获得public绝对路径
+                        String filesName = "Pop图片";
+                        File appDir = new File(file, filesName);
+                        if (!appDir.exists()) {
+                            appDir.mkdirs();
+                        }
+                        String fileName = System.currentTimeMillis() + ".jpg";
+                        File currentFile = new File(appDir, fileName);
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    handler.sendEmptyMessage(FAILED);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                    handler.sendEmptyMessage(FAILED);
+                        File picCacheFile = Glide.with(getContext()).load(url).downloadOnly(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL).get();
+                        FileUtils.copyFile(picCacheFile.getPath(),currentFile.getPath());
+                        //保存成功
+                        handler.sendEmptyMessage(SUCCESS);
+                        //其次把文件插入到系统图库
+                        try {
+                            MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                                    currentFile.getAbsolutePath(), fileName, null);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        // 最后通知图库更新
+                        getContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                Uri.fromFile(new File(currentFile.getPath()))));
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        handler.sendEmptyMessage(FAILED);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                        handler.sendEmptyMessage(FAILED);
+                    }
                 }
-            }
-         }).start();
+            }).start();
         }else{
             ToastUtil.showToast(getContext(),"图片地址出错");
         }
 
-}
+    }
 
 
 }

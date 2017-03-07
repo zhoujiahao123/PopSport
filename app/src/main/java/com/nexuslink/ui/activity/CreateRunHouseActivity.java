@@ -30,7 +30,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,10 +64,16 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
 
     private TimePickerDialog timePickerDialog;
 
+
     //===============================================变量
     private SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
     private List<Fragment> fragments = new ArrayList<>();
     private CreateRunHouseViewPagerAdapter adapter;
+    private long time;
+    /**
+     * 格式控制
+     */
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     /**
      * presenter
      */
@@ -123,6 +128,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
                 .build();
         //设置默认时间
         mStartDateShow.setText(df.format(System.currentTimeMillis() + THREE_MINUTES));
+        time = System.currentTimeMillis()+THREE_MINUTES;
     }
 
 
@@ -170,7 +176,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
 
     }
 
-    private long time;
+
 
     @Override
     public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
@@ -244,7 +250,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     }
 
     @Override
-    public Date getStartTime() {
-        return new Date(time);
+    public String getStartTime() {
+        return sdf.format(time);
     }
 }

@@ -4,18 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by 猿人 on 2017/2/25.
  */
 
-public class LoadRoomsResult {
+public class LoadRoomsResult implements Parcelable {
 
     /**
      * code : 200
-     * room : [{"roomId":1,"roomType":0,"roomGoal":60,"roomName":"一起跑步吧","startDate":null,"startTime":null,"users":[{"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":2,"roomType":0,"roomGoal":60,"roomName":"一起跑步","startDate":null,"startTime":null,"users":[{"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]}]
+     * room : [{"roomId":12,"roomType":0,"roomGoal":60,"roomName":"一起跑步","startTime":"2017-02-08 11:22","users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":11,"roomType":1,"roomGoal":4100,"roomName":"cjkcncjckckckc","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":10,"roomType":0,"roomGoal":59,"roomName":"ckjcj ckmcmcmcmcld","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":9,"roomType":0,"roomGoal":15,"roomName":"bchjxjxjxj","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null},{"uid":26,"uName":"周家豪","uGender":"M","uImg":"user26.jpeg","uHeight":180,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":8,"roomType":0,"roomGoal":3,"roomName":"我，哦婆婆","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":7,"roomType":0,"roomGoal":4,"roomName":"哦送什么是","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":6,"roomType":1,"roomGoal":2200,"roomName":"兔兔兔兔","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":5,"roomType":1,"roomGoal":7100,"roomName":"快活呀","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":4,"roomType":1,"roomGoal":7000,"roomName":"来啊","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":3,"roomType":0,"roomGoal":6,"roomName":"jcjcjckclclckc","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]}]
      */
 
     private int code;
@@ -40,21 +39,19 @@ public class LoadRoomsResult {
     public static class RoomBean implements Parcelable {
 
         /**
-         * roomId : 1
+         * roomId : 12
          * roomType : 0
          * roomGoal : 60
-         * roomName : 一起跑步吧
-         * startDate : null
-         * startTime : null
-         * users : [{"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]
+         * roomName : 一起跑步
+         * startTime : 2017-02-08 11:22
+         * users : [{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]
          */
 
         private int roomId;
         private int roomType;
         private int roomGoal;
         private String roomName;
-        private Date startDate;
-        private Date startTime;
+        private String startTime;
         private List<UsersBean> users;
 
         public int getRoomId() {
@@ -89,19 +86,11 @@ public class LoadRoomsResult {
             this.roomName = roomName;
         }
 
-        public Date getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
-
-        public Date getStartTime() {
+        public String getStartTime() {
             return startTime;
         }
 
-        public void setStartTime(Date startTime) {
+        public void setStartTime(String startTime) {
             this.startTime = startTime;
         }
 
@@ -117,12 +106,12 @@ public class LoadRoomsResult {
 
             /**
              * uid : 15
-             * uName : 张兴锐
+             * uName : 哎哎哎
              * uGender : M
              * uImg : user15.jpeg
              * uHeight : 174
              * uWeight : 60
-             * uFansnum : 1
+             * uFansnum : 2
              * uExp : 0
              * uHistoryStep : 0
              * uHistoryMileage : 0
@@ -290,8 +279,7 @@ public class LoadRoomsResult {
             dest.writeInt(this.roomType);
             dest.writeInt(this.roomGoal);
             dest.writeString(this.roomName);
-            dest.writeLong(this.startDate != null ? this.startDate.getTime() : -1);
-            dest.writeLong(this.startTime != null ? this.startTime.getTime() : -1);
+            dest.writeString(this.startTime);
             dest.writeList(this.users);
         }
 
@@ -303,15 +291,12 @@ public class LoadRoomsResult {
             this.roomType = in.readInt();
             this.roomGoal = in.readInt();
             this.roomName = in.readString();
-            long tmpStartDate = in.readLong();
-            this.startDate = tmpStartDate == -1 ? null : new Date(tmpStartDate);
-            long tmpStartTime = in.readLong();
-            this.startTime = tmpStartTime == -1 ? null : new Date(tmpStartTime);
+            this.startTime = in.readString();
             this.users = new ArrayList<UsersBean>();
             in.readList(this.users, UsersBean.class.getClassLoader());
         }
 
-        public static final Parcelable.Creator<RoomBean> CREATOR = new Parcelable.Creator<RoomBean>() {
+        public static final Creator<RoomBean> CREATOR = new Creator<RoomBean>() {
             @Override
             public RoomBean createFromParcel(Parcel source) {
                 return new RoomBean(source);
@@ -323,4 +308,36 @@ public class LoadRoomsResult {
             }
         };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.code);
+        dest.writeList(this.room);
+    }
+
+    public LoadRoomsResult() {
+    }
+
+    protected LoadRoomsResult(Parcel in) {
+        this.code = in.readInt();
+        this.room = new ArrayList<RoomBean>();
+        in.readList(this.room, RoomBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<LoadRoomsResult> CREATOR = new Parcelable.Creator<LoadRoomsResult>() {
+        @Override
+        public LoadRoomsResult createFromParcel(Parcel source) {
+            return new LoadRoomsResult(source);
+        }
+
+        @Override
+        public LoadRoomsResult[] newArray(int size) {
+            return new LoadRoomsResult[size];
+        }
+    };
 }

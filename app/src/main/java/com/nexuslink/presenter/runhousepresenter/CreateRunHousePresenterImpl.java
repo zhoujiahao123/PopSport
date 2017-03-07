@@ -38,11 +38,11 @@ public class CreateRunHousePresenterImpl implements CreateRunHousePresenter {
                 public void onFinish(Object o) {
                     mView.hideProgress();
                     mView.showSuccess();
-
                 }
 
                 @Override
                 public void onError(Exception e) {
+                    e.printStackTrace();
                     mView.hideProgress();
                     mView.showError();
                 }
