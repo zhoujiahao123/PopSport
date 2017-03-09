@@ -7,11 +7,20 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.model.LatLng;
 import com.nexuslink.Run;
 import com.nexuslink.RunDao;
+import com.nexuslink.config.Api;
+import com.nexuslink.config.Constants;
+import com.nexuslink.model.CallBackListener;
+import com.nexuslink.model.data.RoomGoal;
+import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.UserUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
 
@@ -26,6 +35,10 @@ public class RunModelImp implements RunModel {
     private int seconds,minutes,hours;
     private float maxSpeed = 0 ;
     DecimalFormat df = new DecimalFormat("#0.0");
+    /**
+     * api
+     */
+    Api api = ApiUtil.getInstance(Constants.BASE_URL);
     /**
      * 消除最大速度误差
      */
@@ -192,6 +205,23 @@ public class RunModelImp implements RunModel {
     @Override
     public String getMaxSpeed() {
         return df.format(maxSpeed)+"m/s";
+    }
+
+    @Override
+    public void postRoomData(int rId, long goal, final CallBackListener listener) {
+        api.setGoal(UserUtils.getUserId(),rId,goal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<RoomGoal>() {
+                    @Override
+                    public void call(RoomGoal roomGoal) {
+                        if(roomGoal.getCode() == Constants.SUCCESS){
+                            listener.onFinish(roomGoal.getGoals());
+                        }else{
+                            listener.onError(new Exception("上传跑房数据时失败"));
+                        }
+                    }
+                });
     }
 
 

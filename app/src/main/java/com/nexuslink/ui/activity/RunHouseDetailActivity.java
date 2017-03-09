@@ -15,6 +15,7 @@ import com.nexuslink.HasJoinedRooms;
 import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
 import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.SetUpAlarm;
 import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenter;
 import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenterImpl;
 import com.nexuslink.ui.adapter.RunHouseDetailAdapter;
@@ -206,9 +207,11 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     @Override
     public void insertOneRoom() {
         final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
-        HasJoinedRooms room = new HasJoinedRooms(null,roomBean.getRoomName(),adapter.getItemCount(),roomBean.getStartTime(),roomBean.getRoomGoal(),
+        HasJoinedRooms room = new HasJoinedRooms(null, roomBean.getRoomId(),roomBean.getRoomName(),adapter.getItemCount(),roomBean.getStartTime(),roomBean.getRoomGoal(),
                 roomBean.getRoomType());
         joinedRoomsDao.insert(room);
+        //重新设置闹钟
+        EventBus.getDefault().post(new SetUpAlarm());
     }
 
 }

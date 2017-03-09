@@ -18,6 +18,7 @@ import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
+import com.nexuslink.model.data.RoomGoal;
 import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.model.data.TaskFlag;
@@ -187,6 +188,11 @@ public interface Api {
     @FormUrlEncoded
     @POST("room/quit")
     Observable<QuiteRoomResult> quitRoom(@Field("uId") int uId, @Field("rId") int rId);
+
+    //设置跑房成果
+   @FormUrlEncoded
+    @POST("room/setGoal")
+    Observable<RoomGoal> setGoal(@Field("uId") int uId, @Field("rId") int rId, @Field("goal") long goal);
 
 
 

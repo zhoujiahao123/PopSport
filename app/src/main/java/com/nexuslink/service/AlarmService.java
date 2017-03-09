@@ -10,8 +10,12 @@ import android.support.annotation.Nullable;
 import com.nexuslink.HasJoinedRooms;
 import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.broadcast.AlarmReceiver;
+import com.nexuslink.model.data.SetUpAlarm;
 import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.TimeUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -39,7 +43,15 @@ public class AlarmService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        //注册eventBUg
+        EventBus.getDefault().register(this);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -50,23 +62,7 @@ public class AlarmService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<HasJoinedRooms> joinedRoomses = joinedRoomsDao.queryBuilder()
-                        .where(HasJoinedRoomsDao.Properties.StartTime.ge(sdf.format(System.currentTimeMillis()))).list();
-                if(joinedRoomses != null && joinedRoomses.size() >0){
-                    for(HasJoinedRooms room : joinedRoomses){
-                        Intent intent1 = new Intent(AlarmService.this, AlarmReceiver.class);
-
-                        intent1.putExtra("room_name",  room.getRoomName());
-                        intent1.putExtra("person_num",room.getPersonNum());
-                        intent1.putExtra("start_time",room.getStartTime());
-                        intent1.putExtra("goal",room.getGoal());
-                        intent1.putExtra("type",room.getType());
-
-                        PendingIntent sender = PendingIntent.getBroadcast(AlarmService.this,room.getId().intValue(),intent1,0);
-                        map.put(room.getId(),sender);
-                        am.setExact(AlarmManager.RTC_WAKEUP, TimeUtils.DateToMills(room.getStartTime()),sender);
-                    }
-                }
+              setUpAlarm(null);
             }
         }).start();
         //检索完成开始进行闹钟的设置
@@ -78,5 +74,29 @@ public class AlarmService extends Service {
      */
     public void cancelRemind(Long id){
         am.cancel(map.get(id));
+    }
+    /**
+     * 设置闹钟接口
+     */
+    @Subscribe
+    public void setUpAlarm(SetUpAlarm alarm){
+        List<HasJoinedRooms> joinedRoomses = joinedRoomsDao.queryBuilder()
+                .where(HasJoinedRoomsDao.Properties.StartTime.ge(sdf.format(System.currentTimeMillis()))).list();
+        if(joinedRoomses != null && joinedRoomses.size() >0){
+            for(HasJoinedRooms room : joinedRoomses){
+                Intent intent1 = new Intent(AlarmService.this, AlarmReceiver.class);
+
+                intent1.putExtra("room_name",  room.getRoomName());
+                intent1.putExtra("rId",room.getRId());
+                intent1.putExtra("person_num",room.getPersonNum());
+                intent1.putExtra("start_time",room.getStartTime());
+                intent1.putExtra("goal",room.getGoal());
+                intent1.putExtra("type",room.getType());
+
+                PendingIntent sender = PendingIntent.getBroadcast(AlarmService.this,room.getId().intValue(),intent1,0);
+                map.put(room.getId(),sender);
+                am.setExact(AlarmManager.RTC_WAKEUP, TimeUtils.DateToMills(room.getStartTime()),sender);
+            }
+        }
     }
 }

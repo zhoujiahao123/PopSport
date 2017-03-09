@@ -19,6 +19,7 @@ import com.jzxiang.pickerview.listener.OnDateSetListener;
 import com.nexuslink.HasJoinedRooms;
 import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
+import com.nexuslink.model.data.SetUpAlarm;
 import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenter;
 import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenterImpl;
 import com.nexuslink.ui.adapter.CreateRunHouseViewPagerAdapter;
@@ -257,10 +258,12 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     }
 
     @Override
-    public void insertOneRoom() {
+    public void insertOneRoom(int rId) {
         final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
-        HasJoinedRooms room = new HasJoinedRooms(null,roomNameInput.getText().toString(),1,sdf.format(time),getGoal(),getType());
+        HasJoinedRooms room = new HasJoinedRooms(null,rId,roomNameInput.getText().toString(),1,sdf.format(time),getGoal(),getType());
         joinedRoomsDao.insert(room);
+        //设置该次闹钟
+        EventBus.getDefault().post(new SetUpAlarm());
         onBackPressed();
     }
 }

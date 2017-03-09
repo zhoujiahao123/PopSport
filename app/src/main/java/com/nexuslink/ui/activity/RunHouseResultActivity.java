@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.nexuslink.R;
+import com.nexuslink.model.data.RoomGoal;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +19,8 @@ public class RunHouseResultActivity extends AppCompatActivity {
     Toolbar mToolbar;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout mTabCollaps;
+
+    private List<RoomGoal.GoalsBean> goalsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

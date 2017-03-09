@@ -27,7 +27,7 @@ public class CreateRunHouseModelImpl implements CreateRunHouseModel {
                         @Override
                         public void call(CreateRunHouseResult createRunHouseResult) {
                             if(createRunHouseResult.getCode() == Constants.SUCCESS){
-                                listener.onFinish(null);
+                                listener.onFinish(createRunHouseResult.getRId());
                             }else{
                                 listener.onError(new Exception("创建跑房失败"));
                             }

@@ -22,4 +22,11 @@ public class TimeUtils {
         }
         return calendar.getTimeInMillis();
     }
+    /**
+     * 将文本转化为实践
+     */
+    public static long StrToTime(String str){
+        String[] time = str.split(":");
+        return Long.parseLong(time[0])*60*60+Long.parseLong(time[1])*60+Long.parseLong(time[2]);
+    }
 }
