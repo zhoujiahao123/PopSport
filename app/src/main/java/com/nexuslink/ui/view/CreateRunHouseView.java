@@ -13,4 +13,5 @@ public interface CreateRunHouseView {
     int getGoal();
     String getRoomName();
     String getStartTime();
+    void insertOneRoom();
 }

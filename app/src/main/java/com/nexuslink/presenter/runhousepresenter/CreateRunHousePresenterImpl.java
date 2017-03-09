@@ -38,6 +38,7 @@ public class CreateRunHousePresenterImpl implements CreateRunHousePresenter {
                 public void onFinish(Object o) {
                     mView.hideProgress();
                     mView.showSuccess();
+                    mView.insertOneRoom();
                 }
 
                 @Override

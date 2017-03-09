@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nexuslink.HasJoinedRooms;
+import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
 import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenter;
@@ -18,6 +20,7 @@ import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenterImpl;
 import com.nexuslink.ui.adapter.RunHouseDetailAdapter;
 import com.nexuslink.ui.view.RunHouseDetailView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
@@ -198,6 +201,14 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         if(adapter.getItemCount() == 0){
            onBackPressed();
         }
+    }
+
+    @Override
+    public void insertOneRoom() {
+        final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
+        HasJoinedRooms room = new HasJoinedRooms(null,roomBean.getRoomName(),adapter.getItemCount(),roomBean.getStartTime(),roomBean.getRoomGoal(),
+                roomBean.getRoomType());
+        joinedRoomsDao.insert(room);
     }
 
 }

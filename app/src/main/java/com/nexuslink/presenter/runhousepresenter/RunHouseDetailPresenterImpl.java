@@ -35,6 +35,8 @@ public class RunHouseDetailPresenterImpl implements RunHouseDetailPresenter {
                 mView.showSuccess();
                 List<LoadRoomsResult.RoomBean.UsersBean> users = (List<LoadRoomsResult.RoomBean.UsersBean>) o;
                 mView.setDatas(users);
+                //进行数据的插入
+                mView.insertOneRoom();
             }
 
             @Override

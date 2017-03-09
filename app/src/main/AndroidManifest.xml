@@ -145,7 +145,12 @@
 
 
         <!-- 到点通知 -->
-        <service android:name=".service.NotifyService" />
+        <service
+            android:name=".service.AlarmService">
+        </service>
+        <receiver android:name=".broadcast.AlarmReceiver"
+            ></receiver>
+
 
         <receiver android:name=".broadcast.AlarmReceiver" />
 

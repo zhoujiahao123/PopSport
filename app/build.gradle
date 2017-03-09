@@ -122,4 +122,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    //守护进程
+    compile 'com.coolerfall:android-app-daemon:1.2.0'
 }

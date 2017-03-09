@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.data.Type;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
+import com.nexuslink.HasJoinedRooms;
+import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
 import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenter;
 import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenterImpl;
@@ -24,6 +26,7 @@ import com.nexuslink.ui.fragment.RoadTypeRunHouseFragment;
 import com.nexuslink.ui.fragment.TimeTypeRunHouseFragment;
 import com.nexuslink.ui.view.CreateRunHouseView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,7 +85,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     /***
      * 三分钟的毫秒数
      */
-    private static final long THREE_MINUTES = 1000 * 60 * 3;
+    private static final long THREE_MINUTES = /*1000 * 60 * 3*/ 0;
     private static final String TAG = "CreateRunHouseActivity";
 
     @Override
@@ -208,7 +211,6 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     public void showSuccess() {
         ToastUtil.showToast(this, "创建成功");
         EventBus.getDefault().post("刷新跑房");
-        onBackPressed();
     }
 
     @Override
@@ -252,5 +254,13 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     @Override
     public String getStartTime() {
         return sdf.format(time);
+    }
+
+    @Override
+    public void insertOneRoom() {
+        final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
+        HasJoinedRooms room = new HasJoinedRooms(null,roomNameInput.getText().toString(),1,sdf.format(time),getGoal(),getType());
+        joinedRoomsDao.insert(room);
+        onBackPressed();
     }
 }
