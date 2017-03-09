@@ -30,7 +30,7 @@
                 app:layout_collapseMode="parallax"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <ImageView
+                <com.nexuslink.util.CircleImageView
                     android:id="@+id/champion"
                     android:layout_width="@dimen/image_size_post_image"
                     android:layout_height="@dimen/image_size_post_image"

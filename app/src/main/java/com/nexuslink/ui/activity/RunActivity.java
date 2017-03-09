@@ -110,6 +110,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private int goal = -1;
     private int rId = -1;
     /**
+     * 定时器
+     */
+    private CountDownTimer countDownTimer;
+    /**
      * 数据库操作
      */
     private RunDao runDao = DBUtil.getRunDao();
@@ -182,6 +186,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mRunPresenter = new RunPresenter(this);
         mLocationClient.startLocation();
 
+        //初始化跑房，如果有的话
+        initRoom();
+    }
+
+    private void initRoom() {
         //初始化一些数据
         isComeFromRoom = getIntent().getBooleanExtra(AlarmReceiver.COME_FROM_RUNHOUSE,false);
         type = getIntent().getIntExtra("type",-1);
@@ -194,7 +203,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
         if(type == 0){
             //时间型跑房
-           CountDownTimer countDownTimer = new CountDownTimer(goal*60*1000,1000) {
+             countDownTimer  = new CountDownTimer(goal*60*1000,1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
 
@@ -229,7 +238,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                         //使用弹窗给用户提醒
                         dialog.show();
                         //上传用户信息 距离型跑房上传这个取得的时间
-                        mRunPresenter.postRoomData(rId,TimeUtils.StrToTime(mCurrentTime.getText().toString()));
+                        mRunPresenter.postRoomData(rId, TimeUtils.StrToTime(mCurrentTime.getText().toString()));
                     }
                 }
 
@@ -241,8 +250,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
             mCurrentDistance.addTextChangedListener(watcher);
             startOrPause();
         }
-
-
     }
 
     @Override
@@ -376,6 +383,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
             time.cancel();
             time = null;
         }
+        if(type == 0 && countDownTimer != null){
+            countDownTimer.cancel();
+            countDownTimer= null;
+        }
 
     }
 
@@ -472,9 +483,11 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     public void intentToResult(List<RoomGoal.GoalsBean> goalsBeenList) {
         Intent intent = new Intent(this,RunHouseResultActivity.class);
         intent.putParcelableArrayListExtra("resultBeans", (ArrayList<? extends Parcelable>) goalsBeenList);
+        intent.putExtra("type",type);
         startActivity(intent);
         finish();
     }
+
 
 
     @OnClick({R.id.start_or_pause, R.id.finish})
