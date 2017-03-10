@@ -66,6 +66,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private static final float MIN_ZOOM_LEVEL = 15f;
     private static final int TOTAL_TIME = 1000 * 60 * 20;//20分钟
     private static final int INTERVAL = 1000;
+
     @BindView(R.id.run_current_time)
     TextView mCurrentTime;
     @BindView(R.id.run_current_distance)
@@ -91,14 +92,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     //弹窗
     android.app.AlertDialog.Builder builder ;
     android.app.AlertDialog dialog;
-    //===============================================权限相关
-    private static final int REQUEST_CODE = 0; // 请求码
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-    };
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
+
+
 
     //定时器
     private TimeCount time;
@@ -177,7 +172,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         ButterKnife.bind(this);
-        mPermissionsChecker = new PermissionsChecker(this);
+
 
         initViews();
         initMapView(savedInstanceState);
@@ -256,9 +251,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     protected void onResumeFragments() {
         super.onResumeFragments();
         // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }else{
+       {
             //如何拥有权限，检查是否打开了GPS
             if(!GPSUtil.isOPen(this)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -285,9 +278,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         }
     }
 
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this,REQUEST_CODE,PERMISSIONS);
-    }
+
 
     private void initViews() {
         //toolbar
