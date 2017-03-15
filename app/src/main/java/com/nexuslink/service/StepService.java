@@ -356,6 +356,9 @@ public class StepService extends Service implements SensorEventListener {
                 }else if(Intent.ACTION_TIME_TICK.equals(action)){
                     save();
 //                    isNewDay();
+                }else if("ANewAconut".equals(action)){
+                    //当时一个新用户登录的时候
+                    initTodayData();
                 }
             }
         };

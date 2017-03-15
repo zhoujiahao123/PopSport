@@ -1,7 +1,5 @@
 package com.nexuslink.util;
 
-import com.nexuslink.DaoMaster;
-import com.nexuslink.DaoSession;
 import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.RunDao;
 import com.nexuslink.StepsDao;
@@ -14,29 +12,19 @@ import com.nexuslink.app.BaseApplication;
 
 public class DBUtil {
 
-    //管理对象
-    private static DaoMaster master;
-    private static DaoSession session;
+
 
     public static StepsDao getStepsDao(){
-        master = new DaoMaster(BaseApplication.db);
-        session = master.newSession();
-        return session.getStepsDao();
+        return BaseApplication.getDaosession().getStepsDao();
     }
     public static RunDao getRunDao(){
-        master = new DaoMaster(BaseApplication.db);
-        session = master.newSession();
-        return session.getRunDao();
+        return BaseApplication.getDaosession().getRunDao();
     }
     public static UserDao getUserDao(){
-        master = new DaoMaster(BaseApplication.db);
-        session = master.newSession();
-        return session.getUserDao();
+        return BaseApplication.getDaosession().getUserDao();
     }
     public static HasJoinedRoomsDao getHasJoinedRoomsDap(){
-        master = new DaoMaster(BaseApplication.db);
-        session = master.newSession();
-        return session.getHasJoinedRoomsDao();
+        return BaseApplication.getDaosession().getHasJoinedRoomsDao();
     }
 
 }

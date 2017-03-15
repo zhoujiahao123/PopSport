@@ -1,30 +1,29 @@
  package com.nexuslink.app;
 
  import android.app.Application;
- import android.content.Context;
- import android.database.sqlite.SQLiteDatabase;
- import android.graphics.Color;
+import android.content.Context;
+import android.graphics.Color;
 
- import com.elvishew.xlog.LogLevel;
- import com.elvishew.xlog.XLog;
- import com.facebook.stetho.Stetho;
- import com.nexuslink.DaoMaster;
- import com.nexuslink.DaoSession;
- import com.nexuslink.util.GlideImageLoader;
- import com.nexuslink.util.cache.DiskLruCacheHelper;
- import com.umeng.socialize.Config;
- import com.umeng.socialize.PlatformConfig;
- import com.umeng.socialize.UMShareAPI;
- import com.vanniktech.emoji.EmojiManager;
- import com.vanniktech.emoji.ios.IosEmojiProvider;
+import com.elvishew.xlog.LogLevel;
+import com.elvishew.xlog.XLog;
+import com.facebook.stetho.Stetho;
+import com.nexuslink.DaoMaster;
+import com.nexuslink.DaoSession;
+import com.nexuslink.util.GlideImageLoader;
+import com.nexuslink.util.cache.DiskLruCacheHelper;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.ios.IosEmojiProvider;
 
- import java.io.IOException;
+import java.io.IOException;
 
- import cn.finalteam.galleryfinal.CoreConfig;
- import cn.finalteam.galleryfinal.FunctionConfig;
- import cn.finalteam.galleryfinal.GalleryFinal;
- import cn.finalteam.galleryfinal.ImageLoader;
- import cn.finalteam.galleryfinal.ThemeConfig;
+import cn.finalteam.galleryfinal.CoreConfig;
+import cn.finalteam.galleryfinal.FunctionConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.ImageLoader;
+import cn.finalteam.galleryfinal.ThemeConfig;
 
 
  /**
@@ -38,8 +37,6 @@ public class BaseApplication extends Application {
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
         PlatformConfig.setSinaWeibo("4258197523", "30268867be9ea03cd1f41c8a93f8795f");    }
-    //===============================================数据库
-    public static  SQLiteDatabase db;
      //===============================================缓存
      public static DiskLruCacheHelper helper;
 
@@ -57,7 +54,6 @@ public class BaseApplication extends Application {
                                 Stetho.defaultInspectorModulesProvider(this))
                         .build());
         //创建数据库
-        db = new DaoMaster.DevOpenHelper(mContext,"PopSport",null).getWritableDatabase();
         //初始化缓存
         try {
             helper = new DiskLruCacheHelper(getContext());
@@ -102,7 +98,8 @@ public class BaseApplication extends Application {
     }
 
      public static DaoSession getDaosession(){
-         DaoSession daoSession = new DaoMaster(db).newSession();
+         final DaoSession daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
+                 .getWritableDatabase()).newSession();
          return daoSession;
      }
 

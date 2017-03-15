@@ -195,7 +195,9 @@ public interface Api {
     Observable<RoomGoal> setGoal(@Field("uId") int uId, @Field("rId") int rId, @Field("goal") long goal);
 
 
-
+   /* //用户每日步数统计
+    @FormUrlEncoded
+    @POST("sport/saveStep")*/
 
 
 }

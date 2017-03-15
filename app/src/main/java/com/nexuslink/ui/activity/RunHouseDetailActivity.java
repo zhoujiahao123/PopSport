@@ -27,7 +27,6 @@ import com.nexuslink.util.UserUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -70,11 +69,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
      * 辅助变量
      */
     private boolean isDataChanged = false;
-    /**
-     * 格式控制
-     */
-    private SimpleDateFormat dfDate = new SimpleDateFormat("MM月dd日");
-    private SimpleDateFormat dfDay = new SimpleDateFormat("HH:mm");
+
     //===============================================常量
     private static final String TAG = "RunHouseDetailActivity";
 
@@ -125,8 +120,8 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         //跑房目标框设置
         String str = roomBean.getRoomType() == 1 ? "米" : "分钟";
         mRunHouseExpectTv.setText(roomBean.getRoomGoal() + str);
-        //由于还在测试，这部分等后台完成在继续
-//             mRunHouseStartTimeTv.setText(dfDate.format(roomBean.getStartDate())+" "+dfDay.format(roomBean.getStartTime()));
+        //设置目标
+        mRunHouseStartTimeTv.setText(roomBean.getStartTime());
         //users设置
         adapter = new RunHouseDetailAdapter(this, roomBean.getUsers());
         mRecyclerView.setAdapter(adapter);
