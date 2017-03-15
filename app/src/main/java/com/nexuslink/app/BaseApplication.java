@@ -39,6 +39,8 @@ public class BaseApplication extends Application {
         PlatformConfig.setSinaWeibo("4258197523", "30268867be9ea03cd1f41c8a93f8795f");    }
      //===============================================缓存
      public static DiskLruCacheHelper helper;
+    private static DaoSession daoSession;
+
 
     public void onCreate() {
         super.onCreate();
@@ -53,7 +55,11 @@ public class BaseApplication extends Application {
                         .enableWebKitInspector(
                                 Stetho.defaultInspectorModulesProvider(this))
                         .build());
-        //创建数据库
+        /**
+         * 数据库初始化
+         */
+        daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
+                .getWritableDatabase()).newSession();
         //初始化缓存
         try {
             helper = new DiskLruCacheHelper(getContext());
@@ -89,6 +95,7 @@ public class BaseApplication extends Application {
          */
         EmojiManager.install(new IosEmojiProvider());
 
+
     }
     /*
     提供全局context
@@ -97,9 +104,11 @@ public class BaseApplication extends Application {
         return mContext;
     }
 
-     public static DaoSession getDaosession(){
-         final DaoSession daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
-                 .getWritableDatabase()).newSession();
+     public synchronized static DaoSession getDaosession(){
+         if(daoSession == null){
+             daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
+                     .getWritableDatabase()).newSession();
+         }
          return daoSession;
      }
 

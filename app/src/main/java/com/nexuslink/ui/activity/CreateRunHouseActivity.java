@@ -86,7 +86,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     /***
      * 三分钟的毫秒数
      */
-    private static final long THREE_MINUTES = /*1000 * 60 * 3*/ 0;
+    private static final long THREE_MINUTES = 1000 * 60 * 3;
     private static final String TAG = "CreateRunHouseActivity";
 
     @Override

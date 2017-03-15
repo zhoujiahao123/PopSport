@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.nexuslink.R;
@@ -16,6 +17,7 @@ import com.nexuslink.ui.fragment.PersonInfoFragment;
 import com.nexuslink.ui.fragment.StepAndRunFragment;
 import com.nexuslink.util.PermissionsChecker;
 import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.UpLoadDatasUtils;
 import com.sina.weibo.sdk.utils.NetworkHelper;
 import com.ycl.tabview.library.TabView;
 import com.ycl.tabview.library.TabViewChild;
@@ -58,9 +60,16 @@ public class MainViewActivity extends AppCompatActivity {
         //每次用户打开应用程序就进行一些数据的上传
         //检查用户联网否
         if(NetworkHelper.isNetworkAvailable(this)){
+            Log.i(TAG,"网络可用");
             //进行数据上传
-           /* UpLoadDatasUtils.upLoadSteps();
-            UpLoadDatasUtils.upLoadRunDatas();*/
+           new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    UpLoadDatasUtils.upLoadSteps();
+                    UpLoadDatasUtils.upLoadRunDatas();
+                }
+            }).start();
+
         }
         //开始跑房的闹钟提示
         Intent intent = new Intent(this, AlarmService.class);

@@ -18,6 +18,7 @@ import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
+import com.nexuslink.model.data.Result;
 import com.nexuslink.model.data.RoomGoal;
 import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.data.SingleCommunityInfo;
@@ -195,9 +196,18 @@ public interface Api {
     Observable<RoomGoal> setGoal(@Field("uId") int uId, @Field("rId") int rId, @Field("goal") long goal);
 
 
-   /* //用户每日步数统计
+   //用户每日步数统计
     @FormUrlEncoded
-    @POST("sport/saveStep")*/
+    @POST("sport/saveStep")
+    retrofit2.Call<Result> postStep(@Field("uId") int uId, @Field("step") int step, @Field("date") String date);
+
+    //用户跑步公里数统计
+    @FormUrlEncoded
+    @POST("sport/saveDistance")
+    retrofit2.Call<Result> postDistance(@Field("uId") int uId,@Field("distance") int distance,@Field("duration") int duration,
+    @Field("averageSpeed") int avergeSpeed, @Field("pathline") String pathLine,@Field("startPoint") String startPoint,@Field("endPoint") String endPoint
+    ,@Field("time") String time);
+
 
 
 }

@@ -159,6 +159,7 @@ public class StepService extends Service implements SensorEventListener {
             Steps stepsAdd = new Steps();
             stepsAdd.setDate(CURRENT_DATE);
             stepsAdd.setUStep(0);
+            stepsAdd.setHasUpLoad(false);
             stepsDao.insert(stepsAdd);
         }
     }

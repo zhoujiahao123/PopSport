@@ -23,6 +23,7 @@ public class DBUtil {
     public static UserDao getUserDao(){
         return BaseApplication.getDaosession().getUserDao();
     }
+
     public static HasJoinedRoomsDao getHasJoinedRoomsDap(){
         return BaseApplication.getDaosession().getHasJoinedRoomsDao();
     }

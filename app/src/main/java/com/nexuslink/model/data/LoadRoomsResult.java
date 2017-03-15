@@ -12,9 +12,10 @@ import java.util.List;
 
 public class LoadRoomsResult implements Parcelable {
 
+
     /**
      * code : 200
-     * room : [{"roomId":12,"roomType":0,"roomGoal":60,"roomName":"一起跑步","startTime":"2017-02-08 11:22","users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":11,"roomType":1,"roomGoal":4100,"roomName":"cjkcncjckckckc","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":10,"roomType":0,"roomGoal":59,"roomName":"ckjcj ckmcmcmcmcld","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":9,"roomType":0,"roomGoal":15,"roomName":"bchjxjxjxj","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null},{"uid":26,"uName":"周家豪","uGender":"M","uImg":"user26.jpeg","uHeight":180,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":8,"roomType":0,"roomGoal":3,"roomName":"我，哦婆婆","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":7,"roomType":0,"roomGoal":4,"roomName":"哦送什么是","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":6,"roomType":1,"roomGoal":2200,"roomName":"兔兔兔兔","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":5,"roomType":1,"roomGoal":7100,"roomName":"快活呀","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":4,"roomType":1,"roomGoal":7000,"roomName":"来啊","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":3,"roomType":0,"roomGoal":6,"roomName":"jcjcjckclclckc","startTime":null,"users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]}]
+     * room : [{"roomId":5,"roomType":0,"roomGoal":36,"roomName":"图","startTime":"2017-03-15 16:59","users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":1064,"uHistoryMileage":500,"uAchievements":[false,false,false,false,false,false,false,false]}]}]
      */
 
     private int code;
@@ -39,12 +40,12 @@ public class LoadRoomsResult implements Parcelable {
     public static class RoomBean implements Parcelable {
 
         /**
-         * roomId : 12
+         * roomId : 5
          * roomType : 0
-         * roomGoal : 60
-         * roomName : 一起跑步
-         * startTime : 2017-02-08 11:22
-         * users : [{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]
+         * roomGoal : 36
+         * roomName : 图
+         * startTime : 2017-03-15 16:59
+         * users : [{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":1064,"uHistoryMileage":500,"uAchievements":[false,false,false,false,false,false,false,false]}]
          */
 
         private int roomId;
@@ -113,9 +114,9 @@ public class LoadRoomsResult implements Parcelable {
              * uWeight : 60
              * uFansnum : 2
              * uExp : 0
-             * uHistoryStep : 0
-             * uHistoryMileage : 0
-             * uAchievements : null
+             * uHistoryStep : 1064
+             * uHistoryMileage : 500
+             * uAchievements : [false,false,false,false,false,false,false,false]
              */
 
             private int uid;
@@ -128,7 +129,7 @@ public class LoadRoomsResult implements Parcelable {
             private int uExp;
             private int uHistoryStep;
             private int uHistoryMileage;
-            private Boolean[] uAchievements;
+            private List<Boolean> uAchievements;
 
             public int getUid() {
                 return uid;
@@ -210,11 +211,11 @@ public class LoadRoomsResult implements Parcelable {
                 this.uHistoryMileage = uHistoryMileage;
             }
 
-            public Boolean[] getUAchievements() {
+            public List<Boolean> getUAchievements() {
                 return uAchievements;
             }
 
-            public void setUAchievements(Boolean[] uAchievements) {
+            public void setUAchievements(List<Boolean> uAchievements) {
                 this.uAchievements = uAchievements;
             }
 
@@ -235,7 +236,7 @@ public class LoadRoomsResult implements Parcelable {
                 dest.writeInt(this.uExp);
                 dest.writeInt(this.uHistoryStep);
                 dest.writeInt(this.uHistoryMileage);
-                dest.writeArray(this.uAchievements);
+                dest.writeList(this.uAchievements);
             }
 
             public UsersBean() {
@@ -252,7 +253,8 @@ public class LoadRoomsResult implements Parcelable {
                 this.uExp = in.readInt();
                 this.uHistoryStep = in.readInt();
                 this.uHistoryMileage = in.readInt();
-                this.uAchievements = (Boolean[]) in.readArray(Boolean[].class.getClassLoader());
+                this.uAchievements = new ArrayList<Boolean>();
+                in.readList(this.uAchievements, Boolean.class.getClassLoader());
             }
 
             public static final Creator<UsersBean> CREATOR = new Creator<UsersBean>() {

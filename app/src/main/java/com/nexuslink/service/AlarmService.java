@@ -81,7 +81,7 @@ public class AlarmService extends Service {
     @Subscribe
     public void setUpAlarm(SetUpAlarm alarm){
         List<HasJoinedRooms> joinedRoomses = joinedRoomsDao.queryBuilder()
-                .where(HasJoinedRoomsDao.Properties.StartTime.ge(sdf.format(System.currentTimeMillis()))).list();
+                .where(HasJoinedRoomsDao.Properties.StartTime.gt(sdf.format(System.currentTimeMillis()))).list();
         if(joinedRoomses != null && joinedRoomses.size() >0){
             for(HasJoinedRooms room : joinedRoomses){
                 Intent intent1 = new Intent(AlarmService.this, AlarmReceiver.class);

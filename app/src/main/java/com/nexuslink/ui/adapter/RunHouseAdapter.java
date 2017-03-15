@@ -101,7 +101,7 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
             public void onClick(View v) {
                //点击进入详细界面
                 Intent intent = new Intent(mContext, RunHouseDetailActivity.class);
-                intent.putExtra("roominfo",datas.get(position));
+                intent.putExtra("roominfo", datas.get(position));
                 mContext.startActivity(intent);
             }
         });
