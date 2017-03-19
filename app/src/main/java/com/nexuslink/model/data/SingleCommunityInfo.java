@@ -10,7 +10,7 @@ public class SingleCommunityInfo {
 
     /**
      * code : 200
-     * article : {"articleId":57,"userId":15,"userBean":{"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":0,"uWeight":0,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null},"text":"55yL6KeB5LqG5oCB5bqm\n","images":[],"commentNum":0,"likeNum":1,"lookNum":7,"date":"2017-03-05","time":"16:19:56","likeArticle":true}
+     * article : {"articleId":1,"userId":15,"userBean":{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":0,"uWeight":0,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null},"text":"8J+Zgg==\n","images":[],"commentNum":2,"likeNum":1,"lookNum":7,"date":"2017-03-15","time":"22:15:57","likeArticle":true}
      */
 
     private int code;
@@ -33,20 +33,7 @@ public class SingleCommunityInfo {
     }
 
     public static class ArticleBean {
-        /**
-         * articleId : 57
-         * userId : 15
-         * userBean : {"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":0,"uWeight":0,"uFansnum":2,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}
-         * text : 55yL6KeB5LqG5oCB5bqm
 
-         * images : []
-         * commentNum : 0
-         * likeNum : 1
-         * lookNum : 7
-         * date : 2017-03-05
-         * time : 16:19:56
-         * likeArticle : true
-         */
 
         private int articleId;
         private int userId;
@@ -151,7 +138,7 @@ public class SingleCommunityInfo {
         public static class UserBeanBean {
             /**
              * uid : 15
-             * uName : 张兴锐
+             * uName : 哎哎哎
              * uGender : M
              * uImg : user15.jpeg
              * uHeight : 0

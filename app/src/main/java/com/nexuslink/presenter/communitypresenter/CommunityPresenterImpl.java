@@ -1,6 +1,7 @@
 package com.nexuslink.presenter.communitypresenter;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.nexuslink.app.BaseApplication;
@@ -178,9 +179,10 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                  List<CommentItemData> commentItemDatas = new ArrayList<CommentItemData>();
                 for(int i =0;i<commentsBean.size();i++){
                     CommentInfo.CommentsBean commentsBean1 = commentsBean.get(i);
-                    CommentItemData commentItemData = new CommentItemData(commentsBean1.getUserName(),Base64Utils.decode(commentsBean1.getCommentText()));
+                    CommentItemData commentItemData = new CommentItemData(commentsBean1.getUser().getFName(),Base64Utils.decode(commentsBean1.getCommentText()));
                     commentItemDatas.add(commentItemData);
                 }
+
                 //进行缓存
                 helper.put(articleId+"comments", (Serializable) commentItemDatas);
                 //设置adpater

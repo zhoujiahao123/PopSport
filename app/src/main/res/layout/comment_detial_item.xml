@@ -6,7 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <!--头像-->
-
+    <com.nexuslink.util.CircleImageView
+        android:id="@+id/userImage"
+        android:layout_width="@dimen/image_size_normal"
+        android:layout_height="@dimen/image_size_normal" />
     <!--详情-->
     <LinearLayout
         android:layout_marginTop="@dimen/spacing_tiny"

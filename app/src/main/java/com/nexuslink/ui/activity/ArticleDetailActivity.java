@@ -1,6 +1,7 @@
 package com.nexuslink.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -116,7 +117,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             presenter.loadArticle(articleId);
         } else {
             ToastUtil.showToast(this, "出现未知错误，请重试");
-            onBackPressed();
+            finish();
         }
     }
 
@@ -239,6 +240,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             View view = inflater.inflate(R.layout.comment_detial_item, null);
             setViews(view, commentsBean);
             commentsDetail.addView(view);
+            Log.i("添加view","添加view");
         }
     }
 
@@ -253,7 +255,11 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         TextView commentDateTv = (TextView) view.findViewById(R.id.article_date_tv);
         TextView commentFloor = (TextView) view.findViewById(R.id.comment_floor);
         EmojiTextView commentText = (EmojiTextView) view.findViewById(R.id.comment_text);
-        commenterName.setText(commentsBean.getUserName());
+        CircleImageView userImage = (CircleImageView) view.findViewById(R.id.userImage);
+
+        CommentInfo.CommentsBean.UserBean user = commentsBean.getUser();
+        Glide.with(this).load(Constants.PHOTO_BASE_URL+user.getFImg()).crossFade().into(userImage);
+        commenterName.setText(user.getFName());
         commentDateTv.setText(commentsBean.getDate() + " " + commentsBean.getTime());
         commentFloor.setText(commentsBean.getCommentFloor() + "楼");
         commentText.setText(Base64Utils.decode(commentsBean.getCommentText()));
