@@ -1,5 +1,6 @@
 package com.nexuslink.ui.activity;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.Base64Utils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.KeyBoardUtils;
+import com.nexuslink.util.TimeUtils;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 import com.vanniktech.emoji.EmojiEditText;
@@ -33,6 +35,7 @@ import com.vanniktech.emoji.EmojiTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -255,14 +258,52 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         TextView commentDateTv = (TextView) view.findViewById(R.id.article_date_tv);
         TextView commentFloor = (TextView) view.findViewById(R.id.comment_floor);
         EmojiTextView commentText = (EmojiTextView) view.findViewById(R.id.comment_text);
-        CircleImageView userImage = (CircleImageView) view.findViewById(R.id.userImage);
+        CircleImageView userImage = (CircleImageView) view.findViewById(R.id.user_image);
 
         CommentInfo.CommentsBean.UserBean user = commentsBean.getUser();
         Glide.with(this).load(Constants.PHOTO_BASE_URL+user.getFImg()).crossFade().into(userImage);
         commenterName.setText(user.getFName());
-        commentDateTv.setText(commentsBean.getDate() + " " + commentsBean.getTime());
+        commentDateTv.setText(setData(commentsBean.getDate(),commentsBean.getTime()));
         commentFloor.setText(commentsBean.getCommentFloor() + "楼");
         commentText.setText(Base64Utils.decode(commentsBean.getCommentText()));
+    }
+
+    private final int SEVEN_DAYS = 7*24*60*60*1000;
+    //格式控制
+    private SimpleDateFormat sdf_month = new SimpleDateFormat("MM:dd HH:mm");
+    private SimpleDateFormat sdf_time = new SimpleDateFormat("HH:mm");
+    //日期数据
+    private String datas[] = {"今天","昨天","前天","3天前","4天前","5天前","6天前","7天前"};
+
+    /**
+     * 根据不同的条件，设置时间
+     * @param date
+     * @param time
+     * @return
+     */
+    private String setData(String date, String time) {
+        Calendar c = Calendar.getInstance();
+        //同步时间
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(java.util.Calendar.AM,0);
+        c.set(java.util.Calendar.MINUTE,0);
+        // 判断是不是今年
+        if(c.get(Calendar.YEAR) == Integer.valueOf(date.split("-")[0])){
+            //是今年，那么是否有超过7天
+            long dateMills = TimeUtils.DateToMills(date+" "+time);
+            if(c.getTimeInMillis()-dateMills > SEVEN_DAYS){
+                return sdf_month.format(dateMills);
+            }else{
+                //没有超过，就判断相几天
+                Calendar c1 = Calendar.getInstance();
+                //同步时间
+                c1.setTimeInMillis(dateMills);
+                int index = Math.abs(c.get(Calendar.DAY_OF_YEAR) - c1.get(Calendar.DAY_OF_YEAR));
+                return datas[index]+sdf_time.format(dateMills);
+            }
+        }else{
+            return date+" "+time;
+        }
     }
 
     @Override

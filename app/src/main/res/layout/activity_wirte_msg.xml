@@ -65,6 +65,7 @@
             android:gravity="start"
             android:paddingTop="@dimen/spacing_normal"
             android:paddingLeft="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal"
             android:textSize="@dimen/msg_text_size"
             android:hint="书写您今天的心情吧"
             android:background="@color/ghost_white"

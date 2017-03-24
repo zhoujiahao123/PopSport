@@ -112,7 +112,7 @@ public class AppointmentFragment extends Fragment implements RunHouseView {
                 int index = adapter.getDatas().size();
                 if (index > 0) {
                     int id = adapter.getDatas().get(index - 1).getRoomId() + 1;
-                    mRunHousePresenter.onLoadMore(adapter.getDatas().get(index - 1).getRoomId() - 1);
+                    mRunHousePresenter.onLoadMore(adapter.getDatas().get(index - 1).getRoomId());
                 } else {
                     ToastUtil.showToast(getContext(), "加载时出错，请重试");
                 }

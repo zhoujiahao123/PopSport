@@ -34,10 +34,11 @@
             android:layout_height="25dp" />
     </RelativeLayout>
 
-    <ScrollView
+    <com.nexuslink.ui.view.SpringBackScrollView
         android:layout_below="@id/toolbar_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:orientation="vertical"
@@ -58,8 +59,8 @@
                 <com.nexuslink.util.CircleImageView
                     android:id="@+id/user_image"
                     android:layout_gravity="center"
-                    android:layout_width="@dimen/image_size_normal"
-                    android:layout_height="@dimen/image_size_normal" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <LinearLayout
 
                     android:layout_marginLeft="@dimen/spacing_normal"
@@ -149,16 +150,24 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_large"
                 ></LinearLayout>
 
             <include
                 layout="@layout/comment_input"
                 ></include>
 
+            <View
+                android:alpha="100"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_large">
+            </View>
+
+
         </LinearLayout>
 
-    </ScrollView>
+
+
+    </com.nexuslink.ui.view.SpringBackScrollView>
 
 
     <include
