@@ -1,6 +1,5 @@
 package com.nexuslink.ui.activity;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,7 +42,6 @@ import com.nexuslink.presenter.runpresenter.RunPresenter;
 import com.nexuslink.ui.view.RunView;
 import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.GPSUtil;
-import com.nexuslink.util.PermissionsChecker;
 import com.nexuslink.util.TimeUtils;
 import com.nexuslink.util.ToastUtil;
 
@@ -149,6 +147,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                         mPolyoptions.add(myLocation);
                         redrawLine();
                     }
+
                 } else {
                     ToastUtil.showToast(RunActivity.this, "定位失败");
                     String errText = "定位失败," + aMapLocation.getErrorCode() + ": "
@@ -378,6 +377,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
             countDownTimer.cancel();
             countDownTimer= null;
         }
+        mLocationClient = null;
 
     }
 

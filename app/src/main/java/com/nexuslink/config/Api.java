@@ -13,6 +13,8 @@ import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
+import com.nexuslink.model.data.GetDistanceResult;
+import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.JoinRoomResult;
 import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
@@ -207,6 +209,16 @@ public interface Api {
     retrofit2.Call<Result> postDistance(@Field("uId") int uId,@Field("distance") int distance,@Field("duration") int duration,
     @Field("averageSpeed") int avergeSpeed, @Field("pathline") String pathLine,@Field("startPoint") String startPoint,@Field("endPoint") String endPoint
     ,@Field("time") String time);
+
+    //取得跑步数
+    @FormUrlEncoded
+    @POST("sport/getDistance")
+    retrofit2.Call<GetDistanceResult> getDistance(@Field("uId") int uId);
+
+    //取得走步数
+    @FormUrlEncoded
+    @POST("sport/getStep")
+    retrofit2.Call<GetStepResult> getStep(@Field("uId") int uId);
 
 
 
