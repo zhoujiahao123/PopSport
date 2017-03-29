@@ -5,38 +5,46 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
     <style name="login_style">
         <item name="android:background">@color/blue_normal</item>
     </style>
+
     <style name="image_style">
         <item name="android:src">@drawable/pop_log2</item>
         <item name="android:layout_marginTop">@dimen/image_pad_top</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
+
     <style name="image_name">
         <item name="android:src">@drawable/userlogo1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
+
     <style name="image_password">
         <item name="android:src">@drawable/passwordlogo1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
+
     <style name="layout_input">
         <item name="android:textColor">@color/white_normal</item>
         <item name="android:textColorHint">@color/white_normal</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
+
     <style name="btn_style">
         <item name="android:background">@drawable/state_btn_login</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:textColor">@color/white_normal</item>
         <item name="android:textSize">21sp</item>
     </style>
+
     <style name="layout_style_qq">
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/state_login_alter</item>
         <item name="android:orientation">vertical</item>
     </style>
+
     <style name="layout_style_wechat">
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/state_login_alter</item>
@@ -49,6 +57,7 @@
     </style>
 
     //个人信息中的一些自定义控件属性
+
     <style name="layout_style_square">
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/selector_square</item>
@@ -56,12 +65,14 @@
         <item name="android:gravity">center_vertical</item>
     </style>
     //控件中图片的style
+
     <style name="PhotoStyle">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_width">@dimen/image_size40</item>
         <item name="android:layout_height">@dimen/image_size40</item>
     </style>
     //控件中文字的style
+
     <style name="TvStyle">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:paddingTop">@dimen/spacing_small</item>
@@ -69,18 +80,21 @@
     </style>
 
     //天气
+
     <style name="weather_style">
         <item name="android:layout_marginBottom">@dimen/spacing_huger_weather</item>
 
     </style>
     //
+
     <style name="weather_day">
         <item name="android:textColor">@color/white_light</item>
         <item name="android:textSize">@dimen/forecast_day_size</item>
         <item name="android:layout_marginLeft">@dimen/spacing_normal</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
-//以下全是forecast的style
+    //以下全是forecast的style
+
     <style name="weather_image">
         <item name="android:layout_marginLeft">@dimen/forecast_image_margin_left</item>
     </style>
@@ -99,14 +113,16 @@
         <item name="android:textSize">@dimen/forecast_temp_size</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
-//以上
+    //以上
     //以下全是life的style
+
     <style name="weather_life_left">
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginLeft">@dimen/spacing_tiny</item>
         <item name="android:layout_marginRight">@dimen/little_size</item>
         <item name="android:background">@color/white_light</item>
     </style>
+
     <style name="weather_life_left_top">
         <item name="android:layout_marginTop">@dimen/spacing_tiny</item>
         <item name="android:layout_marginLeft">@dimen/spacing_tiny</item>
@@ -120,6 +136,7 @@
         <item name="android:layout_marginRight">@dimen/spacing_tiny</item>
         <item name="android:background">@color/white_light</item>
     </style>
+
     <style name="weather_life_right">
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginLeft">@dimen/little_size</item>
@@ -132,6 +149,7 @@
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
         <item name="android:textColor">@color/white_light</item>
     </style>
+
     <style name="weather_life_text_des">
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:textColor">@color/white_light</item>
@@ -170,12 +188,13 @@
     </style>
 
     //我的任务
+
     <style name="TaskStyleTitle">
-    <item name="android:layout_marginLeft">@dimen/spacing_small</item>
-    <item name="android:layout_marginTop">@dimen/spacing_normal</item>
-    <item name="android:textSize">@dimen/font_large</item>
-    <item name="android:textColor">@color/white_light</item>
-</style>
+        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+        <item name="android:layout_marginTop">@dimen/spacing_normal</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textColor">@color/white_light</item>
+    </style>
 
     <style name="TaskStyleDetail">
         <item name="android:layout_marginLeft">@dimen/spacing_small</item>
@@ -192,19 +211,21 @@
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
+
     <style name="WriteMsgToolbarCannotUse" parent="AppTheme.ActionBar">
         <item name="actionMenuTextColor">@color/gray_light</item>
-       <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
     <!--RunActivity 文字style-->
-    <style name="RunActivityLeftTextStyle" >
+    <style name="RunActivityLeftTextStyle">
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:textSize">@dimen/font_normal</item>
         <item name="android:layout_marginLeft">@dimen/spacing_large</item>
     </style>
+
     <style name="RunActivityRightTextStyle">
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:layout_alignParentRight">true</item>
@@ -216,8 +237,12 @@
     <style name="RunActivityActionBarTheme" parent="AppTheme">
         <item name="colorPrimaryDark">#2B698F</item>
     </style>
+
     <style name="RunActivityToolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/spacing_normal</item>
+    </style>
+    <style name="RunHouseResult.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
 
@@ -237,4 +262,20 @@
     <style name="HistroyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="BlackToolbarStyle" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/black</item>
+    </style>
+
+    <style name="WhiteToolbarStyle" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="GrayToolbarStyle" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/gray</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

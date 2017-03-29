@@ -28,7 +28,7 @@ public class RunHoseDetailModelImpl implements RunHouseDetailModel {
                     @Override
                     public void call(JoinRoomResult joinRoomResult) {
                         if(joinRoomResult.getCode() == Constants.SUCCESS){
-                            listener.onFinish(joinRoomResult.getRoom().getUsers());
+                            listener.onFinish(joinRoomResult.getRoom());
                         }else{
                             listener.onError(new Exception("加入跑房出错"));
                         }

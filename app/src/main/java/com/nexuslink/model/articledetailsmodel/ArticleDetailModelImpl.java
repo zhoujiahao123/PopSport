@@ -6,10 +6,13 @@ import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.PostLikeResult;
+import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.util.ApiUtil;
+import com.nexuslink.util.UserUtils;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -99,6 +102,23 @@ public class ArticleDetailModelImpl implements ArticleDetailModel {
                             listener.onFinish(commentInfo.getComments());
                         }else{
                             listener.onFinish(new Exception("取回评论时出错"));
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void getArticle(int articleId, final CallBackListener listener) {
+        api.getArticle(UserUtils.getUserId(),articleId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<SingleCommunityInfo>() {
+                    @Override
+                    public void call(SingleCommunityInfo communityInfo) {
+                        if(communityInfo.getCode() == Constants.SUCCESS){
+                            listener.onFinish(communityInfo.getArticle());
+                        }else{
+                            listener.onError(new Exception("加载话题出错"));
                         }
                     }
                 });

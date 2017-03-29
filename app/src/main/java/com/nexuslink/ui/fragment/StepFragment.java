@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -19,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -33,6 +31,7 @@ import com.nexuslink.util.DBUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class StepFragment extends Fragment {
     private Activity activity;
     private int historyBestStep = 0;
     private int historyAverageStep = 0;
-
+    private IBinder IService;
     Calendar calendar = Calendar.getInstance();
     //===============================================Messenger
     private Messenger messengerService;
@@ -81,6 +80,7 @@ public class StepFragment extends Fragment {
             switch (msg.what) {
                 case Constants.MSG_FROM_SERVICE:
                     // currentStepsTv.setText(msg.getData().getInt("currentSteps")+"");
+                    Log.i(TAG,"界面更新");
                     mCurrentStepsTv.setText(msg.getData().getInt("currentSteps") + "");
                     break;
                 default:
@@ -95,6 +95,13 @@ public class StepFragment extends Fragment {
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            //设置死亡代理
+            IService = service;
+            try {
+                service.linkToDeath(recipient,0);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             messengerService = new Messenger(service);
             Message msg = Message.obtain(null, Constants.MSG_FROM_CLIENT);
             msg.replyTo = messengerClient;
@@ -112,6 +119,16 @@ public class StepFragment extends Fragment {
             isBind = false;
         }
     };
+    //===============================================设置死亡代理
+    private IBinder.DeathRecipient recipient = new IBinder.DeathRecipient() {
+        @Override
+        public void binderDied() {
+            IService.unlinkToDeath(recipient,0);
+            Intent intent = new Intent(getContext(),StepService.class);
+            isBind = getContext().getApplicationContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        }
+    };
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -2,7 +2,6 @@
 
  import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 
 import com.elvishew.xlog.LogLevel;
@@ -15,6 +14,8 @@ import com.nexuslink.util.cache.DiskLruCacheHelper;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 import java.io.IOException;
 
@@ -36,10 +37,10 @@ public class BaseApplication extends Application {
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
         PlatformConfig.setSinaWeibo("4258197523", "30268867be9ea03cd1f41c8a93f8795f");    }
-    //===============================================数据库
-    public static  SQLiteDatabase db;
      //===============================================缓存
      public static DiskLruCacheHelper helper;
+    private static DaoSession daoSession;
+
 
     public void onCreate() {
         super.onCreate();
@@ -54,8 +55,11 @@ public class BaseApplication extends Application {
                         .enableWebKitInspector(
                                 Stetho.defaultInspectorModulesProvider(this))
                         .build());
-        //创建数据库
-        db = new DaoMaster.DevOpenHelper(mContext,"PopSport",null).getWritableDatabase();
+        /**
+         * 数据库初始化
+         */
+        daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
+                .getWritableDatabase()).newSession();
         //初始化缓存
         try {
             helper = new DiskLruCacheHelper(getContext());
@@ -86,6 +90,11 @@ public class BaseApplication extends Application {
                 .setFunctionConfig(functionConfig)
                 .build();
         GalleryFinal.init(coreConfig);
+        /**
+         * emoji表情
+         */
+        EmojiManager.install(new IosEmojiProvider());
+
 
     }
     /*
@@ -95,8 +104,11 @@ public class BaseApplication extends Application {
         return mContext;
     }
 
-     public static DaoSession getDaosession(){
-         DaoSession daoSession = new DaoMaster(db).newSession();
+     public synchronized static DaoSession getDaosession(){
+         if(daoSession == null){
+             daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
+                     .getWritableDatabase()).newSession();
+         }
          return daoSession;
      }
 

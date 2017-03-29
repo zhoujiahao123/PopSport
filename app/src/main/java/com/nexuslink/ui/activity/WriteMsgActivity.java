@@ -10,17 +10,21 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.Explode;
 import android.transition.Fade;
+import android.util.Base64;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nexuslink.R;
 import com.nexuslink.presenter.writearticlepresenter.WriteArticlePresenterImpl;
 import com.nexuslink.presenter.writearticlepresenter.WriteArtilcePresenter;
 import com.nexuslink.ui.adapter.PhotoChooseResultAdapter;
+import com.nexuslink.ui.view.KeyEmojiEditText;
 import com.nexuslink.ui.view.WriteArticleView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
+import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.ToastUtil;
+import com.vanniktech.emoji.EmojiPopup;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,7 +45,12 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
      */
     //===============================================常量
     private static final String TAG = "WriteMsgActivity";
-    private static final int MAX_SIZE = 1024*100;
+    private static final int MAX_SIZE = 1024 * 100;
+    @BindView(R.id.emoji_bt)
+    CircleImageView emojiBt;
+
+    @BindView(R.id.activity_wirte_msg)
+    RelativeLayout activityWirteMsg;
     //===============================================变亮
     private int MAX_CHOOSE_SIZE = 15;
     private boolean isPosting = false;
@@ -52,7 +61,7 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
     @BindView(R.id.toolbar_write_msg)
     Toolbar mToolbar;
     @BindView(R.id.msg_input_edit)
-    EditText mInput;
+    KeyEmojiEditText mInput;
     @BindView(R.id.post_article_tv)
     TextView postArticleTv;
     @BindView(R.id.cancel_article_tv)
@@ -61,6 +70,9 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
     RecyclerView photosChooseRecycler;
     @BindView(R.id.progressbar)
     LoadingView progressbar;
+    //===============================================view
+    EmojiPopup emojiPopup ;
+
 
     //设置文本输入监听,从而达到改变颜色的目的
     TextWatcher textWatcher = new TextWatcher() {
@@ -108,17 +120,13 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
     }
 
     private void initDatas() {
-
         adapter = new PhotoChooseResultAdapter(this);
-        //设置选择图片监听
         adapter.setOnChoosePhotosListener(new PhotoChooseResultAdapter.onChoosePhotosListener() {
             @Override
             public void onClick() {
-                //进行图片的选择
                 if (MAX_CHOOSE_SIZE > 0) {
                     GalleryFinal.openGalleryMuti(0, MAX_CHOOSE_SIZE, new GalleryFinal.OnHanlderResultCallback() {
-                        @Override
-                        public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+                        @Override public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                             MAX_CHOOSE_SIZE -= resultList.size();
                             for (int i = 0; i < resultList.size(); i++) {
                                 PhotoInfo info = resultList.get(i);
@@ -127,21 +135,21 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
                             //最后进行刷新，提升效率，优化卡顿
                             adapter.notifyDataSetChanged();
                         }
-
-                        @Override
-                        public void onHanlderFailure(int requestCode, String errorMsg) {
+                        @Override public void onHanlderFailure(int requestCode, String errorMsg) {
                             ToastUtil.showToast(WriteMsgActivity.this, errorMsg);
                         }
                     });
                 } else {
                     ToastUtil.showToast(WriteMsgActivity.this, "选择数量已达上限咯，再发一条试试吧（*＾-＾*）");
                 }
-
             }
         });
     }
 
+
     private void initView() {
+        //设置上传textview不可点击
+        postArticleTv.setClickable(false);
         //设置toolbar
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -150,6 +158,40 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
         //reyclerview
         photosChooseRecycler.setLayoutManager(new GridLayoutManager(this, 3));
         photosChooseRecycler.setAdapter(adapter);
+        //初始化poup弹窗
+        emojiPopup = EmojiPopup.Builder.fromRootView(getWindow().getDecorView()).build(mInput);
+        //设置emoji表情弹窗监听
+        emojiBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(emojiPopup.isShowing()){
+                    emojiPopup.dismiss();
+                    mInput.isEmojiPoupShown = false;
+                }else{
+                    emojiPopup.toggle();
+                    mInput.isEmojiPoupShown = true;
+                }
+            }
+        });
+        mInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(emojiPopup.isShowing()){
+                    emojiPopup.dismiss();
+                    mInput.isEmojiPoupShown = false;
+                }
+            }
+        });
+        mInput.setOnCancelEmojiLisnter(new KeyEmojiEditText.OnCancelEmojiPoupListener() {
+            @Override
+            public void onCancel() {
+                if(emojiPopup.isShowing()){
+                    emojiPopup.dismiss();
+                    mInput.isEmojiPoupShown = false;
+                }
+            }
+        });
 
     }
 
@@ -169,19 +211,22 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
         }
     }
 
+
+
     @Override
     public void onBackPressed() {
-        if(!isPosting){
+        //在这里进行poup的关闭
+       if (!isPosting) {
             finish();
-        }else{
-            ToastUtil.showToast(this,"正在上传，暂时不能退出哦");
+        } else {
+            ToastUtil.showToast(this, "正在上传，暂时不能退出哦");
         }
 
     }
 
     @Override
     public String getInputText() {
-        return mInput.getText().toString();
+        return new String(Base64.encode(mInput.getText().toString().getBytes(), Base64.DEFAULT));
     }
 
     @Override
@@ -197,9 +242,13 @@ public class WriteMsgActivity extends AppCompatActivity implements WriteArticleV
 
     @Override
     public void showSuccess() {
-        ToastUtil.showToast(this,"发表成功");
+        ToastUtil.showToast(this, "发表成功");
         //这里进行上以界面的刷新
         EventBus.getDefault().post(new String("刷新"));
+        if(emojiPopup.isShowing()){
+            emojiPopup.dismiss();
+            mInput.isEmojiPoupShown = false;
+        }
         onBackPressed();
     }
 }

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,10 +27,13 @@ import com.nexuslink.ui.activity.FriendInfoActivity;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.MultiView;
+import com.nexuslink.util.Base64Utils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.KeyBoardUtils;
 import com.nexuslink.util.UserUtils;
 import com.nexuslink.util.cache.DiskLruCacheHelper;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,14 +70,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     }
 
 
-    //用户头像点击接口
-    public interface UserIconClickListener{
-        void onClickListener(int pos);
-    }
-    private UserIconClickListener clickListener;
-    public void setUserIconClickListener(UserIconClickListener listener){
-        this.clickListener = listener;
-    }
+
     @Override
     public CommunityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.community_recyler_item,parent,false);
@@ -97,7 +92,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             @Override
             public void onClick(View v) {
                 Intent intent  = new Intent(mContext, ArticleDetailActivity.class);
-                intent.putExtra("article", data.get(position));
+                intent.putExtra("articleId", data.get(position).getArticleId());
                 mContext.startActivity(intent);
             }
         });
@@ -129,7 +124,8 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         });
 
         //话题信息 图片和文字
-        holder.mContent.setText(data.get(position).getText());
+        //设置文本内容时候，进行解析
+        holder.mContent.setText(Base64Utils.decode(data.get(position).getText()));
         holder.imagesContent.setImages(getCommunityImages(data.get(position).getImages()));
 
         //设置点赞
@@ -190,7 +186,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
                      View view = inflater.inflate(R.layout.comment_item,null);
                      SpannableString msg = new SpannableString(commentItemData.getUserName()+":"+commentItemData.getCommentText());
                      msg.setSpan(new ForegroundColorSpan(0xff6b8747),0,commentItemData.getUserName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                     TextView tv = (TextView)view.findViewById(R.id.comment);
+                     EmojiTextView tv = (EmojiTextView)view.findViewById(R.id.comment);
                      tv.setText(msg);
                      holder.commentDetialLinear.addView(view);
                  }
@@ -211,6 +207,8 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
                 Log.i(TAG,"aod"+data.get(position).getArticleId()+"");
                 presenter.postComment(holder.commentDetialLinear,holder.commentInput
                 ,holder.linearLayout,UserUtils.getUserId(),data.get(position).getArticleId(),position);
+                holder.commentPost.setClickable(false);
+                holder.commentPost.setBackground(mContext.getResources().getDrawable(R.drawable.bt_unclickable));
             }
         });
     }
@@ -289,11 +287,12 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
      */
     class CommunityViewHolder extends RecyclerView.ViewHolder{
         CircleImageView userImage;
-        TextView userName,userLevel,mContent;
+        TextView userName,userLevel;
+        EmojiTextView mContent;
         MultiView imagesContent;
         LikeView likeView;
         LikeView comment;
-        EditText commentInput;
+        EmojiEditText commentInput;
         //输入框
         LinearLayout linearLayout;
         //评论区的内容
@@ -304,11 +303,11 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             userImage = (CircleImageView) itemView.findViewById(R.id.user_image);
             userName = (TextView) itemView.findViewById(R.id.user_name);
             userLevel = (TextView) itemView.findViewById(R.id.user_level);
-            mContent = (TextView) itemView.findViewById(R.id.tv_content);
+            mContent = (EmojiTextView) itemView.findViewById(R.id.tv_content);
             imagesContent = (MultiView) itemView.findViewById(R.id.multi_view);
             likeView = (LikeView) itemView.findViewById(R.id.like_view);
             comment = (LikeView) itemView.findViewById(R.id.comment);
-            commentInput = (EditText) itemView.findViewById(R.id.input_comment);
+            commentInput = (EmojiEditText) itemView.findViewById(R.id.input_comment);
             commentPost = (Button) itemView.findViewById(R.id.input_send_comment);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.comment_linear);
             commentDetialLinear = (LinearLayout) itemView.findViewById(R.id.comments_detail);

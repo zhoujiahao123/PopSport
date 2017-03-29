@@ -55,21 +55,36 @@
     <LinearLayout
         android:layout_below="@id/toolbar_relative"
         android:orientation="vertical"
+        android:background="@color/ghost_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <!--内容编辑区-->
-        <EditText
+        <com.nexuslink.ui.view.KeyEmojiEditText
             android:id="@+id/msg_input_edit"
             android:gravity="start"
             android:paddingTop="@dimen/spacing_normal"
             android:paddingLeft="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal"
             android:textSize="@dimen/msg_text_size"
             android:hint="书写您今天的心情吧"
             android:background="@color/ghost_white"
             android:backgroundTint="@color/ghost_white"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
+
+
+        <!--emoji弹窗和图片选择-->
+        <com.nexuslink.util.CircleImageView
+            android:id="@+id/emoji_bt"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_tiny"
+            android:paddingBottom="@dimen/spacing_tiny"
+            android:layout_gravity="start"
+            android:src="@drawable/emoji"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
 
         <include
             layout="@layout/divider_line"
@@ -87,6 +102,7 @@
         <include
             layout="@layout/divider_line"
             ></include>
+
 
     </LinearLayout>
 

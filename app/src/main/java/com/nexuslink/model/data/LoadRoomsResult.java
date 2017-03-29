@@ -4,18 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by 猿人 on 2017/2/25.
  */
 
-public class LoadRoomsResult {
+public class LoadRoomsResult implements Parcelable {
+
 
     /**
      * code : 200
-     * room : [{"roomId":1,"roomType":0,"roomGoal":60,"roomName":"一起跑步吧","startDate":null,"startTime":null,"users":[{"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]},{"roomId":2,"roomType":0,"roomGoal":60,"roomName":"一起跑步","startDate":null,"startTime":null,"users":[{"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]}]
+     * room : [{"roomId":5,"roomType":0,"roomGoal":36,"roomName":"图","startTime":"2017-03-15 16:59","users":[{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":1064,"uHistoryMileage":500,"uAchievements":[false,false,false,false,false,false,false,false]}]}]
      */
 
     private int code;
@@ -40,21 +40,19 @@ public class LoadRoomsResult {
     public static class RoomBean implements Parcelable {
 
         /**
-         * roomId : 1
+         * roomId : 5
          * roomType : 0
-         * roomGoal : 60
-         * roomName : 一起跑步吧
-         * startDate : null
-         * startTime : null
-         * users : [{"uid":15,"uName":"张兴锐","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":null}]
+         * roomGoal : 36
+         * roomName : 图
+         * startTime : 2017-03-15 16:59
+         * users : [{"uid":15,"uName":"哎哎哎","uGender":"M","uImg":"user15.jpeg","uHeight":174,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":1064,"uHistoryMileage":500,"uAchievements":[false,false,false,false,false,false,false,false]}]
          */
 
         private int roomId;
         private int roomType;
         private int roomGoal;
         private String roomName;
-        private Date startDate;
-        private Date startTime;
+        private String startTime;
         private List<UsersBean> users;
 
         public int getRoomId() {
@@ -89,19 +87,11 @@ public class LoadRoomsResult {
             this.roomName = roomName;
         }
 
-        public Date getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
-
-        public Date getStartTime() {
+        public String getStartTime() {
             return startTime;
         }
 
-        public void setStartTime(Date startTime) {
+        public void setStartTime(String startTime) {
             this.startTime = startTime;
         }
 
@@ -117,16 +107,16 @@ public class LoadRoomsResult {
 
             /**
              * uid : 15
-             * uName : 张兴锐
+             * uName : 哎哎哎
              * uGender : M
              * uImg : user15.jpeg
              * uHeight : 174
              * uWeight : 60
-             * uFansnum : 1
+             * uFansnum : 2
              * uExp : 0
-             * uHistoryStep : 0
-             * uHistoryMileage : 0
-             * uAchievements : null
+             * uHistoryStep : 1064
+             * uHistoryMileage : 500
+             * uAchievements : [false,false,false,false,false,false,false,false]
              */
 
             private int uid;
@@ -139,7 +129,7 @@ public class LoadRoomsResult {
             private int uExp;
             private int uHistoryStep;
             private int uHistoryMileage;
-            private Boolean[] uAchievements;
+            private List<Boolean> uAchievements;
 
             public int getUid() {
                 return uid;
@@ -221,11 +211,11 @@ public class LoadRoomsResult {
                 this.uHistoryMileage = uHistoryMileage;
             }
 
-            public Boolean[] getUAchievements() {
+            public List<Boolean> getUAchievements() {
                 return uAchievements;
             }
 
-            public void setUAchievements(Boolean[] uAchievements) {
+            public void setUAchievements(List<Boolean> uAchievements) {
                 this.uAchievements = uAchievements;
             }
 
@@ -246,7 +236,7 @@ public class LoadRoomsResult {
                 dest.writeInt(this.uExp);
                 dest.writeInt(this.uHistoryStep);
                 dest.writeInt(this.uHistoryMileage);
-                dest.writeArray(this.uAchievements);
+                dest.writeList(this.uAchievements);
             }
 
             public UsersBean() {
@@ -263,7 +253,8 @@ public class LoadRoomsResult {
                 this.uExp = in.readInt();
                 this.uHistoryStep = in.readInt();
                 this.uHistoryMileage = in.readInt();
-                this.uAchievements = (Boolean[]) in.readArray(Boolean[].class.getClassLoader());
+                this.uAchievements = new ArrayList<Boolean>();
+                in.readList(this.uAchievements, Boolean.class.getClassLoader());
             }
 
             public static final Creator<UsersBean> CREATOR = new Creator<UsersBean>() {
@@ -290,8 +281,7 @@ public class LoadRoomsResult {
             dest.writeInt(this.roomType);
             dest.writeInt(this.roomGoal);
             dest.writeString(this.roomName);
-            dest.writeLong(this.startDate != null ? this.startDate.getTime() : -1);
-            dest.writeLong(this.startTime != null ? this.startTime.getTime() : -1);
+            dest.writeString(this.startTime);
             dest.writeList(this.users);
         }
 
@@ -303,15 +293,12 @@ public class LoadRoomsResult {
             this.roomType = in.readInt();
             this.roomGoal = in.readInt();
             this.roomName = in.readString();
-            long tmpStartDate = in.readLong();
-            this.startDate = tmpStartDate == -1 ? null : new Date(tmpStartDate);
-            long tmpStartTime = in.readLong();
-            this.startTime = tmpStartTime == -1 ? null : new Date(tmpStartTime);
+            this.startTime = in.readString();
             this.users = new ArrayList<UsersBean>();
             in.readList(this.users, UsersBean.class.getClassLoader());
         }
 
-        public static final Parcelable.Creator<RoomBean> CREATOR = new Parcelable.Creator<RoomBean>() {
+        public static final Creator<RoomBean> CREATOR = new Creator<RoomBean>() {
             @Override
             public RoomBean createFromParcel(Parcel source) {
                 return new RoomBean(source);
@@ -323,4 +310,36 @@ public class LoadRoomsResult {
             }
         };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.code);
+        dest.writeList(this.room);
+    }
+
+    public LoadRoomsResult() {
+    }
+
+    protected LoadRoomsResult(Parcel in) {
+        this.code = in.readInt();
+        this.room = new ArrayList<RoomBean>();
+        in.readList(this.room, RoomBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<LoadRoomsResult> CREATOR = new Parcelable.Creator<LoadRoomsResult>() {
+        @Override
+        public LoadRoomsResult createFromParcel(Parcel source) {
+            return new LoadRoomsResult(source);
+        }
+
+        @Override
+        public LoadRoomsResult[] newArray(int size) {
+            return new LoadRoomsResult[size];
+        }
+    };
 }

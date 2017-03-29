@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,18 +36,23 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.nexuslink.R;
 import com.nexuslink.RunDao;
+import com.nexuslink.broadcast.AlarmReceiver;
 import com.nexuslink.model.data.PathRecord;
+import com.nexuslink.model.data.RoomGoal;
 import com.nexuslink.presenter.runpresenter.RunPresenter;
 import com.nexuslink.ui.view.RunView;
 import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.GPSUtil;
 import com.nexuslink.util.PermissionsChecker;
+import com.nexuslink.util.TimeUtils;
 import com.nexuslink.util.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +66,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private static final float MIN_ZOOM_LEVEL = 15f;
     private static final int TOTAL_TIME = 1000 * 60 * 20;//20分钟
     private static final int INTERVAL = 1000;
+
     @BindView(R.id.run_current_time)
     TextView mCurrentTime;
     @BindView(R.id.run_current_distance)
@@ -80,20 +89,25 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     TextView runDate;
     @BindView(R.id.run_time)
     TextView runTime;
-    //===============================================权限相关
-    private static final int REQUEST_CODE = 0; // 请求码
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-    };
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
+    //弹窗
+    android.app.AlertDialog.Builder builder ;
+    android.app.AlertDialog dialog;
+
+
 
     //定时器
     private TimeCount time;
     //===============================================辅助变量
     private boolean isFirstLoc = true;
     private boolean hasStartRun = false;
+    private boolean isComeFromRoom = false;
+    private int type  = -1;
+    private int goal = -1;
+    private int rId = -1;
+    /**
+     * 定时器
+     */
+    private CountDownTimer countDownTimer;
     /**
      * 数据库操作
      */
@@ -158,22 +172,86 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         ButterKnife.bind(this);
-        mPermissionsChecker = new PermissionsChecker(this);
+
+
         initViews();
         initMapView(savedInstanceState);
         initPolyLine();
         initLocation();
         mRunPresenter = new RunPresenter(this);
         mLocationClient.startLocation();
+
+        //初始化跑房，如果有的话
+        initRoom();
+    }
+
+    private void initRoom() {
+        //初始化一些数据
+        isComeFromRoom = getIntent().getBooleanExtra(AlarmReceiver.COME_FROM_RUNHOUSE,false);
+        type = getIntent().getIntExtra("type",-1);
+        goal = getIntent().getIntExtra("goal",-1);
+        rId = getIntent().getIntExtra("rId",-1);
+        //定义弹窗
+        builder = new android.app.AlertDialog.Builder(RunActivity.this).setTitle("提示")
+                .setMessage("这次跑步目标已经达到，正在为您进行上传，请稍等...");
+        dialog = builder.create();
+
+        if(type == 0){
+            //时间型跑房
+             countDownTimer  = new CountDownTimer(goal*60*1000,1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    Log.i(TAG,"计时完成");
+                    //开启弹窗进行提示用户
+                    dialog.show();
+                    //上传用户信息
+                    //时间性跑房上传距离
+                    String str = mCurrentDistance.getText().toString();
+                    Log.i(TAG,str.substring(0,str.length()-2));
+                    mRunPresenter.postRoomData(rId,Long.parseLong(str.substring(0,str.length()-2)));
+                }
+            };
+            countDownTimer.start();
+            startOrPause();
+        }else if(type == 1){
+            //距离型跑房
+           TextWatcher watcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    int distance = Integer.parseInt(s.toString().substring(0,s.toString().length()-2));
+                    if(distance >= goal){
+                        //使用弹窗给用户提醒
+                        dialog.show();
+                        //上传用户信息 距离型跑房上传这个取得的时间
+                        mRunPresenter.postRoomData(rId, TimeUtils.StrToTime(mCurrentTime.getText().toString()));
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            };
+            mCurrentDistance.addTextChangedListener(watcher);
+            startOrPause();
+        }
     }
 
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
         // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }else{
+       {
             //如何拥有权限，检查是否打开了GPS
             if(!GPSUtil.isOPen(this)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -200,9 +278,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         }
     }
 
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this,REQUEST_CODE,PERMISSIONS);
-    }
+
 
     private void initViews() {
         //toolbar
@@ -298,6 +374,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
             time.cancel();
             time = null;
         }
+        if(type == 0 && countDownTimer != null){
+            countDownTimer.cancel();
+            countDownTimer= null;
+        }
 
     }
 
@@ -379,45 +459,69 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         maxSpeedTv.setText(maxSpeed);
     }
 
+    @Override
+    public void showError(String str) {
+        ToastUtil.showToast(this,str);
+        finish();
+    }
+
+    @Override
+    public void postDataSuccess() {
+        dialog.dismiss();
+    }
+
+    @Override
+    public void intentToResult(List<RoomGoal.GoalsBean> goalsBeenList) {
+        Intent intent = new Intent(this,RunHouseResultActivity.class);
+        intent.putParcelableArrayListExtra("resultBeans", (ArrayList<? extends Parcelable>) goalsBeenList);
+        intent.putExtra("type",type);
+        startActivity(intent);
+        finish();
+    }
+
 
 
     @OnClick({R.id.start_or_pause, R.id.finish})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_or_pause:
-                if (mStartOrPauseBt.getText().toString().equals("开始")) {
-
-                    if(hasStartRun){
-                        mLocationClient.startLocation();
-                    } else{
-                        //用户开启了轨迹记录功能
-                        hasStartRun = true;
-                        //开启自动回到定位处
-                        isFirstLoc = true;
-                        //打开结束开关
-                        changToClickable();
-                        if (record != null) {
-                            record = null;
-                        }
-                        time = new TimeCount(TOTAL_TIME, INTERVAL);
-                        record = new PathRecord();
-                        long mStartTime = System.currentTimeMillis();
-                        mRunPresenter.startRecord(mStartTime);
-                        record.setDate(getCurrentDate(mStartTime));
-                    }
-                    //改变按钮的状态
-                    mStartOrPauseBt.setText("暂停");
-                    time.start();
-
-                } else {
-                    mStartOrPauseBt.setText("开始");
-                    mLocationClient.stopLocation();
-                    time.cancel();
-                }
+                startOrPause();
                 break;
             case R.id.finish:
                 onBackPressed();
                 break;
+        }
+    }
+
+    private void startOrPause() {
+        if (mStartOrPauseBt.getText().toString().equals("开始")) {
+
+            if(hasStartRun){
+                mLocationClient.startLocation();
+            } else{
+                //用户开启了轨迹记录功能
+                hasStartRun = true;
+                //开启自动回到定位处
+                isFirstLoc = true;
+                //打开结束开关
+                changToClickable();
+                if (record != null) {
+                    record = null;
+                }
+                time = new TimeCount(TOTAL_TIME, INTERVAL);
+                record = new PathRecord();
+                long mStartTime = System.currentTimeMillis();
+                mRunPresenter.startRecord(mStartTime);
+                record.setDate(getCurrentDate(mStartTime));
+            }
+            //改变按钮的状态
+            mStartOrPauseBt.setText("暂停");
+            time.start();
+
+        } else {
+            mStartOrPauseBt.setText("开始");
+            mLocationClient.stopLocation();
+            time.cancel();
         }
     }
 
@@ -462,8 +566,18 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     Run run = runDao.queryBuilder().where(RunDao.Properties.Date.eq(date),RunDao.Properties.Time.eq(time)).unique();
                     run.setHasUpLoad(true);
                     runDao.update(run);*/
+                    if(!isComeFromRoom){
+                        finish();
+                    }else{
+                        //展示此次运动成果,这里继续上传到房间去
+                        if(type == 0){
+                            String str = mCurrentDistance.getText().toString();
+                            mRunPresenter.postRoomData(rId,Long.parseLong(str.substring(0,str.length()-2)));
+                        }else if(type == 1){
+                            mRunPresenter.postRoomData(rId,TimeUtils.StrToTime(mCurrentTime.getText().toString()));
+                        }
+                    }
 
-                    finish();
                 }
             });
         }else{

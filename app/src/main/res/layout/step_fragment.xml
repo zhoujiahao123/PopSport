@@ -17,7 +17,6 @@
         <TextView
             android:id="@+id/current_steps_tv"
             android:gravity="center"
-            android:text="10"
             android:textColor="@color/white"
             android:textSize="@dimen/font_super_huger"
             android:layout_width="wrap_content"
@@ -49,7 +48,6 @@
                 android:id="@+id/history_average_steps"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
-                android:text="10"
                 android:textSize="@dimen/font_below_huge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -73,12 +71,11 @@
 
             <TextView
                 android:id="@+id/history_best_steps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
-                android:text="10"
-                android:textSize="@dimen/font_below_huge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="@dimen/font_below_huge" />
 
             <TextView
                 android:text="历史最佳"

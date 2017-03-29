@@ -1,7 +1,5 @@
 package com.nexuslink.ui.view;
 
-import java.util.Date;
-
 /**
  * Created by 猿人 on 2017/2/25.
  */
@@ -14,5 +12,6 @@ public interface CreateRunHouseView {
     int getType();
     int getGoal();
     String getRoomName();
-    Date getStartTime();
+    String getStartTime();
+    void insertOneRoom(int rId);
 }
