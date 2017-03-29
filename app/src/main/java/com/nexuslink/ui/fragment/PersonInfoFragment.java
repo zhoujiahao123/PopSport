@@ -3,6 +3,8 @@ package com.nexuslink.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.nexuslink.User;
 import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.Info;
 import com.nexuslink.model.friendinfomodel.OnStartFriendInfoListener;
 import com.nexuslink.ui.activity.AchievementActivity;
 import com.nexuslink.ui.activity.AlterActivity;
@@ -27,6 +30,12 @@ import com.nexuslink.ui.activity.TaskActivity;
 import com.nexuslink.ui.view.PersonInfoView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.ImageUtil;
+import com.nexuslink.util.loader.ILoader;
+import com.nexuslink.util.loader.LoaderFactory;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +66,17 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView ,OnSt
     TextView tvName;
     @BindView(R.id.tv_grade)
     TextView tvGrade;
-
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what==2){
+                ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique().getUImg(),imageHead);
+//                LoaderFactory.getGlideLoader().clearCacheMemory(BaseApplication.getContext());
+//                LoaderFactory.getGlideLoader().loadNet(imageHead,Constants.PHOTO_BASE_URL+BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique().getUImg(),null);
+                XLog.e("这里OK的");
+            }
+        }
+    };
     public static PersonInfoFragment getInstance() {
         PersonInfoFragment fragment = new PersonInfoFragment();
         return fragment;
@@ -75,14 +94,23 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView ,OnSt
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what=2;
+                handler.sendMessage(message);
+            }
+        }).start();
         XLog.e("OnCreate");
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-        ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+user.getUImg(),imageHead);
+
         tvName.setText(user.getUName());
         XLog.e("onResume");
     }
@@ -90,6 +118,8 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView ,OnSt
     @Override
     public void onStart() {
         super.onStart();
+
+
         XLog.e("onStart");
     }
 
@@ -109,6 +139,7 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView ,OnSt
     public void onDestroy() {
         super.onDestroy();
         XLog.e("onDestroy");
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -188,5 +219,9 @@ public class PersonInfoFragment extends Fragment implements PersonInfoView ,OnSt
             intent.putExtra("uName",uName);
             startActivity(intent);
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void changePhoto(Info info){
+        ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique().getUImg(),imageHead);
     }
 }

@@ -56,26 +56,6 @@ public class AchievementRecyclerViewAdapter extends RecyclerView.Adapter<Achieve
     }
 
     private void checkAchieve(final OnCallBackListener listener) {
-        User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-//        //RUn这个表只有一张吗？
-//        /**
-//         * 这里需要注意一下
-//         */
-//        if(Long.valueOf(user.getUHistoryMileage().toString())>3000){
-//            displayImage[0]=image[0];
-//        }
-//        if(Long.valueOf(user.getUHistoryMileage().toString())>5000){
-//            displayImage[1]=image[1];
-//        }
-//        if(Long.valueOf(user.getUHistoryMileage().toString())>10000){
-//            displayImage[2]=image[2];
-//        }
-//        if(Long.valueOf(user.getUHistoryMileage().toString())>50000){
-//            displayImage[3]=image[3];
-//        }
-//        if(Integer.valueOf(user.getUFansNum().toString())>=100){
-//            displayImage[7]=image[7];
-//        }
         RequestBody body =new FormBody.Builder().add("uId", String.valueOf(IdUtil.getuId())).build();
         Request request = new Request.Builder().post(body).url(Constants.BASE_URL+"user/getInfo").build();
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -98,11 +78,14 @@ public class AchievementRecyclerViewAdapter extends RecyclerView.Adapter<Achieve
                 user.setUAchievements(achievementImageString);
                 userDao.update(user);
                 for(int i=0;i<8;i++){
-                    if(achievementImage[i].equals("0")){
+                    if(achievementImage[i].equals("false")){
                         displayImage[i]=imageg[i];
                     }else {
                         displayImage[i]=image[i];
                     }
+                }
+                if(userInfo.getUser().getUFansNum()>=100){
+                    displayImage[7] = image[7];
                 }
                 listener.onSucceed();
             }

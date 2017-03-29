@@ -133,6 +133,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/weather_remind"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textColor="@color/white_light"
                     android:layout_marginLeft="@dimen/spacing_tiny"
                     android:textSize="@dimen/font_normal"/>

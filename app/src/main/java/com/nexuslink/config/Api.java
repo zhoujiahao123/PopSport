@@ -153,6 +153,7 @@ public interface Api {
     Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
                                         int uHeight,@Field("uWeight")int uWeight);
 
+
     //获取用户的粉丝
     @FormUrlEncoded
     @POST("friend/fans")
@@ -162,6 +163,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("article/getHis")
     Observable<AticalInfo> getAtical(@Field("uId")int uId,@Field("writerId")int  writeId);
+
     /**
      * 跑房相关
      */
@@ -185,6 +187,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("room/quit")
     Observable<QuiteRoomResult> quitRoom(@Field("uId") int uId, @Field("rId") int rId);
+
 
 
 }

@@ -101,16 +101,7 @@ public class CommunityFragment extends Fragment implements CommunityView {
         adapter = new CommunityRecyclerAdapter(getContext(), presenter);
         mRecycler.setAdapter(adapter);
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        //设置点击监听
-        adapter.setUserIconClickListener(new CommunityRecyclerAdapter.UserIconClickListener() {
-            @Override
-            public void onClickListener(int pos) {
-                //根据位置进行获取用户数据（用户id）
-                long userId = adapter.getUserId(pos);
-                //网络请求道个人信息界面。。。。
-                ToastUtil.showToast(getContext(), "点击用户头像");
-            }
-        });
+
 
         //初始化时，需要进行刷新
         presenter.onRefreshData(UserUtils.getUserId(),true);

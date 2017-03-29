@@ -7,12 +7,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 </android.support.v7.widget.RecyclerView>
-    <TextView
-        android:id="@+id/nothing"
-        android:text="这儿什么都没有哦，赶快开始交友之路吧"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/dark_imperial_blue"
-        />
 </RelativeLayout>

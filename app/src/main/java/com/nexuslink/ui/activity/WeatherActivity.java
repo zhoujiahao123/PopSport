@@ -313,28 +313,42 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
     private void setWeatherImage(WeatherInfo weatherInfo, int i, ImageView imageView) {
         if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("晴")) {
             imageView.setImageResource(R.drawable.ic_sunny);
-            backgroundId = R.drawable.bg_fine_day;
-            container.setBackgroundResource(R.drawable.bg_fine_day);
+            if(i==0)
+            {
+                backgroundId = R.drawable.bg_fine_day;
+                container.setBackgroundResource(R.drawable.bg_fine_day);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("多云")) {
             imageView.setImageResource(R.drawable.ic_cloudy);
-            backgroundId = R.drawable.bg_cloudy_day;
-            container.setBackgroundResource(R.drawable.bg_cloudy_day);
+            if(i==0){
+                backgroundId = R.drawable.bg_cloudy_day;
+                container.setBackgroundResource(R.drawable.bg_cloudy_day);
+            }
+
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("阴")) {
             imageView.setImageResource(R.drawable.ic_overcast);
-            backgroundId = R.drawable.bg_overcast;
-            container.setBackgroundResource(R.drawable.bg_overcast);
+            if(i==0){
+                backgroundId = R.drawable.bg_overcast;
+                container.setBackgroundResource(R.drawable.bg_overcast);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("小雨")) {
             imageView.setImageResource(R.drawable.ic_littlerain);
-            backgroundId = R.drawable.bg_rain;
-            container.setBackgroundResource(R.drawable.bg_rain);
+            if(i==0){
+                backgroundId = R.drawable.bg_rain;
+                container.setBackgroundResource(R.drawable.bg_rain);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("中雨")) {
             imageView.setImageResource(R.drawable.ic_midrain);
-            backgroundId = R.drawable.bg_rain;
-            container.setBackgroundResource(R.drawable.bg_rain);
+            if(i==0){
+                backgroundId = R.drawable.bg_rain;
+                container.setBackgroundResource(R.drawable.bg_rain);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("阵雨")) {
             imageView.setImageResource(R.drawable.ic_bigrain);
-            backgroundId = R.drawable.bg_rain;
-            container.setBackgroundResource(R.drawable.bg_rain);
+            if(i==0){
+                backgroundId = R.drawable.bg_rain;
+                container.setBackgroundResource(R.drawable.bg_rain);
+            }
         }
     }
 

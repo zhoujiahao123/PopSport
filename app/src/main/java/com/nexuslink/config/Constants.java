@@ -1,5 +1,7 @@
 package com.nexuslink.config;
 
+import com.nexuslink.R;
+
 /**
  * Created by 猿人 on 2017/1/14.
  */
@@ -31,6 +33,10 @@ public class Constants {
     //===============================================请求状态
     public static final int SUCCESS = 200;
     public static final int FAILED = 500;
+
+    //用户图片等
+    public static final int RES_LOADING = R.drawable.loading;
+    public static final int RES_LOAD_ERROR = R.drawable.load_error;
 
 }
 

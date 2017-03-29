@@ -68,7 +68,7 @@ public class TimeTypeRunHouseFragment extends Fragment {
         style.textColor = getResources().getColor(R.color.tab_text_color);
         style.selectedTextColor = getResources().getColor(R.color.tab_text_sel);
         style.holoBorderColor = getResources().getColor(R.color.ufo_green);
-        style.selectedTextZoom = 2.1f;
+        style.selectedTextZoom = 1.5f;
 
         mWheelHour.setWheelAdapter(new ArrayWheelAdapter(getContext()));
         mWheelHour.setSkin(WheelView.Skin.Holo);

@@ -23,6 +23,7 @@ import com.nexuslink.model.data.SearchInfo;
 import com.nexuslink.model.friendmodel.OnRegisterListener;
 import com.nexuslink.ui.activity.FriendActivity;
 import com.nexuslink.ui.activity.FriendInfoActivity;
+import com.nexuslink.ui.activity.FriendInfoActivityS;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ToastUtil;
@@ -54,7 +55,6 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
 
     @Override
     public void onFollowSucceed(int position) {
-        XLog.e("开始删除"+position);
         notifyItemRemoved(position);
         userNum--;
         times++;
@@ -63,7 +63,6 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
     @Override
     public void onRegister() {
         EventBus.getDefault().register(this);
-        XLog.e("已经订阅");
     }
 
     public interface CallbackListener{
@@ -76,7 +75,6 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
     public FriendRecyclerViewAdapter(Context mContext, SearchInfo searchInfo) {
         this.mContext = mContext;
         FriendActivity.setOnRegisterListener(this);
-        XLog.e("我测试的FriendRecyclerViewAdapter.java的文件的 构造方法执行了");
     }
 
 
@@ -84,19 +82,16 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
     public MyViewHodler onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_alluser_item,parent,false);
         MyViewHodler viewHodler = new MyViewHodler(view);
-        XLog.e("我测试的FriendRecyclerViewAdapter.java的文件的 onCreateViewHolder执行了");
         return viewHodler;
     }
 
     @Override
     public int getItemCount() {
-        XLog.e("我测试的FriendRecyclerViewAdapter.java的文件的 getItemCount执行了");
         return mSearchInfo==null?0:userNum;
     }
 
     @Override
     public void onBindViewHolder(MyViewHodler holder, int position) {
-        XLog.e("我测试的FriendRecyclerViewAdapter.java的文件的 onBindViewHolder");
         XLog.e(mSearchInfo.getUsers().size());
         XLog.e(position);
         holder.tvName.setText(mSearchInfo.getUsers().get(position).getFName());
@@ -128,7 +123,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
             imageHead.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent friendInfoIntent = new Intent(mContext, FriendInfoActivity.class);
+                    Intent friendInfoIntent = new Intent(mContext, FriendInfoActivityS.class);
                     friendInfoIntent.putExtra("uImg",mSearchInfo.getUsers().get(getPosition()+times).getFImg());
                     friendInfoIntent.putExtra("uName",mSearchInfo.getUsers().get(getPosition()+times).getFName());
                     if(friendInfoIntent.resolveActivity(mContext.getPackageManager())!=null){
@@ -169,7 +164,6 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
     }
     @Subscribe (threadMode =ThreadMode.MAIN,sticky = true)
     public void receiveSearchInfo(SearchAndFollowedInfo info){
-        XLog.e("订阅的事件执行了");
         times=0;
         if(mSearchInfo!=null){
             notifyItemRangeRemoved(0,mSearchInfo.getUsers().size());
@@ -179,11 +173,8 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<FriendRecycl
         EventBus.getDefault().unregister(this);
         for(int i=0;i<mSearchInfo.getUsers().size();i++){
             for(int j=0;j<followedInfo.getUsers().size();j++){
-                XLog.e("这里的i为"+i);
                 if(mSearchInfo.getUsers().get(i).getFId()==followedInfo.getUsers().get(j).getFId()||mSearchInfo.getUsers().get(i).getFId()==IdUtil.getuId()){
-                    XLog.e("这里执行了一次哦");
                     mSearchInfo.getUsers().remove(i);
-                    ToastUtil.showToast(BaseApplication.getContext(),"您已经关注了该用户");
                     i--;
                     break;
                 }

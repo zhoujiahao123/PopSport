@@ -185,6 +185,7 @@ public class FriendActivity extends SwipeBackActivity implements FriendView, Fri
         adapter = new FriendFragmenPagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewpager);
+        searchUser(1,"");
     }
 
     @Override

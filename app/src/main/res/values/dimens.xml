@@ -35,7 +35,7 @@
     <dimen name="forecast_image_size">30dp</dimen>
     <dimen name="forecast_weather_width">40dp</dimen>
     <dimen name="forecast_weather_margin_left">40dp</dimen>
-    <dimen name="forecast_temp_margin_left">60dp</dimen>
+    <dimen name="forecast_temp_margin_left">50dp</dimen>
     <dimen name="weather_life_height">60dp</dimen>
     <dimen name="weather_life_image_size">40dp</dimen>
     <dimen name="weather_life_image_margin_left">25dp</dimen>
