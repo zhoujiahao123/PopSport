@@ -1,58 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <com.liulishuo.magicprogresswidget.MagicProgressCircle
-        android:id="@+id/runCircle"
-        android:layout_centerInParent="true"
-        app:mpc_stroke_width="@dimen/step_circle_stoke_width"
-        app:mpc_percent="0.5"
-        app:mpc_end_color="@color/yellow_light"
-        app:mpc_start_color="@color/yellow_light"
-        android:layout_width="@dimen/step_circle_size"
-        android:layout_height="@dimen/step_circle_size" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--头部-->
     <LinearLayout
-        android:layout_centerInParent="true"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_weight="2"
+        android:gravity="center"
+        android:layout_height="0dp">
+
         <TextView
-            android:layout_gravity="center"
-            android:text="@string/miletext"
-            android:layout_marginBottom="@dimen/spacing_small"
-            android:textColor="@color/yellow_light"
-            android:textSize="@dimen/font_large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_currentMiles"
-            android:layout_gravity="center"
-            android:textColor="@color/yellow_normal_light"
+            android:id="@+id/current_miles_tv"
+            android:gravity="center"
             android:text="0"
-            android:textStyle="bold"
-            android:textSize="@dimen/font_huge"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_super_huger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
-            android:id="@+id/tv_expectMiles"
-            android:layout_gravity="center"
-            android:text="@string/expect_run_miles"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:textColor="@color/yellow_light"
+            android:text="今日已完成(m)"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/colorPrimaryLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bt_run_start"
-        android:background="@drawable/runbt_start_backgourd"
-        android:text="开始"
-        android:textColor="@color/white_normal"
-        android:layout_below="@id/runCircle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/spacing_super_huge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />w
+    <RelativeLayout
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:id="@+id/history_best_miles"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="0"
+                android:textSize="@dimen/font_below_huge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="单次最佳"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/font_small"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="12dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:id="@+id/history_average_miles"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="10"
+                android:textSize="@dimen/font_below_huge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="历史平均"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/font_small"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!--柱形图-->
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/charter"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"></com.github.mikephil.charting.charts.BarChart>
+
+</LinearLayout>
+

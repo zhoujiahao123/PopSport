@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
-            android:background="@color/ufo_green"
+            android:background="@color/colorPrimary"
             app:theme="@style/WriteMsgToolbarCannotUse"
             android:id="@+id/toolbar_write_msg"
             android:layout_width="match_parent"

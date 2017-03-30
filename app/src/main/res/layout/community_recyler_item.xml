@@ -48,28 +48,26 @@
     
     <TextView
         android:id="@+id/tv_content"
-        android:layout_marginTop="@dimen/spacing_small"
         android:padding="8dp"
-        android:text="来访记录的肌肤立ffffffffffffffffafdaf刻就受到了房间里肯定撒减fffffffffffffdfasdfdafdsafsadfdasfdf肥啦是的"
         android:textSize="@dimen/msg_text_size"
         android:textColor="@color/one_class_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.nexuslink.ui.view.view.headerview.MultiView
-        android:id="@+id/multi_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@color/background_color"
-        app:divideSpace="4dp"
-        android:layout_marginBottom="1dp"
-        >
-    </com.nexuslink.ui.view.view.headerview.MultiView>
 
-    <include
-        layout="@layout/divider_line"
-        ></include>
+        <com.nexuslink.ui.view.view.headerview.MultiView
+            android:id="@+id/multi_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            app:divideSpace="4dp"
+            android:layout_marginBottom="1dp"
+            >
+        </com.nexuslink.ui.view.view.headerview.MultiView>
+
+
+
+
 
     <LinearLayout
         android:padding="@dimen/spacing_tiny"

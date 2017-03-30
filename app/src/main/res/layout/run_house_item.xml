@@ -41,14 +41,16 @@
         <TextView
             android:id="@+id/run_house_name"
             android:text="跑房名"
-            android:textColor="@color/one_class_text"
+            android:paddingBottom="@dimen/spacing_tiny"
+            android:textColor="@color/primary_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-                android:textColor="@color/two_class_text"
+                android:textColor="@color/secondary_text"
                 android:id="@+id/run_house_start_time"
                 android:text="今天 22:00"
+                android:paddingTop="@dimen/spacing_tiny"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -68,13 +70,13 @@
                 android:layout_marginRight="@dimen/spacing_normal"
                 android:src="@drawable/roadtype"
                 android:id="@+id/run_house_type_image"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
+                android:layout_width="25dp"
+                android:layout_height="25dp" />
             <TextView
                 android:text="fdsafsdfdfsafa"
                 android:layout_marginLeft="@dimen/spacing_tiny"
                 android:id="@+id/run_house_detail"
-                android:textColor="@color/two_class_text"
+                android:textColor="@color/secondary_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

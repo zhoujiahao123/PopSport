@@ -5,9 +5,7 @@ package com.nexuslink.ui.view;
  */
 
 public interface RunView {
-    //标题动画
-    void startTitleAnim();
-    void endTitleAnim();
+
     //时间
     void setCurrentTime(String realTime);
     //速度
@@ -16,4 +14,6 @@ public interface RunView {
     void setCurrentCol(String col);
     //设置当前公里数
     void setCurrentDistance(String miles);
+    //设置最大速度
+    void setMaxSpeed(String maxSpeed);
 }

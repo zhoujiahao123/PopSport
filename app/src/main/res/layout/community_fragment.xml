@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <RelativeLayout
 
     android:background="@color/background_gray"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/toolbar_relative"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <android.support.v7.widget.Toolbar
-            android:background="@color/ufo_green"
-            android:id="@+id/toolbar_community"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-        </android.support.v7.widget.Toolbar>
-        <TextView
-            android:text="社区"
-            style="@style/ToolbarTextViewStyle"
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbar_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:background="@color/colorPrimary"
+                android:id="@+id/toolbar_community"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+            </android.support.v7.widget.Toolbar>
+            <TextView
+                android:text="社区"
+                style="@style/ToolbarTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <in.srain.cube.views.ptr.PtrFrameLayout
-        android:layout_below="@id/toolbar_relative"
+        android:layout_below="@id/toolbar_appbar"
         android:id="@+id/ptrFrame"
         app:ptr_resistance_footer="1.7"
         app:ptr_resistance_header="1.7"
@@ -48,4 +58,18 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         app:loading_renderer="GearLoadingRenderer" />
-</RelativeLayout>
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/add_test"
+        android:background="@color/colorAccent"
+        app:layout_anchor="@id/recycler_community"
+        app:layout_anchorGravity="right|bottom"
+        app:layout_behavior="com.nexuslink.ui.view.fab.MyFabBehavior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</android.support.design.widget.CoordinatorLayout>

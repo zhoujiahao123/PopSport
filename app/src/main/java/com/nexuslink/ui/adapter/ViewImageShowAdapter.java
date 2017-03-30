@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.nexuslink.ui.fragment.ViewImageFragment;
+
 import java.util.List;
 
 /**
@@ -12,9 +14,9 @@ import java.util.List;
 
 public class ViewImageShowAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> fragments;
+    private List<ViewImageFragment> fragments;
 
-    public ViewImageShowAdapter(FragmentManager fm,List<Fragment> list) {
+    public ViewImageShowAdapter(FragmentManager fm,List<ViewImageFragment> list) {
         super(fm);
         this.fragments = list;
     }
