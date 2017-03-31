@@ -63,11 +63,12 @@
     <application
         android:name=".app.BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_luancher"
+        android:icon="@drawable/poplog"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LogInActivity">
+        <activity android:name=".ui.activity.LogInActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -188,6 +189,7 @@
             android:theme="@style/AppTheme">
 
         </activity>
+        <service android:name=".service.InitService"></service>
     </application>
 
 </manifest>

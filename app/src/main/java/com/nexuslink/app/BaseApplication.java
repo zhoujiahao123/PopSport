@@ -1,29 +1,15 @@
  package com.nexuslink.app;
 
  import android.app.Application;
-import android.content.Context;
-import android.graphics.Color;
+ import android.content.Context;
 
-import com.elvishew.xlog.LogLevel;
-import com.elvishew.xlog.XLog;
-import com.facebook.stetho.Stetho;
-import com.nexuslink.DaoMaster;
-import com.nexuslink.DaoSession;
-import com.nexuslink.util.GlideImageLoader;
-import com.nexuslink.util.cache.DiskLruCacheHelper;
-import com.umeng.socialize.Config;
-import com.umeng.socialize.PlatformConfig;
-import com.umeng.socialize.UMShareAPI;
-import com.vanniktech.emoji.EmojiManager;
-import com.vanniktech.emoji.ios.IosEmojiProvider;
-
-import java.io.IOException;
-
-import cn.finalteam.galleryfinal.CoreConfig;
-import cn.finalteam.galleryfinal.FunctionConfig;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.ImageLoader;
-import cn.finalteam.galleryfinal.ThemeConfig;
+ import com.elvishew.xlog.LogLevel;
+ import com.elvishew.xlog.XLog;
+ import com.nexuslink.DaoMaster;
+ import com.nexuslink.DaoSession;
+ import com.nexuslink.service.InitService;
+ import com.nexuslink.util.cache.DiskLruCacheHelper;
+ import com.umeng.socialize.PlatformConfig;
 
 
  /**
@@ -44,58 +30,10 @@ public class BaseApplication extends Application {
 
     public void onCreate() {
         super.onCreate();
-        UMShareAPI.get(this);
-        Config.DEBUG = true;
         mContext = getApplicationContext();
         XLog.init(LogLevel.ALL);
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(
-                                Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(
-                                Stetho.defaultInspectorModulesProvider(this))
-                        .build());
-        /**
-         * 数据库初始化
-         */
-        daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
-                .getWritableDatabase()).newSession();
-        //初始化缓存
-        try {
-            helper = new DiskLruCacheHelper(getContext());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //初始化图片选择器
-       ThemeConfig GREEN = new ThemeConfig.Builder()
-                .setTitleBarBgColor(Color.rgb(0x4C, 0xAF, 0x50))
-                .setFabNornalColor(Color.rgb(0x4C, 0xAF, 0x50))
-                .setFabPressedColor(Color.rgb(0x38, 0x8E, 0x3C))
-                .setCheckSelectedColor(Color.rgb(0x4C, 0xAF, 0x50))
-                .setCropControlColor(Color.rgb(0x4C, 0xAF, 0x50))
-                .build();
-        //配置功能
-        FunctionConfig functionConfig = new FunctionConfig.Builder()
-                .setEnableCamera(true)
-                .setEnableEdit(true)
-                .setEnableCrop(true)
-                .setEnableRotate(true)
-                .setCropSquare(true)
-                .setEnablePreview(true)
-                .build();
-        //配置imageloader
-        ImageLoader imageloader = new GlideImageLoader();
-        //设置核心配置信息
-        CoreConfig coreConfig = new CoreConfig.Builder(getApplicationContext(), imageloader, GREEN)
-                .setFunctionConfig(functionConfig)
-                .build();
-        GalleryFinal.init(coreConfig);
-        /**
-         * emoji表情
-         */
-        EmojiManager.install(new IosEmojiProvider());
 
-
+        InitService.start(this);
     }
     /*
     提供全局context

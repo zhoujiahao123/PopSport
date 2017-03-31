@@ -3,7 +3,6 @@ package com.nexuslink.ui.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -39,10 +38,13 @@ import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.presenter.alterpresenter.AlterPresenterImpl;
 import com.nexuslink.ui.dialog.AlterPasswordDialog;
 import com.nexuslink.ui.view.AlterView;
+import com.nexuslink.util.ActivityStack;
 import com.nexuslink.util.BitmapCompressUpUtils;
 import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ImageUtil;
+import com.nexuslink.util.SharedPrefsUtil;
 import com.nexuslink.util.ToastUtil;
 import com.wevey.selector.dialog.MDEditDialog;
 
@@ -524,15 +526,22 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 
     @OnClick(R.id.log_off)
     public void onClick() {
-        SharedPreferences sharedPreferences = getSharedPreferences("already",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove("already");
-        editor.putInt("already",0);
-        editor.commit();
-        User user;
-        user= BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-        user.setAlready(0);
-        BaseApplication.getDaosession().getUserDao().update(user);
+//        SharedPreferences sharedPreferences = getSharedPreferences("already",Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.remove("already");
+//        editor.putInt("already",0);
+//        editor.commit();
+        SharedPrefsUtil.putValue(this,"already","already",0);
+//        User user;
+//        user= BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
+//        user.setAlready(0);
+//        BaseApplication.getDaosession().getUserDao().update(user);
+        DBUtil.getUserDao().deleteAll();
+        //退出之前清除所有Activity
+        ActivityStack.getScreenManager().clearAllActivity();
+
+        Intent intent = new Intent(this,LogInActivity.class);
+        startActivity(intent);
     }
 
     @Override
