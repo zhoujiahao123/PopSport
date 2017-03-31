@@ -4,11 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.nexuslink.R;
+import com.nexuslink.app.BaseActivity;
 import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.service.AlarmService;
 import com.nexuslink.ui.fragment.AppointmentFragment;
@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainViewActivity extends AppCompatActivity {
+public class MainViewActivity extends BaseActivity {
 
     //===============================================常量
     private static String TAG = "MainViewActivity";

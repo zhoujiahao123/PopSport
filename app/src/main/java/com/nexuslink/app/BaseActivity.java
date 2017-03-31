@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nexuslink.R;
-import com.sina.weibo.sdk.api.share.Base;
+import com.nexuslink.util.ActivityStack;
 
 /**
  * Created by ASUS-NB on 2016/12/20.
@@ -20,7 +20,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityStack.getScreenManager().pushActivity(this);
     }
+
+
 
     public boolean isNetworkActive(){
         ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -33,6 +36,7 @@ public class BaseActivity extends AppCompatActivity {
         }
 
     }
+
     public void onErrorNetwork(){
         setContentView(R.layout.activity_error_network_normal);
     }
@@ -52,6 +56,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityStack.getScreenManager().popActivity(this);
     }
 
     @Override

@@ -6,8 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="TranslucentBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,6 +13,10 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@color/blue</item>
         <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/logo_splash</item>
     </style>
 
 </resources>

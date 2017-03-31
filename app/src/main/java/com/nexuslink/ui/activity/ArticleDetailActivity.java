@@ -1,6 +1,6 @@
 package com.nexuslink.ui.activity;
 
-import android.icu.util.Calendar;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +36,7 @@ import com.vanniktech.emoji.EmojiTextView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,6 +45,7 @@ import butterknife.OnClick;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 import static com.nexuslink.app.BaseApplication.mContext;
+import static java.util.Calendar.AM;
 
 public class ArticleDetailActivity extends SwipeBackActivity implements ArticleDetailView {
 
@@ -285,8 +287,8 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         Calendar c = Calendar.getInstance();
         //同步时间
         c.setTimeInMillis(System.currentTimeMillis());
-        c.set(java.util.Calendar.AM,0);
-        c.set(java.util.Calendar.MINUTE,0);
+        c.set(Calendar.AM_PM,0);
+        c.set(Calendar.MINUTE,0);
         // 判断是不是今年
         if(c.get(Calendar.YEAR) == Integer.valueOf(date.split("-")[0])){
             //是今年，那么是否有超过7天
