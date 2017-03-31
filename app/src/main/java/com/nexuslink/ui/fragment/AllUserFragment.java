@@ -31,8 +31,6 @@ import butterknife.ButterKnife;
 public class AllUserFragment extends BaseFragment implements AllUserView,OnSearchListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.nothing)
-    TextView nothing;
     private FriendRecyclerViewAdapter adapter;
     SearchInfo searchInfo;
 
@@ -74,7 +72,6 @@ public class AllUserFragment extends BaseFragment implements AllUserView,OnSearc
 
     @Override
     public void onSearched() {
-        nothing.setVisibility(View.INVISIBLE);
     }
 
 }

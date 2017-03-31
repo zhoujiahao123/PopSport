@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_light"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:paddingTop="@dimen/padding_top"
+        android:background="@drawable/bg_friend_info">
+
+
+    <RelativeLayout
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/selector_translucent"
+                >
+            </android.support.v7.widget.Toolbar>
+        <TextView
+            android:text="个人信息"
+            android:textSize="@dimen/font_large"
+            android:textColor="@color/white_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/top_bar">
+        <com.nexuslink.util.CircleImageView
+            android:id="@+id/head_image"
+            android:src="@drawable/head"
+            android:layout_width="@dimen/image_size_large"
+            android:layout_height="@dimen/image_size_large"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/spacing_large"/>
+        <TextView
+            android:id="@+id/nick_name"
+            android:text="Jacob"
+            android:textSize="@dimen/font_larger"
+            android:textColor="@color/white_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/head_image"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_centerHorizontal="true"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/head_image"
+            android:layout_marginTop="@dimen/spacing_huge">
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+               <ImageView
+                   android:id="@+id/fans_logo"
+                   android:src="@drawable/fans__log"
+                   android:layout_width="@dimen/image_size_small"
+                   android:layout_height="@dimen/image_size"
+                   android:layout_centerHorizontal="true"/>
+               <TextView
+                   android:id="@+id/fan_num"
+                   android:text="112"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/fans_logo"
+                   android:textColor="@color/white_light"
+                   android:layout_centerHorizontal="true"
+                   android:layout_marginRight="48dp"
+                   />
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="粉丝"
+                   android:textColor="@color/white_light"
+                   android:layout_below="@id/fan_num"
+                   android:id="@+id/textView"
+                   android:layout_marginTop="@dimen/spacing_tiny"
+                   android:layout_centerHorizontal="true"/>
+           </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/head_image"
+            android:layout_marginTop="@dimen/spacing_huge">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/follow_logo"
+                    android:src="@drawable/followed__log"
+                    android:layout_width="@dimen/image_size_small"
+                    android:layout_height="@dimen/image_size"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/follow_num"
+                    android:text="112"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white_light"
+                    android:layout_below="@id/follow_logo"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关注"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:textColor="@color/white_light"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/follow_num"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+    </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:background="@color/white_light">
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/dot_purple"
+                        android:src="@drawable/dot__red"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        />
+                    <TextView
+                        android:id="@+id/achieve"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="成就"
+                        android:textColor="@color/red_friend"
+                        android:textSize="@dimen/font_large"
+                        android:layout_below="@id/dot_purple"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/spacing_small"/>
+                    <TextView
+                        android:id="@+id/achieve_impl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="突破三公里"
+                        android:textColor="@color/red_friend"
+                        android:textSize="@dimen/font_normal"
+                        android:layout_below="@id/achieve"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/spacing_small"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+               <RelativeLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+                   <ImageView
+                       android:id="@+id/dot_green"
+                       android:src="@drawable/dot_dark_blue"
+                       android:layout_width="20dp"
+                       android:layout_height="20dp"
+                       android:layout_centerHorizontal="true" />
+                   <TextView
+                       android:id="@+id/rating"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="等级"
+                       android:textSize="@dimen/font_large"
+                       android:textColor="@color/dark_imperial_blue"
+                       android:layout_below="@id/dot_green"
+                       android:layout_marginTop="@dimen/spacing_small"
+                       android:layout_centerHorizontal="true"/>
+                   <TextView
+                       android:id="@+id/rating_impl"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="18Lv"
+                       android:textColor="@color/dark_imperial_blue"
+                       android:textSize="@dimen/font_normal"
+                       android:layout_below="@id/rating"
+                       android:layout_centerHorizontal="true"
+                       android:layout_marginTop="@dimen/spacing_small"/>
+               </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/dot_red"
+                        android:src="@drawable/dot__red"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+                    <TextView
+                        android:id="@+id/gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="性别"
+                        android:textSize="@dimen/font_large"
+                        android:textColor="@color/red_friend"
+                        android:layout_below="@id/dot_red"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/spacing_small"/>
+
+                    <TextView
+                        android:id="@+id/gender_impl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="男"
+                        android:textColor="@color/red_friend"
+                        android:textSize="@dimen/font_normal"
+                        android:layout_below="@id/gender"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/spacing_small"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+        <ImageView
+            android:background="@color/gray_light_more"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/layout"
+            android:layout_marginTop="@dimen/spacing_huge"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="他关注的人"
+            android:gravity="center"
+            android:textColor="@color/dark_imperial_blue"
+            android:textSize="@dimen/font_small"
+            android:layout_below="@id/layout"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:background="@drawable/selector_btn_dot"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/follow_people"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/content_layout"
+        android:background="@color/white_light"
+        android:layout_marginTop="@dimen/spacing_large">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

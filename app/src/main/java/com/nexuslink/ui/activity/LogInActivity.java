@@ -39,6 +39,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -259,8 +260,11 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     @Override
     public void failedLogIn() {
-//        Snackbar.make(container, "您输入的密码有误", Snackbar.LENGTH_SHORT).show();
-        ToastUtil.showToast(this,"账户或密码错误");
+
+        new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("很抱歉")
+                .setContentText("您的用户名或密码输入错误")
+                .show();
     }
 
     @Override

@@ -47,7 +47,7 @@ public class LogInModeImp implements LogInModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        XLog.e(e.toString());
+                        presenterImp.logInCheck(false);
                     }
 
                     @Override

@@ -6,8 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_top">
+        android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -37,10 +36,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/image"/>
-    <TextView
-        android:text="@string/pull_refresh"
+    <Button
+        android:id="@+id/btn_reload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="重新加载"
+        android:background="@drawable/selector_load"
+        android:layout_below="@id/error_text"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/error_text"/>
+        android:textColor="@color/red"
+        android:layout_marginTop="@dimen/spacing_small"/>
 </RelativeLayout>

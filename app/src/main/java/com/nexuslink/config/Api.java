@@ -131,9 +131,9 @@ public interface Api {
     Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId, @Field("uGender")char uGender, @Field("uHeight")int
             uHeight, @Field("uWeight")int uWeight);
 
-    //修改用户的头像
+    //修改用户的昵称
     @FormUrlEncoded
-    @POST("user/cahngeName")
+    @POST("user/changeName")
     Observable<ChangeInfo1> changeNickName(@Field("uId")int uId, @Field("uName")String uName);
 
     //搜索用户
@@ -209,6 +209,7 @@ public interface Api {
     retrofit2.Call<Result> postDistance(@Field("uId") int uId,@Field("distance") int distance,@Field("duration") int duration,
     @Field("averageSpeed") int avergeSpeed, @Field("pathline") String pathLine,@Field("startPoint") String startPoint,@Field("endPoint") String endPoint
     ,@Field("time") String time);
+
 
     //取得跑步数
     @FormUrlEncoded
