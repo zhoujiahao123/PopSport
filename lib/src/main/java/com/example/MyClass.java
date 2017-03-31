@@ -70,6 +70,16 @@ public class MyClass {
         taskMileages.addIntProperty("taskFlag");
         taskMileages.addIntProperty("taskNum");
 
+        //已经参加了的跑房
+        Entity hasJoinedRooms = schema.addEntity("HasJoinedRooms");
+        hasJoinedRooms.addIdProperty().primaryKey();
+        hasJoinedRooms.addIntProperty("rId");
+        hasJoinedRooms.addStringProperty("RoomName");
+        hasJoinedRooms.addIntProperty("PersonNum");
+        hasJoinedRooms.addStringProperty("StartTime");
+        hasJoinedRooms.addIntProperty("Goal");
+        hasJoinedRooms.addIntProperty("Type");
+
 
     }
 }

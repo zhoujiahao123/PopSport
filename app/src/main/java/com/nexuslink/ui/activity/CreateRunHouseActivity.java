@@ -16,7 +16,10 @@ import android.widget.TextView;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.data.Type;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
+import com.nexuslink.HasJoinedRooms;
+import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
+import com.nexuslink.model.data.SetUpAlarm;
 import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenter;
 import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenterImpl;
 import com.nexuslink.ui.adapter.CreateRunHouseViewPagerAdapter;
@@ -24,13 +27,13 @@ import com.nexuslink.ui.fragment.RoadTypeRunHouseFragment;
 import com.nexuslink.ui.fragment.TimeTypeRunHouseFragment;
 import com.nexuslink.ui.view.CreateRunHouseView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,10 +68,16 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
 
     private TimePickerDialog timePickerDialog;
 
+
     //===============================================变量
     private SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
     private List<Fragment> fragments = new ArrayList<>();
     private CreateRunHouseViewPagerAdapter adapter;
+    private long time;
+    /**
+     * 格式控制
+     */
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     /**
      * presenter
      */
@@ -123,6 +132,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
                 .build();
         //设置默认时间
         mStartDateShow.setText(df.format(System.currentTimeMillis() + THREE_MINUTES));
+        time = System.currentTimeMillis()+THREE_MINUTES;
     }
 
 
@@ -170,7 +180,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
 
     }
 
-    private long time;
+
 
     @Override
     public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
@@ -202,7 +212,6 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     public void showSuccess() {
         ToastUtil.showToast(this, "创建成功");
         EventBus.getDefault().post("刷新跑房");
-        onBackPressed();
     }
 
     @Override
@@ -244,7 +253,17 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     }
 
     @Override
-    public Date getStartTime() {
-        return new Date(time);
+    public String getStartTime() {
+        return sdf.format(time);
+    }
+
+    @Override
+    public void insertOneRoom(int rId) {
+        final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
+        HasJoinedRooms room = new HasJoinedRooms(null,rId,roomNameInput.getText().toString(),1,sdf.format(time),getGoal(),getType());
+        joinedRoomsDao.insert(room);
+        //设置该次闹钟
+        EventBus.getDefault().post(new SetUpAlarm());
+        onBackPressed();
     }
 }

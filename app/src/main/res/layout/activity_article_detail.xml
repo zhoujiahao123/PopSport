@@ -1,8 +1,7 @@
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -35,9 +34,11 @@
             android:layout_height="25dp" />
     </RelativeLayout>
 
-    <ScrollView
+    <com.nexuslink.ui.view.SpringBackScrollView
+        android:layout_below="@id/toolbar_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:orientation="vertical"
@@ -56,11 +57,10 @@
                 android:layout_height="wrap_content">
 
                 <com.nexuslink.util.CircleImageView
-                    android:src="@mipmap/ic_luancher"
                     android:id="@+id/user_image"
                     android:layout_gravity="center"
-                    android:layout_width="@dimen/image_size_normal"
-                    android:layout_height="@dimen/image_size_normal" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <LinearLayout
 
                     android:layout_marginLeft="@dimen/spacing_normal"
@@ -74,13 +74,12 @@
                         android:layout_height="wrap_content">
                         <TextView
                             android:id="@+id/user_name"
-                            android:text="张兴锐"
                             android:textSize="@dimen/font_normal"
+                            android:textColor="@color/primary_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         <TextView
                             android:id="@+id/user_level"
-                            android:text="Lv.20"
                             android:textColor="@color/ufo_green"
                             android:layout_marginLeft="@dimen/spacing_normal"
                             android:layout_width="wrap_content"
@@ -88,20 +87,19 @@
                     </LinearLayout>
                     <TextView
                         android:id="@+id/article_date_tv"
-                        android:text="2017-111"
                         android:textSize="@dimen/font_normal"
+                        android:textColor="@color/secondary_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
+            <com.vanniktech.emoji.EmojiTextView
                 android:id="@+id/tv_content"
                 android:layout_marginTop="@dimen/spacing_small"
                 android:padding="8dp"
-                android:text="来访记录的肌肤立ffffffffffffffffafdaf刻就受到了房间里肯定撒减fffffffffffffdfasdfdafdsafsadfdasfdf肥啦是的"
                 android:textSize="@dimen/msg_text_size"
-                android:textColor="@color/one_class_text"
+                android:textColor="@color/primary_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -152,15 +150,28 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_large"
                 ></LinearLayout>
 
             <include
                 layout="@layout/comment_input"
                 ></include>
 
+            <View
+                android:alpha="100"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_large">
+            </View>
+
+
         </LinearLayout>
 
-    </ScrollView>
 
-</LinearLayout>
+
+    </com.nexuslink.ui.view.SpringBackScrollView>
+
+
+    <include
+        layout="@layout/progress_layout"
+        ></include>
+
+</RelativeLayout>

@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="35dp">
-    <EditText
+    <com.vanniktech.emoji.EmojiEditText
         android:layout_marginRight="@dimen/spacing_small"
         android:id="@+id/input_comment"
         android:layout_weight="8"

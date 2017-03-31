@@ -6,7 +6,9 @@ import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.articledetailsmodel.ArticleDetailModel;
 import com.nexuslink.model.articledetailsmodel.ArticleDetailModelImpl;
 import com.nexuslink.model.data.CommentInfo;
+import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.ui.view.ArticleDetailView;
+import com.nexuslink.util.Base64Utils;
 import com.nexuslink.util.UserUtils;
 
 import java.util.List;
@@ -48,7 +50,7 @@ public class ArticleDetailPresenterImpl implements ArticleDetailPresenter {
     @Override
     public void postComment(final int articleId) {
         if(!TextUtils.isEmpty(mArticleView.getCommentInput())){
-            mArticleDetailModel.postComment(UserUtils.getUserId(), articleId, mArticleView.getCommentInput(), new CallBackListener() {
+            mArticleDetailModel.postComment(UserUtils.getUserId(), articleId, Base64Utils.encode(mArticleView.getCommentInput()), new CallBackListener() {
                 @Override
                 public void onFinish(Object o) {
                     mArticleView.addCommentNum();
@@ -68,7 +70,36 @@ public class ArticleDetailPresenterImpl implements ArticleDetailPresenter {
     }
 
     @Override
-    public void postLike() {
+    public void postLike(int articleId) {
+        mArticleDetailModel.postLike(UserUtils.getUserId(), articleId, new CallBackListener() {
+            @Override
+            public void onFinish(Object o) {
+                mArticleView.showSuccess("点赞成功");
+            }
 
+            @Override
+            public void onError(Exception e) {
+                mArticleView.showError("点赞失败");
+            }
+        });
+    }
+
+    @Override
+    public void loadArticle(int articleId) {
+        mArticleView.showProgress();
+        mArticleDetailModel.getArticle(articleId, new CallBackListener() {
+            @Override
+            public void onFinish(Object o) {
+                mArticleView.hideProgress();
+                mArticleView.setUpViews((SingleCommunityInfo.ArticleBean) o);
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                mArticleView.hideProgress();
+                mArticleView.showError("加载过程中出错,请重试");
+            }
+        });
     }
 }

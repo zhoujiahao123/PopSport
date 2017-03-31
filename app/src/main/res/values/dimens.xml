@@ -122,5 +122,8 @@
 
     <dimen name="dialog_title_height">100dp</dimen>
     <dimen name="dialog_content_height">100dp</dimen>
+    <dimen name="app_bar_height">240dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

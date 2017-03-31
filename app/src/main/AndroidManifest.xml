@@ -46,6 +46,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="ACCESS_FINE_LOCATION" />
+    <!--震动-->
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <uses-feature
         android:name="android.hardware.sensor.stepcounter"
@@ -107,7 +109,7 @@
         <activity
             android:name=".ui.activity.MainViewActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateUnchanged|adjustUnspecified" />
         <activity
             android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -128,12 +130,8 @@
             android:name="com.amap.api.v2.apikey"
             android:value="ea9a725ff880d7bdd907142465ca7392" />
 
-        <activity
-            android:name=".ui.activity.RunActivity"
-         />
-        <activity
-            android:name=".ui.activity.RunHouseDetailActivity"
-           />
+        <activity android:name=".ui.activity.RunActivity" />
+        <activity android:name=".ui.activity.RunHouseDetailActivity" />
         <activity
             android:name=".ui.activity.CreateRunHouseActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -146,7 +144,12 @@
 
 
         <!-- 到点通知 -->
-        <service android:name=".service.NotifyService" />
+        <service
+            android:name=".service.AlarmService">
+        </service>
+        <receiver android:name=".broadcast.AlarmReceiver"
+            ></receiver>
+
 
         <receiver android:name=".broadcast.AlarmReceiver" />
 
@@ -167,22 +170,23 @@
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
         -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-
-        <activity android:name=".ui.activity.ArticleDetailActivity"
-            android:windowSoftInputMode="adjustPan"
-            ></activity>
+       <!--<meta-data-->
+            <!--android:name="com.google.android.gms.version"-->
+            <!--android:value="@integer/google_play_services_version" />-->
         <activity android:name=".ui.activity.FriendInfoActivityS"
             android:theme="@style/TranslucentBar"/>
         <activity
             android:name=".ui.activity.ArticleDetailActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateUnchanged|adjustUnspecified" />
         <activity android:name=".ui.activity.StepAndRunHistoryActivity" />
         <activity android:name=".ui.activity.RecordShowActivity" />
-        <activity android:name=".ui.activity.PermissionsActivity"></activity>
+        <activity android:name=".ui.activity.PermissionsActivity" />
+        <activity
+            android:name=".ui.activity.RunHouseResultActivity"
+            android:label="@string/title_activity_run_house_result"
+            android:theme="@style/AppTheme">
+
+        </activity>
     </application>
 
 </manifest>

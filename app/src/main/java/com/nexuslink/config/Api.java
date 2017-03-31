@@ -8,8 +8,8 @@ import com.nexuslink.model.data.ChangeInfoPassword;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
-import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.model.data.CreateRunHouseResult;
+import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.model.data.FollowInfo;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.model.data.FriendInfo;
@@ -18,7 +18,10 @@ import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
+import com.nexuslink.model.data.Result;
+import com.nexuslink.model.data.RoomGoal;
 import com.nexuslink.model.data.SearchInfo;
+import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.model.data.TaskFlag;
 import com.nexuslink.model.data.UIdInfo;
 import com.nexuslink.model.data.UpLoadUserImageResult;
@@ -26,7 +29,6 @@ import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 import com.nexuslink.model.data.WriteArticleResult;
 
-import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -94,7 +96,7 @@ public interface Api {
     //获取话题单一内容
     @FormUrlEncoded
     @POST("article/getOne")
-    Observable<CommunityInfo> getArticle(@Field("uId") int userId, @Field("aId") int articleId);
+    Observable<SingleCommunityInfo> getArticle(@Field("uId") int userId, @Field("aId") int articleId);
 
     //获取多话题内容
     @FormUrlEncoded
@@ -171,7 +173,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("room/createRoom")
     Observable<CreateRunHouseResult> createRoom(@Field("uId") int uId, @Field("type") int type, @Field("goal")
-            int goal, @Field("roomName") String room, @Field("startTime")Date date);
+            int goal, @Field("roomName") String room, @Field("startTime")String startTime);
 
     //查看所有房间
     @FormUrlEncoded
@@ -188,6 +190,22 @@ public interface Api {
     @POST("room/quit")
     Observable<QuiteRoomResult> quitRoom(@Field("uId") int uId, @Field("rId") int rId);
 
+    //设置跑房成果
+   @FormUrlEncoded
+    @POST("room/setGoal")
+    Observable<RoomGoal> setGoal(@Field("uId") int uId, @Field("rId") int rId, @Field("goal") long goal);
 
+
+   //用户每日步数统计
+    @FormUrlEncoded
+    @POST("sport/saveStep")
+    retrofit2.Call<Result> postStep(@Field("uId") int uId, @Field("step") int step, @Field("date") String date);
+
+    //用户跑步公里数统计
+    @FormUrlEncoded
+    @POST("sport/saveDistance")
+    retrofit2.Call<Result> postDistance(@Field("uId") int uId,@Field("distance") int distance,@Field("duration") int duration,
+    @Field("averageSpeed") int avergeSpeed, @Field("pathline") String pathLine,@Field("startPoint") String startPoint,@Field("endPoint") String endPoint
+    ,@Field("time") String time);
 
 }

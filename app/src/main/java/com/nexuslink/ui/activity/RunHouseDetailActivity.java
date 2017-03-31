@@ -11,19 +11,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nexuslink.HasJoinedRooms;
+import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
 import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.SetUpAlarm;
 import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenter;
 import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenterImpl;
 import com.nexuslink.ui.adapter.RunHouseDetailAdapter;
 import com.nexuslink.ui.view.RunHouseDetailView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,11 +69,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
      * 辅助变量
      */
     private boolean isDataChanged = false;
-    /**
-     * 格式控制
-     */
-    private SimpleDateFormat dfDate = new SimpleDateFormat("MM月dd日");
-    private SimpleDateFormat dfDay = new SimpleDateFormat("HH:mm");
+
     //===============================================常量
     private static final String TAG = "RunHouseDetailActivity";
 
@@ -121,8 +120,8 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         //跑房目标框设置
         String str = roomBean.getRoomType() == 1 ? "米" : "分钟";
         mRunHouseExpectTv.setText(roomBean.getRoomGoal() + str);
-        //由于还在测试，这部分等后台完成在继续
-//             mRunHouseStartTimeTv.setText(dfDate.format(roomBean.getStartDate())+" "+dfDay.format(roomBean.getStartTime()));
+        //设置目标
+        mRunHouseStartTimeTv.setText(roomBean.getStartTime());
         //users设置
         adapter = new RunHouseDetailAdapter(this, roomBean.getUsers());
         mRecyclerView.setAdapter(adapter);
@@ -198,6 +197,16 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         if(adapter.getItemCount() == 0){
            onBackPressed();
         }
+    }
+
+    @Override
+    public void insertOneRoom() {
+        final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
+        HasJoinedRooms room = new HasJoinedRooms(null, roomBean.getRoomId(),roomBean.getRoomName(),adapter.getItemCount(),roomBean.getStartTime(),roomBean.getRoomGoal(),
+                roomBean.getRoomType());
+        joinedRoomsDao.insert(room);
+        //重新设置闹钟
+        EventBus.getDefault().post(new SetUpAlarm());
     }
 
 }

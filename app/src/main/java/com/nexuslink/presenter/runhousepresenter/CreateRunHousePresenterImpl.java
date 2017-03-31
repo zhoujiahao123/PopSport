@@ -36,13 +36,15 @@ public class CreateRunHousePresenterImpl implements CreateRunHousePresenter {
             runHouseModel.createRunHouse(mView.getType(), mView.getGoal(), mView.getRoomName(), mView.getStartTime(), new CallBackListener() {
                 @Override
                 public void onFinish(Object o) {
+                    int rId = (int) o;
                     mView.hideProgress();
                     mView.showSuccess();
-
+                    mView.insertOneRoom(rId);
                 }
 
                 @Override
                 public void onError(Exception e) {
+                    e.printStackTrace();
                     mView.hideProgress();
                     mView.showError();
                 }

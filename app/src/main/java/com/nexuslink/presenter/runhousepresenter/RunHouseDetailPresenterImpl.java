@@ -7,8 +7,6 @@ import com.nexuslink.model.runhousemodel.RunHouseDetailModel;
 import com.nexuslink.ui.view.RunHouseDetailView;
 import com.nexuslink.util.UserUtils;
 
-import java.util.List;
-
 /**
  * Created by 猿人 on 2017/2/25.
  */
@@ -33,8 +31,10 @@ public class RunHouseDetailPresenterImpl implements RunHouseDetailPresenter {
             public void onFinish(Object o) {
                 mView.hideProgress();
                 mView.showSuccess();
-                List<LoadRoomsResult.RoomBean.UsersBean> users = (List<LoadRoomsResult.RoomBean.UsersBean>) o;
-                mView.setDatas(users);
+                LoadRoomsResult.RoomBean room = (LoadRoomsResult.RoomBean) o;
+                mView.setDatas(room.getUsers());
+                //进行数据的插入
+                mView.insertOneRoom();
             }
 
             @Override

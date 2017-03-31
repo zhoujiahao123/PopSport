@@ -1,6 +1,6 @@
 package com.nexuslink.ui.fragment;
 
-import android.icu.util.Calendar;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
