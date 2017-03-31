@@ -7,22 +7,18 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nexuslink.DaoSession;
 import com.nexuslink.R;
-import com.nexuslink.User;
-import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseActivity;
-import com.nexuslink.app.BaseApplication;
 import com.nexuslink.model.signinmodel.SignInModleImpl;
 import com.nexuslink.presenter.signinpresenter.SignInPresenter;
 import com.nexuslink.presenter.signinpresenter.SignInPresenterImpl;
 import com.nexuslink.ui.view.SignInView;
-import com.nexuslink.util.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -82,13 +78,9 @@ public class SignInActivity extends BaseActivity implements SignInView {
         window = new CharacterPickerWindow(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.turn_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         presenter = new SignInPresenterImpl(new SignInModleImpl(), this);
     }
     /**
@@ -113,6 +105,16 @@ public class SignInActivity extends BaseActivity implements SignInView {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void onSelectOption(int position) {

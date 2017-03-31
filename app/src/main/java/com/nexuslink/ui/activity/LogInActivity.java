@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +26,7 @@ import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.loginpresenter.LogInPresenter;
 import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
 import com.nexuslink.ui.view.LoginView;
+import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ToastUtil;
 import com.umeng.socialize.UMAuthListener;
@@ -53,12 +51,30 @@ import okhttp3.Response;
 
 public class LogInActivity extends BaseActivity implements LoginView {
     private static final String TAG = "AppCompatActivity";
-    @BindView(R.id.text_input_name)
-    TextInputEditText textInputName;
-    @BindView(R.id.text_input_password)
-    TextInputEditText textInputPassword;
-    @BindView(R.id.container)
-    RelativeLayout container;
+    @BindView(R.id.user_image)
+    CircleImageView mUserImage;
+    @BindView(R.id.login)
+    Button mLoginBt;
+    @BindView(R.id.register)
+    TextView mRegisterTv;
+    @BindView(R.id.forget_password)
+    TextView mForgetPasswordTv;
+    @BindView(R.id.qq_login)
+    CircleImageView qqLogin;
+    @BindView(R.id.wechat_login)
+    CircleImageView wechatLogin;
+    @BindView(R.id.xinlang_login)
+    CircleImageView xinlangLogin;
+    @BindView(R.id.account_input)
+    EditText accountInput;
+    @BindView(R.id.password_input)
+    EditText passwordInput;
+    //    @BindView(R.id.text_input_name)
+//    TextInputEditText textInputName;
+//    @BindView(R.id.text_input_password)
+//    TextInputEditText textInputPassword;
+//    @BindView(R.id.container)
+//    RelativeLayout container;
     private LogInPresenter presenter;
 
     //用来判断是否已经登录
@@ -67,15 +83,16 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     OkHttpClient okHttpClient = new OkHttpClient();
 
+    //===============================================handler
     private final int SUCCESS = 1;
     private final int FAILED = 0;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
-                case  SUCCESS:
-                    editor.putInt("already",1);
+            switch (msg.what) {
+                case SUCCESS:
+                    editor.putInt("already", 1);
                     editor.commit();
 
                     Intent mainViewIntent = new Intent(LogInActivity.this, MainViewActivity.class);
@@ -85,29 +102,30 @@ public class LogInActivity extends BaseActivity implements LoginView {
                     finish();
                     break;
                 case FAILED:
-                    ToastUtil.showToast(LogInActivity.this,"登录过程中出现错误，请重试...");
+                    ToastUtil.showToast(LogInActivity.this, "登录过程中出现错误，请重试...");
                     break;
             }
             dialog.dismiss();
         }
     };
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        sharedPreferences= getSharedPreferences("already", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("already", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 //
-        if(sharedPreferences.getInt("already",0)==1){
-            startActivity(new Intent(this,MainViewActivity.class));
+        if (sharedPreferences.getInt("already", 0) == 1) {
+            startActivity(new Intent(this, MainViewActivity.class));
             finish();
-        }else {
-            supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            setContentView(R.layout.activity_login_2);
+        } else {
+//            supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            setContentView(R.layout.activity_login);
             ButterKnife.bind(this);
-            container.getBackground().setAlpha(20);
+
             presenter = new LogInPresenterImp(this);
         }
 
@@ -139,7 +157,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
     }
 
     AlertDialog.Builder builder;
-     AlertDialog dialog ;
+    AlertDialog dialog;
 
     @Override
     public void succeedLogIn() {
@@ -157,25 +175,25 @@ public class LogInActivity extends BaseActivity implements LoginView {
             public void run() {
                 try {
                     //辅助变量
-                    boolean isInsert[] = {false,false,false};
+                    boolean isInsert[] = {false, false, false};
 
                     //请求用户信息
-                    RequestBody body =new FormBody.Builder().add("uId", String.valueOf(IdUtil.getuId())).build();
-                    Request request = new Request.Builder().post(body).url(Constants.BASE_URL+"user/getInfo").build();
-                    Response response  = okHttpClient.newCall(request).execute();
+                    RequestBody body = new FormBody.Builder().add("uId", String.valueOf(IdUtil.getuId())).build();
+                    Request request = new Request.Builder().post(body).url(Constants.BASE_URL + "user/getInfo").build();
+                    Response response = okHttpClient.newCall(request).execute();
                     String content = response.body().string();
-                    XLog.e("登录时存储用户数据成功"+content);
+                    XLog.e("登录时存储用户数据成功" + content);
                     Gson gson = new Gson();
 
-                    UserInfo userInfo = gson.fromJson(content,UserInfo.class);
-                    if(userInfo.getCode() == Constants.SUCCESS){
+                    UserInfo userInfo = gson.fromJson(content, UserInfo.class);
+                    if (userInfo.getCode() == Constants.SUCCESS) {
                         UserDao userDao = BaseApplication.getDaosession().getUserDao();
                         User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-                        String achievement=new String();
-                        for(int i =0;i<8;i++){
-                            achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
+                        String achievement = new String();
+                        for (int i = 0; i < 8; i++) {
+                            achievement += String.valueOf(userInfo.getUser().getUAchievements()[i]);
                         }
-                        user.setUAchievements(achievement.substring(1,achievement.length()-1));
+                        user.setUAchievements(achievement.substring(1, achievement.length() - 1));
                         user.setUExp(userInfo.getUser().getUExp());
                         user.setUFansNum(userInfo.getUser().getUFansNum());
                         user.setUGender(userInfo.getUser().getUGender());
@@ -241,7 +259,8 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     @Override
     public void failedLogIn() {
-        Snackbar.make(container,"您输入的密码有误",Snackbar.LENGTH_SHORT).show();
+//        Snackbar.make(container, "您输入的密码有误", Snackbar.LENGTH_SHORT).show();
+        ToastUtil.showToast(this,"账户或密码错误");
     }
 
     @Override
@@ -253,16 +272,20 @@ public class LogInActivity extends BaseActivity implements LoginView {
     public void signIn() {
         startActivity(new Intent(this, SignInActivity.class));
     }
-    @OnClick({R.id.login, R.id.register, R.id.qq_login, R.id.xinla_log,R.id.forget_password})
-    public void onClick(View view) {
+
+
+    @OnClick({R.id.login, R.id.register, R.id.qq_login, R.id.wechat_login, R.id.xinlang_login})
+    public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login:
-                if(textInputName.getText().toString().equals("")){
-                    Snackbar.make(container,"用户名不能为空",Snackbar.LENGTH_SHORT).show();
-                }else if(textInputPassword.getText().toString().equals("")){
-                    Snackbar.make(container,"密码不能为空",Snackbar.LENGTH_SHORT).show();
-                }else {
-                    presenter.logInToService(textInputName.getText().toString(), textInputPassword.getText().toString());
+                if (accountInput.getText().toString().equals("")) {
+//                    Snackbar.make(container, "用户名不能为空", Snackbar.LENGTH_SHORT).show();
+                    ToastUtil.showToast(this,"用户名不能为空");
+                } else if (passwordInput.getText().toString().equals("")) {
+//                    Snackbar.make(container, "密码不能为空", Snackbar.LENGTH_SHORT).show();
+                    ToastUtil.showToast(this,"密码不能为空");
+                } else {
+                    presenter.logInToService(accountInput.getText().toString(), passwordInput.getText().toString());
                 }
                 break;
             case R.id.register:
@@ -272,11 +295,11 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 UMShareAPI mShareAPI = UMShareAPI.get(LogInActivity.this);
                 mShareAPI.getPlatformInfo(LogInActivity.this, SHARE_MEDIA.QQ, umAuthListener);
                 break;
-            case R.id.xinla_log:
+            case R.id.wechat_login:
+                break;
+            case R.id.xinlang_login:
                 UMShareAPI mShareAPI1 = UMShareAPI.get(LogInActivity.this);
                 mShareAPI1.getPlatformInfo(LogInActivity.this, SHARE_MEDIA.SINA, umAuthListener);
-                break;
-            case R.id.forget_password:
                 break;
         }
     }

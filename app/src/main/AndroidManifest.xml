@@ -50,8 +50,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="ACCESS_FINE_LOCATION" />
-    <!--震动-->
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- 震动 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.sensor.stepcounter"
@@ -60,6 +60,9 @@
         android:name="android.hardware.sensor.stepdetector"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".app.BaseApplication"
         android:allowBackup="true"
@@ -67,7 +70,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LogInActivity"
+        <activity
+            android:name=".ui.activity.LogInActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -148,13 +152,9 @@
 
 
         <!-- 到点通知 -->
-        <service
-            android:name=".service.AlarmService">
-        </service>
-        <receiver android:name=".broadcast.AlarmReceiver"
-            ></receiver>
+        <service android:name=".service.AlarmService"></service>
 
-
+        <receiver android:name=".broadcast.AlarmReceiver" />
         <receiver android:name=".broadcast.AlarmReceiver" />
 
         <activity android:name=".ui.activity.ViewImageShowActivity" />
@@ -168,14 +168,14 @@
         <activity android:name=".ui.activity.TaskActivity" />
         <activity
             android:name=".ui.activity.SignInActivity"
-            android:theme="@style/TranslucentBar" />
+            android:theme="@style/AppTheme" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
         -->
-       <!--<meta-data-->
-            <!--android:name="com.google.android.gms.version"-->
-            <!--android:value="@integer/google_play_services_version" />-->
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.gms.version" -->
+        <!-- android:value="@integer/google_play_services_version" /> -->
 
         <activity
             android:name=".ui.activity.ArticleDetailActivity"
@@ -186,10 +186,13 @@
         <activity
             android:name=".ui.activity.RunHouseResultActivity"
             android:label="@string/title_activity_run_house_result"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"></activity>
 
-        </activity>
-        <service android:name=".service.InitService"></service>
+        <service android:name=".service.InitService" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>
