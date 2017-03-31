@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--底层白色-->
+    <item android:drawable="@color/colorPrimary"></item>
+    <!--上层logo-->
+    <item>
+        <bitmap android:src="@drawable/small_pop_logo"
+            android:gravity="center"
+            >
+        </bitmap>
+    </item>
+</layer-list>
