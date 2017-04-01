@@ -203,7 +203,7 @@
     </style>
 
     <style name="CustomLineColor" parent="Theme.AppCompat.Light">
-        <item name="colorControlActivated">@color/blue</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
     </style>
     <!--编写话题的toolbar 样式-->
     <style name="WriteMsgToolbarCanUse" parent="AppTheme.ActionBar">
@@ -233,9 +233,7 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="RunActivityActionBarTheme" parent="AppTheme">
-        <item name="colorPrimaryDark">#2B698F</item>
-    </style>
+
 
     <style name="RunActivityToolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/spacing_normal</item>

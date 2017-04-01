@@ -13,8 +13,9 @@ import android.support.design.widget.TextInputEditText;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -93,7 +94,8 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     @BindView(R.id.weight)
     TextView weight;
     @BindView(R.id.container)
-    RelativeLayout container;
+    LinearLayout container;
+
     private Toolbar toolbar;
 
     private AlterPresenter presenter;
@@ -147,16 +149,20 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 toolbar = (Toolbar) findViewById(R.id.toolbar);
                 setActionBar(toolbar);
                 getActionBar().setDisplayShowTitleEnabled(false);
-                toolbar.setNavigationIcon(R.drawable.turn_back);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        onBackPressed();
-                    }
-                });
+                getActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //add top-left icon click event deal
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -175,16 +181,9 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.turn_back);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
         }
         getActionBar().setDisplayShowTitleEnabled(false);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
 
         window = new CharacterPickerWindow(this);
@@ -209,15 +208,9 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.turn_back);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
         }
         getActionBar().setDisplayShowTitleEnabled(false);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
 
@@ -405,13 +398,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         setContentView(R.layout.activity_error_server);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.turn_back);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -477,7 +464,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 final TextInputEditText oldPassword = (TextInputEditText) view1.findViewById(R.id.old_password);
                 final TextInputEditText newPassword = (TextInputEditText) view1.findViewById(R.id.new_password);
                 final TextInputEditText newPasswordAgain = (TextInputEditText) view1.findViewById(R.id.new_password_again);
-                dialog1.setNegativeButton("OK", new View.OnClickListener() {
+                dialog1.setPositiveButton("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (oldPassword.getText().toString().equals("") || newPassword.getText().toString().equals("") || newPasswordAgain.getText().toString().equals("")) {
@@ -488,6 +475,12 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                             presenter.changePassword(8, oldPassword.getText().toString(), newPassword.getText().toString());
                             dialog1.dismiss();
                         }
+                    }
+                });
+                dialog1.setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog1.dismiss();
                     }
                 });
                 dialog1.show();
@@ -519,18 +512,18 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                         .setTitleVisible(true)
                         .setTitleText("修改用户名")
                         .setTitleTextSize(20)
-                        .setTitleTextColor(R.color.dark_imperial_blue)
+                        .setTitleTextColor(R.color.colorAccent)
                         .setContentTextSize(18)
                         .setMaxLength(7)
                         .setMaxLines(1)
-                        .setContentTextColor(R.color.dark_imperial_blue)
+                        .setContentTextColor(R.color.primary_text)
                         .setButtonTextSize(14)
-                        .setLeftButtonTextColor(R.color.blue)
+                        .setLeftButtonTextColor(R.color.secondary_text)
                         .setLeftButtonText("取消")
-                        .setRightButtonTextColor(R.color.blue)
+                        .setRightButtonTextColor(R.color.primary_text)
                         .setRightButtonText("确定")
                         .setInputTpye(InputType.TYPE_CLASS_TEXT)
-                        .setLineColor(R.color.colorPrimary)
+                        .setLineColor(R.color.colorAccent)
                         .setOnclickListener(new MDEditDialog.OnClickEditDialogListener() {
                             @Override
                             public void clickLeftButton(View view, String text) {
