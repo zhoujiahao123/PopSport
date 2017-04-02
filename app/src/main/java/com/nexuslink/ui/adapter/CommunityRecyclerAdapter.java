@@ -3,8 +3,10 @@ package com.nexuslink.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -153,10 +155,33 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             public boolean onClick(LikeView view) {
                 if(!isOpen){
                     isOpen = true;
-
                     holder.linearLayout.setVisibility(View.VISIBLE);
                     holder.commentInput.requestFocus();
+                    //弹起时无文字，不可点击
+                    holder.commentPost.setClickable(false);
+                    holder.commentPost.setBackground(mContext.getDrawable(R.drawable.bt_unclickable));
                     //弹起输入框
+                    final TextWatcher textWatcher = new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                if(s.toString().length() == 0){
+                                    Log.i(TAG,"无法点击");
+                                    holder.commentPost.setClickable(false);
+                                    holder.commentPost.setBackground(mContext.getDrawable(R.drawable.bt_unclickable));
+                                }else{
+                                    Log.i(TAG,"可点击");
+                                    holder.commentPost.setClickable(true);
+                                    holder.commentPost.setBackground(mContext.getDrawable(R.drawable.bt_run_house_normal));
+                                }
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                        }
+                    };
+                    holder.commentInput.addTextChangedListener(textWatcher);
                     KeyBoardUtils.openKeybord(holder.commentInput,mContext);
                 }else{
                     isOpen = false;
@@ -167,9 +192,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             }
         });
 
-
         //设置总评论区
-
          if(data.get(position).getCommentNum() > 0 &&
                  isFirstLoads.size() != 0 &&
                  isFirstLoads.get(position) == true) {
@@ -207,11 +230,13 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
                 Log.i(TAG,"aod"+data.get(position).getArticleId()+"");
                 presenter.postComment(holder.commentDetialLinear,holder.commentInput
                 ,holder.linearLayout,UserUtils.getUserId(),data.get(position).getArticleId(),position);
+                //提交后，变换状态
                 holder.commentPost.setClickable(false);
                 holder.commentPost.setBackground(mContext.getResources().getDrawable(R.drawable.bt_unclickable));
             }
         });
     }
+
 
 
     /**

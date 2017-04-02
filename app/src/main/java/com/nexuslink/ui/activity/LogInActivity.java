@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.elvishew.xlog.XLog;
 import com.google.gson.Gson;
@@ -29,17 +29,21 @@ import com.nexuslink.ui.view.LoginView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ToastUtil;
-import com.umeng.socialize.UMAuthListener;
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.wechat.friends.Wechat;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -132,30 +136,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     }
 
-    private UMAuthListener umAuthListener = new UMAuthListener() {
-        @Override
-        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Toast.makeText(LogInActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
-            Intent mainViewIntent = new Intent(LogInActivity.this, MainViewActivity.class);
-            startActivity(mainViewIntent);
-            finish();
-        }
 
-        @Override
-        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            Toast.makeText(getApplicationContext(), "授权失败", Toast.LENGTH_SHORT).show();
-        }
 
-        @Override
-        public void onCancel(SHARE_MEDIA platform, int action) {
-        }
-    };
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-    }
 
     AlertDialog.Builder builder;
     AlertDialog dialog;
@@ -296,15 +279,75 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 signIn();
                 break;
             case R.id.qq_login:
-                UMShareAPI mShareAPI = UMShareAPI.get(LogInActivity.this);
-                mShareAPI.getPlatformInfo(LogInActivity.this, SHARE_MEDIA.QQ, umAuthListener);
+                authorize(QQ);
                 break;
             case R.id.wechat_login:
+                authorize(WECHAT);
                 break;
             case R.id.xinlang_login:
-                UMShareAPI mShareAPI1 = UMShareAPI.get(LogInActivity.this);
-                mShareAPI1.getPlatformInfo(LogInActivity.this, SHARE_MEDIA.SINA, umAuthListener);
+                authorize(XINLANG);
                 break;
         }
+    }
+    private final int QQ = 0;
+    private final int XINLANG = 1;
+    private final int WECHAT = 2;
+    public void authorize(int platform){
+        Platform pf = null;
+        switch (platform){
+            case QQ:
+                pf = ShareSDK.getPlatform(cn.sharesdk.tencent.qq.QQ.NAME);
+                break;
+            case XINLANG:
+                pf = ShareSDK.getPlatform(SinaWeibo.NAME);
+                break;
+            case WECHAT:
+                pf = ShareSDK.getPlatform(Wechat.NAME);
+               break;
+        }
+        //使用了SSO授权后，有客户端的都会优先启用客户端授权，没客户端的则任然使用网页版进行授权。
+        pf.SSOSetting(false);//客户端授权
+        pf.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                Iterator ite = hashMap.entrySet().iterator();
+                while(ite.hasNext()){
+                    Map.Entry entry = (Map.Entry) ite.next();
+                    Object key = entry.getKey();
+                    Object value = entry.getValue();
+                    Log.i(TAG,key+" "+value);
+                }
+                if(platform.isAuthValid()){
+                    platform.removeAccount(true);
+                }
+                Intent intent = new Intent(LogInActivity.this,MainViewActivity.class);
+                startActivity(intent);
+//                String accessToken = db.getToken();
+//                String userId = db.getUserId();
+//                String platname = db.getPlatformNname();
+//                int version = db.getPlatformVersion();
+//                String tokenSecret = db.getTokenSecret();
+//                String gender = db.getUserGender();
+//                String icon = db.getUserIcon();
+//                String userName = db.getUserName();
+//                String expiresIn = String.valueOf(db.getExpiresIn());
+//                String expireseTime = String.valueOf(db.getExpiresTime());
+//                Log.i(TAG,accessToken+" "+platname+" "+version+" "+tokenSecret+" "+gender+" "+icon+" "+userName+" "+expiresIn+" "+expireseTime);
+//                if(platform.isAuthValid()){
+//                    platform.removeAccount(true);
+//                }
+            }
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                if(platform.isAuthValid()){
+                    platform.removeAccount(true);
+                }
+            }
+            @Override
+            public void onCancel(Platform platform, int i) {
+
+            }
+        });
+        pf.showUser(null);
     }
 }

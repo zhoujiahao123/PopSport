@@ -6,7 +6,8 @@ import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.runhousemodel.RunHouseModeImp;
 import com.nexuslink.model.runhousemodel.RunHouseModel;
 import com.nexuslink.ui.view.RunHouseView;
-import com.sina.weibo.sdk.utils.NetworkHelper;
+import com.nexuslink.util.NetUtils;
+
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class RunHousePresenterImpl implements RunHousePresenter {
     public void onRefresh(int startId, final boolean autoRefresh) {
 
 
-        if(NetworkHelper.isNetworkAvailable(BaseApplication.mContext)){
+        if(NetUtils.isNetConnected(BaseApplication.mContext)){
             if(autoRefresh){
                 mView.showProgress();
             }

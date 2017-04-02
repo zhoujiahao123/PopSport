@@ -3,7 +3,6 @@ package com.nexuslink.model.loginmodel;
 
 import android.util.Log;
 
-import com.elvishew.xlog.XLog;
 import com.nexuslink.DaoSession;
 import com.nexuslink.User;
 import com.nexuslink.UserDao;
@@ -12,9 +11,6 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.UIdInfo;
 import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
 import com.nexuslink.util.ApiUtil;
-import com.sina.weibo.sdk.api.share.Base;
-
-import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
