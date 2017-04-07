@@ -234,10 +234,10 @@
     </style>
 
 
-
     <style name="RunActivityToolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/spacing_normal</item>
     </style>
+
     <style name="RunHouseResult.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/font_large</item>
     </style>
@@ -280,5 +280,14 @@
         <item name="android:windowBackground">@drawable/logo_splash</item>
         <item name="android:windowFullscreen">true</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="PersonInfoText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
     </style>
 </resources>

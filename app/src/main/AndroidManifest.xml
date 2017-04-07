@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -29,7 +28,7 @@
     <!-- 地图权限 -->
     //地图SDK（包含其搜索功能）需要的基础权限
 
-    <!--分享权限-->
+    <!-- 分享权限 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -37,8 +36,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -46,6 +45,7 @@
     <!-- 用于访问GPS定位 -->
     <!-- 用于获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+
 
     <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -78,9 +78,10 @@
         android:icon="@drawable/poplog"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        tools:replace="android:icon"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LogInActivity"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity
+            android:name=".ui.activity.LogInActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -100,7 +101,6 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan" />
 
-
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="ea9a725ff880d7bdd907142465ca7392" />
@@ -119,14 +119,15 @@
 
 
         <!-- 到点通知 -->
-        <service android:name=".service.AlarmService"></service>
+        <service android:name=".service.AlarmService" />
 
         <receiver android:name=".broadcast.AlarmReceiver" />
         <receiver android:name=".broadcast.AlarmReceiver" />
 
         <activity android:name=".ui.activity.ViewImageShowActivity" />
-        <activity android:name=".ui.activity.FriendInfoActivity"
-            android:theme="@style/TranslucentBar"/>
+        <activity
+            android:name=".ui.activity.FriendInfoActivity"
+            android:theme="@style/TranslucentBar" />
         <activity android:name=".ui.activity.AlterActivity" />
         <activity
             android:name=".ui.activity.AlterPhotoActivity"
@@ -142,13 +143,13 @@
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
         -->
 
-
-       <meta-data
+        <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".ui.activity.FriendInfoActivityS"
-            android:theme="@style/TranslucentBar"/>
 
+        <activity
+            android:name=".ui.activity.FriendInfoActivityS"
+            android:theme="@style/TranslucentBar" />
         <activity
             android:name=".ui.activity.ArticleDetailActivity"
             android:windowSoftInputMode="stateUnchanged|adjustUnspecified" />
@@ -158,20 +159,21 @@
         <activity
             android:name=".ui.activity.RunHouseResultActivity"
             android:label="@string/title_activity_run_house_result"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <service android:name=".service.InitService" />
 
-        <!--分享所用-->
+        <!-- 分享所用 -->
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <data android:scheme="tencent100424468" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -179,12 +181,10 @@
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
-
     </application>
 
 </manifest>
