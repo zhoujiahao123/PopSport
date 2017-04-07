@@ -86,8 +86,7 @@ public class MainViewActivity extends BaseActivity {
             ToastUtil.showToast(this,"再按一次退出");
             mPressTime = mNowTime;
         }else{
-            finish();
-            System.exit(0);
+            super.onBackPressed();
         }
     }
 
