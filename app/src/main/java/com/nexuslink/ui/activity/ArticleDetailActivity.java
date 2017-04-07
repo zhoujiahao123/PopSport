@@ -144,33 +144,10 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             }
         });
         //toolbar
-
         setActionBar(mToolbar);
         getActionBar().setDisplayShowTitleEnabled(false);
 
-    }
-
-    /**
-     * 信息的加载
-     */
-    private void setUpViews() {
-        //设置用户个人信息
-        SingleCommunityInfo.ArticleBean.UserBeanBean user = article.getUserBean();
-        //头像加载
-        Glide.with(this).load(Constants.PHOTO_BASE_URL + user.getUImg()).crossFade().into(userImage);
-        userName.setText(user.getUName());
-        userLevel.setText("Lv."+UserUtils.getUserLevel(user.getUExp()));
-        //设置发表日期
-        articleDateTv.setText(article.getDate() + " " + article.getTime());
-        //设置文本内容
-        tvContent.setText(Base64Utils.decode(article.getText()));
-
-        //设置图片集合
-        multiView.setIsShowAll(true);
-        multiView.setUrlList(getImagesUrl(article.getImages()));
-        //设置点赞数目和评论数目
-        likeNum.setActivated(article.isLikeArticle());
-        likeNum.setNumber(article.getLikeNum());
+        //喜欢回调
         likeNum.setCallback(new LikeView.SimpleCallback() {
             @Override
             public void activate(LikeView view) {
@@ -183,9 +160,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
                 super.deactivate(view);
             }
         });
-        commentNumber = article.getCommentNum();
-        commentNum.setGraphAdapter(CommentPathAdapter.getInstance());
-        commentNum.setNumber(commentNumber);
+        //设置评论回调
         commentNum.setCallback(new LikeView.SimpleCallback() {
             @Override
             public boolean onClick(LikeView view) {
@@ -212,6 +187,34 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             public void deactivate(LikeView view) {
             }
         });
+
+    }
+
+    /**
+     * 信息的加载
+     */
+    private void setUpViews() {
+        //设置用户个人信息
+        SingleCommunityInfo.ArticleBean.UserBeanBean user = article.getUserBean();
+        //头像加载
+        Glide.with(this).load(Constants.PHOTO_BASE_URL + user.getUImg()).crossFade().into(userImage);
+        userName.setText(user.getUName());
+        userLevel.setText("Lv."+UserUtils.getUserLevel(user.getUExp()));
+        //设置发表日期
+        articleDateTv.setText(article.getDate() + " " + article.getTime());
+        //设置文本内容
+        tvContent.setText(Base64Utils.decode(article.getText()));
+
+        //设置图片集合
+        multiView.setIsShowAll(true);
+        multiView.setUrlList(getImagesUrl(article.getImages()));
+        //设置点赞数目和评论数目
+        likeNum.setActivated(article.isLikeArticle());
+        likeNum.setNumber(article.getLikeNum());
+
+        commentNumber = article.getCommentNum();
+        commentNum.setGraphAdapter(CommentPathAdapter.getInstance());
+        commentNum.setNumber(commentNumber);
         //加载评论
         if (commentNumber > 0) {
             presenter.loadComments(article.getArticleId());
