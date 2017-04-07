@@ -1,107 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_marginTop="20dp"
-    android:background="@color/ghost_white"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
     android:paddingTop="10dp"
-    android:paddingLeft="@dimen/spacing_tiny"
-    android:paddingRight="@dimen/spacing_tiny"
-    android:paddingBottom="@dimen/spacing_tiny"
+android:layout_marginTop="20dp"
+android:background="@color/ghost_white"
+android:orientation="vertical"
+android:paddingBottom="@dimen/spacing_tiny"
+android:paddingLeft="@dimen/spacing_tiny"
+android:paddingRight="@dimen/spacing_tiny">
+
+<LinearLayout
+    android:layout_margin="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.nexuslink.util.CircleImageView
+        android:id="@+id/user_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/poplog" />
 
     <LinearLayout
-
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <com.nexuslink.util.CircleImageView
-            android:id="@+id/user_image"
-            android:layout_gravity="center"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_marginLeft="@dimen/spacing_normal"
-                android:layout_marginBottom="@dimen/spacing_tiny"
-                android:id="@+id/user_name"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/font_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/user_level"
-                android:textColor="@color/ufo_green"
-                android:layout_marginLeft="@dimen/spacing_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
-    
-    <com.vanniktech.emoji.EmojiTextView
-        android:id="@+id/tv_content"
-        android:padding="8dp"
-        android:textSize="@dimen/msg_text_size"
-        android:textColor="@color/primary_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-
-        <com.nexuslink.ui.view.view.headerview.MultiView
-            android:id="@+id/multi_view"
+        <TextView
+            android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/background_color"
-            app:divideSpace="4dp"
-            android:layout_marginBottom="1dp"
-            >
-        </com.nexuslink.ui.view.view.headerview.MultiView>
+            android:layout_marginBottom="@dimen/spacing_tiny"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_normal" />
 
-
-
-
-
-    <LinearLayout
-        android:padding="@dimen/spacing_tiny"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.nexuslink.ui.view.likeview.LikeView
-            android:id="@+id/like_view"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/user_level"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:animateDuration="300"
-            app:autoMeasureMaxWidth="true"
-            app:graphStrokeWidth="3dp"
-            app:isActivated="false"
-            app:notAllowedCancel="false"
-            app:number="0"
-            />
-        <com.nexuslink.ui.view.likeview.LikeView
-            android:id="@+id/comment"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:textColor="@color/ufo_green" />
     </LinearLayout>
+</LinearLayout>
+
+<com.vanniktech.emoji.EmojiTextView
+    android:id="@+id/tv_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:textColor="@color/primary_text"
+    android:textSize="@dimen/msg_text_size" />
 
 
-    <LinearLayout
-        android:id="@+id/comments_detail"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
-    <!--输入框-->
-    <include
-        layout="@layout/comment_input"
-        ></include>
+<com.nexuslink.ui.view.MyNineGridLayout
+    android:id="@+id/multi_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:background="@color/ghost_white"
+    app:divideSpace="4dp"></com.nexuslink.ui.view.MyNineGridLayout>
+
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:orientation="horizontal"
+    android:padding="@dimen/spacing_tiny">
+
+    <com.nexuslink.ui.view.likeview.LikeView
+        android:id="@+id/like_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:padding="4dp"
+        app:animateDuration="300"
+        app:autoMeasureMaxWidth="true"
+        app:graphStrokeWidth="3dp"
+        app:isActivated="false"
+        app:notAllowedCancel="false"
+        app:number="0" />
+
+    <com.nexuslink.ui.view.likeview.LikeView
+        android:id="@+id/comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:padding="4dp"
+        app:animateDuration="300"
+        app:autoMeasureMaxWidth="true"
+        app:graphStrokeWidth="3dp"
+        app:isActivated="false"
+        app:notAllowedCancel="false"
+        app:number="0" />
+</LinearLayout>
+
+
+<LinearLayout
+    android:id="@+id/comments_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"></LinearLayout>
+<!--输入框-->
+<include layout="@layout/comment_input"></include>
 
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 
+import com.nexuslink.util.DensityUtil;
 
 
 public abstract class LoadingRenderer {

@@ -20,10 +20,10 @@ import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.presenter.articlepresenter.ArticleDetailPresenter;
 import com.nexuslink.presenter.articlepresenter.ArticleDetailPresenterImpl;
 import com.nexuslink.ui.view.ArticleDetailView;
+import com.nexuslink.ui.view.MyNineGridLayout;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
-import com.nexuslink.ui.view.view.headerview.MultiView;
 import com.nexuslink.util.Base64Utils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.KeyBoardUtils;
@@ -36,6 +36,7 @@ import com.vanniktech.emoji.EmojiTextView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -45,7 +46,6 @@ import butterknife.OnClick;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 import static com.nexuslink.app.BaseApplication.mContext;
-import static java.util.Calendar.AM;
 
 public class ArticleDetailActivity extends SwipeBackActivity implements ArticleDetailView {
 
@@ -65,7 +65,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     EmojiTextView tvContent;
 
     @BindView(R.id.multi_view)
-    MultiView multiView;
+    MyNineGridLayout multiView;
 
     @BindView(R.id.like_num)
     LikeView likeNum;
@@ -164,8 +164,10 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         articleDateTv.setText(article.getDate() + " " + article.getTime());
         //设置文本内容
         tvContent.setText(Base64Utils.decode(article.getText()));
+
         //设置图片集合
-        multiView.setImages(getImagesUrl(article.getImages()));
+        multiView.setIsShowAll(true);
+        multiView.setUrlList(getImagesUrl(article.getImages()));
         //设置点赞数目和评论数目
         likeNum.setActivated(article.isLikeArticle());
         likeNum.setNumber(article.getLikeNum());
@@ -222,12 +224,13 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
      *
      * @param images
      */
-    private String[] getImagesUrl(List<String> images) {
-        String[] urls = new String[images.size()];
+    private List getImagesUrl(List<String> images) {
+        List<String> imageUrls = new ArrayList<>();
         for (int i = 0; i < images.size(); i++) {
-            urls[i] = Constants.PHOTO_BASE_URL + images.get(i);
+            imageUrls.add(Constants.PHOTO_BASE_URL + images.get(i));
         }
-        return urls;
+        return imageUrls;
+
     }
 
 

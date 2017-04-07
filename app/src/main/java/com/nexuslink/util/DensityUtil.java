@@ -1,4 +1,4 @@
-package com.nexuslink.ui.view.view.headerview;
+package com.nexuslink.util;
 
 import android.content.Context;
 
