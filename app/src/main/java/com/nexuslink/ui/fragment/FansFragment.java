@@ -13,7 +13,6 @@ import com.nexuslink.R;
 import com.nexuslink.app.BaseFragment;
 import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.model.fansmodel.FansModelImpl;
-import com.nexuslink.model.myfriendmodel.OnNumberChangedLisntener;
 import com.nexuslink.presenter.fanspresenter.FansPresenter;
 import com.nexuslink.presenter.fanspresenter.FansPresenterImpl;
 import com.nexuslink.ui.adapter.FansAdapter;
@@ -78,5 +77,20 @@ public class FansFragment extends BaseFragment implements FansView{
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerview.setLayoutManager(linearLayoutManager);
         recyclerview.setAdapter(adapter);
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMsg(String message) {
+
     }
 }

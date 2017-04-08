@@ -670,4 +670,18 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     }
 
 
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMsg(String message) {
+
+    }
 }

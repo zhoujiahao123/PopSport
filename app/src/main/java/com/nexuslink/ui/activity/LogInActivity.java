@@ -350,4 +350,19 @@ public class LogInActivity extends BaseActivity implements LoginView {
         });
         pf.showUser(null);
     }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMsg(String message) {
+
+    }
 }

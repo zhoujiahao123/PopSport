@@ -71,7 +71,7 @@ public interface Api {
     //获取好友的个人信息
     @FormUrlEncoded
     @POST("friend/getInfo")
-    Observable<FriendInfo> getFriendInfo(@Field("fId") int fId);
+    Observable<FriendInfo> getFriendInfo(@Field("uId") int uId,@Field("fId") int fId);
 
     //获取用户个人信息
     @FormUrlEncoded

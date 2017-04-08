@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginTop="8dp"
-    android:orientation="vertical"
-    android:paddingBottom="8dp"
-    android:paddingLeft="4dp"
-    android:paddingRight="8dp"
-    android:paddingTop="8dp">
+    android:layout_margin="16dp"
+    android:gravity="center"
+    android:orientation="vertical">
 
 
     <com.nexuslink.util.CircleImageView
@@ -19,134 +12,16 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/poplog"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="8dp"
+        android:src="@drawable/poplog" />
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
         android:text="张兴锐"
-        android:textSize="@dimen/font_normal"
-        app:layout_constraintLeft_toRightOf="@+id/user_image"
-        app:layout_constraintTop_toTopOf="@+id/user_image" />
-
-    <TextView
-        android:id="@+id/user_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Lv 19"
-        app:layout_constraintBottom_toBottomOf="@+id/user_image"
-        app:layout_constraintLeft_toLeftOf="@+id/user_name"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_image">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/steps"
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="111"
-                android:textColor="@color/primary_text" />
-
-            <TextView
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="步数"
-                android:textColor="@color/secondary_text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/miles"
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="111"
-                android:textColor="@color/primary_text" />
-
-            <TextView
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="公里数"
-                android:textColor="@color/secondary_text" />
-        </LinearLayout>
+        android:textSize="@dimen/font_normal" />
 
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/fans_num"
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="111"
-                android:textColor="@color/primary_text" />
-
-            <TextView
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="粉丝"
-                android:textColor="@color/secondary_text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/sex"
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="111"
-                android:textColor="@color/primary_text" />
-
-            <TextView
-                style="@style/FriendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="关注"
-                android:textColor="@color/secondary_text" />
-        </LinearLayout>
-    </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -216,4 +216,19 @@ public class SignInActivity extends BaseActivity implements SignInView {
                 break;
         }
     }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMsg(String message) {
+
+    }
 }
