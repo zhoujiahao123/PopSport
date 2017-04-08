@@ -80,6 +80,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+
+        <!--测试-->
+
         <activity
             android:name=".ui.activity.LogInActivity"
             android:theme="@style/SplashTheme">
@@ -89,7 +92,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.FriendActivity" />
 
         <!-- 计步 -->
         <service

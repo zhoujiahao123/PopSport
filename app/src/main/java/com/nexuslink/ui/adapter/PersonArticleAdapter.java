@@ -1,5 +1,6 @@
 package com.nexuslink.ui.adapter;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -21,11 +22,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.ArticleBean;
 import com.nexuslink.model.data.CommentItemData;
-import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.ui.activity.ArticleDetailActivity;
-
 import com.nexuslink.ui.view.MyNineGridLayout;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
@@ -40,16 +40,15 @@ import com.vanniktech.emoji.EmojiTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * Created by 猿人 on 2017/2/8.
+ * Created by 猿人 on 2017/4/8.
  */
 
-public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecyclerAdapter.CommunityViewHolder> {
+public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdapter.PersonArticleViewHolder> {
     //===============================================常量
     private static final String TAG = "CommunityRecycler";
     //===============================================数据
-    private List<CommunityInfo.ArticlesBean> data = new ArrayList<>();
+    private List<ArticleBean.ArticlesBean> data = new ArrayList<>();
     private Context mContext;
     private LayoutInflater inflater;
 
@@ -64,11 +63,11 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     //===============================================辅助变量
     public List<Boolean> isFirstLoads = new ArrayList<>();
 
-    public CommunityRecyclerAdapter(Context mContext) {
+    public PersonArticleAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public CommunityRecyclerAdapter(Context context, CommunityPresenter presenter) {
+    public PersonArticleAdapter(Context context, CommunityPresenter presenter) {
         this.mContext = context;
         this.presenter = presenter;
         inflater = LayoutInflater.from(mContext);
@@ -76,20 +75,20 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
 
     @Override
-    public CommunityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PersonArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.community_recyler_item, parent, false);
-        return new CommunityViewHolder(view);
+        return new PersonArticleViewHolder(view);
     }
 
     @Override
-    public void onViewRecycled(CommunityViewHolder holder) {
+    public void onViewRecycled(PersonArticleViewHolder holder) {
         super.onViewRecycled(holder);
         Glide.clear(holder.userImage);
         holder.commentDetialLinear.removeAllViews();
     }
 
     @Override
-    public void onBindViewHolder(final CommunityViewHolder holder, final int position) {
+    public void onBindViewHolder(final PersonArticleViewHolder holder, final int position) {
 
         //为一个话题item设置点击监听
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +102,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
 
         //进行用户相关信息的加载
         //设置发表话题人的相关信息
-        CommunityInfo.ArticlesBean.UserBeanBean user = data.get(position).getUserBean();
+        ArticleBean.ArticlesBean.UserBeanBean user = data.get(position).getUserBean();
         //设置头像
         Glide.with(mContext).load(Constants.PHOTO_BASE_URL + user.getUImg())
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -260,7 +259,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     /**
      * 增添数据接口
      */
-    public void addItems(List<CommunityInfo.ArticlesBean> list) {
+    public void addItems(List<ArticleBean.ArticlesBean> list) {
         int index = data.size();
         data.addAll(index, list);
         for (int i = 0; i < list.size(); i++) {
@@ -273,14 +272,14 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     /**
      *
      */
-    public List<CommunityInfo.ArticlesBean> getDatas() {
+    public List<ArticleBean.ArticlesBean> getDatas() {
         return data;
     }
 
     /**
      * 设置数据
      */
-    public void setDatas(List<CommunityInfo.ArticlesBean> list) {
+    public void setDatas(List<ArticleBean.ArticlesBean> list) {
         data.clear();
         data.addAll(list);
 
@@ -312,7 +311,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
     /**
      * viewholder
      */
-    class CommunityViewHolder extends RecyclerView.ViewHolder {
+    class PersonArticleViewHolder extends RecyclerView.ViewHolder {
         CircleImageView userImage;
         TextView userName, userLevel;
         EmojiTextView mContent;
@@ -326,7 +325,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         LinearLayout commentDetialLinear;
         Button commentPost;
 
-        public CommunityViewHolder(View itemView) {
+        public PersonArticleViewHolder(View itemView) {
             super(itemView);
             userImage = (CircleImageView) itemView.findViewById(R.id.user_image);
             userName = (TextView) itemView.findViewById(R.id.user_name);
@@ -342,6 +341,7 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         }
 
     }
+
 
 
 }

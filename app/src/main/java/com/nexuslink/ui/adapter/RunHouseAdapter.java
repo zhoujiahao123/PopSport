@@ -16,7 +16,6 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.ui.activity.RunHouseDetailActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +29,6 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
      * 数据
      */
     private List<LoadRoomsResult.RoomBean> datas = new ArrayList<>();
-    /**
-     * 格式控制
-     */
-    private SimpleDateFormat sdf = new SimpleDateFormat("MM:dd HH:mm");
     /**
      * 初始化需要
      */
@@ -90,7 +85,7 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     public void onBindViewHolder(RunHouseViewHolder holder, final int position) {
 
         holder.runHouseNameTv.setText(datas.get(position).getRoomName());
-        holder.runHouseStartTimeTv.setText(sdf.format(datas.get(position).getStartTime()));
+        holder.runHouseStartTimeTv.setText(datas.get(position).getStartTime());
         holder.runHouseTypeImage.setImageResource(datas.get(position).getRoomType()==1?R.drawable.roadtype:R.drawable.timetype);
         String str = datas.get(position).getRoomType() == 1 ? "米":"分钟";
         holder.runHouseDetail.setText(datas.get(position).getRoomGoal()+str);

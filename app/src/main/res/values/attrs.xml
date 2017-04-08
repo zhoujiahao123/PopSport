@@ -88,6 +88,9 @@
         <attr name="paddingHeight" format="dimension"></attr>
         <attr name="paddingBottom" format="dimension"></attr>
         <attr name="dstColor" format="color"></attr>
+        <attr name="bottomPic" format="reference"></attr>
+        <attr name="bottomPicWidth" format="dimension"></attr>
+        <attr name="bottomPicHeight" format="dimension"></attr>
     </declare-styleable>
 
 </resources>

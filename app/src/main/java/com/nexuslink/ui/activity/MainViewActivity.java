@@ -110,7 +110,7 @@ public class MainViewActivity extends BaseActivity {
         Fragment stepAndRunFragment = new StepAndRunFragment();
         Fragment appointFragment = new AppointmentFragment();
         Fragment communityFragment = new CommunityFragment();
-        Fragment personalInfoFragment = PersonInfoFragment.getInstance();
+        Fragment personalInfoFragment = new PersonInfoFragment();
 
         TabViewChild stepAndRun = new TabViewChild(R.drawable.step_press, R.drawable.step_normal, "运动", stepAndRunFragment);
         TabViewChild appoint = new TabViewChild(R.drawable.appoint_press, R.drawable.appoint_normal, "跑房", appointFragment);
