@@ -8,4 +8,5 @@ import com.nexuslink.model.CallBackListener;
 
 public interface IFriendModel<T> {
     void getFansInfo(int uId, CallBackListener<T> listener);
+    void getFriendInfo(int uId,CallBackListener<T> listener);
 }

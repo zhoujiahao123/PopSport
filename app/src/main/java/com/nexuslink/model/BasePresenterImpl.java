@@ -18,7 +18,7 @@ public class BasePresenterImpl<T extends BaseView,E> implements IBasePresenter,C
 
     @Override
     public void onFinish(E o) {
-        mView.showProgress();
+        mView.hideProgress();
     }
 
     @Override

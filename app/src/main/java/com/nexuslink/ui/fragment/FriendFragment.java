@@ -1,82 +1,59 @@
 package com.nexuslink.ui.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.widget.LinearLayoutManager;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.nexuslink.R;
 import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.presenter.personfriendpresenter.FriendPresenterImpl;
 import com.nexuslink.ui.adapter.FansRecyclerAdapter;
+import com.nexuslink.ui.view.ContainPresenterFragment;
 import com.nexuslink.ui.view.IFansView;
-import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
- * Created by 猿人 on 2017/4/8.
+ * Created by 猿人 on 2017/4/9.
  */
 
-public class FriendsFragment extends Fragment implements IFansView<FansInfo.FansBean> {
-    /**
-     * -
-     * view
-     */
+public class FriendFragment extends ContainPresenterFragment implements IFansView<FansInfo.FansBean>{
+
     @BindView(R.id.friends_recycler)
     EasyRecyclerView mRecyclerView;
-    Unbinder unbinder;
 
-    /**
-     * 数据
-     */
     private FansRecyclerAdapter adapter;
     private FriendPresenterImpl presenter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void initPresenter() {
         presenter = new FriendPresenterImpl();
-        presenter.onCreate();
-        presenter.attachView(this);
+        presenter.onCreate();//创建model实例
+        presenter.attachView(this);//注入view
+        //请求数据
+        presenter.getFriendInfo(UserUtils.getUserId());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.friends_list_fragment, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        initView();
-        return view;
+    public int getLayout() {
+        return R.layout.friends_list_fragment;
     }
 
-    private void initView() {
+    @Override
+    public void initView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setProgressView(R.layout.progress_layout);
         mRecyclerView.setEmptyView(R.layout.empty_view);
         mRecyclerView.setErrorView(R.layout.peron_article_error);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4,GridLayoutManager.VERTICAL,false));
 
         adapter = new FansRecyclerAdapter(getContext());
         mRecyclerView.setAdapter(adapter);
-        /**
-         * 剩下网络请求
-         */
-        presenter.getFansInfo(UserUtils.getUserId());
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void showProgress() {
@@ -90,7 +67,7 @@ public class FriendsFragment extends Fragment implements IFansView<FansInfo.Fans
 
     @Override
     public void showMsg(String message) {
-        ToastUtil.showToast(getContext(), message);
+
     }
 
     @Override

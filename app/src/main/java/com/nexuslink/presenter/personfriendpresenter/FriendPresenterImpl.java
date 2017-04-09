@@ -31,4 +31,9 @@ public class FriendPresenterImpl extends BasePresenterImpl<IFansView, List<FansI
         mFriendModel.getFansInfo(uId,this);
     }
 
+    @Override
+    public void getFriendInfo(int uId) {
+        mFriendModel.getFriendInfo(uId,this);
+    }
+
 }

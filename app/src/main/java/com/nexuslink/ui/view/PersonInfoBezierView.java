@@ -40,6 +40,10 @@ public class PersonInfoBezierView extends ConstraintLayout {
     private Bitmap mBitmap;
     private int picWidth;
     private int picHeight;
+    /**
+     * 宽高
+     */
+    private int hegiht;
     private Context mContext;
     //控制点
     private int mStartPointX, mStartPointY, mEndPointX, mEndPointY;
@@ -56,6 +60,7 @@ public class PersonInfoBezierView extends ConstraintLayout {
         this.bottomHeight = bottomHeight;
         invalidate();
     }
+
 
     public PersonInfoBezierView(Context context) {
         this(context, null);
@@ -99,11 +104,11 @@ public class PersonInfoBezierView extends ConstraintLayout {
         mStartPointX = 0;
         mEndPointX = DisplayMetricsUtil.getScreenWidth(mContext);
         mControlX = mEndPointX / 2;
-        maxBottom = getMeasuredHeight();
+        hegiht = getMeasuredHeight();
         //初始化参数
-        mStartPointY = maxBottom + bottomPadding;
-        mEndPointY = maxBottom + bottomPadding;
-        mControlY = maxBottom + bottomPadding + bottomHeight;
+        mStartPointY = hegiht + bottomPadding;
+        mEndPointY = hegiht + bottomPadding;
+        mControlY = hegiht + bottomPadding + bottomHeight;
         //得曲线顶点
         vertex  = BezierUtil.CalculateBezierPointForQuadratic(0.5f
                 ,new Point(mStartPointX,mStartPointY),

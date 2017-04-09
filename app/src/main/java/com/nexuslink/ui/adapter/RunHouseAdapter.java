@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
-import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.RoomsBean;
 import com.nexuslink.ui.activity.RunHouseDetailActivity;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     /**
      * 数据
      */
-    private List<LoadRoomsResult.RoomBean> datas = new ArrayList<>();
+    private List<RoomsBean> datas = new ArrayList<>();
     /**
      * 初始化需要
      */
@@ -52,7 +52,7 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     /**
      *增添数据
      */
-    public void addItems(List<LoadRoomsResult.RoomBean> list){
+    public void addItems(List<RoomsBean> list){
         int index = datas.size();
         datas.addAll(index,list);
         notifyDataSetChanged();
@@ -61,8 +61,12 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     /**
      *设置数据
      */
-    public void setDatas(List<LoadRoomsResult.RoomBean> list){
+    public void setDatas(List<RoomsBean> list){
         datas.clear();
+        if(list == null ||list.isEmpty()){
+            notifyDataSetChanged();
+            return;
+        }
         datas.addAll(list);
         notifyDataSetChanged();
     }
@@ -70,7 +74,7 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
     /**
      *提供外部接口调用数据
      */
-    public List<LoadRoomsResult.RoomBean> getDatas(){
+    public List<RoomsBean> getDatas(){
         return datas;
     }
 

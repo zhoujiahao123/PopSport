@@ -9,6 +9,7 @@
 
 
     <com.nexuslink.ui.view.PersonInfoBezierView
+        android:id="@+id/personinfo_bezier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/person_info_background"

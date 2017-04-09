@@ -54,6 +54,12 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
         presenter = new CommunityPresenterImpl(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,7 +73,7 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
         adapter = new PersonArticleAdapter(getContext(), presenter);
         mRecylerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecylerView.setProgressView(R.layout.person_article_loadding_view);
+        mRecylerView.setProgressView(R.layout.progress_layout);
         mRecylerView.setEmptyView(R.layout.empty_view);
         mRecylerView.setErrorView(R.layout.peron_article_error);
         mRecylerView.setAdapter(adapter);

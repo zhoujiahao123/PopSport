@@ -1,12 +1,6 @@
 package com.nexuslink.ui.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
@@ -17,6 +11,7 @@ import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.User;
 import com.nexuslink.UserDao;
+import com.nexuslink.ui.BaseFragment;
 import com.nexuslink.ui.adapter.AchievementRecyclerAdapter;
 import com.nexuslink.util.DBUtil;
 
@@ -26,14 +21,12 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by 猿人 on 2017/4/8.
  */
 
-public class AchievementFragment extends Fragment {
+public class AchievementFragment extends BaseFragment {
     /**
      * view
      */
@@ -43,7 +36,19 @@ public class AchievementFragment extends Fragment {
     TextView monthMielsTv;
     @BindView(R.id.achieve_recyclerview)
     EasyRecyclerView mRecyclerView;
-    Unbinder unbinder;
+
+
+    @Override
+    public int getLayout() {
+        return R.layout.achievement_fragment;
+    }
+
+    @Override
+    public void initView() {
+        setStepsAndMiles();
+        setAchievement();
+    }
+
 
     /**
      * 数据库操作
@@ -51,24 +56,6 @@ public class AchievementFragment extends Fragment {
     private StepsDao stepsDao = DBUtil.getStepsDao();
     private RunDao runDao = DBUtil.getRunDao();
     private UserDao userDao = DBUtil.getUserDao();
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.achievement_fragment, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        //初始化view
-        initView();
-        return view;
-    }
-
-    /**
-     * 初始化view
-     */
-    private void initView() {
-        setStepsAndMiles();
-        setAchievement();
-    }
 
     /**
      * 设置成就
@@ -132,9 +119,5 @@ public class AchievementFragment extends Fragment {
         monthMielsTv.setText(monthMiles + "");
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+
 }

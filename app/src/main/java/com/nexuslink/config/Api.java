@@ -17,6 +17,7 @@ import com.nexuslink.model.data.GetDistanceResult;
 import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.JoinRoomResult;
 import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.MyLoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
@@ -163,6 +164,10 @@ public interface Api {
     @POST("friend/fans")
     Observable<FansInfo> getFans(@Field("uId") int uId);
 
+    @FormUrlEncoded
+    @POST("friend/mine")
+    Observable<FansInfo> getFriends(@Field("uId") int uId);
+
     //获取用户的话题
     @FormUrlEncoded
     @POST("article/getHis")
@@ -196,6 +201,11 @@ public interface Api {
     @FormUrlEncoded
     @POST("room/setGoal")
     Observable<RoomGoal> setGoal(@Field("uId") int uId, @Field("rId") int rId, @Field("goal") long goal);
+
+    //取得个人跑房
+    @FormUrlEncoded
+    @POST("room/myRooms")
+    Observable<MyLoadRoomsResult> getMyRooms(@Field("uId") int uId);
 
 
     //用户每日步数统计

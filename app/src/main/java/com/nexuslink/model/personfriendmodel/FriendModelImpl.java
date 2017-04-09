@@ -37,4 +37,21 @@ public class FriendModelImpl implements IFriendModel<List<FansInfo.FansBean>> {
                     }
                 });
     }
+
+    @Override
+    public void getFriendInfo(int uId, final CallBackListener<List<FansInfo.FansBean>> listener) {
+        api.getFriends(uId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<FansInfo>() {
+                    @Override
+                    public void call(FansInfo fansInfo) {
+                        if (fansInfo.getCode() == Constants.SUCCESS) {
+                            listener.onFinish(fansInfo.getFans());
+                        } else {
+                            listener.onError(new Exception("请求朋友出错了"));
+                        }
+                    }
+                });
+    }
 }

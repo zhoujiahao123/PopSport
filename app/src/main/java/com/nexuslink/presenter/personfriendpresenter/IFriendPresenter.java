@@ -8,4 +8,5 @@ import com.nexuslink.presenter.IBasePresenter;
 
 public interface IFriendPresenter extends IBasePresenter {
     void getFansInfo(int uId);
+    void getFriendInfo(int uId);
 }

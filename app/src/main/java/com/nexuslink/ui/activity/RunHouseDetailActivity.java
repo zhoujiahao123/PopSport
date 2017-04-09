@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.nexuslink.HasJoinedRooms;
 import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
-import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.RoomsBean;
 import com.nexuslink.model.data.SetUpAlarm;
 import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenter;
 import com.nexuslink.presenter.runhousepresenter.RunHouseDetailPresenterImpl;
@@ -59,7 +59,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     @BindView(R.id.back_icon)
     ImageView backIcon;
     //===============================================变量
-    private LoadRoomsResult.RoomBean roomBean;
+    private RoomsBean roomBean;
     private RunHouseDetailAdapter adapter;
     /**
      * presenter
@@ -126,7 +126,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         adapter = new RunHouseDetailAdapter(this, roomBean.getUsers());
         mRecyclerView.setAdapter(adapter);
         //bt设置
-        List<LoadRoomsResult.RoomBean.UsersBean> users = roomBean.getUsers();
+        List<RoomsBean.UsersBean> users = roomBean.getUsers();
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUid() == UserUtils.getUserId()) {
                 changToQuit();
@@ -181,7 +181,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     }
 
     @Override
-    public void setDatas(List<LoadRoomsResult.RoomBean.UsersBean> users) {
+    public void setDatas(List<RoomsBean.UsersBean> users) {
         adapter.setDatas(users);
         mPersonNum.setText(adapter.getItemCount() + "人");
         changToQuit();
