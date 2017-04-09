@@ -297,4 +297,8 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
     </style>
+
+    <style name="SettingFaBTheme" parent="AppTheme">
+        <item name="colorAccent">@color/ghost_white</item>
+    </style>
 </resources>

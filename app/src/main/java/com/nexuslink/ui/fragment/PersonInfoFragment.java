@@ -2,18 +2,26 @@ package com.nexuslink.ui.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.nexuslink.R;
 import com.nexuslink.ui.BaseFragment;
 import com.nexuslink.ui.adapter.PersonInfoViewPagerAdapter;
 import com.nexuslink.ui.view.PersonInfoBezierView;
 import com.nexuslink.util.CircleImageView;
+import com.wuxiaolong.androidutils.library.DisplayMetricsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by ASUS-NB on 2017/1/14.
@@ -38,11 +46,14 @@ public class PersonInfoFragment extends BaseFragment {
     @BindView(R.id.personinfo_bezier)
     PersonInfoBezierView mBezier;
 
+    LinearLayout mSettingLinear;
     /**
      * 数据
      */
     List<Fragment> fragments = new ArrayList<>();
-
+    @BindView(R.id.more)
+    CircleImageView More;
+    PopupWindow pw;
 
     @Override
     public int getLayout() {
@@ -69,6 +80,20 @@ public class PersonInfoFragment extends BaseFragment {
         PersonInfoViewPagerAdapter adapter = new PersonInfoViewPagerAdapter(getFragmentManager());
         adapter.setFragments(fragments);
         mViewPager.setAdapter(adapter);
+
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.more_setting_poup,null);
+        mSettingLinear = (LinearLayout) view.findViewById(R.id.setting_linear);
+        pw = new PopupWindow(view, DisplayMetricsUtil.dip2px(getContext(),42),DisplayMetricsUtil.dip2px(getContext(),3*48));
+        pw.setOutsideTouchable(true);
+        pw.setFocusable(true);
+
     }
 
+
+    @OnClick(R.id.more)
+    public void onViewClicked() {
+        pw.update();
+        pw.showAsDropDown(More,0,DisplayMetricsUtil.dip2px(getContext(),8));
+        YoYo.with(Techniques.RubberBand).duration(300).playOn(mSettingLinear);
+    }
 }
