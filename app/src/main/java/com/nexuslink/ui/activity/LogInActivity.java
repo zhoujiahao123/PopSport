@@ -320,8 +320,8 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 if(platform.isAuthValid()){
                     platform.removeAccount(true);
                 }
-                Intent intent = new Intent(LogInActivity.this,MainViewActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(LogInActivity.this,MainViewActivity.class);
+//                startActivity(intent);
 //                String accessToken = db.getToken();
 //                String userId = db.getUserId();
 //                String platname = db.getPlatformNname();

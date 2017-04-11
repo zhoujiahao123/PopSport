@@ -127,15 +127,12 @@
         <receiver android:name=".broadcast.AlarmReceiver" />
 
         <activity android:name=".ui.activity.ViewImageShowActivity" />
-        <activity
-            android:name=".ui.activity.FriendInfoActivity"
-            android:theme="@style/TranslucentBar" />
-        <activity android:name=".ui.activity.AlterActivity" />
+
         <activity
             android:name=".ui.activity.AlterPhotoActivity"
             android:theme="@style/ChoosePhotoStyle" />
         <activity android:name=".ui.activity.RankActivity" />
-        <activity android:name=".ui.activity.AchievementActivity" />
+
         <activity android:name=".ui.activity.TaskActivity" />
         <activity
             android:name=".ui.activity.SignInActivity"

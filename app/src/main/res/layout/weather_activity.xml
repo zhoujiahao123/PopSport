@@ -26,7 +26,6 @@
             android:textSize="@dimen/font_larger"/>
     </RelativeLayout>
     <com.nexuslink.util.MyScrollView
-        android:id="@+id/my_scrollview"
         android:layout_below="@id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -564,7 +563,6 @@
 
             <LinearLayout
                 android:layout_below="@id/weathercold"
-                android:id="@+id/weatheraircondition"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/weather_life_height"
                 android:layout_toRightOf="@id/division"
@@ -628,7 +626,6 @@
 
             <LinearLayout
                 android:layout_below="@id/weatherwashcar"
-                android:id="@+id/weatherziwai"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/weather_life_height"
                 android:layout_toLeftOf="@id/division"

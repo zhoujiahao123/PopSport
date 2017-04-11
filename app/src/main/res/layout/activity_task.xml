@@ -95,7 +95,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/daily_run_task"
             android:layout_width="match_parent"
             android:layout_height="@dimen/task_height"
             android:layout_marginTop="@dimen/spacing_small"
@@ -165,7 +164,6 @@
         android:background="@color/white_light"
         >
         <RelativeLayout
-            android:id="@+id/addition_run_task"
             android:layout_width="match_parent"
             android:layout_height="@dimen/task_height"
             android:layout_marginLeft="@dimen/spacing_normal"

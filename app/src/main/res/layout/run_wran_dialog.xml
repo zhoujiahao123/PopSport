@@ -17,8 +17,7 @@
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:layout_width="@dimen/image_size_small"
-            android:layout_height="@dimen/image_size_small"
-            android:id="@+id/imageView" />
+            android:layout_height="@dimen/image_size_small" />
 
     </LinearLayout>
 

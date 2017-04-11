@@ -1,49 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    xmlns:fab="http://schemas.android.com/tools"
     android:id="@+id/setting_linear"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.design.widget.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionButton
         android:layout_width="@dimen/image_size_small"
         android:layout_height="@dimen/image_size_small"
+        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:src="@drawable/person_setting"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:backgroundTint="@color/ghost_white"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="#33728dff" />
+        app:fab_colorNormal="@color/ghost_white"
+        app:fab_icon="@drawable/person_setting"
+        fab:fab_colorNormal="@color/ghost" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:src="@drawable/task"
+    <com.getbase.floatingactionbutton.FloatingActionButton
         android:layout_width="@dimen/image_size_small"
         android:layout_height="@dimen/image_size_small"
+        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        app:backgroundTint="@color/ghost_white"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="#33728dff" />
+        app:fab_colorNormal="@color/ghost_white"
+        app:fab_icon="@drawable/task"
+        fab:fab_colorNormal="@color/ghost" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionButton
         android:layout_width="@dimen/image_size_small"
         android:layout_height="@dimen/image_size_small"
+        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:src="@drawable/rank_list"
-        app:backgroundTint="@color/ghost_white"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="#33728dff" />
-
+        app:fab_colorNormal="@color/ghost_white"
+        app:fab_icon="@drawable/rank_list"
+        fab:fab_colorNormal="@color/ghost" />
 
 </LinearLayout>

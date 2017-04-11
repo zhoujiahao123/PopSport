@@ -50,6 +50,7 @@ android {
 }
 
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -119,4 +120,7 @@ dependencies {
     compile 'com.jude:easyrecyclerview:3.5.7'
     //动画库
     compile 'com.daimajia.easing:library:2.0@aar'
-    compile 'com.daimajia.androidanimations:library:2.2@aar'}
+    compile 'com.daimajia.androidanimations:library:2.2@aar'
+    //浮动按钮
+    compile 'com.getbase:floatingactionbutton:1.9.0'
+}

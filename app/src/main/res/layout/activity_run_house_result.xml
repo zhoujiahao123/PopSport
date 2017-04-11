@@ -8,7 +8,6 @@
     tools:context="com.nexuslink.ui.activity.RunHouseResultActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
@@ -31,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <com.nexuslink.util.CircleImageView
-                    android:id="@+id/champion"
                     android:layout_width="@dimen/image_size_post_image"
                     android:layout_height="@dimen/image_size_post_image"
                     android:scaleType="centerCrop"

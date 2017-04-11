@@ -69,7 +69,6 @@ public class PersonInfoFragment extends BaseFragment {
         Fragment fansFragment = new FansFragment();
         Fragment friendFragment = new FriendFragment();
 
-
         fragments.add(achievementFragment);
         fragments.add(personArticleFragment);
         fragments.add(myRoomsFragment);
@@ -80,7 +79,7 @@ public class PersonInfoFragment extends BaseFragment {
         PersonInfoViewPagerAdapter adapter = new PersonInfoViewPagerAdapter(getFragmentManager());
         adapter.setFragments(fragments);
         mViewPager.setAdapter(adapter);
-
+        //初始化popupwindow
         View view = LayoutInflater.from(getContext()).inflate(R.layout.more_setting_poup,null);
         mSettingLinear = (LinearLayout) view.findViewById(R.id.setting_linear);
         pw = new PopupWindow(view, DisplayMetricsUtil.dip2px(getContext(),42),DisplayMetricsUtil.dip2px(getContext(),3*48));

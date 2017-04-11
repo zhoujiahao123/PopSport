@@ -23,7 +23,6 @@
             android:textSize="16sp"
             android:text="ALBUM"/>
         <TextView
-            android:id="@+id/selected_count"
             android:layout_width="wrap_content"
             android:minWidth="24dp"
             android:layout_height="24dp"
