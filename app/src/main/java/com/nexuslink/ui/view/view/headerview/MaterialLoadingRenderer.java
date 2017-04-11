@@ -11,6 +11,8 @@ import android.graphics.RectF;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.animation.Interpolator;
 
+import com.nexuslink.util.DensityUtil;
+
 public class MaterialLoadingRenderer extends LoadingRenderer {
     private static final Interpolator MATERIAL_INTERPOLATOR = new FastOutSlowInInterpolator();
 

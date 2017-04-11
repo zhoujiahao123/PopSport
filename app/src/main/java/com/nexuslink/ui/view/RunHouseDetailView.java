@@ -1,6 +1,6 @@
 package com.nexuslink.ui.view;
 
-import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.RoomsBean;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface RunHouseDetailView {
     void hideProgress();
     void showSuccess();
     void showError();
-    void setDatas(List<LoadRoomsResult.RoomBean.UsersBean> users);
+    void setDatas(List<RoomsBean.UsersBean> users);
     void removeItem(int userId);
     void insertOneRoom();
 }

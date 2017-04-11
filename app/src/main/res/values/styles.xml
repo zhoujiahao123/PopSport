@@ -203,7 +203,7 @@
     </style>
 
     <style name="CustomLineColor" parent="Theme.AppCompat.Light">
-        <item name="colorControlActivated">@color/blue</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
     </style>
     <!--编写话题的toolbar 样式-->
     <style name="WriteMsgToolbarCanUse" parent="AppTheme.ActionBar">
@@ -233,13 +233,11 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="RunActivityActionBarTheme" parent="AppTheme">
-        <item name="colorPrimaryDark">#2B698F</item>
-    </style>
 
     <style name="RunActivityToolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/spacing_normal</item>
     </style>
+
     <style name="RunHouseResult.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/font_large</item>
     </style>
@@ -282,5 +280,25 @@
         <item name="android:windowBackground">@drawable/logo_splash</item>
         <item name="android:windowFullscreen">true</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="PersonInfoText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+    <style name="FriendText">
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="SettingFaBTheme" parent="AppTheme">
+        <item name="colorAccent">@color/ghost_white</item>
     </style>
 </resources>

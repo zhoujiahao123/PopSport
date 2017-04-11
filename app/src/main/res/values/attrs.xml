@@ -72,8 +72,25 @@
             <enum name="start" value="4"/>
         </attr>
     </declare-styleable>
+
     <declare-styleable name="LinearListView">
         <attr name="android:entries" />
         <attr name="dividerThickness" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="RatioImageView">
+        <attr name="ratio" format="float"></attr>
+    </declare-styleable>
+    <declare-styleable name="NineGridLayout">
+        <attr name="sapcing" format="dimension"></attr>
+    </declare-styleable>
+    <declare-styleable name="PersonInfoBezierView">
+        <attr name="paddingHeight" format="dimension"></attr>
+        <attr name="paddingBottom" format="dimension"></attr>
+        <attr name="dstColor" format="color"></attr>
+        <attr name="bottomPic" format="reference"></attr>
+        <attr name="bottomPicWidth" format="dimension"></attr>
+        <attr name="bottomPicHeight" format="dimension"></attr>
+    </declare-styleable>
+
 </resources>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/background_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.nexuslink.util.CircleImageView
+        android:id="@+id/user_image"
+        android:src="@drawable/poplog"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+
+    <!--登录注册-->
+    <Button
+        android:text="登陆"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/input"
+        android:background="@drawable/bt_run_house_background"
+        android:id="@+id/login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+    <TextView
+        android:id="@+id/register"
+        android:text="新用户注册"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/login"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/forget_password" />
+
+    <!--忘记密码-->
+    <TextView
+        android:textColor="@color/secondary_text"
+        android:text="忘记密码"
+        android:id="@+id/forget_password"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintRight_toLeftOf="@+id/imageView2"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/login" />
+    <ImageView
+        android:src="@drawable/forget_password"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/login"
+        android:id="@+id/imageView2"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/login" />
+
+    <!--其它登录方式-->
+    <TextView
+        android:id="@+id/other"
+        android:textColor="@color/secondary_text"
+        android:text="社交帐号直接登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="62dp"
+        app:layout_constraintTop_toBottomOf="@+id/forget_password"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+    <LinearLayout
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/other"
+
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <com.nexuslink.util.CircleImageView
+            android:id="@+id/qq_login"
+            android:src="@drawable/qq_logo"
+            android:layout_margin="8dp"
+            android:layout_width="@dimen/image_size_small"
+            android:layout_height="@dimen/image_size_small" />
+        <com.nexuslink.util.CircleImageView
+            android:id="@+id/wechat_login"
+            android:layout_margin="8dp"
+            android:src="@drawable/wechat_logo"
+            android:layout_width="@dimen/image_size_small"
+            android:layout_height="@dimen/image_size_small" />
+        <com.nexuslink.util.CircleImageView
+            android:id="@+id/xinlang_login"
+            android:src="@drawable/xinlang_logo"
+            android:layout_margin="8dp"
+            android:layout_width="@dimen/image_size_small"
+            android:layout_height="@dimen/image_size_small" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_image">
+
+        <EditText
+            android:id="@+id/account_input"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/edit_above"
+            android:hint="账户"
+            android:paddingLeft="@dimen/spacing_tiny"
+            app:layout_constraintTop_toBottomOf="@+id/user_image" />
+
+        <include layout="@layout/divider_line"></include>
+
+        <EditText
+            android:id="@+id/password_input"
+            android:layout_width="match_parent"
+            android:inputType="textPassword"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/edit_blew"
+            android:hint="密码"
+            android:paddingLeft="@dimen/spacing_tiny" />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

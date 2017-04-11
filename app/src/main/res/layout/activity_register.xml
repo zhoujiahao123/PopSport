@@ -9,14 +9,13 @@
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_top"
-        >
+        android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+            android:theme="@style/WhiteToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue">
+            android:background="@color/colorPrimary">
 
         </android.support.v7.widget.Toolbar>
         <TextView
@@ -42,15 +41,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="基本信息"
-                android:textColor="@color/dark_imperial_blue"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/font_normal"/>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/nick_name_layout"
                 android:layout_below="@id/basic_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:theme="@style/CustomLineColor">
+                android:layout_marginTop="@dimen/spacing_small">
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/nick_name"
                     android:layout_width="match_parent"
@@ -64,8 +62,7 @@
                 android:layout_below="@id/nick_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_tiny"
-                android:theme="@style/CustomLineColor">
+                android:layout_marginTop="@dimen/spacing_tiny">
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
@@ -81,7 +78,7 @@
                 android:text="私人信息"
                 android:layout_below="@id/password_layout"
                 android:layout_marginTop="@dimen/spacing_huge"
-                android:textColor="@color/dark_imperial_blue"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/font_normal"/>
 
             <RelativeLayout
@@ -97,7 +94,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_imperial_blue"
+                    android:textColor="@color/colorAccent"
                     android:text="身高"
                     android:layout_centerVertical="true"/>
                 <TextView
@@ -106,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:text="170cm"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/dark_imperial_blue"
+                    android:textColor="@color/primary_text"
                     android:textSize="@dimen/font_normal"/>
             </RelativeLayout>
 
@@ -123,7 +120,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_imperial_blue"
+                    android:textColor="@color/colorAccent"
                     android:text="体重"
                     android:layout_centerVertical="true"/>
                 <TextView
@@ -132,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:text="50kg"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/dark_imperial_blue"
+                    android:textColor="@color/primary_text"
                     android:textSize="@dimen/font_normal"/>
             </RelativeLayout>
 
@@ -149,7 +146,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_imperial_blue"
+                    android:textColor="@color/colorAccent"
                     android:text="性别"
                     android:layout_centerVertical="true"/>
                 <TextView
@@ -158,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:text="男"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/dark_imperial_blue"
+                    android:textColor="@color/primary_text"
                     android:textSize="@dimen/font_normal"/>
             </RelativeLayout>
 
@@ -168,7 +165,7 @@
                 android:layout_height="40dp"
                 android:layout_below="@id/gender_layout"
                 android:layout_marginTop="@dimen/spacing_huge"
-                android:background="@drawable/selector_register_button"
+                android:background="@drawable/bt_run_house_background"
                 android:text="注册"
                 android:textColor="@color/white_light"
                 android:textSize="@dimen/font_large"/>

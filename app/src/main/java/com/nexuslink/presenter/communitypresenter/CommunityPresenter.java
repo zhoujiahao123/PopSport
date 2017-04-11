@@ -9,10 +9,17 @@ import com.vanniktech.emoji.EmojiEditText;
  */
 
 public interface CommunityPresenter {
-    void postLike(int userId,int articleId);
-    void postDisLike(int userId,int articleId);
+    void postLike(int userId, int articleId);
+
+    void postDisLike(int userId, int articleId);
+
     void postComment(LinearLayout commentsList, EmojiEditText input, LinearLayout linearLayout, int userId, int articleId, int pos);
-    void onRefreshData(int userId,boolean autoRefresh);
+
+    void onRefreshData(int userId, boolean autoRefresh);
+
     void onLoadMore(int aId);
-     void loadComment(LinearLayout commentDetialLinear, int articleId, int pos);
+
+    void loadComment(LinearLayout commentDetialLinear, int articleId, int pos);
+
+    void getHis(int uId, int writerId);
 }

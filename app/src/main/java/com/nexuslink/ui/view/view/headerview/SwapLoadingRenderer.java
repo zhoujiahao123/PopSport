@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.nexuslink.util.DensityUtil;
+
 public class SwapLoadingRenderer extends LoadingRenderer {
     private static final Interpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
