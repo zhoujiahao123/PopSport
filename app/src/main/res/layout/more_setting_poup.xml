@@ -7,31 +7,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
+    <com.nexuslink.util.CircleImageView
         android:layout_width="@dimen/image_size_small"
         android:layout_height="@dimen/image_size_small"
-        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        app:fab_colorNormal="@color/ghost_white"
-        app:fab_icon="@drawable/person_setting"
-        fab:fab_colorNormal="@color/ghost" />
+        android:background="@color/white"
+        android:src="@drawable/person_setting" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
+    <com.nexuslink.util.CircleImageView
         android:layout_width="@dimen/image_size_small"
         android:layout_height="@dimen/image_size_small"
-        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        app:fab_colorNormal="@color/ghost_white"
-        app:fab_icon="@drawable/task"
-        fab:fab_colorNormal="@color/ghost" />
+        android:src="@drawable/task" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
+    <com.nexuslink.util.CircleImageView
         android:layout_width="@dimen/image_size_small"
         android:layout_height="@dimen/image_size_small"
-        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        app:fab_colorNormal="@color/ghost_white"
-        app:fab_icon="@drawable/rank_list"
-        fab:fab_colorNormal="@color/ghost" />
+        android:src="@drawable/rank_list" />
+
 
 </LinearLayout>
