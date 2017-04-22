@@ -15,6 +15,7 @@ import com.nexuslink.ui.BaseFragment;
 import com.nexuslink.ui.adapter.AchievementRecyclerAdapter;
 import com.nexuslink.util.DBUtil;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +37,8 @@ public class AchievementFragment extends BaseFragment {
     TextView monthMielsTv;
     @BindView(R.id.achieve_recyclerview)
     EasyRecyclerView mRecyclerView;
+
+    private DecimalFormat df = new DecimalFormat("#.0");
 
 
     @Override
@@ -116,7 +119,7 @@ public class AchievementFragment extends BaseFragment {
                 monthMiles += Float.valueOf(run.getUMileage());
             }
         }
-        monthMielsTv.setText(monthMiles + "");
+        monthMielsTv.setText(df.format(monthMiles));
     }
 
 

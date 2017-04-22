@@ -314,7 +314,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         //初始化AMapLocationClientOption对象
         mLocationOption = new AMapLocationClientOption();
         //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-        mLocationOption.setInterval(1000);
+        mLocationOption.setInterval(2000);
+        mLocationOption
         //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置是否返回地址信息（默认返回地址信息）

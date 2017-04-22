@@ -19,9 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
 import com.google.gson.Gson;
-import com.litao.android.lib.entity.PhotoEntry;
 import com.nexuslink.R;
 import com.nexuslink.User;
 import com.nexuslink.UserDao;
@@ -46,7 +46,6 @@ import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ImageUtil;
 import com.nexuslink.util.SharedPrefsUtil;
 import com.nexuslink.util.ToastUtil;
-import com.nexuslink.util.loader.ILoader;
 import com.nexuslink.util.loader.LoaderFactory;
 import com.wevey.selector.dialog.MDEditDialog;
 
@@ -125,11 +124,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 nickName.setText(BaseApplication.getDaosession().getUserDao().queryBuilder().where(
                         UserDao.Properties.Already.eq(1)
                 ).unique().getUName());
-
-                LoaderFactory.getGlideLoader().loadNet(circleImageView,Constants.PHOTO_BASE_URL + BaseApplication.getDaosession().getUserDao().queryBuilder().where(
-                        UserDao.Properties.Already.eq(1)
-                ).unique().getUImg(),new ILoader.Option(R.drawable.head_photo,R.drawable.head_photo));
-//                ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+String.valueOf(msg.obj),circleImageView);
             }else if(msg.what == COMPRESS_IMAGE_SUCCESS){
                 postPhoto((String) msg.obj);
             }
@@ -294,94 +288,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         genderList.add("女");
         return genderList;
     }
-//    /**
-//     * 身高spinner的配置
-//     */
-//    private void initDataHeight() {
-//        heightSpinner = (MaterialSpinner) findViewById(R.id.spinner1);
-//        String[] items = new String[191];
-//        for (int i = 0; i < items.length; i++)
-//            items[i] = i + 60 + "";
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        heightSpinner.setAdapter(adapter);
-//        heightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                heightSpinnerPosition = i;
-//                if (i != -1) {
-//                    presenter.changeUserInfo(8, 'M', (float) (i + 60), 57.0f);
-//                    XLog.e("身高选择");
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 体重spinner的配置
-//     *
-//     * @return
-//     */
-//    private void initDataWeight() {
-//        weightSpinner = (MaterialSpinner) findViewById(R.id.spinner2);
-//        String[] items = new String[71];
-//        for (int i = 0; i < items.length; i++)
-//            items[i] = i + 30 + "";
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        weightSpinner.setAdapter(adapter);
-//        weightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                weightSpinnerPosition = i;
-//                if (i != -1) {
-//                    presenter.changeUserInfo(8, 'M', 180.0f, (float) (i + 30));
-//                    XLog.e("体重选择");
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 性别spinner的配置
-//     *
-//     * @return
-//     */
-//    private void initDataSex() {
-//        sexSpinner = (MaterialSpinner) findViewById(R.id.spinner3);
-//        String[] items = new String[2];
-//        items[0] = "男";
-//        items[1] = "女";
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        sexSpinner.setAdapter(adapter);
-//        sexSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                XLog.e("i 是" + l);
-//                if (l != -1) {
-//                    presenter.changeUserInfo(8, i == 0 ? 'M' : 'W', 180.0f, 57.0f);
-//                    XLog.e("性别选择");
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
+
 
     private boolean isConnective() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -598,13 +505,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         }).start();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void photoChoosesEvent(PhotoEntry entry) {
-        String photoPath = entry.getPath();
-//        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
-//        LoaderFactory.getGlideLoader().loadFile(circleImageView,new File(photoPath),null);
-        postPhoto(photoPath);
-    }
 
     private void postPhoto(final String path) {
         LoaderFactory.getGlideLoader().clearCacheMemory(AlterActivity.this);
@@ -630,7 +530,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
             public void onResponse(Call call, Response response) throws IOException {
                 User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
                 Gson gson = new Gson();
-                ImgInfo imgInfo =gson.fromJson(response.body().string(),ImgInfo.class);
+                final ImgInfo imgInfo =gson.fromJson(response.body().string(),ImgInfo.class);
                 XLog.e("上传头像成功了");
                 if(imgInfo.getCode()==500){
                     Snackbar.make(container,"未知的错误发生了",Snackbar.LENGTH_SHORT).show();
@@ -638,7 +538,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 }else {
                     user.setUImg(imgInfo.getUserImg());
                     XLog.e("");
-                    LoaderFactory.getGlideLoader().clearDiskMemory(AlterActivity.this);
+
                     Message message = new Message();
                     message.what =1;
                     message.obj=imgInfo.getUserImg();
@@ -646,11 +546,24 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                     BaseApplication.getDaosession().getUserDao().update(user);
                     XLog.e("这里已经把头像插进去了");
                     deletePhoto(path);
+                    //由于更换了头像，需要进行页面刷新，所以在这里讲所有缓存清除
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Glide.get(AlterActivity.this).clearDiskCache();
+                        }
+                    }).start();
+                    AlterActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Glide.get(AlterActivity.this).clearMemory();
+                            Glide.with(AlterActivity.this).load(imgInfo).crossFade().into(circleImageView) ;
+                        }
+                    });
+                    SharedPrefsUtil.putValue(AlterActivity.this,"userinfo","userImage",imgInfo.getUserImg());
                     EventBus.getDefault().post(new Info());
                 }
             }
-
-
         });
     }
 

@@ -81,7 +81,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
-        <!--测试-->
+        <!-- 测试 -->
 
         <activity
             android:name=".ui.activity.LogInActivity"
@@ -127,12 +127,10 @@
         <receiver android:name=".broadcast.AlarmReceiver" />
 
         <activity android:name=".ui.activity.ViewImageShowActivity" />
-
         <activity
             android:name=".ui.activity.AlterPhotoActivity"
             android:theme="@style/ChoosePhotoStyle" />
         <activity android:name=".ui.activity.RankActivity" />
-
         <activity android:name=".ui.activity.TaskActivity" />
         <activity
             android:name=".ui.activity.SignInActivity"
@@ -184,6 +182,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.AlterActivity" />
+        <activity android:name=".ui.activity.FriendsAndFansActivity"></activity>
     </application>
 
 </manifest>
