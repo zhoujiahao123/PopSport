@@ -4,22 +4,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-
     <RelativeLayout
         android:paddingTop="@dimen/spacing_huge_toolbar"
         android:paddingBottom="@dimen/spacing_huge"
         android:id="@+id/head_relative"
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="280dp"
+        android:background="@drawable/bg___"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
         <com.nexuslink.util.CircleImageView
             android:id="@+id/image_head"
             android:layout_width="@dimen/image_head"
             android:layout_height="@dimen/image_head"
             android:layout_centerHorizontal="true"
             android:src="@drawable/head"
-
             />
         <TextView
             android:id="@+id/tv_name"
@@ -180,4 +180,14 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/change_bg"
+        android:layout_width="@dimen/image_size_small"
+        android:layout_height="@dimen/image_size_small"
+        android:layout_margin="@dimen/spacing_tiny"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/change_bg"
+        android:layout_alignParentRight="true"
+        />
 </RelativeLayout>

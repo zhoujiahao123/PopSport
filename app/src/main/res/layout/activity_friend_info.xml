@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:paddingTop="@dimen/padding_top"
-        android:background="@drawable/bg_friend_info">
+        android:background="@drawable/bg___">
 
 
     <RelativeLayout

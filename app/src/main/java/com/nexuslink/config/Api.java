@@ -20,6 +20,7 @@ import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
+import com.nexuslink.model.data.RankInfo;
 import com.nexuslink.model.data.Result;
 import com.nexuslink.model.data.RoomGoal;
 import com.nexuslink.model.data.SearchInfo;
@@ -221,6 +222,7 @@ public interface Api {
     @POST("sport/getStep")
     retrofit2.Call<GetStepResult> getStep(@Field("uId") int uId);
 
-
+    @POST("sport/getTopByDistance")
+    Observable<RankInfo> getRankInfo();
 
 }

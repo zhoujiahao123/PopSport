@@ -179,8 +179,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
                         String achievement=new String();
                         for(int i =0;i<8;i++){
                             achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
+                            achievement+=",";
                         }
-                        user.setUAchievements(achievement.substring(1,achievement.length()-1));
+                        user.setUAchievements(achievement.substring(0,achievement.length()));
                         user.setUExp(userInfo.getUser().getUExp());
                         user.setUFansNum(userInfo.getUser().getUFansNum());
                         user.setUGender(userInfo.getUser().getUGender());
