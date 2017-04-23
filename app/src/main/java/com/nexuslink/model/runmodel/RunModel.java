@@ -13,14 +13,11 @@ public interface RunModel {
     void  saveRecord(List<AMapLocation> list, String date);
     void setDuration(int duration);
     float getDistance(List<AMapLocation> list);
-    String getCurrentAverage(float distance);
+
     void calculateCurrentTime();
     String getRealCurrentTime();
     String getCurrentCol(float distance);
     String getCurrentMiles(float distance);
-    void setStartTime(long startTime);
-
-    String getMaxSpeed();
     //上传此次用户跑步的相关数据
     void postRoomData(int rId, long goal, CallBackListener listener);
     //上传用户单次跑步的信息

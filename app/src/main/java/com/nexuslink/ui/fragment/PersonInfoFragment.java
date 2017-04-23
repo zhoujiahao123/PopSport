@@ -136,8 +136,8 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
 
     }
 
-    @Subscribe (threadMode = ThreadMode.MAIN)
-    private void setUserInfo(Info info) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setUserInfo(Info info) {
         //初始化个人信息
         initUserData();
         ApiUtil.getInstance(Constants.BASE_URL).getUserInfo(UserUtils.getUserId())
@@ -203,6 +203,14 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (pw != null) {
+            pw = null;//释放引用
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.setting:
@@ -218,5 +226,6 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
             case R.id.friends_num:
                 ToActivityUtil.toNextActivity(getContext(), FriendsAndFansActivity.class);
         }
+        pw.dismiss();
     }
 }

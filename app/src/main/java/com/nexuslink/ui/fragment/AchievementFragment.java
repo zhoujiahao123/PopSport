@@ -38,7 +38,7 @@ public class AchievementFragment extends BaseFragment {
     @BindView(R.id.achieve_recyclerview)
     EasyRecyclerView mRecyclerView;
 
-    private DecimalFormat df = new DecimalFormat("#.0");
+    private DecimalFormat df = new DecimalFormat("#0.0");
 
 
     @Override

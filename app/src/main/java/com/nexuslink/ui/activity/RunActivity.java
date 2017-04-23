@@ -102,6 +102,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private int type  = -1;
     private int goal = -1;
     private int rId = -1;
+    private float mAverageSpeed = 0.0f;
+    private float maxSpeed = 0.0f;
     /**
      * 定时器
      */
@@ -143,6 +145,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     }
                     //根据条件判断是否启动路线轨迹记录
                     if (mStartOrPauseBt.getText().toString().equals("暂停")) {
+                        mAverageSpeed = aMapLocation.getSpeed();
+                        if(maxSpeed < mAverageSpeed){
+                            maxSpeed = mAverageSpeed;
+                        }
                         record.addpoint(aMapLocation);
                         mPolyoptions.add(myLocation);
                         redrawLine();
@@ -315,7 +321,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mLocationOption = new AMapLocationClientOption();
         //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
         mLocationOption.setInterval(2000);
-        mLocationOption
+        //打开传感器
+        mLocationOption.setSensorEnable(true);
         //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置是否返回地址信息（默认返回地址信息）
@@ -437,10 +444,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mCurrentTime.setText(realTime);
     }
 
+
     @Override
-    public void setCurrentSpeed(String speed) {
-        //    CurrentAverageSpeedTv.setText(speed+"m/s");
-        mAverageSpeedTv.setText(speed);
+    public void setCurrentSpeed() {
+        mAverageSpeedTv.setText(mAverageSpeed+"m/s");
     }
 
     @Override
@@ -456,8 +463,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     }
 
     @Override
-    public void setMaxSpeed(String maxSpeed) {
-        maxSpeedTv.setText(maxSpeed);
+    public void setMaxSpeed() {
+        maxSpeedTv.setText(maxSpeed+"m/s");
     }
 
     @Override
@@ -512,7 +519,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 time = new TimeCount(TOTAL_TIME, INTERVAL);
                 record = new PathRecord();
                 long mStartTime = System.currentTimeMillis();
-                mRunPresenter.startRecord(mStartTime);
                 record.setDate(getCurrentDate(mStartTime));
             }
             //改变按钮的状态

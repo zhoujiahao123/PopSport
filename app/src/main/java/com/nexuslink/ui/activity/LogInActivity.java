@@ -17,12 +17,14 @@ import android.widget.TextView;
 import com.elvishew.xlog.XLog;
 import com.google.gson.Gson;
 import com.nexuslink.R;
+import com.nexuslink.Run;
 import com.nexuslink.Steps;
 import com.nexuslink.User;
 import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseActivity;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.GetDistanceResult;
 import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.loginpresenter.LogInPresenter;
@@ -201,25 +203,33 @@ public class LogInActivity extends BaseActivity implements LoginView {
                     //清除数据
                     DBUtil.getStepsDao().deleteAll();
                     DBUtil.getRunDao().deleteAll();
-                    //请求用户历史跑步公里数
-//                    retrofit2.Response<GetDistanceResult> distanceRes = ApiUtil.getInstance(Constants.BASE_URL).getDistance(UserUtils.getUserId()).execute();
-//                    if(distanceRes.body().getCode() == Constants.SUCCESS){
-//                        //进行存储
-//                       List<GetDistanceResult.RecordBean> recordBeanList =  distanceRes.body().getRecord();
-//                        //开始存储到本地种
-//                        List<Run> runlist = new ArrayList<Run>();
-//                        for(GetDistanceResult.RecordBean recordBean:recordBeanList){
-//                            Run run = new Run(null,recordBean.getDistance(),
-//                                    recordBean.getAverageSpeed(),recordBean.getPathline(),recordBean.getStartPoint(),
-//                                    recordBean.getEndPoint(),recordBean.getTime().split(" ")[0],
-//                                    recordBean.getTime().split(" ")[1],true);
-//                            runlist.add(run);
-//                        }
-//                        DBUtil.getRunDao().insertInTx(runlist);
-//                        isInsert[1] = true;
-//                    }
-                    //测试用，记得删除
-                    isInsert[1] = true;
+//                    请求用户历史跑步公里数
+                    retrofit2.Response<GetDistanceResult> distanceRes = ApiUtil.getInstance(Constants.BASE_URL).getDistance(UserUtils.getUserId()).execute();
+                    if(distanceRes.body().getCode() == Constants.SUCCESS){
+                        //进行存储
+                       List<GetDistanceResult.RecordBean> recordBeanList =  distanceRes.body().getRecord();
+                        //开始存储到本地种
+                        List<Run> runlist = new ArrayList<Run>();
+                        for(GetDistanceResult.RecordBean recordBean:recordBeanList){
+//                            Run run = new Run();
+//                            run.setUMileage(String.valueOf(recordBean.getDistance()));
+//                            run.setDuration(String.valueOf(recordBean.getDuration()));
+//                            run.setAverageSpeed(String.valueOf(recordBean.getAverageSpeed()));
+//                            run.setPathLine(recordBean.getPathline());
+//                            run.setStartPoint(recordBean.getStartPoint());
+//                            run.setEndPoint(recordBean.getEndPoint());
+//                            run.setDate(recordBean.getDate());
+//                            run.setTime(recordBean.getTime());
+                            Run run = new Run(null,String.valueOf(recordBean.getDistance()),
+                                    String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
+                                    ,recordBean.getPathline(),recordBean.getStartPoint(),
+                                    recordBean.getEndPoint(),recordBean.getDate(),
+                                    recordBean.getTime(),null,true);
+                            runlist.add(run);
+                        }
+                        DBUtil.getRunDao().insertInTx(runlist);
+                        isInsert[1] = true;
+                    }
                     //进行走步数的存储
                     retrofit2.Response<GetStepResult> stepRes = ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId()).execute();
                     if(stepRes.body().getCode() == Constants.SUCCESS){
