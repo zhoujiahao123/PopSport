@@ -6,15 +6,25 @@
     android:layout_height="match_parent"
     android:id="@+id/container"
     android:background="@drawable/bg_fog">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
         <ImageView
             android:id="@+id/turn_back"
             android:src="@drawable/turn_back"
             android:layout_width="@dimen/turn_back_image_size"
             android:layout_height="@dimen/turn_back_image_size"
+            android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/city_name"
@@ -133,6 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/weather_remind"
+                    android:maxLines="2"
                     android:textColor="@color/white_light"
                     android:layout_marginLeft="@dimen/spacing_tiny"
                     android:textSize="@dimen/font_normal"/>

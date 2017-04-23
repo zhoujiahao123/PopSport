@@ -2,6 +2,8 @@ package com.nexuslink.ui.activity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,7 +29,12 @@ public class AchievementActivity extends SwipeBackActivity implements OnCallBack
     Toolbar toolbar;
 
     private AchievementRecyclerViewAdapter adapter;
-
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            initView();
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +61,6 @@ public class AchievementActivity extends SwipeBackActivity implements OnCallBack
 
     @Override
     public void onSucceed() {
-        initView();
+        handler.sendMessage(new Message());
     }
 }

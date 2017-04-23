@@ -9,10 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -129,6 +131,10 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
     TextView weatherLifeDesWashCar;
     @BindView(R.id.weather_life_des_ray)
     TextView weatherLifeDesRay;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.my_scrollview)
+    MyScrollView myScrollview;
     private WeatherPresenter weatherPresenter;
     //一个imageview作为整天背景
     private ImageView backgroundImage;
@@ -146,11 +152,13 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo==null||!networkInfo.isAvailable()){
+        if (networkInfo == null || !networkInfo.isAvailable()) {
             setContentView(R.layout.weather_activity_failed);
-        }else {
+        } else {
             setContentView(R.layout.weather_activity);
             ButterKnife.bind(this);
+            myScrollview.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             setView();
         }
 
@@ -163,6 +171,8 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
 
     @Override
     public void showWeather(WeatherInfo weatherInfo) {
+        myScrollview.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
         //设置空气质量指数
         airQualityText.setText(weatherInfo.getResult().getData().getPm25().getPm25().getCurPm() + " " + weatherInfo.getResult()
                 .getData().getPm25().getPm25().getQuality());
@@ -179,9 +189,9 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
         airQualityRight.setText(weatherInfo.getResult().getData().getWeather().get(1).getInfo().getDay().get(4));
         //设置温度区间
         temp.setText(weatherInfo.getResult().getData().getWeather().get(0).getInfo().getNight().get(2) + "~" +
-                weatherInfo.getResult().getData().getWeather().get(0).getInfo().getDay().get(2)+"°C");
+                weatherInfo.getResult().getData().getWeather().get(0).getInfo().getDay().get(2) + "°C");
         tempRight.setText(weatherInfo.getResult().getData().getWeather().get(1).getInfo().getNight().get(2) + "~" +
-                weatherInfo.getResult().getData().getWeather().get(1).getInfo().getDay().get(2)+"°C");
+                weatherInfo.getResult().getData().getWeather().get(1).getInfo().getDay().get(2) + "°C");
         //设置多云转晴等
         informationTextLeft.setText(weatherInfo.getResult().getData().getWeather().get(0).getInfo().getDay().get(1));
         informationTextRight.setText(weatherInfo.getResult().getData().getWeather().get(1).getInfo().getDay().get(1));
@@ -211,7 +221,7 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
     /**
      * 设置生活指数
      */
-    private void setWeatherLifeDes(WeatherInfo weatherInfo){
+    private void setWeatherLifeDes(WeatherInfo weatherInfo) {
         weatherLifeDesSport.setText(weatherInfo.getResult().getData().getLife().getInfo().getYundong().get(0));
         weatherLifeDesAir.setText(weatherInfo.getResult().getData().getLife().getInfo().getKongtiao().get(0));
         weatherLifeDesCloth.setText(weatherInfo.getResult().getData().getLife().getInfo().getChuanyi().get(0));
@@ -219,12 +229,13 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
         weatherLifeDesRay.setText(weatherInfo.getResult().getData().getLife().getInfo().getZiwaixian().get(0));
         weatherLifeDesWashCar.setText(weatherInfo.getResult().getData().getLife().getInfo().getXiche().get(0));
     }
+
     /**
      * 设置预报的天气温度
      */
     private void setForecastTemp(WeatherInfo weatherInfo, TextView textView, int i) {
         textView.setText(weatherInfo.getResult().getData().getWeather().get(i).getInfo().getNight().get(2) + "~" +
-                weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(2)+"°C");
+                weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(2) + "°C");
     }
 
     /**
@@ -313,28 +324,41 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
     private void setWeatherImage(WeatherInfo weatherInfo, int i, ImageView imageView) {
         if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("晴")) {
             imageView.setImageResource(R.drawable.ic_sunny);
-            backgroundId = R.drawable.bg_fine_day;
-            container.setBackgroundResource(R.drawable.bg_fine_day);
+            if (i == 0) {
+                backgroundId = R.drawable.bg_fine_day;
+                container.setBackgroundResource(R.drawable.bg_fine_day);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("多云")) {
             imageView.setImageResource(R.drawable.ic_cloudy);
-            backgroundId = R.drawable.bg_cloudy_day;
-            container.setBackgroundResource(R.drawable.bg_cloudy_day);
+            if (i == 0) {
+                backgroundId = R.drawable.bg_cloudy_day;
+                container.setBackgroundResource(R.drawable.bg_cloudy_day);
+            }
+
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("阴")) {
             imageView.setImageResource(R.drawable.ic_overcast);
-            backgroundId = R.drawable.bg_overcast;
-            container.setBackgroundResource(R.drawable.bg_overcast);
+            if (i == 0) {
+                backgroundId = R.drawable.bg_overcast;
+                container.setBackgroundResource(R.drawable.bg_overcast);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("小雨")) {
             imageView.setImageResource(R.drawable.ic_littlerain);
-            backgroundId = R.drawable.bg_rain;
-            container.setBackgroundResource(R.drawable.bg_rain);
+            if (i == 0) {
+                backgroundId = R.drawable.bg_rain;
+                container.setBackgroundResource(R.drawable.bg_rain);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("中雨")) {
             imageView.setImageResource(R.drawable.ic_midrain);
-            backgroundId = R.drawable.bg_rain;
-            container.setBackgroundResource(R.drawable.bg_rain);
+            if (i == 0) {
+                backgroundId = R.drawable.bg_rain;
+                container.setBackgroundResource(R.drawable.bg_rain);
+            }
         } else if (weatherInfo.getResult().getData().getWeather().get(i).getInfo().getDay().get(1).equals("阵雨")) {
             imageView.setImageResource(R.drawable.ic_bigrain);
-            backgroundId = R.drawable.bg_rain;
-            container.setBackgroundResource(R.drawable.bg_rain);
+            if (i == 0) {
+                backgroundId = R.drawable.bg_rain;
+                container.setBackgroundResource(R.drawable.bg_rain);
+            }
         }
     }
 
@@ -402,7 +426,7 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
         } else if (alpha < 0) {
             alpha = 0;
         }
-        Log.e("TAG",alpha+"");
+        Log.e("TAG", alpha + "");
         blurDrawable.setBlur(alpha);
         backgroundImage.setImageDrawable(blurDrawable.getBlurDrawable());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

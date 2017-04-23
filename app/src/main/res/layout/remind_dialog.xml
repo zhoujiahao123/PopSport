@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingLeft="@dimen/spacing_huge"
+    android:paddingRight="@dimen/spacing_huge"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/image_size_small"
+            android:layout_height="@dimen/image_size_small"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/warn" />
+
+    </LinearLayout>
+
+    <TextView
+        android:background="@color/ghost_white"
+        android:gravity="center"
+        android:textColor="#424042"
+        android:textSize="@dimen/font_normal"
+        android:text="您参加的跑房"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/textView" />
+
+    <include
+        layout="@layout/divider_line"
+        ></include>
+
+    <RelativeLayout
+        android:background="@color/ghost_white"
+        android:padding="@dimen/spacing_normal"
+        android:paddingRight="@dimen/spacing_large"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/confirm_tv"
+            android:text="继续"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/cancel_tv"
+            android:textColor="@color/secondary_text"
+            android:text="算了吧"
+            android:layout_toLeftOf="@id/confirm_tv"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_large"
+            android:textSize="@dimen/font_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

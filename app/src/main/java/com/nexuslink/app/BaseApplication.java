@@ -2,18 +2,14 @@
 
  import android.app.Application;
  import android.content.Context;
- import android.database.sqlite.SQLiteDatabase;
 
  import com.elvishew.xlog.LogLevel;
  import com.elvishew.xlog.XLog;
- import com.facebook.stetho.Stetho;
  import com.nexuslink.DaoMaster;
  import com.nexuslink.DaoSession;
- import com.umeng.socialize.Config;
+ import com.nexuslink.service.InitService;
+ import com.nexuslink.util.cache.DiskLruCacheHelper;
  import com.umeng.socialize.PlatformConfig;
- import com.umeng.socialize.UMShareAPI;
-
- import cn.alien95.resthttp.request.RestHttp;
 
 
  /**
@@ -27,26 +23,17 @@ public class BaseApplication extends Application {
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
         PlatformConfig.setSinaWeibo("4258197523", "30268867be9ea03cd1f41c8a93f8795f");    }
-    //===============================================数据库
-    public static  SQLiteDatabase db;
+     //===============================================缓存
+     public static DiskLruCacheHelper helper;
+    private static DaoSession daoSession;
+
 
     public void onCreate() {
         super.onCreate();
-        UMShareAPI.get(this);
-        Config.DEBUG = true;
         mContext = getApplicationContext();
         XLog.init(LogLevel.ALL);
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(
-                                Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(
-                                Stetho.defaultInspectorModulesProvider(this))
-                        .build());
-        //创建数据库
-        db = new DaoMaster.DevOpenHelper(mContext,"PopSport",null).getWritableDatabase();
-        //舒适化图片加载库
-        RestHttp.initialize(this);
+
+        InitService.start(this);
     }
     /*
     提供全局context
@@ -55,17 +42,12 @@ public class BaseApplication extends Application {
         return mContext;
     }
 
-     public static DaoSession getDaosession(){
-
-//         DaoSession daoSession;
-//         DaoMaster daoMaster;
-//         DaoMaster.DevOpenHelper helper;
-//         SQLiteDatabase database;
-//         helper = new DaoMaster.DevOpenHelper(BaseApplication.getContext(),"Pop-Db",null);
-//         database = helper.getWritableDatabase();
-//         daoMaster = new DaoMaster(database);
-//         daoSession = daoMaster.newSession();
-         DaoSession daoSession = new DaoMaster(db).newSession();
+     public synchronized static DaoSession getDaosession(){
+         if(daoSession == null){
+             daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(mContext,"PopSport",null)
+                     .getWritableDatabase()).newSession();
+         }
          return daoSession;
      }
+
 }

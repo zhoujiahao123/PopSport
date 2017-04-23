@@ -1,9 +1,12 @@
 package com.nexuslink.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elvishew.xlog.XLog;
@@ -26,6 +30,7 @@ import com.nexuslink.presenter.loginpresenter.LogInPresenter;
 import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
 import com.nexuslink.ui.view.LoginView;
 import com.nexuslink.util.IdUtil;
+import com.nexuslink.util.ToastUtil;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -36,8 +41,11 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
+
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -63,11 +71,39 @@ public class LogInActivity extends BaseActivity implements LoginView {
     SharedPreferences.Editor editor;
 
     OkHttpClient okHttpClient = new OkHttpClient();
+
+    private final int SUCCESS = 1;
+    private final int FAILED = 0;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case  SUCCESS:
+                    editor.putInt("already",1);
+                    editor.commit();
+
+                    Intent mainViewIntent = new Intent(LogInActivity.this, MainViewActivity.class);
+                    startActivity(mainViewIntent);
+                    //登陆成功发送广播,通知计步更新
+                    sendBroadcast(new Intent("ANewacount"));
+                    finish();
+                    break;
+                case FAILED:
+                    ToastUtil.showToast(LogInActivity.this,"登录过程中出现错误，请重试...");
+                    break;
+            }
+            dialog.dismiss();
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         sharedPreferences= getSharedPreferences("already", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+//
         if(sharedPreferences.getInt("already",0)==1){
             startActivity(new Intent(this,MainViewActivity.class));
             finish();
@@ -106,51 +142,115 @@ public class LogInActivity extends BaseActivity implements LoginView {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
+    AlertDialog.Builder builder;
+     AlertDialog dialog ;
+
     @Override
     public void succeedLogIn() {
-        RequestBody body =new FormBody.Builder().add("uId", String.valueOf(IdUtil.getuId())).build();
-        Request request = new Request.Builder().post(body).url(Constants.BASE_URL+"user/getInfo").build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                XLog.e(e.toString());
-            }
 
+        //进行提示
+        builder = new AlertDialog.Builder(this);
+        dialog = builder.create();
+        final TextView tv = new TextView(this);
+        tv.setText("请稍候，我们正在为您做一些初始工作...");
+        builder.setView(tv);
+        dialog.show();
+
+        new Thread(new Runnable() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String content = response.body().string();
-                XLog.e("登录时存储用户数据成功"+content);
-                Gson gson = new Gson();
-                UserInfo userInfo = gson.fromJson(content,UserInfo.class);
-                UserDao userDao = BaseApplication.getDaosession().getUserDao();
-                User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-                String achievement=new String();
-                for(int i =0;i<8;i++){
-                    achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
+            public void run() {
+                try {
+                    //辅助变量
+                    boolean isInsert[] = {false,false,false};
+
+                    //请求用户信息
+                    RequestBody body =new FormBody.Builder().add("uId", String.valueOf(IdUtil.getuId())).build();
+                    Request request = new Request.Builder().post(body).url(Constants.BASE_URL+"user/getInfo").build();
+                    Response response  = okHttpClient.newCall(request).execute();
+                    String content = response.body().string();
+                    XLog.e("登录时存储用户数据成功"+content);
+                    Gson gson = new Gson();
+
+                    UserInfo userInfo = gson.fromJson(content,UserInfo.class);
+                    if(userInfo.getCode() == Constants.SUCCESS){
+                        UserDao userDao = BaseApplication.getDaosession().getUserDao();
+                        User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
+                        String achievement=new String();
+                        for(int i =0;i<8;i++){
+                            achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
+                            achievement+=",";
+                        }
+                        user.setUAchievements(achievement.substring(0,achievement.length()));
+                        user.setUExp(userInfo.getUser().getUExp());
+                        user.setUFansNum(userInfo.getUser().getUFansNum());
+                        user.setUGender(userInfo.getUser().getUGender());
+                        user.setUHeight(userInfo.getUser().getUHeight());
+                        user.setUImg(userInfo.getUser().getUImg());
+                        user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
+                        user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
+                        user.setUName(userInfo.getUser().getUName());
+                        user.setUWeight(userInfo.getUser().getUWeight());
+                        userDao.update(user);
+                        isInsert[0] = true;
+                    }
+
+//                    //清除数据
+//                    DBUtil.getStepsDao().deleteAll();
+//                    DBUtil.getRunDao().deleteAll();
+//                    //请求用户历史跑步公里数
+//                    retrofit2.Response<GetDistanceResult> distanceRes = ApiUtil.getInstance(Constants.BASE_URL).getDistance(UserUtils.getUserId()).execute();
+//                    if(distanceRes.body().getCode() == Constants.SUCCESS){
+//                        //进行存储
+//                       List<GetDistanceResult.RecordBean> recordBeanList =  distanceRes.body().getRecord();
+//                        //开始存储到本地种
+//                        List<Run> runlist = new ArrayList<Run>();
+//                        for(GetDistanceResult.RecordBean recordBean:recordBeanList){
+//                            Run run = new Run(null,recordBean.getDistance(),
+//                                    recordBean.getAverageSpeed(),recordBean.getPathline(),recordBean.getStartPoint(),
+//                                    recordBean.getEndPoint(),recordBean.getTime().split(" ")[0],
+//                                    recordBean.getTime().split(" ")[1],true);
+//                            runlist.add(run);
+//                        }
+//                        DBUtil.getRunDao().insertInTx(runlist);
+//                        isInsert[1] = true;
+//                    }
+//                    //进行走步数的存储
+//                    retrofit2.Response<GetStepResult> stepRes = ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId()).execute();
+//                    if(stepRes.body().getCode() == Constants.SUCCESS){
+//                        //进行存储
+//                        List<GetStepResult.RecordBean> recordBeanList = stepRes.body().getRecord();
+//                        List<Steps> stepsList = new ArrayList<Steps>();
+//                        for(GetStepResult.RecordBean recordBean:recordBeanList){
+//                            Steps steps = new Steps(null,recordBean.getStep(),recordBean.getDate(),true);
+//                            stepsList.add(steps);
+//                        }
+//                        DBUtil.getStepsDao().insertInTx(stepsList);
+//                        isInsert[2] = true;
+//                    }
+                    //完成基本工作，进行页面跳转
+//                    if(isInsert[0] == true && isInsert[1] == true && isInsert[2] == true){
+//                        handler.sendEmptyMessage(SUCCESS);
+//                    }else{
+//                        handler.sendEmptyMessage(FAILED);
+//                    }
+                    handler.sendEmptyMessage(SUCCESS);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                user.setUAchievements(achievement.substring(1,achievement.length()-1));
-                user.setUExp(userInfo.getUser().getUExp());
-                user.setUFansNum(userInfo.getUser().getUFansNum());
-                user.setUGender(userInfo.getUser().getUGender());
-                user.setUHeight(userInfo.getUser().getUHeight());
-                user.setUImg(userInfo.getUser().getUImg());
-                user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
-                user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
-                user.setUName(userInfo.getUser().getUName());
-                user.setUWeight(userInfo.getUser().getUWeight());
-                userDao.update(user);
-        }
-        });
-        editor.putInt("already",1);
-        editor.commit();
-        Intent mainViewIntent = new Intent(LogInActivity.this, MainViewActivity.class);
-        startActivity(mainViewIntent);
-        finish();
+
+            }
+        }).start();
+
     }
+
 
     @Override
     public void failedLogIn() {
-        Snackbar.make(container,"您输入的密码有误",Snackbar.LENGTH_SHORT).show();
+        new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("很抱歉")
+                .setContentText("您的用户名或密码输入错误")
+                .show();
     }
 
     @Override

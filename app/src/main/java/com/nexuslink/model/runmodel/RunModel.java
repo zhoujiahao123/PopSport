@@ -1,6 +1,7 @@
 package com.nexuslink.model.runmodel;
 
 import com.amap.api.location.AMapLocation;
+import com.nexuslink.model.CallBackListener;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface RunModel {
     void  saveRecord(List<AMapLocation> list, String date);
-    String getDuration();
+    void setDuration(int duration);
     float getDistance(List<AMapLocation> list);
     String getCurrentAverage(float distance);
     void calculateCurrentTime();
@@ -18,6 +19,11 @@ public interface RunModel {
     String getCurrentCol(float distance);
     String getCurrentMiles(float distance);
     void setStartTime(long startTime);
-    void setEndTime(long endTime);
+
+    String getMaxSpeed();
+    //上传此次用户跑步的相关数据
+    void postRoomData(int rId, long goal, CallBackListener listener);
+    //上传用户单次跑步的信息
+//    void postRunData(int )
 
 }

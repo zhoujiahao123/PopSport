@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.nexuslink.R;
-import com.sina.weibo.sdk.api.share.Base;
+import com.nexuslink.util.ActivityStack;
 
 /**
  * Created by ASUS-NB on 2016/12/20.
@@ -20,7 +22,22 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityStack.getScreenManager().pushActivity(this);
     }
+
+    public void initToolbar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.turn_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+    }
+
+
 
     public boolean isNetworkActive(){
         ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -33,6 +50,7 @@ public class BaseActivity extends AppCompatActivity {
         }
 
     }
+
     public void onErrorNetwork(){
         setContentView(R.layout.activity_error_network_normal);
     }
@@ -52,6 +70,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityStack.getScreenManager().popActivity(this);
     }
 
     @Override

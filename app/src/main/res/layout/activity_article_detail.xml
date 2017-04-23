@@ -1,0 +1,177 @@
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!--Toolbar-->
+    <RelativeLayout
+        android:id="@+id/toolbar_relative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Toolbar
+            android:background="@color/colorPrimary"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </Toolbar>
+
+        <TextView
+            android:text="话题详情"
+            style="@style/ToolbarTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/back_white"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/back_image"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+    </RelativeLayout>
+
+    <com.nexuslink.ui.view.SpringBackScrollView
+        android:layout_below="@id/toolbar_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:background="@color/ghost_white"
+            android:paddingTop="10dp"
+            android:paddingLeft="@dimen/spacing_tiny"
+            android:paddingRight="@dimen/spacing_tiny"
+            android:paddingBottom="@dimen/spacing_tiny"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.nexuslink.util.CircleImageView
+                    android:id="@+id/user_image"
+                    android:layout_gravity="center"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+                <LinearLayout
+
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/user_name"
+                            android:textSize="@dimen/font_normal"
+                            android:textColor="@color/primary_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/user_level"
+                            android:textColor="@color/ufo_green"
+                            android:layout_marginLeft="@dimen/spacing_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/article_date_tv"
+                        android:textSize="@dimen/font_normal"
+                        android:textColor="@color/secondary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.vanniktech.emoji.EmojiTextView
+                android:id="@+id/tv_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:padding="8dp"
+                android:textSize="@dimen/msg_text_size"
+                android:textColor="@color/primary_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.nexuslink.ui.view.view.headerview.MultiView
+                android:id="@+id/multi_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/background_color"
+                app:divideSpace="4dp"
+                android:layout_marginBottom="1dp"
+                >
+            </com.nexuslink.ui.view.view.headerview.MultiView>
+
+            <include
+                layout="@layout/divider_line"
+                ></include>
+
+            <LinearLayout
+                android:padding="@dimen/spacing_tiny"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.nexuslink.ui.view.likeview.LikeView
+                    android:id="@+id/like_num"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:animateDuration="300"
+                    app:autoMeasureMaxWidth="true"
+                    app:graphStrokeWidth="3dp"
+                    app:isActivated="false"
+                    app:notAllowedCancel="false"
+                    app:number="0"
+                    />
+                <com.nexuslink.ui.view.likeview.LikeView
+                    android:id="@+id/comment_num"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/comments_detail"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ></LinearLayout>
+
+            <include
+                layout="@layout/comment_input"
+                ></include>
+
+            <View
+                android:alpha="100"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_large">
+            </View>
+
+
+        </LinearLayout>
+
+
+
+    </com.nexuslink.ui.view.SpringBackScrollView>
+
+
+    <include
+        layout="@layout/progress_layout"
+        ></include>
+
+</RelativeLayout>

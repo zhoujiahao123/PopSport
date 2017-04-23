@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#34C464</color>
-    <color name="colorPrimaryDark">#185A2E</color>
-    <color name="colorAccent">#34C464</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorPrimaryLight">#C8E6C9</color>
+    <color name="colorAccent">#FDD835</color>
+    <color name="yellow_500">#FFEB3B</color>
+    <color name="deep_orang_500">#FF5722</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#eeeeee</color>
+
+    <color name="green_400">#66BB6A</color>
+
     <color name="pink_light">#FFCCCC</color>
     <color name="white_light">#FFFFFF</color>
     <color name="white_normal">#e9e7e7</color>
     <color name="gray_normal">#605f5f</color>
     <color name="gray_light">#c1c0c0</color>
     <color name="gray_light_more">#e4e3e3</color>
+    <color name="gray_light_super">#c1c1c1</color>
     <color name="blue_normal">#99cccc</color>
     <color name="blue_little_darker">#88cccc</color>
     <color name="yellow_light">#FFCC99</color>
@@ -47,4 +58,29 @@
     <color name="tab_sel">#34c464</color>
 
     <color name="tab_text_color">#8e8e8e</color>
+    <!--警告红-->
+    <color name="bt_warn_red">#F44336</color>
+
+
+    <!--运动activity需要颜色-->
+    <color name="toolbar_color">#42B2EB</color>
+    <color name="bottom_background_color">#FFFFFF</color>
+    <color name="one_class_text_color">#747274</color>
+    <color name="two_class_text_color">#9A989A</color>
+    <color name="three_class_text_color">#727072</color>
+    <color name="four_class_text_color">#CECCCE</color>
+
+    
+    //个人信息界面的三种颜色
+    <color name="purple_friend">#d4237a</color>
+    <color name="red_friend">#d81e06</color>
+    <color name="green">#1afa29</color>
+
+    <!-- step and run fragment-->
+    <color name="pink_dark_top">#FF6469</color>
+    <color name="pink_background_color">#FD6469</color>
+    <color name="line_bar_fill_color">#FBDD6C</color>
+    <color name="small_title">#E2464B</color>
+    <!--历史界面颜色-->
+    <color name="history_toolbar_color">#019689</color>
 </resources>

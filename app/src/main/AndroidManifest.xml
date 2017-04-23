@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.nexuslink">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,21 +28,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 地图权限 -->
     //地图SDK（包含其搜索功能）需要的基础权限
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
     <!-- 用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 用于访问网络，网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 用于写入缓存数据到扩展存储卡 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 用于申请调用A-GPS模块 -->
@@ -50,6 +46,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="ACCESS_FINE_LOCATION" />
+    <!--震动-->
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <uses-feature
         android:name="android.hardware.sensor.stepcounter"
@@ -61,11 +59,13 @@
     <application
         android:name=".app.BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_luancher"
+        android:icon="@drawable/poplog"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LogInActivity">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity android:name=".ui.activity.LogInActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -110,9 +110,7 @@
         <activity
             android:name=".ui.activity.MainViewActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-
+            android:windowSoftInputMode="stateUnchanged|adjustUnspecified" />
         <activity
             android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -133,12 +131,8 @@
             android:name="com.amap.api.v2.apikey"
             android:value="ea9a725ff880d7bdd907142465ca7392" />
 
-        <activity
-            android:name=".ui.activity.RunActivity"
-            android:theme="@style/RunActivityActionBarTheme" />
-        <activity
-            android:name=".ui.activity.RunHouseDetailActivity"
-            android:theme="@style/CustomActionBarTheme" />
+        <activity android:name=".ui.activity.RunActivity" />
+        <activity android:name=".ui.activity.RunHouseDetailActivity" />
         <activity
             android:name=".ui.activity.CreateRunHouseActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -149,30 +143,52 @@
         <activity android:name=".ui.activity.WriteMsgActivity" />
         <!-- 图片跳转Activity -->
 
-        <!--到点通知-->
-        <service android:name=".service.NotifyService"
-            ></service>
-        <receiver android:name=".broadcast.AlarmReceiver"></receiver>
 
-        <activity android:name=".ui.activity.ViewImageShowActivity"
-            ></activity>
- 
-        <activity android:name=".ui.activity.FriendInfoActivity"/>
-        <activity android:name=".ui.activity.AlterActivity"
-            />
+        <!-- 到点通知 -->
+        <service
+            android:name=".service.AlarmService">
+        </service>
+        <receiver android:name=".broadcast.AlarmReceiver"
+            ></receiver>
 
-        <activity android:name=".ui.activity.AlterPhotoActivity"
-            android:theme="@style/ChoosePhotoStyle"/>
-        <activity android:name=".ui.activity.RankActivity"/>
-        <activity android:name=".ui.activity.AchievementActivity"/>
 
-        <activity android:name=".ui.activity.TaskActivity"/>
-        <activity android:name=".ui.activity.SignInActivity"
-            android:theme="@style/TranslucentBar"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <receiver android:name=".broadcast.AlarmReceiver" />
+
+        <activity android:name=".ui.activity.ViewImageShowActivity" />
+        <activity android:name=".ui.activity.FriendInfoActivity"
+            android:theme="@style/TranslucentBar"/>
+        <activity android:name=".ui.activity.AlterActivity" />
+        <activity
+            android:name=".ui.activity.AlterPhotoActivity"
+            android:theme="@style/ChoosePhotoStyle" />
+        <activity android:name=".ui.activity.RankActivity" />
+        <activity android:name=".ui.activity.AchievementActivity" />
+        <activity android:name=".ui.activity.TaskActivity" />
+        <activity
+            android:name=".ui.activity.SignInActivity"
+            android:theme="@style/TranslucentBar" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+       <!--<meta-data-->
+            <!--android:name="com.google.android.gms.version"-->
+            <!--android:value="@integer/google_play_services_version" />-->
+        <activity android:name=".ui.activity.FriendInfoActivityS"
+            android:theme="@style/TranslucentBar"/>
+        <activity
+            android:name=".ui.activity.ArticleDetailActivity"
+            android:windowSoftInputMode="stateUnchanged|adjustUnspecified" />
+        <activity android:name=".ui.activity.StepAndRunHistoryActivity" />
+        <activity android:name=".ui.activity.RecordShowActivity" />
+        <activity android:name=".ui.activity.PermissionsActivity" />
+        <activity
+            android:name=".ui.activity.RunHouseResultActivity"
+            android:label="@string/title_activity_run_house_result"
+            android:theme="@style/AppTheme">
+
+        </activity>
+        <service android:name=".service.InitService"></service>
     </application>
 
 </manifest>

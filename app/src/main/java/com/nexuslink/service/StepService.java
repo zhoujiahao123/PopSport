@@ -12,7 +12,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -72,6 +71,22 @@ public class StepService extends Service implements SensorEventListener {
     private int hasStepCount = 0;
     //以前走过的步数
     private int previousStepCount = 0;
+    //===============================================采用加速度传感器所要用到的变量
+
+    public static float SENSITIVITY = 10; // SENSITIVITY灵敏度
+    private float mLastValues[] = new float[3 * 2];
+    private float mScale[] = new float[2];
+    private float mYOffset;
+    private static long end = 0;
+    private static long start = 0;
+    /**
+     * 最后加速度方向
+     */
+    private float mLastDirections[] = new float[3 * 2];
+    private float mLastExtremes[][] = { new float[3 * 2], new float[3 * 2] };
+    private float mLastDiff[] = new float[3 * 2];
+    private int mLastMatch = -1;
+
     //===============================================messenger
     //跨进程通信--使用Messenger方式
     private Messenger messengerFromService = new Messenger(new MessengerHandler());
@@ -144,6 +159,7 @@ public class StepService extends Service implements SensorEventListener {
             Steps stepsAdd = new Steps();
             stepsAdd.setDate(CURRENT_DATE);
             stepsAdd.setUStep(0);
+            stepsAdd.setHasUpLoad(false);
             stepsDao.insert(stepsAdd);
         }
     }
@@ -163,16 +179,18 @@ public class StepService extends Service implements SensorEventListener {
             sensorManager = null;
         }
         sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
-        int VERSION_CODES = Build.VERSION.SDK_INT;
-        if(VERSION_CODES>=19){
-            addCountStepListener();
-        }else{
-            //===============================================另一套方案
-        }
+        addCountStepListener();
+
     }
+    Sensor countSensor ;
+    Sensor detectorSensor ;
+    Sensor accelerateSensor;
     private void addCountStepListener() {
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        Sensor detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+         countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+         detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        //利用加速度传感器
+        accelerateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         if(countSensor!=null){
             //选择计步传感器
             stepSensor = 0;
@@ -183,6 +201,14 @@ public class StepService extends Service implements SensorEventListener {
             stepSensor = 1;
             Log.i(TAG,"步数监测器");
             sensorManager.registerListener(StepService.this,detectorSensor,SENSOR_DELAY_FASTEST);
+        }else if(accelerateSensor != null){
+            stepSensor = 2;
+            int h = 480;
+            mYOffset = h * 0.5f;
+            mScale[0] = -(h * 0.5f * (1.0f / (SensorManager.STANDARD_GRAVITY * 2)));
+            mScale[1] = -(h * 0.5f * (1.0f / (SensorManager.MAGNETIC_FIELD_EARTH_MAX)));
+            Log.i(TAG,"加速度传感器");
+            sensorManager.registerListener(StepService.this,accelerateSensor,SENSOR_DELAY_FASTEST);
         }
 
     }
@@ -207,29 +233,74 @@ public class StepService extends Service implements SensorEventListener {
             }
             sendMessage();
             setNotification();
-
-//            Toast.makeText(BaseApplication.mContext, tempStep, Toast.LENGTH_SHORT).show();
         }else if(stepSensor == 1){
             if(event.values[0] == 1.0){
+                hasRecord = true;
                 CURRENT_STEPS++;
                 Log.i(TAG,CURRENT_STEPS+"");
                 sendMessage();
                 setNotification();
             }
+        }else if(stepSensor == 2){
+            hasRecord = true;
+            synchronized (this) {
+                float vSum = 0;
+                for (int i = 0; i < 3; i++) {
+                    final float v = mYOffset + event.values[i] * mScale[1];
+                    vSum += v;
+                }
+                int k = 0;
+                float v = vSum / 3;
+
+                float direction = (v > mLastValues[k] ? 1
+                        : (v < mLastValues[k] ? -1 : 0));
+                if (direction == -mLastDirections[k]) {
+                    // Direction changed
+                    int extType = (direction > 0 ? 0 : 1); // minumum or
+                    // maximum?
+                    mLastExtremes[extType][k] = mLastValues[k];
+                    float diff = Math.abs(mLastExtremes[extType][k]
+                            - mLastExtremes[1 - extType][k]);
+
+                    if (diff > SENSITIVITY) {
+                        boolean isAlmostAsLargeAsPrevious = diff > (mLastDiff[k] * 2 / 3);
+                        boolean isPreviousLargeEnough = mLastDiff[k] > (diff / 3);
+                        boolean isNotContra = (mLastMatch != 1 - extType);
+
+                        if (isAlmostAsLargeAsPrevious && isPreviousLargeEnough
+                                && isNotContra) {
+                            end = System.currentTimeMillis();
+                            if (end - start > 500) {// 此时判断为走了一步
+
+                                CURRENT_STEPS++;
+                                mLastMatch = extType;
+                                start = end;
+                            }
+                        } else {
+                            mLastMatch = -1;
+                        }
+                    }
+                    mLastDiff[k] = diff;
+                }
+                mLastDirections[k] = direction;
+                mLastValues[k] = v;
+            }
+            }
         }
-    }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
     private void sendMessage(){
         Message msg = Message.obtain(null,Constants.MSG_FROM_SERVICE);
         Bundle bundle = new Bundle();
         bundle.putInt("currentSteps",CURRENT_STEPS);
         msg.setData(bundle);
         try {
-            if(hasRecord&&messengerFromClient!=null){
+            if(hasRecord&&messengerFromClient!=null) {
                 messengerFromClient.send(msg);
             }
         } catch (RemoteException e) {
@@ -286,6 +357,12 @@ public class StepService extends Service implements SensorEventListener {
                 }else if(Intent.ACTION_TIME_TICK.equals(action)){
                     save();
 //                    isNewDay();
+                }else if("ANewacount".equals(action)){
+
+                    //当时一个新用户登录的时候
+                    //清除数据
+                    Log.i(TAG,"收到新账户广播");
+                    initTodayData();
                 }
             }
         };
@@ -358,6 +435,12 @@ public class StepService extends Service implements SensorEventListener {
         //取消前台进程
         stopForeground(true);
         unregisterReceiver(mReceiver);
+        //注销各传感器
+        if(countSensor!= null || detectorSensor != null || accelerateSensor != null){
+            sensorManager.unregisterListener(StepService.this);
+        }
+
+
     }
 
 
@@ -385,7 +468,11 @@ public class StepService extends Service implements SensorEventListener {
 
         @Override
         public void onTick(long millisUntilFinished) {
-//            Log.i(TAG,"currentSteps:"+CURRENT_STEPS);
+            Log.i(TAG,"currentSteps:"+CURRENT_STEPS);
+            if(stepSensor == 2){
+                sendMessage();
+                setNotification();
+            }
         }
 
         @Override

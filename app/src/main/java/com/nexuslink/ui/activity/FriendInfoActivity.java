@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -32,6 +33,8 @@ import com.nexuslink.util.BlurDrawable;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.ImageUtil;
 import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.loader.ILoader;
+import com.nexuslink.util.loader.LoaderFactory;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -53,7 +56,7 @@ import okhttp3.Response;
  * Created by ASUS-NB on 2017/2/7.
  */
 
-public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoView, FriendView {
+public class FriendInfoActivity extends AppCompatActivity implements FriendInfoView, FriendView {
 
     private final static int BACKGROUD = 1;
     @BindView(R.id.friend_head_image)
@@ -90,7 +93,7 @@ public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoV
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == BACKGROUD) {
-                doBlur(data);
+
                 XLog.e("这个data的大小为" + data.length);
             }
         }
@@ -105,18 +108,18 @@ public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoV
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_friendinfo);
-        ButterKnife.bind(this);
-        headPath = getIntent().getStringExtra("uImg");
-        nickName = getIntent().getStringExtra("uName");
-        friendHeadNickName.setText(nickName);
-        uId = getIntent().getIntExtra("uId", -1);
-        if (uId == -1) {
-            ToastUtil.showToast(this, "未知的错误产生了");
-        } else {
-            XLog.e(headPath + "   " + nickName);
-            initView();
-        }
+        setContentView(R.layout.activity_friend_info);
+//        ButterKnife.bind(this);
+//        headPath = getIntent().getStringExtra("uImg");
+//        nickName = getIntent().getStringExtra("uName");
+//        friendHeadNickName.setText(nickName);
+//        uId = getIntent().getIntExtra("uId", -1);
+//        if (uId == -1) {
+//            ToastUtil.showToast(this, "未知的错误产生了");
+//        } else {
+//            XLog.e(headPath + "   " + nickName);
+//            initView();
+//        }
 
 
     }
@@ -126,8 +129,9 @@ public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoV
         friendPresenter.getFriendInfo(uId);
         imageViewBackground = new ImageView(this);
         getHeadImage(Constants.PHOTO_BASE_URL + headPath, friendHeadImage);
-        getImageStream();
+//        getImageStream();
         XLog.e(Constants.PHOTO_BASE_URL + headPath);
+        doBlur();
 
     }
 
@@ -136,13 +140,14 @@ public class FriendInfoActivity extends SwipeBackActivity implements FriendInfoV
      */
     private void getHeadImage(String url, ImageView imageView) {
         ImageUtil.imageDisplay(url, imageView);
+        LoaderFactory.getGlideLoader().loadNet(imageView,url,new ILoader.Option(R.drawable.head_photo,R.drawable.head_photo));
     }
 
     /**
      * 以头像作为背景 并做模糊化处理
      */
-    private void doBlur(byte[] data) {
-        final Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+    private void doBlur() {
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fibackground);
         final BlurDrawable blurDrawable = new BlurDrawable(this, getResources(), bitmap);
         blurDrawable.setBlur(200);
         imageViewBackground.setImageDrawable(blurDrawable.getBlurDrawable());

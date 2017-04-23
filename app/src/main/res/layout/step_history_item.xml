@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="@drawable/run_house_item_backgourd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.nexuslink.util.CircleImageView
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_gravity="center"
+        android:src="@drawable/walk"
+        android:layout_width="@dimen/image_size_small"
+        android:layout_height="@dimen/image_size_small" />
+
+    <LinearLayout
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="@dimen/spacing_tiny"
+            android:orientation="horizontal"
+            android:layout_gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_marginLeft="@dimen/spacing_tiny"
+                android:src="@drawable/footprint"
+                android:layout_width="@dimen/image_size_tiny"
+                android:layout_height="@dimen/image_size_tiny" />
+            <TextView
+                android:id="@+id/steps_tv"
+                android:layout_marginLeft="@dimen/spacing_tiny"
+                android:textColor="@color/one_class_text_color"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:text="20"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />w
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="@dimen/spacing_tiny"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/spacing_tiny"
+                android:src="@drawable/history_time"
+                android:layout_width="@dimen/image_size_tiny"
+                android:layout_height="@dimen/image_size_tiny" />
+            <TextView
+                android:layout_gravity="start"
+                android:id="@+id/date_tv"
+                android:textSize="@dimen/font_normal"
+                android:layout_marginLeft="@dimen/spacing_tiny"
+                android:textColor="@color/one_class_text_color"
+                android:text="2017-2-28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

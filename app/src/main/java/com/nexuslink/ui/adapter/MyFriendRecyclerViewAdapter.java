@@ -14,6 +14,7 @@ import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.ui.activity.FriendInfoActivity;
+import com.nexuslink.ui.activity.FriendInfoActivityS;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.ImageUtil;
 
@@ -66,7 +67,7 @@ public class MyFriendRecyclerViewAdapter extends RecyclerView.Adapter<MyFriendRe
         holder.imageHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent friendInfoIntent = new Intent(mContext, FriendInfoActivity.class);
+                Intent friendInfoIntent = new Intent(mContext, FriendInfoActivityS.class);
                 friendInfoIntent.putExtra("uImg",headImg.get(position));
                 friendInfoIntent.putExtra("uName",nickName.get(position));
                 friendInfoIntent.putExtra("uId",userId.get(position));

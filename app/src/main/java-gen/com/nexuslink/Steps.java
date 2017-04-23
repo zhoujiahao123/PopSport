@@ -9,6 +9,7 @@ public class Steps {
     private Long id;
     private Integer uStep;
     private String date;
+    private Boolean hasUpLoad;
 
     public Steps() {
     }
@@ -17,10 +18,11 @@ public class Steps {
         this.id = id;
     }
 
-    public Steps(Long id, Integer uStep, String date) {
+    public Steps(Long id, Integer uStep, String date, Boolean hasUpLoad) {
         this.id = id;
         this.uStep = uStep;
         this.date = date;
+        this.hasUpLoad = hasUpLoad;
     }
 
     public Long getId() {
@@ -45,6 +47,14 @@ public class Steps {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Boolean getHasUpLoad() {
+        return hasUpLoad;
+    }
+
+    public void setHasUpLoad(Boolean hasUpLoad) {
+        this.hasUpLoad = hasUpLoad;
     }
 
 }

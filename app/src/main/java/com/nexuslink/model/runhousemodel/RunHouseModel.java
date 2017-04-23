@@ -7,5 +7,6 @@ import com.nexuslink.model.CallBackListener;
  */
 
 public interface RunHouseModel {
-    void loadRunHouseDetail(long id, CallBackListener callBackListener);
+    void onRefresh(int startId, CallBackListener listener);
+
 }

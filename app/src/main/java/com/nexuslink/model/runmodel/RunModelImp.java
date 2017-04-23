@@ -7,10 +7,20 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.model.LatLng;
 import com.nexuslink.Run;
 import com.nexuslink.RunDao;
+import com.nexuslink.config.Api;
+import com.nexuslink.config.Constants;
+import com.nexuslink.model.CallBackListener;
+import com.nexuslink.model.data.RoomGoal;
+import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.UserUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
 
@@ -21,10 +31,18 @@ import static android.content.ContentValues.TAG;
 public class RunModelImp implements RunModel {
     //===============================================辅助变量
     private long mStartTime;
-    private long mEndTime;
+    private int duration;
     private int seconds,minutes,hours;
+    private float maxSpeed = 0 ;
     DecimalFormat df = new DecimalFormat("#0.0");
-
+    /**
+     * api
+     */
+    Api api = ApiUtil.getInstance(Constants.BASE_URL);
+    /**
+     * 消除最大速度误差
+     */
+    private int removeErrorMsg = 0;
     //===============================================数据库
     private RunDao mRunDao = DBUtil.getRunDao();
 
@@ -40,16 +58,23 @@ public class RunModelImp implements RunModel {
             AMapLocation lastLocation = list.get(list.size() - 1);
             String startPoint = amapLocationToString(firstLocation);
             String endPoint = amapLocationToString(lastLocation);
-            float cal = Float.parseFloat(getCol(distance));
+            float kcal = Float.parseFloat(getCurrentCol(distance));
+            String _date = date.split(" ")[0];
+            String time = date.split(" ")[1];
             insertNewRecord(String.valueOf(distance), duration, average, pathLineString, startPoint,
-                    endPoint, date, cal);
+                    endPoint, _date,time, kcal);
 
         }
     }
 
     @Override
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+
     public String getDuration() {
-        return String.valueOf((mEndTime - mStartTime) / 1000f);
+        return String.valueOf(this.duration);
     }
 
     @Override
@@ -70,15 +95,33 @@ public class RunModelImp implements RunModel {
         return distance;
     }
 
+    /**
+     * 单位 m/s
+     * @param distance 单位m
+     * @return
+     */
 
     public String getCurrentAverage(float distance) {
         long nowTime = System.currentTimeMillis();
-        return df.format(distance / ((nowTime - mStartTime) / 1000f));
+        float nowSpeed = distance / ((nowTime - mStartTime) / 1000f);
+        //最开始的5次定位不进行记录
+        if(removeErrorMsg > 5){
+            if (maxSpeed<nowSpeed){
+                maxSpeed = nowSpeed;
+            }
+        }else{
+            removeErrorMsg++;
+        }
+        return df.format(nowSpeed)+"m/s";
     }
 
-
+    /**
+     * m/s
+     * @param distance
+     * @return
+     */
     public String getAverage(float distance) {
-        return String.valueOf(distance / ((float) (mEndTime - mStartTime) / 1000f));
+        return df.format(distance / duration);
     }
 
 
@@ -111,20 +154,10 @@ public class RunModelImp implements RunModel {
     }
 
 
-    private String getCol(float distance) {
-        //跑步热量（cal）＝体重（kg）×距离（m）×1.036
-//        User user = mUserDao.queryBuilder().unique();
-//        float weight = user.getUWeight();
-        //这里做测试，所以将weight设置为60
-        float weight = 60;
-        return df.format(weight * distance * 1.036f);
-    }
-
-
-    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date, float cal) {
+    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date,String time, float kcal) {
         Run run = new Run((long) mRunDao.loadAll().size(), distance,
                 duration, average, pathLineString,
-                startPoint, endPoint, date, cal);
+                startPoint, endPoint, date,time, kcal,false);
         mRunDao.insert(run);
     }
 
@@ -143,22 +176,23 @@ public class RunModelImp implements RunModel {
 
     @Override
     public String getRealCurrentTime() {
-        if(hours == 0){
-            return getRealTime(minutes)+":"+getRealTime(seconds);
-        }else{
-            return getRealTime(hours)+":"+getRealTime(minutes)+":"+getRealTime(seconds);
-        }
+
+        return getRealTime(hours)+":"+getRealTime(minutes)+":"+getRealTime(seconds);
+
     }
 
-
+    /**
+     * 单位kcol
+     * @param distance 单位m
+     * @return
+     */
     public String getCurrentCol(float distance) {
-        int weight =getWeight();
-        return df.format(weight * distance * 1.036f);
+        final int weight = UserUtils.getUserWeight();
+        return df.format(weight * distance * 1.036f/1000);
     }
 
     public String getCurrentMiles(float distance) {
-        final DecimalFormat format = new DecimalFormat("#0.00");
-        return format.format(distance/1000f);
+        return df.format(distance);
     }
 
     @Override
@@ -166,14 +200,31 @@ public class RunModelImp implements RunModel {
         this.mStartTime = startTime;
     }
 
+
+
     @Override
-    public void setEndTime(long endTime) {
-        this.mEndTime = endTime;
+    public String getMaxSpeed() {
+        return df.format(maxSpeed)+"m/s";
     }
 
-    private int getWeight(){
-        return 60;
+    @Override
+    public void postRoomData(int rId, long goal, final CallBackListener listener) {
+        api.setGoal(UserUtils.getUserId(),rId,goal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<RoomGoal>() {
+                    @Override
+                    public void call(RoomGoal roomGoal) {
+                        if(roomGoal.getCode() == Constants.SUCCESS){
+                            listener.onFinish(roomGoal.getGoals());
+                        }else{
+                            listener.onError(new Exception("上传跑房数据时失败"));
+                        }
+                    }
+                });
     }
+
+
     private String getRealTime(int time) {
         String realTime = String.valueOf(time);
         if (time < 10) {

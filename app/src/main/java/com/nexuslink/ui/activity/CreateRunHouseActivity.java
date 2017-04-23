@@ -7,16 +7,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.data.Type;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
+import com.nexuslink.HasJoinedRooms;
+import com.nexuslink.HasJoinedRoomsDao;
 import com.nexuslink.R;
+import com.nexuslink.model.data.SetUpAlarm;
+import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenter;
+import com.nexuslink.presenter.runhousepresenter.CreateRunHousePresenterImpl;
 import com.nexuslink.ui.adapter.CreateRunHouseViewPagerAdapter;
 import com.nexuslink.ui.fragment.RoadTypeRunHouseFragment;
 import com.nexuslink.ui.fragment.TimeTypeRunHouseFragment;
+import com.nexuslink.ui.view.CreateRunHouseView;
+import com.nexuslink.ui.view.view.headerview.LoadingView;
+import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CreateRunHouseActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, OnDateSetListener {
+public class CreateRunHouseActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, OnDateSetListener, CreateRunHouseView {
 
     @BindView(R.id.toolbar_create_run_house)
     Toolbar mToolbar;
@@ -42,15 +56,37 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     RelativeLayout mStartDatePicker;
     @BindView(R.id.post)
     Button post;
+    @BindView(R.id.progress_community)
+    LoadingView progress;
+    @BindView(R.id.room_name_input)
+    EditText roomNameInput;
+    @BindView(R.id.back_icon)
+    ImageView backIcon;
+    @BindView(R.id.activity_create_run_house)
+    LinearLayout activityCreateRunHouse;
     //===============================================view
 
     private TimePickerDialog timePickerDialog;
+
+
     //===============================================变量
     private SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
     private List<Fragment> fragments = new ArrayList<>();
     private CreateRunHouseViewPagerAdapter adapter;
-
+    private long time;
+    /**
+     * 格式控制
+     */
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    /**
+     * presenter
+     */
+    private CreateRunHousePresenter presenter;
     //===============================================常量
+    /***
+     * 三分钟的毫秒数
+     */
+    private static final long THREE_MINUTES = 1000 * 60 * 3;
     private static final String TAG = "CreateRunHouseActivity";
 
     @Override
@@ -58,6 +94,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_run_house);
         ButterKnife.bind(this);
+        presenter = new CreateRunHousePresenterImpl(this);
         setUpView();
     }
 
@@ -73,23 +110,19 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
         //设置默认页
         changToTime();
         //设置toolbar
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbar.setNavigationIcon(R.drawable.back);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
 
-
         timePickerDialog = new TimePickerDialog.Builder().setCallBack(this)
                 .setCancelStringId("取消")
                 .setSureStringId("确定")
                 .setTitleStringId("开始时间")
                 .setCyclic(false)
-                .setMinMillseconds(System.currentTimeMillis())
+                .setMinMillseconds(System.currentTimeMillis() + THREE_MINUTES)
                 .setCurrentMillseconds(System.currentTimeMillis())
                 .setThemeColor(getResources().getColor(R.color.ufo_green))
                 .setType(Type.MONTH_DAY_HOUR_MIN)
@@ -98,7 +131,8 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
                 .setWheelItemTextSize(16)
                 .build();
         //设置默认时间
-        mStartDateShow.setText(df.format(System.currentTimeMillis()));
+        mStartDateShow.setText(df.format(System.currentTimeMillis() + THREE_MINUTES));
+        time = System.currentTimeMillis()+THREE_MINUTES;
     }
 
 
@@ -147,12 +181,13 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     }
 
 
+
     @Override
     public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
         String date = df.format(millseconds);
         mStartDateShow.setText(date);
+        time = millseconds;
     }
-
 
 
     @OnClick({R.id.bt_time_type, R.id.bt_road_type, R.id.start_date_pick, R.id.post})
@@ -165,10 +200,70 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
                 changToRoad();
                 break;
             case R.id.start_date_pick:
-                timePickerDialog.show(getSupportFragmentManager(),null);
+                timePickerDialog.show(getSupportFragmentManager(), null);
                 break;
             case R.id.post:
+                presenter.createRunHouse();
                 break;
         }
+    }
+
+    @Override
+    public void showSuccess() {
+        ToastUtil.showToast(this, "创建成功");
+        EventBus.getDefault().post("刷新跑房");
+    }
+
+    @Override
+    public void showError() {
+        ToastUtil.showToast(this, "创建失败");
+    }
+
+    @Override
+    public void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public int getType() {
+        return mViewPager.getCurrentItem();
+    }
+
+    @Override
+    public int getGoal() {
+        int goal;
+        if (mViewPager.getCurrentItem() == 0) {
+            TimeTypeRunHouseFragment fragment = (TimeTypeRunHouseFragment) fragments.get(0);
+            goal = fragment.getGoal();
+        } else {
+            RoadTypeRunHouseFragment fragment = (RoadTypeRunHouseFragment) fragments.get(1);
+            goal = fragment.getGoal();
+        }
+        return goal;
+    }
+
+    @Override
+    public String getRoomName() {
+        return roomNameInput.getText().toString();
+    }
+
+    @Override
+    public String getStartTime() {
+        return sdf.format(time);
+    }
+
+    @Override
+    public void insertOneRoom(int rId) {
+        final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
+        HasJoinedRooms room = new HasJoinedRooms(null,rId,roomNameInput.getText().toString(),1,sdf.format(time),getGoal(),getType());
+        joinedRoomsDao.insert(room);
+        //设置该次闹钟
+        EventBus.getDefault().post(new SetUpAlarm());
+        onBackPressed();
     }
 }
