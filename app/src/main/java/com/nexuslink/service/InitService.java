@@ -10,8 +10,6 @@ import com.facebook.stetho.Stetho;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.util.GlideImageLoader;
 import com.nexuslink.util.cache.DiskLruCacheHelper;
-import com.umeng.socialize.Config;
-import com.umeng.socialize.UMShareAPI;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 
@@ -22,6 +20,7 @@ import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.ThemeConfig;
+import cn.sharesdk.framework.ShareSDK;
 
 /**
  * Created by 猿人 on 2017/3/30.
@@ -50,8 +49,9 @@ public class InitService extends IntentService {
     }
 
     private void performInit() {
-        UMShareAPI.get(this);
-        Config.DEBUG = true;
+
+        ShareSDK.initSDK(this);
+
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(

@@ -27,7 +27,6 @@ import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
 import com.nexuslink.ui.activity.WriteMsgActivity;
 import com.nexuslink.ui.adapter.CommunityRecyclerAdapter;
 import com.nexuslink.ui.view.CommunityView;
-import com.nexuslink.ui.view.ViewColor;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.ui.view.view.headerview.RunHouseFooter;
 import com.nexuslink.ui.view.view.headerview.RunHouseHeader;
@@ -52,7 +51,7 @@ import static com.nexuslink.app.BaseApplication.mContext;
  * Created by 猿人 on 2017/1/14.
  */
 
-public class CommunityFragment extends Fragment implements CommunityView {
+public class CommunityFragment extends Fragment implements CommunityView<CommunityInfo.ArticlesBean> {
     //===============================================view
     @BindView(R.id.toolbar_community)
     Toolbar mToolbar;
@@ -98,7 +97,6 @@ public class CommunityFragment extends Fragment implements CommunityView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.community_fragment, container, false);
-        ViewColor.setColor(getActivity(), getActivity().getResources().getColor(R.color.colorPrimaryDark));
         ButterKnife.bind(this, view);
 
         adapter = new CommunityRecyclerAdapter(getContext(), presenter);

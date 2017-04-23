@@ -1,7 +1,6 @@
 package com.nexuslink.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
-import com.nexuslink.model.data.LoadRoomsResult;
-import com.nexuslink.ui.activity.FriendInfoActivity;
+import com.nexuslink.model.data.RoomsBean;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
     /**
      * 初始化需要
      */
-    private List<LoadRoomsResult.RoomBean.UsersBean> usersList ;
+    private List<RoomsBean.UsersBean> usersList ;
     private Context mContext;
     private LayoutInflater inflater;
 
@@ -34,7 +32,7 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
     /**
      * 提供增加的接口
      */
-    public void addItem(LoadRoomsResult.RoomBean.UsersBean users){
+    public void addItem(RoomsBean.UsersBean users){
         //增加动画
         notifyItemInserted(usersList.size());
         usersList.add(users);
@@ -57,13 +55,13 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
     /**
      * 设置数据接口
      */
-    public void setDatas(List<LoadRoomsResult.RoomBean.UsersBean> users){
+    public void setDatas(List<RoomsBean.UsersBean> users){
         usersList.clear();
         usersList.addAll(users);
         notifyDataSetChanged();
     }
 
-    public RunHouseDetailAdapter(Context mContext, List<LoadRoomsResult.RoomBean.UsersBean> usersList) {
+    public RunHouseDetailAdapter(Context mContext, List<RoomsBean.UsersBean> usersList) {
         this.mContext = mContext;
         this.usersList = usersList;
         inflater = LayoutInflater.from(mContext);
@@ -85,12 +83,12 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, FriendInfoActivity.class);
-                LoadRoomsResult.RoomBean.UsersBean usersBean = usersList.get(position);
-                intent.putExtra("uImg",usersBean.getUImg());
-                intent.putExtra("uId",usersBean.getUid());
-                intent.putExtra("uName",usersBean.getUName());
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, FriendInfoActivity.class);
+//                RoomsBean.UsersBean usersBean = usersList.get(position);
+//                intent.putExtra("uImg",usersBean.getUImg());
+//                intent.putExtra("uId",usersBean.getUid());
+//                intent.putExtra("uName",usersBean.getUName());
+//                mContext.startActivity(intent);
             }
         });
         holder.userName.setText(usersList.get(position).getUName());

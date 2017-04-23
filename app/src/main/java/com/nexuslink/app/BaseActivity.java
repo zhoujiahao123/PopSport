@@ -7,6 +7,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.nexuslink.R;
@@ -17,6 +18,12 @@ import com.nexuslink.util.ActivityStack;
  */
 
 public class BaseActivity extends AppCompatActivity {
+
+    /**
+     * TAG
+     * @param savedInstanceState
+     */
+    private final String TAG = "BaseActivity";
 
 
     @Override
@@ -71,6 +78,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ActivityStack.getScreenManager().popActivity(this);
+        Log.e(TAG,"onDestroy");
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.nexuslink.presenter.runhousepresenter;
 
 import com.nexuslink.model.CallBackListener;
-import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.RoomsBean;
 import com.nexuslink.model.runhousemodel.RunHoseDetailModelImpl;
 import com.nexuslink.model.runhousemodel.RunHouseDetailModel;
 import com.nexuslink.ui.view.RunHouseDetailView;
@@ -31,7 +31,7 @@ public class RunHouseDetailPresenterImpl implements RunHouseDetailPresenter {
             public void onFinish(Object o) {
                 mView.hideProgress();
                 mView.showSuccess();
-                LoadRoomsResult.RoomBean room = (LoadRoomsResult.RoomBean) o;
+                RoomsBean room = (RoomsBean) o;
                 mView.setDatas(room.getUsers());
                 //进行数据的插入
                 mView.insertOneRoom();

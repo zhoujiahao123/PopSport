@@ -3,9 +3,9 @@
 <com.nexuslink.ui.view.view.headerview.LoadingView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/progressbar"
-    android:visibility="gone"
-    android:layout_centerInParent="true"
-    app:loading_renderer="GearLoadingRenderer"
     android:layout_width="80dp"
-    android:layout_height="80dp"></com.nexuslink.ui.view.view.headerview.LoadingView>
+    android:layout_height="80dp"
+    android:layout_centerInParent="true"
+    android:visibility="gone"
+    app:loading_renderer="GearLoadingRenderer"></com.nexuslink.ui.view.view.headerview.LoadingView>
 

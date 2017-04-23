@@ -12,13 +12,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
+import com.nexuslink.ui.view.PinchImageView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.util.ToastUtil;
 
@@ -43,7 +44,7 @@ public class ViewImageFragment extends Fragment {
     private static final int SUCCESS = 1;
     private static final int FAILED = 0;
     //===============================================view
-    private ImageView imageView;
+    private PinchImageView imageView;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -82,7 +83,7 @@ public class ViewImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_show_image, container, false);
         ButterKnife.bind(this, view);
-        imageView = (ImageView) view.findViewById(R.id.image_show);
+        imageView = (PinchImageView) view.findViewById(R.id.image_show);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
