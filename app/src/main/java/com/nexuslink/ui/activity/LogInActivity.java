@@ -17,22 +17,31 @@ import android.widget.TextView;
 import com.elvishew.xlog.XLog;
 import com.google.gson.Gson;
 import com.nexuslink.R;
+import com.nexuslink.Run;
+import com.nexuslink.Steps;
 import com.nexuslink.User;
 import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseActivity;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.data.GetDistanceResult;
+import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.loginpresenter.LogInPresenter;
 import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
 import com.nexuslink.ui.view.LoginView;
+import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.UserUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -173,20 +182,11 @@ public class LogInActivity extends BaseActivity implements LoginView {
                     if (userInfo.getCode() == Constants.SUCCESS) {
                         UserDao userDao = BaseApplication.getDaosession().getUserDao();
                         User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-<<<<<<< HEAD
-                        String achievement=new String();
-                        for(int i =0;i<8;i++){
-                            achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
-                            achievement+=",";
+                        StringBuffer achievement = new StringBuffer();
+                        for(Boolean b : userInfo.getUser().getUAchievements()){
+                            achievement.append(b+",");
                         }
-                        user.setUAchievements(achievement.substring(0,achievement.length()));
-=======
-                        String achievement = new String();
-                        for (int i = 0; i < 8; i++) {
-                            achievement += String.valueOf(userInfo.getUser().getUAchievements()[i]);
-                        }
-                        user.setUAchievements(achievement.substring(1, achievement.length() - 1));
->>>>>>> 36820cca6cfd7397d792874acabb16affb59e1f4
+                        user.setUAchievements(achievement.substring(0,achievement.length()-1));
                         user.setUExp(userInfo.getUser().getUExp());
                         user.setUFansNum(userInfo.getUser().getUFansNum());
                         user.setUGender(userInfo.getUser().getUGender());
@@ -200,46 +200,58 @@ public class LogInActivity extends BaseActivity implements LoginView {
                         isInsert[0] = true;
                     }
 
-//                    //清除数据
-//                    DBUtil.getStepsDao().deleteAll();
-//                    DBUtil.getRunDao().deleteAll();
-//                    //请求用户历史跑步公里数
-//                    retrofit2.Response<GetDistanceResult> distanceRes = ApiUtil.getInstance(Constants.BASE_URL).getDistance(UserUtils.getUserId()).execute();
-//                    if(distanceRes.body().getCode() == Constants.SUCCESS){
-//                        //进行存储
-//                       List<GetDistanceResult.RecordBean> recordBeanList =  distanceRes.body().getRecord();
-//                        //开始存储到本地种
-//                        List<Run> runlist = new ArrayList<Run>();
-//                        for(GetDistanceResult.RecordBean recordBean:recordBeanList){
-//                            Run run = new Run(null,recordBean.getDistance(),
-//                                    recordBean.getAverageSpeed(),recordBean.getPathline(),recordBean.getStartPoint(),
-//                                    recordBean.getEndPoint(),recordBean.getTime().split(" ")[0],
-//                                    recordBean.getTime().split(" ")[1],true);
-//                            runlist.add(run);
-//                        }
-//                        DBUtil.getRunDao().insertInTx(runlist);
-//                        isInsert[1] = true;
-//                    }
-//                    //进行走步数的存储
-//                    retrofit2.Response<GetStepResult> stepRes = ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId()).execute();
-//                    if(stepRes.body().getCode() == Constants.SUCCESS){
-//                        //进行存储
-//                        List<GetStepResult.RecordBean> recordBeanList = stepRes.body().getRecord();
-//                        List<Steps> stepsList = new ArrayList<Steps>();
-//                        for(GetStepResult.RecordBean recordBean:recordBeanList){
-//                            Steps steps = new Steps(null,recordBean.getStep(),recordBean.getDate(),true);
-//                            stepsList.add(steps);
-//                        }
-//                        DBUtil.getStepsDao().insertInTx(stepsList);
-//                        isInsert[2] = true;
-//                    }
-                    //完成基本工作，进行页面跳转
-//                    if(isInsert[0] == true && isInsert[1] == true && isInsert[2] == true){
-//                        handler.sendEmptyMessage(SUCCESS);
-//                    }else{
-//                        handler.sendEmptyMessage(FAILED);
-//                    }
-                    handler.sendEmptyMessage(SUCCESS);
+                    //清除数据
+                    DBUtil.getStepsDao().deleteAll();
+                    DBUtil.getRunDao().deleteAll();
+//                    请求用户历史跑步公里数
+                    retrofit2.Response<GetDistanceResult> distanceRes = ApiUtil.getInstance(Constants.BASE_URL).getDistance(UserUtils.getUserId()).execute();
+                    if(distanceRes.body().getCode() == Constants.SUCCESS){
+                        //进行存储
+                       List<GetDistanceResult.RecordBean> recordBeanList =  distanceRes.body().getRecord();
+                        //开始存储到本地种
+                        List<Run> runlist = new ArrayList<Run>();
+                        for(GetDistanceResult.RecordBean recordBean:recordBeanList){
+//                            Run run = new Run();
+//                            run.setUMileage(String.valueOf(recordBean.getDistance()));
+//                            run.setDuration(String.valueOf(recordBean.getDuration()));
+//                            run.setAverageSpeed(String.valueOf(recordBean.getAverageSpeed()));
+//                            run.setPathLine(recordBean.getPathline());
+//                            run.setStartPoint(recordBean.getStartPoint());
+//                            run.setEndPoint(recordBean.getEndPoint());
+//                            run.setDate(recordBean.getDate());
+//                            run.setTime(recordBean.getTime());
+                            Run run = new Run(null,String.valueOf(recordBean.getDistance()),
+                                    String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
+                                    ,recordBean.getPathline(),recordBean.getStartPoint(),
+                                    recordBean.getEndPoint(),recordBean.getDate(),
+                                    recordBean.getTime(),null,true);
+                            runlist.add(run);
+                        }
+                        DBUtil.getRunDao().insertInTx(runlist);
+                        isInsert[1] = true;
+                    }
+                    //进行走步数的存储
+                    retrofit2.Response<GetStepResult> stepRes = ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId()).execute();
+                    if(stepRes.body().getCode() == Constants.SUCCESS){
+                        //进行存储
+                        List<GetStepResult.RecordBean> recordBeanList = stepRes.body().getRecord();
+                        List<Steps> stepsList = new ArrayList<Steps>();
+                        for(GetStepResult.RecordBean recordBean:recordBeanList){
+                            Steps steps = new Steps(null,recordBean.getStep(),recordBean.getDate(),true);
+                            stepsList.add(steps);
+                        }
+                        DBUtil.getStepsDao().insertInTx(stepsList);
+                        isInsert[2] = true;
+                    }else if(stepRes.body().getCode() == Constants.FAILED){
+                        //说明该用户还没有产生数据
+                        isInsert[2] = true;
+                    }
+//                    完成基本工作，进行页面跳转
+                    if(isInsert[0] == true && isInsert[1] == true && isInsert[2] == true){
+                        handler.sendEmptyMessage(SUCCESS);
+                    }else{
+                        handler.sendEmptyMessage(FAILED);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -329,8 +341,8 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 if(platform.isAuthValid()){
                     platform.removeAccount(true);
                 }
-                Intent intent = new Intent(LogInActivity.this,MainViewActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(LogInActivity.this,MainViewActivity.class);
+//                startActivity(intent);
 //                String accessToken = db.getToken();
 //                String userId = db.getUserId();
 //                String platname = db.getPlatformNname();

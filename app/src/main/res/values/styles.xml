@@ -5,78 +5,11 @@
         <item name="windowActionBar">false</item>
     </style>
 
-    <style name="login_style">
-        <item name="android:background">@color/blue_normal</item>
-    </style>
-
-    <style name="image_style">
-        <item name="android:src">@drawable/pop_log2</item>
-        <item name="android:layout_marginTop">@dimen/image_pad_top</item>
-        <item name="android:layout_centerHorizontal">true</item>
-    </style>
-
-    <style name="image_name">
-        <item name="android:src">@drawable/userlogo1</item>
-        <item name="android:layout_gravity">center_vertical</item>
-    </style>
-
-    <style name="image_password">
-        <item name="android:src">@drawable/passwordlogo1</item>
-        <item name="android:layout_gravity">center_vertical</item>
-    </style>
-
-    <style name="layout_input">
-        <item name="android:textColor">@color/white_normal</item>
-        <item name="android:textColorHint">@color/white_normal</item>
-        <item name="android:layout_gravity">center_vertical</item>
-    </style>
-
-    <style name="btn_style">
-        <item name="android:background">@drawable/state_btn_login</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:textColor">@color/white_normal</item>
-        <item name="android:textSize">21sp</item>
-    </style>
-
-    <style name="layout_style_qq">
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/state_login_alter</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="layout_style_wechat">
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/state_login_alter</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="ToolbarStyle">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:paddingTop">@dimen/padding_top</item>
-    </style>
-
     //个人信息中的一些自定义控件属性
 
-    <style name="layout_style_square">
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/selector_square</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:gravity">center_vertical</item>
-    </style>
     //控件中图片的style
 
-    <style name="PhotoStyle">
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_width">@dimen/image_size40</item>
-        <item name="android:layout_height">@dimen/image_size40</item>
-    </style>
     //控件中文字的style
-
-    <style name="TvStyle">
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:paddingTop">@dimen/spacing_small</item>
-        <item name="android:textSize">@dimen/font_normal</item>
-    </style>
 
     //天气
 
@@ -243,12 +176,6 @@
     </style>
 
 
-    <style name="myToolbarNavigationButtonStyle" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="android:minWidth">0dp</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:scaleType">centerInside</item>
-    </style>
-
     <!--dialog-->
     <style name="run_dialog" parent="android:Theme.Dialog">
         <item name="android:windowIsFloating">true</item>
@@ -284,13 +211,6 @@
 
     <style name="PersonInfoText">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/font_normal</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-    </style>
-    <style name="FriendText">
         <item name="android:textSize">@dimen/font_normal</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:paddingTop">4dp</item>

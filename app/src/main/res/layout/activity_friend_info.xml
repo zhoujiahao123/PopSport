@@ -43,7 +43,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/head_layout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@id/top_bar">
@@ -303,7 +302,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/follow_people"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/content_layout"

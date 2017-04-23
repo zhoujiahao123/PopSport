@@ -30,19 +30,13 @@ import static android.content.ContentValues.TAG;
 
 public class RunModelImp implements RunModel {
     //===============================================辅助变量
-    private long mStartTime;
     private int duration;
     private int seconds,minutes,hours;
-    private float maxSpeed = 0 ;
     DecimalFormat df = new DecimalFormat("#0.0");
     /**
      * api
      */
     Api api = ApiUtil.getInstance(Constants.BASE_URL);
-    /**
-     * 消除最大速度误差
-     */
-    private int removeErrorMsg = 0;
     //===============================================数据库
     private RunDao mRunDao = DBUtil.getRunDao();
 
@@ -95,25 +89,7 @@ public class RunModelImp implements RunModel {
         return distance;
     }
 
-    /**
-     * 单位 m/s
-     * @param distance 单位m
-     * @return
-     */
 
-    public String getCurrentAverage(float distance) {
-        long nowTime = System.currentTimeMillis();
-        float nowSpeed = distance / ((nowTime - mStartTime) / 1000f);
-        //最开始的5次定位不进行记录
-        if(removeErrorMsg > 5){
-            if (maxSpeed<nowSpeed){
-                maxSpeed = nowSpeed;
-            }
-        }else{
-            removeErrorMsg++;
-        }
-        return df.format(nowSpeed)+"m/s";
-    }
 
     /**
      * m/s
@@ -195,17 +171,9 @@ public class RunModelImp implements RunModel {
         return df.format(distance);
     }
 
-    @Override
-    public void setStartTime(long startTime) {
-        this.mStartTime = startTime;
-    }
 
 
 
-    @Override
-    public String getMaxSpeed() {
-        return df.format(maxSpeed)+"m/s";
-    }
 
     @Override
     public void postRoomData(int rId, long goal, final CallBackListener listener) {

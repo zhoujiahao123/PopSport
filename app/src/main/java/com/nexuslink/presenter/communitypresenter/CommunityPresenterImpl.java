@@ -27,12 +27,12 @@ import java.util.List;
 public class CommunityPresenterImpl implements CommunityPresenter {
     private CommunityModel mCommunity;
     private CommunityView mCommunityView;
-    private DiskLruCacheHelper helper = BaseApplication.helper;
+    private DiskLruCacheHelper helper;
 
     public CommunityPresenterImpl(CommunityView mCommunityView) {
         this.mCommunityView = mCommunityView;
         mCommunity = new CommunityModelImpl();
-
+         helper = BaseApplication.getHelper();
 
     }
 

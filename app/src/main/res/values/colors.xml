@@ -6,39 +6,19 @@
     <!--2ecc71-->
     <color name="colorAccent">#2ecc71</color>
     <color name="yellow_500">#FFEB3B</color>
-    <color name="deep_orang_500">#FF5722</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
-    <color name="icons">#FFFFFF</color>
     <color name="divider">#eeeeee</color>
 
-    <color name="green_400">#66BB6A</color>
-
-    <color name="pink_light">#FFCCCC</color>
     <color name="white_light">#FFFFFF</color>
-    <color name="white_normal">#e9e7e7</color>
-    <color name="gray_normal">#605f5f</color>
     <color name="gray_light">#c1c0c0</color>
     <color name="gray_light_more">#e4e3e3</color>
-    <color name="gray_light_super">#c1c1c1</color>
     <color name="blue_normal">#99cccc</color>
-    <color name="blue_little_darker">#88cccc</color>
-    <color name="yellow_light">#FFCC99</color>
-    <color name="yellow_normal_light">#FF9966</color>
-    <color name="colorControlNormal">#FF78909C</color>
 
     <color name="blue">#1f65f1</color>
     <color name="red">#ef4646</color>
     <color name="yellow">#f59803</color>
-    <color name="green_light">#5bed79</color>
 
-    <color name="gray_dark">#2C3E50</color>
-    <color name="red_normal">#E74C3C</color>
-    <color name="white_thick">#ECF0F1</color>
-    <color name="blue_light">#b9d8ed</color>
-    <color name="blue_dark">#29BDB9</color>
-
-    <color name="divider_line">#eeeeee</color>
     <color name="one_class_text">#222222</color>
     <color name="two_class_text">#686868</color>
     <color name="three_class_text">#c9c9c9</color>
@@ -51,9 +31,7 @@
     <!--采用的配色-->
     <color name="ufo_green">#34C464</color>
     <color name="dark_imperial_blue">#0B4F6C</color>
-    <color name="cyan">#01BAFF</color>
     <color name="ghost_white">#FBFBFF</color>
-    <color name="spanish_gray">#9A9A9A</color>
     <!--tablayout自定义颜色-->
     <color name="tab_unsel">#f1f1f1</color>
     <color name="tab_sel">#34c464</color>
@@ -64,24 +42,13 @@
 
 
     <!--运动activity需要颜色-->
-    <color name="toolbar_color">#42B2EB</color>
     <color name="bottom_background_color">#FFFFFF</color>
     <color name="one_class_text_color">#747274</color>
-    <color name="two_class_text_color">#9A989A</color>
-    <color name="three_class_text_color">#727072</color>
-    <color name="four_class_text_color">#CECCCE</color>
 
 
     //个人信息界面的三种颜色
-    <color name="purple_friend">#d4237a</color>
     <color name="red_friend">#d81e06</color>
-    <color name="green">#1afa29</color>
 
     <!-- step and run fragment-->
-    <color name="pink_dark_top">#FF6469</color>
-    <color name="pink_background_color">#FD6469</color>
-    <color name="line_bar_fill_color">#FBDD6C</color>
-    <color name="small_title">#E2464B</color>
     <!--历史界面颜色-->
-    <color name="history_toolbar_color">#019689</color>
 </resources>

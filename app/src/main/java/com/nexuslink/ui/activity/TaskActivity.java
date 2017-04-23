@@ -1,6 +1,7 @@
 package com.nexuslink.ui.activity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -50,13 +51,7 @@ public class TaskActivity extends SwipeBackActivity implements OnChangedListener
         ButterKnife.bind(this);
         setActionBar(toolbar);
         getActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.turn_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         StepsDao stepsDao = BaseApplication.getDaosession().getStepsDao();
         Steps stepNum = stepsDao.queryBuilder().list().get(0);
         int step = stepNum.getUStep();
@@ -73,6 +68,16 @@ public class TaskActivity extends SwipeBackActivity implements OnChangedListener
             case R.id.btn_finish_task:
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

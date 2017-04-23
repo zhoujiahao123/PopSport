@@ -13,13 +13,13 @@ public interface RunView {
     //时间
     void setCurrentTime(String realTime);
     //速度
-    void setCurrentSpeed(String speed);
+    void setCurrentSpeed();
     //设置能量
     void setCurrentCol(String col);
     //设置当前公里数
     void setCurrentDistance(String miles);
     //设置最大速度
-    void setMaxSpeed(String maxSpeed);
+    void setMaxSpeed();
     void showError(String str);
     void postDataSuccess();
     //跳转到详情界面，并把这次数据传送过去

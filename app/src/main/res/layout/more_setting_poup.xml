@@ -1,49 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    xmlns:fab="http://schemas.android.com/tools"
     android:id="@+id/setting_linear"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/more_setting_bg"
     android:orientation="vertical">
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="@dimen/image_size_small"
-        android:layout_height="@dimen/image_size_small"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:src="@drawable/person_setting"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:backgroundTint="@color/ghost_white"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="#33728dff" />
+    <LinearLayout
+        android:id="@+id/setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:src="@drawable/task"
-        android:layout_width="@dimen/image_size_small"
-        android:layout_height="@dimen/image_size_small"
-        android:layout_marginTop="8dp"
-        app:backgroundTint="@color/ghost_white"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="#33728dff" />
+        <ImageView
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny"
+            android:src="@drawable/person_settting" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="@dimen/image_size_small"
-        android:layout_height="@dimen/image_size_small"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/rank_list"
-        app:backgroundTint="@color/ghost_white"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="#33728dff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:text="设置"
+            android:textSize="@dimen/font_large" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny"
+            android:src="@drawable/task" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:text="任务"
+            android:textSize="@dimen/font_large" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rank_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny"
+            android:src="@drawable/rank_list" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:text="排行榜"
+            android:textSize="@dimen/font_large" />
+    </LinearLayout>
 
 
 </LinearLayout>
