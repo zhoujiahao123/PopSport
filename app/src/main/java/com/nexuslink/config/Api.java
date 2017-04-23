@@ -1,6 +1,7 @@
 package com.nexuslink.config;
 
 
+import com.nexuslink.model.FriendsInfo;
 import com.nexuslink.model.data.ArticleBean;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
@@ -166,7 +167,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("friend/mine")
-    Observable<FansInfo> getFriends(@Field("uId") int uId);
+    Observable<FriendsInfo> getFriends(@Field("uId") int uId);
 
     //获取用户的话题
     @FormUrlEncoded

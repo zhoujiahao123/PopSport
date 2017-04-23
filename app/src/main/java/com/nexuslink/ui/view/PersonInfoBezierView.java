@@ -11,7 +11,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.nexuslink.R;
 import com.nexuslink.util.BezierUtil;
@@ -124,7 +123,6 @@ public class PersonInfoBezierView extends ConstraintLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i(TAG, "mControlY:" + mControlY);
         if (mControlX != 0 && mControlY != 0) {
             //绘制曲线
             mPath.reset();

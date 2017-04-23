@@ -7,8 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.nexuslink.R;
 import com.nexuslink.ui.adapter.FriendsAndFansViewPagerAdapter;
@@ -20,12 +18,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class FriendsAndFansActivity extends AppCompatActivity {
 
-    @BindView(R.id.back)
-    ImageView mBack;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tab_layout)
@@ -46,10 +42,8 @@ public class FriendsAndFansActivity extends AppCompatActivity {
         //设置toolbar
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setTitle("好友/粉丝");
+        getSupportActionBar().setTitle("关注/粉丝");
         mToolbar.setTitleTextColor(getResources().getColor(R.color.ghost_white));
-
-
 
         Fragment friendsFragment = new FriendFragment();
         Fragment fansFragment = new FansFragment();
@@ -64,17 +58,6 @@ public class FriendsAndFansActivity extends AppCompatActivity {
         mTab.setupWithViewPager(mViewPager);
     }
 
-    @OnClick({R.id.back, R.id.tab_layout, R.id.view_pager})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.back:
-                break;
-            case R.id.tab_layout:
-                break;
-            case R.id.view_pager:
-                break;
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
