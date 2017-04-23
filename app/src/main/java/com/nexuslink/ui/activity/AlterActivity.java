@@ -1,6 +1,8 @@
 package com.nexuslink.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -459,17 +461,36 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 //        editor.remove("already");
 //        editor.putInt("already",0);
 //        editor.commit();
-        SharedPrefsUtil.putValue(this,"already","already",0);
+        android.app.AlertDialog dialog ;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setMessage("您确定要退出吗?");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                SharedPrefsUtil.putValue(AlterActivity.this,"already","already",0);
 //        User user;
 //        user= BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
 //        user.setAlready(0);
 //        BaseApplication.getDaosession().getUserDao().update(user);
-        DBUtil.getUserDao().deleteAll();
-        //退出之前清除所有Activity
-        ActivityStack.getScreenManager().clearAllActivity();
+                DBUtil.getUserDao().deleteAll();
+                //退出之前清除所有Activity
+                ActivityStack.getScreenManager().clearAllActivity();
 
-        Intent intent = new Intent(this,LogInActivity.class);
-        startActivity(intent);
+                Intent intent = new Intent(AlterActivity.this,LogInActivity.class);
+                startActivity(intent);
+            }
+        });
+        dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -557,7 +578,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                         @Override
                         public void run() {
                             Glide.get(AlterActivity.this).clearMemory();
-                            Glide.with(AlterActivity.this).load(imgInfo).crossFade().into(circleImageView) ;
                         }
                     });
                     SharedPrefsUtil.putValue(AlterActivity.this,"userinfo","userImage",imgInfo.getUserImg());

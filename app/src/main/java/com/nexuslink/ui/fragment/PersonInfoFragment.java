@@ -16,6 +16,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
+import com.nexuslink.model.FriendsInfo;
 import com.nexuslink.model.data.Info;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.ui.BaseFragment;
@@ -118,6 +119,7 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
         //舒适化viewpager
         PersonInfoViewPagerAdapter adapter = new PersonInfoViewPagerAdapter(getFragmentManager());
         adapter.setFragments(fragments);
+        mViewPager.setOffscreenPageLimit(3);//改变最大上限
         mViewPager.setAdapter(adapter);
         //初始化popupwindow
         View view = LayoutInflater.from(getContext()).inflate(R.layout.more_setting_poup, null);
@@ -150,7 +152,6 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, userInfo.getUser().getUImg());
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_NAME, userInfo.getUser().getUName());
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, userInfo.getUser().getUExp());
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, userInfo.getUser().getUFansNum());
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansNum());
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, SEX, userInfo.getUser().getUGender());
                         }
@@ -166,9 +167,27 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                                     .into(userImage);
                             userName.setText(userInfo.getUser().getUName());
                             userLevel.setText(UserUtils.getUserLevel(userInfo.getUser().getUExp()));
-                            friendsNum.setText(userInfo.getUser().getUFansNum() + "");
                             fansNum.setText(userInfo.getUser().getUFansNum() + "");
                             sex.setText(userInfo.getUser().getUGender().equals("M") ? "男" : "女");
+                        }
+                    }
+                });
+        //继续请求用户好友树
+        ApiUtil.getInstance(Constants.BASE_URL).getFriends(UserUtils.getUserId())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<FriendsInfo>() {
+                    @Override
+                    public void call(FriendsInfo friendsInfo) {
+                        if(friendsInfo.getCode() == Constants.SUCCESS){
+                            SharedPrefsUtil.putValue(getContext(),SHARE_PRF_NAME,FRIEND_NUM,friendsInfo.getUsers().size());
+                        }
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<FriendsInfo>() {
+                    @Override
+                    public void call(FriendsInfo friendsInfo) {
+                        if(friendsInfo.getCode() == Constants.SUCCESS){
+                            friendsNum.setText(friendsInfo.getUsers().size()+"");
                         }
                     }
                 });
