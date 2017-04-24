@@ -225,12 +225,12 @@ public interface Api {
     //取得跑步数
     @FormUrlEncoded
     @POST("sport/getDistance")
-    retrofit2.Call<GetDistanceResult> getDistance(@Field("uId") int uId);
+    Observable<GetDistanceResult> getDistance(@Field("uId") int uId);
 
     //取得走步数
     @FormUrlEncoded
     @POST("sport/getStep")
-    retrofit2.Call<GetStepResult> getStep(@Field("uId") int uId);
+    Observable<GetStepResult> getStep(@Field("uId") int uId);
 
 
 }
