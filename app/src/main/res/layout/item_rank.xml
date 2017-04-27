@@ -7,8 +7,8 @@
     android:background="@drawable/selector_rank">
 <TextView
     android:id="@+id/rank_num"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/font_huge"
+    android:layout_height="@dimen/font_larger"
     android:layout_marginLeft="@dimen/spacing_large"
     style="@style/TextAppearance.AppCompat.Title"
     android:textColor="@color/colorPrimary"

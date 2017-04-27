@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/rank_num"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="23sp"
+        android:text="4"
+        android:textColor="#000000"
+        android:gravity="center"/>
+
+    <com.nexuslink.util.CircleImageView
+        android:id="@+id/head_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/head"
+        android:layout_marginLeft="50dp"
+        />
+    <TextView
+        android:id="@+id/nick_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="周家豪"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_toRightOf="@id/head_image"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"/>
+
+    <ImageView
+        android:id="@+id/run_logo"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/run_logo"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:id="@+id/text_num"
+        android:layout_toLeftOf="@id/run_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="2222"
+        android:textColor="#4CAF50"
+        android:textSize="25sp"
+        android:layout_marginRight="10dp"
+        />
+</RelativeLayout>

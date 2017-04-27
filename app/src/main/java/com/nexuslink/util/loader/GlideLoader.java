@@ -44,15 +44,15 @@ public class GlideLoader implements ILoader {
     }
 
     public void load(DrawableTypeRequest request,ImageView target,Option option){
-        if(option == null){
-            option = Option.getDefaultOption();
-        }
-        if(option.resLoading!=Option.RES_NONE){
-            request.placeholder(option.resLoading);
-        }
-        if(option.resLoadError!=Option.RES_NONE){
-            request.error(option.resLoadError);
-        }
+//        if(option == null){
+////            option = Option.getDefaultOption();
+//        }
+//        if(option.resLoading!=Option.RES_NONE){
+//
+//        }
+//        if(option.resLoadError!=Option.RES_NONE){
+//            request.error(option.resLoadError);
+//        }
 
         request.crossFade().dontAnimate().into(target);
     }
