@@ -81,6 +81,9 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
         //开始加载数据
         presenter.getHis(UserUtils.getUserId(), UserUtils.getUserId());
 
+
+
+
     }
 
     @Override
@@ -109,12 +112,19 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
 
     @Override
-    public void addMsgArticle(List<ArticleBean.ArticlesBean> list) {
+    public void addMsgArticle(final List<ArticleBean.ArticlesBean> list) {
         if (list == null || list.isEmpty()) {
             mRecylerView.showEmpty();
             return;
         }
-        adapter.setDatas(list);
+        //由于那边回调的时候是运行在子线程的，所以这里切回主线程
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setDatas(list);
+            }
+        });
+
 
     }
 

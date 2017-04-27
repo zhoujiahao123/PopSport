@@ -155,7 +155,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
 
         } else if (mJoinInBt.getText().toString().equals("退出跑房")) {
             presenter.quitRoom(roomBean.getRoomId());
-
+            EventBus.getDefault().post(roomBean.getRoomId());//取消闹钟提醒
         }
 
     }

@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.nexuslink.HasJoinedRooms;
 import com.nexuslink.HasJoinedRoomsDao;
@@ -72,7 +73,9 @@ public class AlarmService extends Service {
     /**
      * 取消闹钟的接口
      */
+    @Subscribe
     public void cancelRemind(Long id){
+        Log.i("AlarmService","取消闹钟提醒");
         am.cancel(map.get(id));
     }
     /**

@@ -119,7 +119,7 @@ public class AchievementFragment extends BaseFragment {
                 monthMiles += Float.valueOf(run.getUMileage());
             }
         }
-        monthMielsTv.setText(df.format(monthMiles));
+        monthMielsTv.setText(df.format(monthMiles / 1000));
     }
 
 

@@ -131,10 +131,20 @@ public class RunModelImp implements RunModel {
 
 
     public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date,String time, float kcal) {
-        Run run = new Run((long) mRunDao.loadAll().size(), distance,
-                duration, average, pathLineString,
-                startPoint, endPoint, date,time, kcal,false);
-        mRunDao.insert(run);
+        if(mRunDao.loadAll() == null){
+            Run run = new Run((long) 0, distance,
+                    duration, average, pathLineString,
+                    startPoint, endPoint, date,time, kcal,false);
+            mRunDao.insert(run);
+        }else{
+            Run run = new Run((long) mRunDao.loadAll().size(), distance,
+                    duration, average, pathLineString,
+                    startPoint, endPoint, date,time, kcal,false);
+            mRunDao.insert(run);
+        }
+
+
+        Log.i(TAG,mRunDao.loadAll().size()+"");
     }
 
     @Override
