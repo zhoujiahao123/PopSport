@@ -11,7 +11,6 @@ import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.User;
 import com.nexuslink.UserDao;
-import com.nexuslink.ui.BaseFragment;
 import com.nexuslink.ui.adapter.AchievementRecyclerAdapter;
 import com.nexuslink.util.DBUtil;
 

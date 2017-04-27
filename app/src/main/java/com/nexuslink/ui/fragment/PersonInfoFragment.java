@@ -19,7 +19,6 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.FriendsInfo;
 import com.nexuslink.model.data.Info;
 import com.nexuslink.model.data.UserInfo;
-import com.nexuslink.ui.BaseFragment;
 import com.nexuslink.ui.activity.AlterActivity;
 import com.nexuslink.ui.activity.FriendsAndFansActivity;
 import com.nexuslink.ui.activity.RankActivity;

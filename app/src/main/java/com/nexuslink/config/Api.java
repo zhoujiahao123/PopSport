@@ -233,10 +233,9 @@ public interface Api {
     @POST("sport/getStep")
     Observable<GetStepResult> getStep(@Field("uId") int uId);
 
-<<<<<<< HEAD
+
     @POST("sport/getTopByDistance")
     Observable<RankInfo> getRankInfo();
-=======
->>>>>>> 36820cca6cfd7397d792874acabb16affb59e1f4
+
 
 }

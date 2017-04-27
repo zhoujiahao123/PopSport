@@ -31,7 +31,7 @@ public class AlarmService extends Service {
     //===============================================数据库操作对象
     private HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
     private AlarmManager am;
-    private Map<Long,PendingIntent> map = new HashMap<>();
+    private Map<Integer,PendingIntent> map = new HashMap<>();
     //==============================================辅助变量
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -74,9 +74,13 @@ public class AlarmService extends Service {
      * 取消闹钟的接口
      */
     @Subscribe
-    public void cancelRemind(Long id){
+    public void cancelRemind(Integer id){
         Log.i("AlarmService","取消闹钟提醒");
-        am.cancel(map.get(id));
+        //取消闹钟
+        am.cancel(map.get(id.intValue()));
+        //清除数据库
+        HasJoinedRooms room = joinedRoomsDao.queryBuilder().where(HasJoinedRoomsDao.Properties.RId.eq(id)).unique();
+        joinedRoomsDao.delete(room);
     }
     /**
      * 设置闹钟接口
@@ -86,6 +90,7 @@ public class AlarmService extends Service {
         List<HasJoinedRooms> joinedRoomses = joinedRoomsDao.queryBuilder()
                 .where(HasJoinedRoomsDao.Properties.StartTime.gt(sdf.format(System.currentTimeMillis()))).list();
         if(joinedRoomses != null && joinedRoomses.size() >0){
+            map.clear();
             for(HasJoinedRooms room : joinedRoomses){
                 Intent intent1 = new Intent(AlarmService.this, AlarmReceiver.class);
 
@@ -96,8 +101,8 @@ public class AlarmService extends Service {
                 intent1.putExtra("goal",room.getGoal());
                 intent1.putExtra("type",room.getType());
 
-                PendingIntent sender = PendingIntent.getBroadcast(AlarmService.this,room.getId().intValue(),intent1,0);
-                map.put(room.getId(),sender);
+                PendingIntent sender = PendingIntent.getBroadcast(AlarmService.this,room.getRId(),intent1,0);
+                map.put(room.getRId(),sender);
                 am.setExact(AlarmManager.RTC_WAKEUP, TimeUtils.DateToMills(room.getStartTime()),sender);
             }
         }
