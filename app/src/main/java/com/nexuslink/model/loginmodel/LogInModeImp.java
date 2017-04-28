@@ -53,8 +53,9 @@ public class LogInModeImp implements LogInModel {
                             //清除数据
                             DBUtil.getStepsDao().deleteAll();
                             DBUtil.getRunDao().deleteAll();
+                            DBUtil.getUserDao().deleteAll();
 
-                            return ApiUtil.getInstance(Constants.BASE_URL).getUserInfo(uIdInfo.getuId()) ;
+                            return ApiUtil.getInstance(Constants.BASE_URL).getUserInfo(uIdInfo.getuId());
                         } else {
                             listener.onError(new Exception("登陆过程出错"));
                             return null;
@@ -63,69 +64,71 @@ public class LogInModeImp implements LogInModel {
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-               .flatMap(new Func1<UserInfo, Observable<GetDistanceResult>>() {
-            @Override
-            public Observable<GetDistanceResult> call(UserInfo userInfo) {
-                Log.i(TAG, "第二次请求,请求用户信息:" + Thread.currentThread());
-                if (userInfo.getCode() == Constants.SUCCESS) {
-                    User user = new User();
-                    StringBuffer achievement = new StringBuffer();
-                    for (Boolean b : userInfo.getUser().getUAchievements()) {
-                        achievement.append(b + ",");
-                    }
-                    user.setAlready(1);
-                    user.setUid(userInfo.getUser().getUid());
-                    user.setUAchievements(achievement.substring(0, achievement.length() - 1));
-                    user.setUExp(userInfo.getUser().getUExp());
-                    user.setUFansNum(userInfo.getUser().getUFansNum());
-                    user.setUGender(userInfo.getUser().getUGender());
-                    user.setUHeight(userInfo.getUser().getUHeight());
-                    user.setUImg(userInfo.getUser().getUImg());
-                    user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
-                    user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
-                    user.setUName(userInfo.getUser().getUName());
-                    user.setUWeight(userInfo.getUser().getUWeight());
-                    userDao.insert(user);
-                    Log.i(TAG, (userDao.loadAll() == null ? "yes":"no"));
-                    if(!userDao.loadAll().isEmpty()){
-                        Log.i(TAG,userDao.loadAll().size()+"");
-                        List<User> list = userDao.loadAll();
-                        Log.i(TAG,list.get(0).getUid()+" "+list.get(0).getAlready());
-                    }
+                .flatMap(new Func1<UserInfo, Observable<GetDistanceResult>>() {
+                    @Override
+                    public Observable<GetDistanceResult> call(UserInfo userInfo) {
+                        Log.i(TAG, "第二次请求,请求用户信息:" + Thread.currentThread());
+                        if (userInfo.getCode() == Constants.SUCCESS) {
+                            User user = new User();
+                            StringBuffer achievement = new StringBuffer();
+                            for (Boolean b : userInfo.getUser().getUAchievements()) {
+                                achievement.append(b + ",");
+                            }
+                            user.setAlready(1);
+                            user.setUid(userInfo.getUser().getUid());
+                            user.setUAchievements(achievement.substring(0, achievement.length() - 1));
+                            user.setUExp(userInfo.getUser().getUExp());
+                            user.setUFansNum(userInfo.getUser().getUFansNum());
+                            user.setUGender(userInfo.getUser().getUGender());
+                            user.setUHeight(userInfo.getUser().getUHeight());
+                            user.setUImg(userInfo.getUser().getUImg());
+                            user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
+                            user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
+                            user.setUName(userInfo.getUser().getUName());
+                            user.setUWeight(userInfo.getUser().getUWeight());
+                            userDao.insert(user);
+                            Log.i(TAG, (userDao.loadAll() == null ? "yes" : "no"));
+                            if (!userDao.loadAll().isEmpty()) {
+                                Log.i(TAG, userDao.loadAll().size() + "");
+                                List<User> list = userDao.loadAll();
+                                Log.i(TAG, list.get(0).getUid() + " " + list.get(0).getAlready());
+                            }
 
-                    Log.i(TAG,"插入用户数据成功");
-                    return ApiUtil.getInstance(Constants.BASE_URL).getDistance(userInfo.getUser().getUid());
-                } else {
-                    listener.onError(new Exception("登陆过程出错"));
-                    return null;
-                }
-            }
-        }).subscribeOn(Schedulers.io())
+                            Log.i(TAG, "插入用户数据成功");
+                            return ApiUtil.getInstance(Constants.BASE_URL).getDistance(userInfo.getUser().getUid());
+                        } else {
+                            listener.onError(new Exception("登陆过程出错"));
+                            return null;
+                        }
+                    }
+                }).subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .flatMap(new Func1<GetDistanceResult, Observable<GetStepResult>>() {
-            @Override
-            public Observable<GetStepResult> call(GetDistanceResult getDistanceResult) {
-                Log.i(TAG, "第三次请求,请求跑步信息:" + Thread.currentThread());
-                if (getDistanceResult.getCode() == Constants.SUCCESS) {
-                    //开始存储到本地种
-                    List<Run> runlist = new ArrayList<Run>();
-                    for (GetDistanceResult.RecordBean recordBean : getDistanceResult.getRecord()) {
-                        Run run = new Run(null, String.valueOf(recordBean.getDistance()),
-                                String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
-                                , recordBean.getPathline(), recordBean.getStartPoint(),
-                                recordBean.getEndPoint(), recordBean.getDate(),
-                                recordBean.getTime(), null, true);
-                        runlist.add(run);
-                    }
-                    DBUtil.getRunDao().insertInTx(runlist);
-                    return ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId());
-                } else {
-                    listener.onError(new Exception("登陆过程出错"));
-                    return null;
-                }
+                    @Override
+                    public Observable<GetStepResult> call(GetDistanceResult getDistanceResult) {
+                        Log.i(TAG, "第三次请求,请求跑步信息:" + Thread.currentThread());
+                        if (getDistanceResult.getCode() == Constants.SUCCESS) {
+                            //开始存储到本地种
+                            List<Run> runlist = new ArrayList<Run>();
+                            for (GetDistanceResult.RecordBean recordBean : getDistanceResult.getRecord()) {
+                                Run run = new Run(null, String.valueOf(recordBean.getDistance()),
+                                        String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
+                                        , recordBean.getPathline(), recordBean.getStartPoint(),
+                                        recordBean.getEndPoint(), recordBean.getDate(),
+                                        recordBean.getTime(), null, true);
+                                runlist.add(run);
+                            }
+                            if (!runlist.isEmpty()) {
+                                DBUtil.getRunDao().insertInTx(runlist);
+                            }
+                            return ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId());
+                        } else {
+                            listener.onError(new Exception("登陆过程出错"));
+                            return null;
+                        }
 
-            }
-        }).subscribeOn(Schedulers.io())
+                    }
+                }).subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Action1<GetStepResult>() {
                     @Override
@@ -139,7 +142,9 @@ public class LogInModeImp implements LogInModel {
                                 Steps steps = new Steps(null, recordBean.getStep(), recordBean.getDate(), true);
                                 stepsList.add(steps);
                             }
-                            DBUtil.getStepsDao().insertInTx(stepsList);
+                            if (!stepsList.isEmpty()) {
+                                DBUtil.getStepsDao().insertInTx(stepsList);
+                            }
                             listener.onFinish(null);
                         } else {
                             listener.onError(new Exception("出错"));
