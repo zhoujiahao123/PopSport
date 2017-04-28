@@ -98,7 +98,8 @@ public class RunHouseAdapter extends RecyclerView.Adapter<RunHouseAdapter.RunHou
         if(datas.get(position).getUsers() != null && datas.get(position).getUsers().size() >0){
             Glide.with(mContext).load(Constants.PHOTO_BASE_URL+datas.get(position).getUsers().get(0)
                     .getUImg())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .skipMemoryCache(true)
                     .into(holder.runHouseImage);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,13 @@ public abstract  class BaseFragment extends Fragment {
      */
     public abstract void initView();
     protected Unbinder unbinder;
+    protected String TAG ;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TAG = this.getClass().getName();
+    }
 
     @Nullable
     @Override

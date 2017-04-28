@@ -107,7 +107,8 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
         ArticleBean.ArticlesBean.UserBeanBean user = data.get(position).getUserBean();
         //设置头像
         Glide.with(mContext).load(Constants.PHOTO_BASE_URL + user.getUImg())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .skipMemoryCache(true)
                 //设置50%的缩略图
                 .thumbnail(0.5f)
                 .crossFade().into(holder.userImage);
@@ -210,7 +211,7 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
             presenter.loadComment(holder.commentDetialLinear, data.get(position).getArticleId(), position);
         } else {
             Log.i(TAG, "从缓存中调用");
-            if(helper == null){
+            if (helper == null) {
                 try {
                     helper = new DiskLruCacheHelper(BaseApplication.getContext());
                 } catch (IOException e) {
@@ -349,7 +350,6 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
         }
 
     }
-
 
 
 }
