@@ -183,7 +183,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.AlterActivity" />
-        <activity android:name=".ui.activity.FriendsAndFansActivity"></activity>
+        <activity android:name=".ui.activity.FriendsAndFansActivity" />
+        <activity android:name=".ui.activity.OtherPersonActivity" />
+        <activity android:name=".ui.activity.SearchActivity"></activity>
     </application>
 
 </manifest>

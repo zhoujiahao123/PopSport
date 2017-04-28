@@ -77,5 +77,29 @@
             android:textSize="@dimen/font_large" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny"
+            android:src="@drawable/search" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:text="搜索"
+            android:textSize="@dimen/font_large" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

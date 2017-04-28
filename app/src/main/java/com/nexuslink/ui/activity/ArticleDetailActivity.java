@@ -1,6 +1,7 @@
 package com.nexuslink.ui.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -195,9 +196,17 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
      */
     private void setUpViews() {
         //设置用户个人信息
-        SingleCommunityInfo.ArticleBean.UserBeanBean user = article.getUserBean();
+        final SingleCommunityInfo.ArticleBean.UserBeanBean user = article.getUserBean();
         //头像加载
         Glide.with(this).load(Constants.PHOTO_BASE_URL + user.getUImg()).crossFade().into(userImage);
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, OtherPersonActivity.class);
+                intent.putExtra("uId",user.getUid());
+                mContext.startActivity(intent);
+            }
+        });
         userName.setText(user.getUName());
         userLevel.setText("Lv."+UserUtils.getUserLevel(user.getUExp()));
         //设置发表日期

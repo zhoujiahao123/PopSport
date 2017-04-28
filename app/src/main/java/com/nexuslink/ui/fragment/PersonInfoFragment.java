@@ -23,6 +23,7 @@ import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.ui.activity.AlterActivity;
 import com.nexuslink.ui.activity.FriendsAndFansActivity;
 import com.nexuslink.ui.activity.RankActivity;
+import com.nexuslink.ui.activity.SearchActivity;
 import com.nexuslink.ui.activity.TaskActivity;
 import com.nexuslink.ui.adapter.PersonInfoViewPagerAdapter;
 import com.nexuslink.ui.view.PersonInfoBezierView;
@@ -112,6 +113,7 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
         //初始化fragment
         Fragment achievementFragment = new AchievementFragment();
         Fragment personArticleFragment = new PersonArticleFragment();
+        ((PersonArticleFragment)personArticleFragment).setuId(UserUtils.getUserId());
         Fragment myRoomsFragment = new MyRoomFragment();
 
         fragments.add(achievementFragment);
@@ -128,8 +130,9 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
         view.findViewById(R.id.setting).setOnClickListener(this);
         view.findViewById(R.id.rank_list).setOnClickListener(this);
         view.findViewById(R.id.task).setOnClickListener(this);
+        view.findViewById(R.id.search).setOnClickListener(this);
         mSettingLinear = (LinearLayout) view.findViewById(R.id.setting_linear);
-        pw = new PopupWindow(view, DisplayMetricsUtil.dip2px(getContext(), 120), DisplayMetricsUtil.dip2px(getContext(), 100));
+        pw = new PopupWindow(view, DisplayMetricsUtil.dip2px(getContext(), 120), DisplayMetricsUtil.dip2px(getContext(), 135));
         pw.setOutsideTouchable(true);
         pw.setFocusable(true);
 
@@ -247,6 +250,9 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.rank_list:
                 ToActivityUtil.toNextActivity(getContext(), RankActivity.class);
+                break;
+            case R.id.search:
+                ToActivityUtil.toNextActivity(getContext(), SearchActivity.class);
                 break;
             case R.id.funs_num:
             case R.id.friends_num:

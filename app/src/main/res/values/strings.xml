@@ -39,6 +39,7 @@
     <string name="addition_task_detail">任务详情:0米/4000米</string>
     <string name="title_activity_run_house_result">RunHouseResultActivity</string>
     <string name="No_1">No.1</string>
+    <string name="search">搜索</string>
 
     <!-- Strings related to login -->
 

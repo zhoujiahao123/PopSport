@@ -60,6 +60,32 @@ public class PersonInfoBezierView extends ConstraintLayout {
         invalidate();
     }
 
+    public Bitmap getmBitmap() {
+        return mBitmap;
+    }
+
+    public void setmBitmap(Bitmap mBitmap) {
+        this.mBitmap = mBitmap;
+        invalidate();
+    }
+
+    public int getPicWidth() {
+        return picWidth;
+    }
+
+    public void setPicWidth(int picWidth) {
+        this.picWidth = picWidth;
+        invalidate();
+    }
+
+    public int getPicHeight() {
+        return picHeight;
+    }
+
+    public void setPicHeight(int picHeight) {
+        this.picHeight = picHeight;
+        invalidate();
+    }
 
     public PersonInfoBezierView(Context context) {
         this(context, null);

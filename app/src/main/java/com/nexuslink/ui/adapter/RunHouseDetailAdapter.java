@@ -1,6 +1,7 @@
 package com.nexuslink.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.RoomsBean;
+import com.nexuslink.ui.activity.OtherPersonActivity;
 
 import java.util.List;
 
@@ -83,12 +85,9 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(mContext, FriendInfoActivity.class);
-//                RoomsBean.UsersBean usersBean = usersList.get(position);
-//                intent.putExtra("uImg",usersBean.getUImg());
-//                intent.putExtra("uId",usersBean.getUid());
-//                intent.putExtra("uName",usersBean.getUName());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, OtherPersonActivity.class);
+                intent.putExtra("uId",usersList.get(position).getUid());
+                mContext.startActivity(intent);
             }
         });
         holder.userName.setText(usersList.get(position).getUName());

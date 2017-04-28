@@ -33,6 +33,7 @@ import com.nexuslink.model.data.UpLoadUserImageResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 import com.nexuslink.model.data.WriteArticleResult;
+import com.nexuslink.model.search.RandomSearchResult;
 
 import java.util.List;
 
@@ -237,5 +238,8 @@ public interface Api {
     @POST("sport/getTopByDistance")
     Observable<RankInfo> getRankInfo();
 
-
+    //取得随机好友
+    @FormUrlEncoded
+    @POST("friend/random")
+    Observable<RandomSearchResult> getRandowmUsers(@Field("uId") int uId);
 }

@@ -47,6 +47,11 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
      */
     private PersonArticleAdapter adapter;
     private CommunityPresenter presenter;
+    private int uId = -1;
+
+    public void setuId(int uId) {
+        this.uId = uId;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,9 +84,9 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
         mRecylerView.setAdapter(adapter);
 
         //开始加载数据
-        presenter.getHis(UserUtils.getUserId(), UserUtils.getUserId());
-
-
+        if (uId != -1) {
+            presenter.getHis(UserUtils.getUserId(), uId);
+        }
 
 
     }
@@ -98,7 +103,12 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
     @Override
     public void showError(String str) {
-        mRecylerView.showError();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRecylerView.showEmpty();
+            }
+        });
     }
 
     @Override
