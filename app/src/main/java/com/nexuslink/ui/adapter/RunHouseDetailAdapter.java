@@ -80,7 +80,8 @@ public class RunHouseDetailAdapter extends RecyclerView.Adapter<RunHouseDetailAd
         //设置用户信息
         Glide.with(mContext).load(Constants.PHOTO_BASE_URL+usersList.get(position).getUImg()).
                  crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .skipMemoryCache(true)
                 .into(holder.userImage);
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,6 +17,7 @@ import com.nexuslink.presenter.loginpresenter.LoginPresenter;
 import com.nexuslink.ui.view.LoginView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.SharedPrefsUtil;
+import com.nexuslink.util.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,12 +42,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
     Button mLoginBt;
     @BindView(R.id.register)
     TextView mRegisterTv;
-    @BindView(R.id.forget_password)
-    TextView mForgetPasswordTv;
+
     @BindView(R.id.qq_login)
     CircleImageView qqLogin;
-    @BindView(R.id.wechat_login)
-    CircleImageView wechatLogin;
     @BindView(R.id.xinlang_login)
     CircleImageView xinlangLogin;
     @BindView(R.id.account_input)
@@ -81,7 +79,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
      *
      * @param view
      */
-    @OnClick({R.id.login, R.id.register, R.id.qq_login, R.id.wechat_login, R.id.xinlang_login})
+    @OnClick({R.id.login, R.id.register, R.id.qq_login ,R.id.xinlang_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login:
@@ -97,12 +95,10 @@ public class LogInActivity extends BaseActivity implements LoginView {
             case R.id.register:
                 Intent intent = new Intent(this,SignInActivity.class);
                 startActivity(intent);
+                SharedPrefsUtil.putValue(this,"firstlogin","firstlogin",true);
                 break;
             case R.id.qq_login:
                 authorize(QQ);
-                break;
-            case R.id.wechat_login:
-                authorize(WECHAT);
                 break;
             case R.id.xinlang_login:
                 authorize(XINLANG);
@@ -138,6 +134,8 @@ public class LogInActivity extends BaseActivity implements LoginView {
                     Object key = entry.getKey();
                     Object value = entry.getValue();
                     Log.i(TAG, key + " " + value);
+                    ToastUtil.showToast(LogInActivity.this,"key:"+key+
+                                "value:"+value);
                 }
                 if (platform.isAuthValid()) {
                     platform.removeAccount(true);
@@ -188,9 +186,14 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     @Override
     public void loginFailed() {
-        sweetAlertDialog.setTitle("很抱歉");
-        sweetAlertDialog.setContentText("登陆过程中出现错误");
-        sweetAlertDialog.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sweetAlertDialog.setTitle("很抱歉");
+                sweetAlertDialog.setContentText("登陆过程中出现错误");
+                sweetAlertDialog.show();
+            }
+        });
     }
 
     @Override
@@ -206,6 +209,9 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     @Override
     public void hideProgress() {
+        if(dialog == null){
+            return;
+        }
         dialog.dismiss();
         dialog = null;
     }

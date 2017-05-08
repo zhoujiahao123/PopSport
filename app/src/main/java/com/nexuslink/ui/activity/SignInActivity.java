@@ -1,14 +1,18 @@
 package com.nexuslink.ui.activity;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,12 +23,17 @@ import com.nexuslink.model.signinmodel.SignInModleImpl;
 import com.nexuslink.presenter.signinpresenter.SignInPresenter;
 import com.nexuslink.presenter.signinpresenter.SignInPresenterImpl;
 import com.nexuslink.ui.view.SignInView;
+import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.jeesoft.widget.pickerview.CharacterPickerWindow;
 import cn.jeesoft.widget.pickerview.OnOptionChangedListener;
 
@@ -36,6 +45,7 @@ public class SignInActivity extends BaseActivity implements SignInView {
     private final static String HEIGHT_TYPE = "HEIGHT";
     private final static String WEIGHT_TYPE = "WEIGHT";
     private final static String GENDER_TYPE = "GENDER";
+    private final String TAG = "SignInActivity";
     @BindView(R.id.container)
     RelativeLayout container;
     @BindView(R.id.height)
@@ -50,6 +60,22 @@ public class SignInActivity extends BaseActivity implements SignInView {
     TextInputEditText nickName;
     @BindView(R.id.password)
     TextInputEditText password;
+    @BindView(R.id.user_image)
+    CircleImageView mImage;
+    @BindView(R.id.password_layout)
+    TextInputLayout passwordLayout;
+    @BindView(R.id.private_info)
+    TextView privateInfo;
+    @BindView(R.id.height_layout)
+    RelativeLayout heightLayout;
+    @BindView(R.id.weight_layout)
+    RelativeLayout weightLayout;
+    @BindView(R.id.gender_layout)
+    RelativeLayout genderLayout;
+    @BindView(R.id.register)
+    Button register;
+    @BindView(R.id.progressbar)
+    ProgressBar mProgressBar;
 
     private CharacterPickerWindow window = null;
     //作为标志位，标志是哪一个选择器正在起作用
@@ -64,6 +90,7 @@ public class SignInActivity extends BaseActivity implements SignInView {
 
 
     private ProgressBar progressBar;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -78,11 +105,10 @@ public class SignInActivity extends BaseActivity implements SignInView {
         window = new CharacterPickerWindow(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         presenter = new SignInPresenterImpl(new SignInModleImpl(), this);
     }
+
     /**
      * 初始化选择器
      */
@@ -109,11 +135,10 @@ public class SignInActivity extends BaseActivity implements SignInView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -157,41 +182,50 @@ public class SignInActivity extends BaseActivity implements SignInView {
     }
 
     @Override
-    public void requestSignIn(String uName, String uPassword, char uGender, int uHeight, int uWeight) {
-        presenter.requestRegister(uName, uPassword, uGender, uHeight, uWeight);
+    public void requestSignIn(String uName, String uPassword, char uGender, int uHeight, int uWeight, String imagePath) {
+        presenter.requestRegister(uName, uPassword, uGender, uHeight, uWeight, imagePath);
     }
 
     @Override
     public void failedSignIn(String message) {
-        progressBar.setVisibility(View.INVISIBLE);
-        if(isNetworkActive()){
-            Snackbar.make(container,message,Snackbar.LENGTH_LONG).show();
-        }
-        else {
-            Snackbar.make(container,"请检查您的网络",Snackbar.LENGTH_SHORT).show();
+        mProgressBar.setVisibility(View.INVISIBLE);
+        if (isNetworkActive()) {
+            Snackbar.make(container, message, Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(container, "请检查您的网络", Snackbar.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void succeedSignIn(int uId) {
-//        DaoSession daoSession = BaseApplication.getDaosession();
-//        User user = new User();
-//        user.setUid(uId);
-//        UserDao userDao = daoSession.getUserDao();
-//        userDao.insert(user);
-        progressBar.setVisibility(View.INVISIBLE);
+    public void succeedSignIn() {
+        mProgressBar.setVisibility(View.INVISIBLE);
         onBackPressed();
     }
 
-    private void showProgressBar(){
-        progressBar = new ProgressBar(this);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(Gravity.CENTER);
-        container.addView(progressBar,layoutParams);
+    private void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
     }
-    @OnClick({R.id.height, R.id.weight, R.id.gender, R.id.register})
+
+    String imagePath = null;
+
+    @OnClick({R.id.height, R.id.weight, R.id.gender, R.id.register, R.id.user_image})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.user_image:
+                GalleryFinal.openGallerySingle(0, new GalleryFinal.OnHanlderResultCallback() {
+                    @Override
+                    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+                        imagePath = resultList.get(0).getPhotoPath();
+                        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                        mImage.setImageBitmap(bitmap);
+                    }
+
+                    @Override
+                    public void onHanlderFailure(int requestCode, String errorMsg) {
+                        ToastUtil.showToast(SignInActivity.this, errorMsg);
+                    }
+                });
+                break;
             case R.id.height:
                 initPickerWindow(HEIGHT_TYPE, 110);
                 window.showAtLocation(container, Gravity.BOTTOM, 0, 0);
@@ -205,13 +239,17 @@ public class SignInActivity extends BaseActivity implements SignInView {
                 window.showAtLocation(container, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.register:
-                if(nickName.getText().toString().equals("")||password.getText().toString().equals("")){
-                    Snackbar.make(container,"用户名或者密码不能为空",Snackbar.LENGTH_SHORT).show();
-                }else {
-                    requestSignIn(nickName.getText().toString(),password.getText().toString(),gender.getText().equals("男")?'M':'W',Integer.valueOf(height.getText().toString().replaceAll("cm"," ").trim()),
-                            Integer.valueOf(weight.getText().toString().replaceAll("kg"," ").trim())
-                            );
-                    showProgressBar();
+                if (nickName.getText().toString().equals("") || password.getText().toString().equals("")) {
+                    Snackbar.make(container, "用户名或者密码不能为空", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    if (imagePath == null) {
+                        Snackbar.make(container, "要选择头像才能注册哦...", Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        requestSignIn(nickName.getText().toString(), password.getText().toString(), gender.getText().equals("男") ? 'M' : 'W', Integer.valueOf(height.getText().toString().replaceAll("cm", " ").trim()),
+                                Integer.valueOf(weight.getText().toString().replaceAll("kg", " ").trim())
+                                , imagePath);
+                        showProgressBar();
+                    }
                 }
                 break;
         }

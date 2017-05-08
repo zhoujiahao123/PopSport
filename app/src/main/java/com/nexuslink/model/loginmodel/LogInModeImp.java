@@ -121,12 +121,8 @@ public class LogInModeImp implements LogInModel {
                             if (!runlist.isEmpty()) {
                                 DBUtil.getRunDao().insertInTx(runlist);
                             }
-                            return ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId());
-                        } else {
-                            listener.onError(new Exception("登陆过程出错"));
-                            return null;
                         }
-
+                        return ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId());
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -146,8 +142,8 @@ public class LogInModeImp implements LogInModel {
                                 DBUtil.getStepsDao().insertInTx(stepsList);
                             }
                             listener.onFinish(null);
-                        } else {
-                            listener.onError(new Exception("出错"));
+                        } else if(getStepResult.getCode() == Constants.FAILED){
+                            listener.onFinish(null);
                         }
                     }
                 });

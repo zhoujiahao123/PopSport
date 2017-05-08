@@ -460,11 +460,9 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 dialog.dismiss();
 
                 SharedPrefsUtil.putValue(AlterActivity.this, "already", "already", 0);
-//        User user;
-//        user= BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-//        user.setAlready(0);
-//        BaseApplication.getDaosession().getUserDao().update(user);
                 DBUtil.getUserDao().deleteAll();
+                DBUtil.getRunDao().deleteAll();
+                DBUtil.getStepsDao().deleteAll();
 
                 Intent intent = new Intent(AlterActivity.this, LogInActivity.class);
                 startActivity(intent);
