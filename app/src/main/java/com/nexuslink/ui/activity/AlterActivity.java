@@ -465,11 +465,12 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 //        user.setAlready(0);
 //        BaseApplication.getDaosession().getUserDao().update(user);
                 DBUtil.getUserDao().deleteAll();
-                //退出之前清除所有Activity
-                ActivityStack.getScreenManager().clearAllActivity();
 
                 Intent intent = new Intent(AlterActivity.this, LogInActivity.class);
                 startActivity(intent);
+                onBackPressed();
+                //退出之前清除所有Activity
+                ActivityStack.getScreenManager().clearAllActivity();
             }
         });
         dialog = builder.create();
