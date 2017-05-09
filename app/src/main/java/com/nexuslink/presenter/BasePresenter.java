@@ -14,5 +14,4 @@ public class BasePresenter<T1 extends BaseModel,T2 extends BaseView> {
         this.model = model;
         this.view = view;
     }
-
 }

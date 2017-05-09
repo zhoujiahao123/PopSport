@@ -1,14 +1,19 @@
 package com.nexuslink.model.signinmodel;
 
-import com.elvishew.xlog.XLog;
-import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.UIdInfo;
+import com.nexuslink.model.data.UpLoadUserImageResult;
 import com.nexuslink.util.ApiUtil;
-import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.BitmapCompressUpUtils;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -18,12 +23,34 @@ import rx.schedulers.Schedulers;
 public class SignInModleImpl implements SignInModel {
 
     @Override
-    public void requestRegister(String uName, String uPassword, char uGender, int uHeight, int uWeight, final com.nexuslink.model.signinmodel.OnCallBackListener listener) {
+    public void requestRegister(String uName, String uPassword, char uGender, int uHeight, int uWeight, final String imagePath, final com.nexuslink.model.signinmodel.OnCallBackListener listener) {
         ApiUtil.getInstance(Constants.BASE_URL)
-                .requestRegister(uName,uPassword,uGender,uHeight,uWeight)
+                .requestRegister(uName, uPassword, uGender, uHeight, uWeight)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap(new Func1<UIdInfo, Observable<UpLoadUserImageResult>>() {
+                    @Override
+                    public Observable<UpLoadUserImageResult> call(UIdInfo uIdInfo) {
+                        if (uIdInfo.getuId() == 0) {
+//                            ToastUtil.showToast(BaseApplication.getContext(),"用户名已经存在");
+                            listener.onFailed(new Throwable("用户名已存在"));
+                            return null;
+                        } else if (uIdInfo.getCode() == 500) {
+                            listener.onFailed(new Throwable("服务器出现错误"));
+                            return null;
+                        } else {
+                            //注册成功，进行用户头像注册
+                            //将图片进行压缩
+                            String str = BitmapCompressUpUtils.compressImage(imagePath, imagePath + "111", 50);
+                            File file = new File(str);
+                            RequestBody body = RequestBody.create(MediaType.parse("image/png"), file);
+                            return ApiUtil.getInstance(Constants.BASE_URL).changUserImage(uIdInfo.getuId(), body);
+                        }
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UIdInfo>() {
+                .subscribe(new Subscriber<UpLoadUserImageResult>() {
                     @Override
                     public void onCompleted() {
 
@@ -31,22 +58,17 @@ public class SignInModleImpl implements SignInModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.onFailed(e);
-                        XLog.e(e.toString());
+
                     }
 
                     @Override
-                    public void onNext(UIdInfo uIdInfo) {
-                        XLog.e(uIdInfo.getCode());
-                        XLog.e(uIdInfo.getuId());
-                        if(uIdInfo.getuId()==0){
-//                            ToastUtil.showToast(BaseApplication.getContext(),"用户名已经存在");
-                            listener.onFailed(new Throwable("用户名已存在"));
-                        }else if(uIdInfo.getCode()==500){
-                            listener.onFailed(new Throwable("服务器出现错误"));
-                        }else {
-                            listener.onSucceed(uIdInfo);
+                    public void onNext(UpLoadUserImageResult upLoadUserImageResult) {
+                        if (upLoadUserImageResult.getCode() == Constants.SUCCESS) {
+                            listener.onSucceed(null);
+                        }else{
+                            listener.onFailed(null);
                         }
+                        deletePhoto(imagePath);
                     }
                 });
     }
@@ -54,5 +76,11 @@ public class SignInModleImpl implements SignInModel {
     @Override
     public void getError() {
 
+    }
+    private void deletePhoto(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }

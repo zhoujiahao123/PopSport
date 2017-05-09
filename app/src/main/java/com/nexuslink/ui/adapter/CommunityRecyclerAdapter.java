@@ -26,6 +26,7 @@ import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.ui.activity.ArticleDetailActivity;
 
+import com.nexuslink.ui.activity.OtherPersonActivity;
 import com.nexuslink.ui.view.MyNineGridLayout;
 import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
@@ -106,7 +107,8 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         CommunityInfo.ArticlesBean.UserBeanBean user = data.get(position).getUserBean();
         //设置头像
         Glide.with(mContext).load(Constants.PHOTO_BASE_URL + user.getUImg())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .skipMemoryCache(true)
                 //设置50%的缩略图
                 .thumbnail(0.5f)
                 .crossFade().into(holder.userImage);
@@ -117,16 +119,11 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         holder.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(mContext, FriendInfoActivity.class);
-//                //uImg uName uId
-//                CommunityInfo.ArticlesBean.UserBeanBean userBeanBean = data.get(position).getUserBean();
-//                intent.putExtra("uImg", userBeanBean.getUImg());
-//                intent.putExtra("uName", userBeanBean.getUName());
-//                intent.putExtra("uId", userBeanBean.getUid());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, OtherPersonActivity.class);
+                intent.putExtra("uId", data.get(position).getUserId());
+                mContext.startActivity(intent);
             }
         });
-
         //话题信息 图片和文字
         //设置文本内容时候，进行解析
         holder.mContent.setText(Base64Utils.decode(data.get(position).getText()));

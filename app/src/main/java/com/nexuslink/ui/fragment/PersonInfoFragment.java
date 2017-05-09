@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nexuslink.R;
@@ -19,10 +20,10 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.FriendsInfo;
 import com.nexuslink.model.data.Info;
 import com.nexuslink.model.data.UserInfo;
-import com.nexuslink.ui.BaseFragment;
 import com.nexuslink.ui.activity.AlterActivity;
 import com.nexuslink.ui.activity.FriendsAndFansActivity;
 import com.nexuslink.ui.activity.RankActivity;
+import com.nexuslink.ui.activity.SearchActivity;
 import com.nexuslink.ui.activity.TaskActivity;
 import com.nexuslink.ui.adapter.PersonInfoViewPagerAdapter;
 import com.nexuslink.ui.view.PersonInfoBezierView;
@@ -96,12 +97,14 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate-");
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.i(TAG, "onDestory");
         EventBus.getDefault().unregister(this);
     }
 
@@ -110,6 +113,7 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
         //初始化fragment
         Fragment achievementFragment = new AchievementFragment();
         Fragment personArticleFragment = new PersonArticleFragment();
+        ((PersonArticleFragment) personArticleFragment).setuId(UserUtils.getUserId());
         Fragment myRoomsFragment = new MyRoomFragment();
 
         fragments.add(achievementFragment);
@@ -126,22 +130,24 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
         view.findViewById(R.id.setting).setOnClickListener(this);
         view.findViewById(R.id.rank_list).setOnClickListener(this);
         view.findViewById(R.id.task).setOnClickListener(this);
+        view.findViewById(R.id.search).setOnClickListener(this);
         mSettingLinear = (LinearLayout) view.findViewById(R.id.setting_linear);
-        pw = new PopupWindow(view, DisplayMetricsUtil.dip2px(getContext(), 120), DisplayMetricsUtil.dip2px(getContext(), 100));
+        pw = new PopupWindow(view, DisplayMetricsUtil.dip2px(getContext(), 120), DisplayMetricsUtil.dip2px(getContext(), 135));
         pw.setOutsideTouchable(true);
         pw.setFocusable(true);
 
         fansNum.setOnClickListener(this);
         friendsNum.setOnClickListener(this);
-        setUserInfo(null);
+        setUserInfo();
 
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void setUserInfo(Info info) {
+
+    private void setUserInfo() {
+        Log.i(TAG, "设置个人信息");
         //初始化个人信息
-        initUserData();
+        initUserData(null);
         ApiUtil.getInstance(Constants.BASE_URL).getUserInfo(UserUtils.getUserId())
                 .subscribeOn(Schedulers.io())
                 .doOnNext(new Action1<UserInfo>() {
@@ -178,39 +184,46 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                 .doOnNext(new Action1<FriendsInfo>() {
                     @Override
                     public void call(FriendsInfo friendsInfo) {
-                        if(friendsInfo.getCode() == Constants.SUCCESS){
-                            SharedPrefsUtil.putValue(getContext(),SHARE_PRF_NAME,FRIEND_NUM,friendsInfo.getUsers().size());
+                        if (friendsInfo.getCode() == Constants.SUCCESS) {
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, friendsInfo.getUsers().size());
+                            //请求完成
+                            SharedPrefsUtil.putValue(getContext(), "firstlogin", "firstlogin", false);
                         }
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<FriendsInfo>() {
                     @Override
                     public void call(FriendsInfo friendsInfo) {
-                        if(friendsInfo.getCode() == Constants.SUCCESS){
-                            friendsNum.setText(friendsInfo.getUsers().size()+"");
+                        if (friendsInfo.getCode() == Constants.SUCCESS) {
+                            friendsNum.setText(friendsInfo.getUsers().size() + "");
                         }
                     }
                 });
     }
 
-    private void initUserData() {
-        String image_url = Constants.PHOTO_BASE_URL + getValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, null);
-        String userNameStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_NAME, UserUtils.getUserName());
-        String userLevelStr = UserUtils.getUserLevel(SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, 0));
-        String friendsNumStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, 0) + "";
-        String fansNumStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, FANS_NUM, 0) + "";
-        String sexStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, SEX, "").equals("M") ? "男" : "女";
-
-        if (image_url == null) {
-            Glide.with(getContext()).load(R.drawable.small_pop_logo).into(userImage);
-        } else {
-            Glide.with(getContext()).load(image_url).into(userImage);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void initUserData(Info info) {
+        if (!SharedPrefsUtil.getValue(getContext(), "firstlogin", "firstlogin", false)) {
+            String image_url = Constants.PHOTO_BASE_URL + getValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, null);
+            String userNameStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_NAME, UserUtils.getUserName());
+            String userLevelStr = UserUtils.getUserLevel(SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, 0));
+            String friendsNumStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, 0) + "";
+            String fansNumStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, FANS_NUM, 0) + "";
+            String sexStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, SEX, "").equals("M") ? "男" : "女";
+            if (image_url == null) {
+                Glide.with(getContext()).load(R.drawable.small_pop_logo).into(userImage);
+            } else {
+                //缓存到磁盘
+                Log.i(TAG, "重置头像");
+                Log.i(TAG, image_url);
+                Glide.with(getContext()).load(image_url).diskCacheStrategy(DiskCacheStrategy.RESULT).skipMemoryCache(true).into(userImage);
+            }
+            userName.setText(userNameStr);
+            userLevel.setText(userLevelStr);
+            friendsNum.setText(friendsNumStr);
+            fansNum.setText(fansNumStr);
+            sex.setText(sexStr);
         }
-        userName.setText(userNameStr);
-        userLevel.setText(userLevelStr);
-        friendsNum.setText(friendsNumStr);
-        fansNum.setText(fansNumStr);
-        sex.setText(sexStr);
     }
 
 
@@ -240,6 +253,9 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.rank_list:
                 ToActivityUtil.toNextActivity(getContext(), RankActivity.class);
+                break;
+            case R.id.search:
+                ToActivityUtil.toNextActivity(getContext(), SearchActivity.class);
                 break;
             case R.id.funs_num:
             case R.id.friends_num:

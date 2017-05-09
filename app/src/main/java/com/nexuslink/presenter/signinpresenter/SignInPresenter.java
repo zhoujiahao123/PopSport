@@ -12,5 +12,5 @@ import com.nexuslink.ui.view.SignInView;
 public abstract class SignInPresenter extends BasePresenter<SignInModel,SignInView> {
     public abstract void registerSucceed(UIdInfo uIdInfo);
 
-    public abstract void requestRegister(String uName,String uPassword,char uGender,int uHeight,int uWeight);
+    public abstract void requestRegister(String uName,String uPassword,char uGender,int uHeight,int uWeight,String imagePath);
 }

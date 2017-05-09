@@ -33,7 +33,7 @@ public class BaseApplication extends Application {
         InitService.start(this);
     }
 
-    public static DiskLruCacheHelper getHelper() {
+    public synchronized static DiskLruCacheHelper getHelper() {
         if(helper == null){
             try {
                 helper = new DiskLruCacheHelper(mContext);

@@ -13,17 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
         <android.support.v7.widget.Toolbar
+            app:theme="@style/BlackToolbarStyle"
             android:id="@+id/toolbar_run_house_detail"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
-        <ImageView
-            android:id="@+id/back_icon"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_centerVertical="true"
-            android:src="@drawable/back"
-            android:layout_width="@dimen/turn_back_image_size"
-            android:layout_height="@dimen/turn_back_image_size" />
         <LinearLayout
             android:layout_centerInParent="true"
             android:orientation="horizontal"

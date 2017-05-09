@@ -3,6 +3,7 @@ package com.nexuslink.model.personfriendmodel;
 import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
+import com.nexuslink.model.FriendsInfo;
 import com.nexuslink.model.data.FansInfo;
 import com.nexuslink.util.ApiUtil;
 
@@ -16,13 +17,13 @@ import rx.schedulers.Schedulers;
  * Created by 猿人 on 2017/4/8.
  */
 
-public class FriendModelImpl implements IFriendModel<List<FansInfo.FansBean>> {
+public class FriendModelImpl implements IFriendModel<List<FriendsInfo.UsersBean>> {
 
     private Api api = ApiUtil.getInstance(Constants.BASE_URL);
 
 
     @Override
-    public void getFansInfo(int uId, final CallBackListener<List<FansInfo.FansBean>> listener) {
+    public void getFansInfo(int uId, final CallBackListener listener) {
         api.getFans(uId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -39,15 +40,15 @@ public class FriendModelImpl implements IFriendModel<List<FansInfo.FansBean>> {
     }
 
     @Override
-    public void getFriendInfo(int uId, final CallBackListener<List<FansInfo.FansBean>> listener) {
+    public void getFriendInfo(int uId, final CallBackListener<List<FriendsInfo.UsersBean>> listener) {
         api.getFriends(uId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FansInfo>() {
+                .subscribe(new Action1<FriendsInfo>() {
                     @Override
-                    public void call(FansInfo fansInfo) {
-                        if (fansInfo.getCode() == Constants.SUCCESS) {
-                            listener.onFinish(fansInfo.getFans());
+                    public void call(FriendsInfo friendsInfo) {
+                        if (friendsInfo.getCode() == Constants.SUCCESS) {
+                            listener.onFinish(friendsInfo.getUsers());
                         } else {
                             listener.onError(new Exception("请求朋友出错了"));
                         }

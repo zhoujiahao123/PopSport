@@ -133,7 +133,7 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
     TextView weatherLifeDesRay;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.my_scrollview)
+    @BindView(R.id.scroll_view)
     MyScrollView myScrollview;
     private WeatherPresenter weatherPresenter;
     //一个imageview作为整天背景

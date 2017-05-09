@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.nexuslink.util.CircleImageView
             android:id="@+id/head_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
-            android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:src="@drawable/head_second"
             android:layout_marginLeft="50dp"
-            />
+            android:layout_marginTop="15dp" />
 
-    <TextView
-        android:id="@+id/nick_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="周家豪"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_toRightOf="@id/head_image"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"/>
-    <TextView
-        android:id="@+id/rank_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="第23名"
-        android:layout_toRightOf="@id/head_image"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="10dp"/>
+        <TextView
+            android:id="@+id/nick_name"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/head_image"
+            android:text="周家豪" />
 
-    <ImageView
-        android:id="@+id/run_logo"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/run_logo"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"/>
-    <TextView
-        android:id="@+id/text_num"
-        android:layout_toLeftOf="@id/run_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="2222"
-        android:textColor="#4CAF50"
-        android:textSize="25sp"
-        android:layout_marginRight="10dp"
-        />
+        <TextView
+            android:id="@+id/rank_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_toRightOf="@id/head_image"
+            android:text="第23名" />
+
+        <ImageView
+            android:id="@+id/run_logo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/run_logo" />
+
+        <TextView
+            android:id="@+id/text_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/run_logo"
+            android:text="2222"
+            android:textColor="#4CAF50"
+            android:textSize="25sp" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="8dp"

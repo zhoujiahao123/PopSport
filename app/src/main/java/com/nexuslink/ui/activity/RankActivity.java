@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.RankInfo;
@@ -36,8 +35,6 @@ public class RankActivity extends SwipeBackActivity implements RankView, RankRec
     CircleImageView headSecond;
     @BindView(R.id.nick_name_second)
     TextView nickNameSecond;
-    @BindView(R.id.division)
-    ImageView division;
     @BindView(R.id.run_num)
     ImageView runNum;
     @BindView(R.id.head_first)
@@ -81,9 +78,9 @@ public class RankActivity extends SwipeBackActivity implements RankView, RankRec
         presenter = new RankPresenterImpl(this, new RankModelImpl());
         presenter.getRankInfo();
         adapter = new MyAdapter(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerview.setLayoutManager(linearLayoutManager);
-        recyclerview.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
+        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         recyclerview.setAdapter(adapter);
     }
 

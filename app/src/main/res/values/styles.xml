@@ -1,8 +1,11 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     //个人信息中的一些自定义控件属性
@@ -203,7 +206,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="SplashTheme" parent="AppTheme">
+    <style name="SplashTheme" >
         <item name="android:windowBackground">@drawable/logo_splash</item>
         <item name="android:windowFullscreen">true</item>
         <item name="windowNoTitle">true</item>

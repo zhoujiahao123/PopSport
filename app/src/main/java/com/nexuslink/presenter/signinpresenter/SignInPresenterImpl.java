@@ -19,19 +19,19 @@ public class SignInPresenterImpl extends SignInPresenter implements OnCallBackLi
     }
     @Override
     public void registerSucceed(UIdInfo uIdInfo) {
-        view.succeedSignIn(uIdInfo.getuId());
+        view.succeedSignIn();
     }
 
+
+
     @Override
-    public void requestRegister(String uName, String uPassword, char uGender, int uHeight, int uWeight) {
-        model.requestRegister(uName,uPassword,uGender,uHeight,uWeight,this);
+    public void requestRegister(String uName, String uPassword, char uGender, int uHeight, int uWeight,String imagePath) {
+        model.requestRegister(uName,uPassword,uGender,uHeight,uWeight,imagePath,this);
     }
 
     @Override
     public void onSucceed(Object o) {
-        if(o instanceof UIdInfo){
-            registerSucceed((UIdInfo)(o));
-        }
+        registerSucceed(null);
     }
 
     @Override

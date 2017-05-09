@@ -36,6 +36,7 @@
             android:textSize="@dimen/font_larger"/>
     </RelativeLayout>
     <com.nexuslink.util.MyScrollView
+        android:id="@+id/scroll_view"
         android:layout_below="@id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

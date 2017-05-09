@@ -8,7 +8,7 @@ import com.nexuslink.UserDao;
  */
 
 public class UserUtils {
-    public static  User user = (User)DBUtil.getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
+    public static  User user = DBUtil.getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
 
     /**
      * 取得用户id

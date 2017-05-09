@@ -1,226 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/top_bar"
-        android:background="#4CAF50"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="250dp"
+        android:background="#4CAF50">
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
             <ImageView
                 android:layout_width="85dp"
                 android:layout_height="85dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="77.5dp"
-                android:background="@drawable/six_shape_green"/>
+                android:background="@drawable/six_shape_green" />
+
             <ImageView
 
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/six_shape"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="80dp"/>
+                android:layout_marginTop="80dp"
+                android:background="@drawable/six_shape" />
 
             <com.nexuslink.util.CircleImageView
                 android:id="@+id/head_second"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="85dp"/>
+                android:layout_marginTop="85dp" />
+
             <ImageView
-                android:background="@drawable/second_logo"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_below="@id/head_second"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/head_second"/>
+                android:background="@drawable/second_logo" />
+
             <TextView
                 android:id="@+id/nick_name_second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/head_second"
-                android:text="美国队长"
-                android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true"
-                android:textSize="16sp"
-                android:textColor="#f1f0f0"/>
+                android:layout_marginTop="30dp"
+                android:text="美国队长"
+                android:textColor="#f1f0f0"
+                android:textSize="16sp" />
+
             <ImageView
                 android:id="@+id/division"
                 android:layout_width="100dp"
                 android:layout_height="0.5dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/head_second"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="53dp"
-                android:background="#c7c6c6"
-                />
+                android:background="#c7c6c6" />
+
             <ImageView
                 android:id="@+id/run_num"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_below="@id/division"
                 android:layout_alignLeft="@id/division"
-                android:background="@drawable/run_num"
-                android:layout_marginTop="8dp"/>
+                android:layout_below="@id/division"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/run_num" />
+
             <TextView
                 android:id="@+id/text_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/division"
-                android:textColor="#f1f0f0"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/run_num"
-                android:layout_marginLeft="10dp"
-                android:text="654312"/>
+                android:text="654312"
+                android:textColor="#f1f0f0" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
             <ImageView
                 android:layout_width="85dp"
                 android:layout_height="85dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="57.5dp"
-                android:background="@drawable/six_shape_green"/>
+                android:background="@drawable/six_shape_green" />
+
             <ImageView
 
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/six_shape"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp"/>
+                android:layout_marginTop="60dp"
+                android:background="@drawable/six_shape" />
 
             <com.nexuslink.util.CircleImageView
                 android:id="@+id/head_first"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="65dp"/>
+                android:layout_marginTop="65dp" />
+
             <ImageView
-                android:background="@drawable/fitst_logo"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_below="@id/head_first"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/head_first"/>
+                android:background="@drawable/fitst_logo" />
+
             <TextView
                 android:id="@+id/nick_name_first"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/head_first"
-                android:text="周家豪"
-                android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true"
-                android:textSize="16sp"
-                android:textColor="#f1f0f0"/>
+                android:layout_marginTop="30dp"
+                android:text="周家豪"
+                android:textColor="#f1f0f0"
+                android:textSize="16sp" />
+
             <ImageView
                 android:id="@+id/division2"
                 android:layout_width="100dp"
                 android:layout_height="0.5dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/head_first"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="53dp"
-                android:background="#c7c6c6"
-                />
+                android:background="#c7c6c6" />
+
             <ImageView
                 android:id="@+id/run_num_2"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_below="@id/division2"
                 android:layout_alignLeft="@id/division2"
-                android:background="@drawable/run_num"
-                android:layout_marginTop="8dp"/>
+                android:layout_below="@id/division2"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/run_num" />
+
             <TextView
                 android:id="@+id/text_num2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/division2"
-                android:textColor="#f1f0f0"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/run_num_2"
-                android:layout_marginLeft="10dp"
-                android:text="654312"/>
+                android:text="654312"
+                android:textColor="#f1f0f0" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
             <ImageView
                 android:layout_width="85dp"
                 android:layout_height="85dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="77.5dp"
-                android:background="@drawable/six_shape_green"/>
+                android:background="@drawable/six_shape_green" />
+
             <ImageView
 
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/six_shape"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="80dp"/>
+                android:layout_marginTop="80dp"
+                android:background="@drawable/six_shape" />
 
             <com.nexuslink.util.CircleImageView
                 android:id="@+id/head_third"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="85dp"/>
+                android:layout_marginTop="85dp" />
+
             <ImageView
-                android:background="@drawable/first_third"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_below="@id/head_third"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/head_third"/>
+                android:background="@drawable/first_third" />
+
             <TextView
                 android:id="@+id/nick_name_third"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/head_third"
-                android:text="黑寡妇"
-                android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true"
-                android:textSize="16sp"
-                android:textColor="#f1f0f0"/>
+                android:layout_marginTop="30dp"
+                android:text="黑寡妇"
+                android:textColor="#f1f0f0"
+                android:textSize="16sp" />
+
             <ImageView
                 android:id="@+id/division3"
                 android:layout_width="100dp"
                 android:layout_height="0.5dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/head_third"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="53dp"
-                android:background="#c7c6c6"
-                />
+                android:background="#c7c6c6" />
+
             <ImageView
                 android:id="@+id/run_num3"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_below="@id/division3"
                 android:layout_alignLeft="@id/division3"
-                android:background="@drawable/run_num"
-                android:layout_marginTop="8dp"/>
+                android:layout_below="@id/division3"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/run_num" />
+
             <TextView
                 android:id="@+id/text_num3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/division3"
-                android:textColor="#f1f0f0"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/run_num3"
-                android:layout_marginLeft="10dp"
-                android:text="654312"/>
+                android:text="654312"
+                android:textColor="#f1f0f0" />
         </RelativeLayout>
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/top_bar"
-        >
+        android:layout_below="@id/top_bar">
 
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

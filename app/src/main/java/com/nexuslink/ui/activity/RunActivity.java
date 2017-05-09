@@ -562,17 +562,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     dialog.dismiss();
                     //通知首界面进行更新
                     EventBus.getDefault().post(new RunViewFresh());
-
-                   /* //在这里进行上传，如果上传成功，就将数据库中的匹配到时间的更新，否则就进行提示
-                    //分解时间进行数据库的查找
-                    String date = record.getDate().split(" ")[0];
-                    String time = record.getDate().split(" ")[1];
-                    //===============================================网络请求进行上传，上传成功，就更新
-
-                    //进行查找
-                    Run run = runDao.queryBuilder().where(RunDao.Properties.Date.eq(date),RunDao.Properties.Time.eq(time)).unique();
-                    run.setHasUpLoad(true);
-                    runDao.update(run);*/
                     if(!isComeFromRoom){
                         finish();
                     }else{

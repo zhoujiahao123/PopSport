@@ -1,4 +1,4 @@
-package com.nexuslink.ui;
+package com.nexuslink.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +24,13 @@ public abstract  class BaseFragment extends Fragment {
      */
     public abstract void initView();
     protected Unbinder unbinder;
+    protected String TAG ;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TAG = this.getClass().getName();
+    }
 
     @Nullable
     @Override

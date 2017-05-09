@@ -1,6 +1,7 @@
 package com.nexuslink.config;
 
 
+import com.nexuslink.model.FriendsInfo;
 import com.nexuslink.model.data.ArticleBean;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
@@ -32,6 +33,7 @@ import com.nexuslink.model.data.UpLoadUserImageResult;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.model.data.WeatherInfo;
 import com.nexuslink.model.data.WriteArticleResult;
+import com.nexuslink.model.search.RandomSearchResult;
 
 import java.util.List;
 
@@ -167,7 +169,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("friend/mine")
-    Observable<FansInfo> getFriends(@Field("uId") int uId);
+    Observable<FriendsInfo> getFriends(@Field("uId") int uId);
 
     //获取用户的话题
     @FormUrlEncoded
@@ -225,17 +227,19 @@ public interface Api {
     //取得跑步数
     @FormUrlEncoded
     @POST("sport/getDistance")
-    retrofit2.Call<GetDistanceResult> getDistance(@Field("uId") int uId);
+    Observable<GetDistanceResult> getDistance(@Field("uId") int uId);
 
     //取得走步数
     @FormUrlEncoded
     @POST("sport/getStep")
-    retrofit2.Call<GetStepResult> getStep(@Field("uId") int uId);
+    Observable<GetStepResult> getStep(@Field("uId") int uId);
 
-<<<<<<< HEAD
+
     @POST("sport/getTopByDistance")
     Observable<RankInfo> getRankInfo();
-=======
->>>>>>> 36820cca6cfd7397d792874acabb16affb59e1f4
 
+    //取得随机好友
+    @FormUrlEncoded
+    @POST("friend/random")
+    Observable<RandomSearchResult> getRandowmUsers(@Field("uId") int uId);
 }
