@@ -2,6 +2,7 @@
 
 <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:visibility="gone"
+
     android:id="@+id/comment_linear"
     android:paddingBottom="@dimen/spacing_tiny"
     android:layout_margin="@dimen/spacing_tiny"

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     android:id="@+id/container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light_more">
+    android:background="@color/background_color">
+    <!--toolbar-->
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
         <Toolbar
+            android:theme="@style/WhiteToolbarStyle"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
@@ -26,133 +28,102 @@
             android:textSize="@dimen/font_large"/>
     </RelativeLayout>
 
+
+    <!--头像-->
     <RelativeLayout
+        android:padding="8dp"
+        android:background="@drawable/border_line"
         android:id="@+id/head_relative"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/alter_head"
+        android:layout_height="wrap_content"
         android:layout_below="@id/top_bar"
         android:layout_marginTop="@dimen/alter_head_margin_top"
-        android:background="@drawable/selector_rank"
+
         >
-        <ImageView
-            android:id="@+id/alter_head"
-            android:src="@drawable/headlogp5"
-            android:layout_width="@dimen/alter_image_size"
-            android:layout_height="@dimen/alter_image_size"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/spacing_small"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/head_image"
             android:layout_centerVertical="true"
             android:textSize="@dimen/font_large"
-            android:textColor="@color/dark_imperial_blue"
-            android:layout_toRightOf="@id/alter_head"
-            android:layout_marginLeft="@dimen/spacing_small"
+            android:textColor="@color/primary_text"
+            android:layout_margin="8dp"
             />
         <ImageView
             android:id="@+id/go_on"
             android:src="@drawable/go_on10"
-            android:layout_width="@dimen/alter_image_size_small"
-            android:layout_height="@dimen/alter_image_size_small"
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
         <com.nexuslink.util.CircleImageView
             android:src="@drawable/headimage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/image_size_small"
+            android:layout_height="@dimen/image_size_small"
             android:id="@+id/circleImageView"
             android:layout_toLeftOf="@id/go_on"
             android:layout_centerVertical="true"/>
 
 
     </RelativeLayout>
-    <ImageView
-        android:id="@+id/division"
-        android:layout_below="@id/head_relative"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/spanish_gray"/>
-    <!--<ImageView-->
-        <!--android:layout_below="@id/name_relative"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0.5dp"-->
-        <!--android:background="@color/gray_normal"-->
-        <!--/>-->
 
     <RelativeLayout
+        android:padding="8dp"
+        android:background="@drawable/border_line"
         android:id="@+id/name_relative"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/alter_name"
-        android:background="@drawable/selector_rank"
-        android:layout_below="@+id/division"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-        <ImageView
-            android:id="@+id/alter_name"
-            android:src="@drawable/nicknamelogo"
-            android:layout_width="@dimen/alter_image_size"
-            android:layout_height="@dimen/alter_image_size"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/spacing_small"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nick_name"
-            android:textColor="@color/dark_imperial_blue"
+            android:textColor="@color/primary_text"
             android:layout_centerVertical="true"
             android:textSize="@dimen/font_large"
-            android:layout_toRightOf="@id/alter_name"
-            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_margin="8dp"
             />
         <ImageView
             android:id="@+id/go_on_1"
             android:src="@drawable/go_on10"
-            android:layout_width="@dimen/alter_image_size_small"
-            android:layout_height="@dimen/alter_image_size_small"
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/dark_imperial_blue"
+            android:textColor="@color/secondary_text"
             android:text="Jacob"
             android:layout_toLeftOf="@id/go_on_1"
-            android:textSize="@dimen/font_large"
+            android:textSize="@dimen/font_normal"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
     <RelativeLayout
-    android:id="@+id/height_relative"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/alter_name"
-    android:layout_below="@id/name_relative"
-    android:layout_marginTop="@dimen/spacing_small"
-        android:background="@color/white_light"
-        >
-    <ImageView
-        android:id="@+id/alter_info"
-        android:src="@drawable/heightlogo"
-        android:layout_width="@dimen/alter_image_size"
-        android:layout_height="@dimen/alter_image_size"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/spacing_small"/>
+        android:padding="8dp"
+        android:id="@+id/height_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_relative"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:background="@drawable/border_line">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/height"
-        android:layout_centerVertical="true"
         android:textSize="@dimen/font_large"
-        android:textColor="@color/dark_imperial_blue"
-        android:layout_toRightOf="@id/alter_info"
-        android:layout_marginLeft="@dimen/spacing_small"
-        />
+        android:layout_margin="8dp"
+        android:textColor="@color/primary_text"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/height"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/dark_imperial_blue"
+            android:textColor="@color/secondary_text"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textSize="@dimen/font_normal"
@@ -165,83 +136,31 @@
         <!--android:layout_alignParentRight="true"-->
         <!--android:layout_centerVertical="true"/>-->
 </RelativeLayout>
-    <ImageView
-        android:id="@+id/division2"
-        android:layout_below="@id/height_relative"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/spanish_gray"/>
+
     <RelativeLayout
+        android:padding="8dp"
         android:id="@+id/weight_relative"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/alter_name"
-        android:layout_below="@+id/division2"
+        android:layout_height="wrap_content"
+
         android:layout_alignParentLeft="true"
-        android:background="@color/white_light"
+        android:background="@drawable/border_line"
         android:layout_alignParentStart="true">
-        <ImageView
-            android:id="@+id/alter_weight"
-            android:src="@drawable/weightlogo"
-            android:layout_width="@dimen/alter_image_size"
-            android:layout_height="@dimen/alter_image_size"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/spacing_small"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/weight"
-            android:textColor="@color/dark_imperial_blue"
-            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:textColor="@color/primary_text"
             android:textSize="@dimen/font_large"
-            android:layout_toRightOf="@id/alter_weight"
-            android:layout_marginLeft="@dimen/spacing_small"
-            />
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/dark_imperial_blue"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textSize="@dimen/font_normal"
-            android:layout_marginRight="@dimen/spacing_normal"/>
-    </RelativeLayout>
-    <ImageView
-        android:id="@+id/division3"
-        android:layout_below="@id/weight_relative"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/spanish_gray"/>
-    <RelativeLayout
-        android:id="@+id/sex_relative"
-        android:layout_width="match_parent"
-        android:background="@color/white_light"
-        android:layout_height="@dimen/alter_name"
-        android:layout_below="@id/division3"
-        >
-        <ImageView
-            android:id="@+id/alter_sex"
-            android:src="@drawable/genderlogo8"
-            android:layout_width="@dimen/alter_image_size"
-            android:layout_height="@dimen/alter_image_size"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/spacing_small"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sex"
-            android:layout_centerVertical="true"
-            android:textColor="@color/dark_imperial_blue"
-            android:textSize="@dimen/font_large"
-            android:layout_toRightOf="@id/alter_sex"
-            android:layout_marginLeft="@dimen/spacing_small"
-            />
-        <TextView
-            android:id="@+id/gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="男"
-            android:textColor="@color/dark_imperial_blue"
+            android:textColor="@color/secondary_text"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textSize="@dimen/font_normal"
@@ -249,43 +168,65 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:padding="8dp"
+        android:id="@+id/sex_relative"
+        android:layout_width="match_parent"
+        android:background="@drawable/border_line"
+        android:layout_height="@dimen/alter_name"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sex"
+            android:layout_centerVertical="true"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_large"
+            android:layout_margin="8dp"
+            />
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男"
+            android:textColor="@color/secondary_text"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/font_normal"
+            android:layout_marginRight="@dimen/spacing_normal"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="8dp"
+        android:background="@drawable/border_line"
         android:id="@+id/password_relative"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/alter_name"
+        android:layout_height="wrap_content"
         android:layout_below="@id/sex_relative"
-        android:background="@drawable/selector_rank"
         android:layout_marginTop="@dimen/spacing_small">
-        <ImageView
-            android:id="@+id/alter_password"
-            android:src="@drawable/passwordlogo8"
-            android:layout_width="@dimen/alter_image_size"
-            android:layout_height="@dimen/alter_image_size"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/spacing_small"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/password"
             android:layout_centerVertical="true"
-            android:textColor="@color/dark_imperial_blue"
+            android:textColor="@color/primary_text"
             android:textSize="@dimen/font_large"
-            android:layout_toRightOf="@id/alter_password"
-            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_margin="8dp"
             />
         <ImageView
             android:id="@+id/go_on_3"
             android:src="@drawable/go_on10"
-            android:layout_width="@dimen/alter_image_size_small"
-            android:layout_height="@dimen/alter_image_size_small"
+            android:layout_width="@dimen/image_size_tiny"
+            android:layout_height="@dimen/image_size_tiny"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/dark_imperial_blue"
+            android:textColor="@color/secondary_text"
             android:text="修改"
             android:layout_toLeftOf="@id/go_on_3"
-            android:textSize="@dimen/font_large"
+            android:textSize="@dimen/font_normal"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
@@ -294,11 +235,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/password_relative"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/bt_run_house_background"
         android:text="退出登录"
         android:textColor="@color/white_light"
         android:textSize="@dimen/font_large"
-        android:layout_margin="@dimen/spacing_huge"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        />
 
     <!--<fr.ganfra.materialspinner.MaterialSpinner-->
         <!--android:id="@+id/spinner1"-->
@@ -333,4 +277,4 @@
         <!--android:layout_below="@id/weight_relative"-->
         <!--android:layout_alignParentRight="true"-->
         <!--/>-->
-</RelativeLayout>
+</LinearLayout>

@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/head_layout"
         android:layout_width="match_parent"

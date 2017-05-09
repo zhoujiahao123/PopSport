@@ -1,82 +1,84 @@
 package com.nexuslink.ui.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.widget.GridLayoutManager;
 
-import com.elvishew.xlog.XLog;
+import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.nexuslink.R;
-import com.nexuslink.app.BaseFragment;
 import com.nexuslink.model.data.FansInfo;
-import com.nexuslink.model.fansmodel.FansModelImpl;
-import com.nexuslink.model.myfriendmodel.OnNumberChangedLisntener;
-import com.nexuslink.presenter.fanspresenter.FansPresenter;
-import com.nexuslink.presenter.fanspresenter.FansPresenterImpl;
-import com.nexuslink.ui.adapter.FansAdapter;
-import com.nexuslink.ui.view.FansView;
-import com.nexuslink.util.IdUtil;
+import com.nexuslink.presenter.personfriendpresenter.FriendPresenterImpl;
+import com.nexuslink.ui.adapter.FansRecyclerAdapter;
+import com.nexuslink.ui.view.ContainPresenterFragment;
+import com.nexuslink.ui.view.IFansView;
+import com.nexuslink.util.ToastUtil;
+import com.nexuslink.util.UserUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
- * Created by ASUS-NB on 2017/2/24.
+ * Created by 猿人 on 2017/4/8.
  */
 
-public class FansFragment extends BaseFragment implements FansView{
+public class FansFragment extends ContainPresenterFragment implements IFansView<FansInfo.FansBean> {
+    /**
+     * -
+     * view
+     */
+    @BindView(R.id.friends_recycler)
+    EasyRecyclerView mRecyclerView;
+    /**
+     * 数据
+     */
+    private FansRecyclerAdapter adapter;
+    private FriendPresenterImpl presenter;
 
-
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
-    private FansPresenter presenter;
-    FansAdapter adapter;
-
-
-    public static FansFragment newInstance() {
-        FansFragment fansFragment = new FansFragment();
-        return fansFragment;
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frgament_myfans, null);
-        ButterKnife.bind(this, view);
-        presenter = new FansPresenterImpl(new FansModelImpl(),this);
-        presenter.getFans((int) IdUtil.getuId());
-        return view;
+    public int getLayout() {
+        return R.layout.friends_list_fragment;
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        XLog.e("这里调用  能看见");
-        getFans((int) IdUtil.getuId());
+    public void initView() {
+        mRecyclerView.setProgressView(R.layout.progress_layout);
+        mRecyclerView.setEmptyView(R.layout.empty_view);
+        mRecyclerView.setErrorView(R.layout.peron_article_error);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4,GridLayoutManager.VERTICAL,false));
+
+        adapter = new FansRecyclerAdapter(getContext());
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void initPresenter() {
+        presenter = new FriendPresenterImpl();
+        presenter.onCreate();
+        presenter.attachView(this);
+        //请求数据
+        presenter.getFansInfo(UserUtils.getUserId());
     }
 
-    private void load(int uId){
+
+
+    @Override
+    public void showProgress() {
+        mRecyclerView.showProgress();
+    }
+
+    @Override
+    public void hideProgress() {
 
     }
 
     @Override
-    public void getFans(int uId) {
-        load(uId);
+    public void showMsg(String message) {
+        ToastUtil.showToast(getContext(), message);
     }
 
     @Override
-    public void setFans(FansInfo fans) {
-        adapter = new FansAdapter(getContext(),fans);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerview.setLayoutManager(linearLayoutManager);
-        recyclerview.setAdapter(adapter);
+    public void setDatas(List<FansInfo.FansBean> datas) {
+        adapter.addAll(datas);
     }
+
+
 }

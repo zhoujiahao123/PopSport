@@ -1,7 +1,6 @@
 package com.nexuslink.presenter.communitypresenter;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.nexuslink.app.BaseApplication;
@@ -29,6 +28,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     private CommunityModel mCommunity;
     private CommunityView mCommunityView;
     private DiskLruCacheHelper helper = BaseApplication.helper;
+
     public CommunityPresenterImpl(CommunityView mCommunityView) {
         this.mCommunityView = mCommunityView;
         mCommunity = new CommunityModelImpl();
@@ -68,9 +68,8 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postComment(final LinearLayout commentsList, final EmojiEditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos)
-    {
-        if(!TextUtils.isEmpty(input.getText().toString())){
+    public void postComment(final LinearLayout commentsList, final EmojiEditText input, final LinearLayout linearLayout, int userId, final int articleId, final int pos) {
+        if (!TextUtils.isEmpty(input.getText().toString())) {
             //加密后进行上传
             mCommunity.postComment(userId, articleId, Base64Utils.encode(input.getText().toString()), new CallBackListener() {
                 @Override
@@ -79,19 +78,19 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                     mCommunityView.addCommentNum(pos);
 
                     //刷新缓存
-                    List<CommentItemData> commentItemDatas = helper.getAsSerializable(articleId+"comments");
-                    if(commentItemDatas != null && commentItemDatas.size()>0){
-                        helper.remove(articleId+"comments");
-                    }else{
+                    List<CommentItemData> commentItemDatas = helper.getAsSerializable(articleId + "comments");
+                    if (commentItemDatas != null && commentItemDatas.size() > 0) {
+                        helper.remove(articleId + "comments");
+                    } else {
                         commentItemDatas = new ArrayList<CommentItemData>();
                     }
-                    commentItemDatas.add(new CommentItemData(UserUtils.getUserName(),input.getText().toString()));
-                    helper.put(articleId+"comments", (Serializable) commentItemDatas);
+                    commentItemDatas.add(new CommentItemData(UserUtils.getUserName(), input.getText().toString()));
+                    helper.put(articleId + "comments", (Serializable) commentItemDatas);
 
                     //回调接口
-                    mCommunityView.setCommentsList(commentsList,articleId,commentItemDatas);
+                    mCommunityView.setCommentsList(commentsList, articleId, commentItemDatas);
 
-                    mCommunityView.clearInput(linearLayout,input);
+                    mCommunityView.clearInput(linearLayout, input);
 
                 }
 
@@ -101,10 +100,27 @@ public class CommunityPresenterImpl implements CommunityPresenter {
                     mCommunityView.showError("评论时出错，请重试");
                 }
             });
-        }else{
+        } else {
             mCommunityView.showError("输入内容不能为空哦");
         }
 
+    }
+
+    @Override
+    public void getHis(int uId, int writerId) {
+        mCommunityView.showProgress();
+        mCommunity.getHis(uId, writerId, new CallBackListener() {
+            @Override
+            public void onFinish(Object o) {
+                mCommunityView.hideProgress();
+                mCommunityView.addMsgArticle((List<CommunityInfo.ArticlesBean>) o);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                mCommunityView.showError("加载出错");
+            }
+        });
     }
 
     /***
@@ -113,7 +129,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
      */
     @Override
     public void onRefreshData(int userId, final boolean autoRefresh) {
-        if(autoRefresh){
+        if (autoRefresh) {
             mCommunityView.showProgress();
         }
 
@@ -134,7 +150,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
             public void onError(Exception e) {
                 mCommunityView.showError("刷新失败,请重试");
 
-                if(autoRefresh){
+                if (autoRefresh) {
                     mCommunityView.hideProgress();
                 }
 
@@ -149,9 +165,9 @@ public class CommunityPresenterImpl implements CommunityPresenter {
             @Override
             public void onFinish(Object o) {
                 List<CommunityInfo.ArticlesBean> list = (List<CommunityInfo.ArticlesBean>) o;
-                if(list == null || list.size() == 0){
+                if (list == null || list.size() == 0) {
                     mCommunityView.showSuccess("无更多话题");
-                }else{
+                } else {
                     mCommunityView.addCommunityItems((List<CommunityInfo.ArticlesBean>) o);
                     mCommunityView.showSuccess("加载更多成功");
                 }
@@ -175,18 +191,18 @@ public class CommunityPresenterImpl implements CommunityPresenter {
             @Override
             public void onFinish(Object obj) {
 
-                 List<CommentInfo.CommentsBean> commentsBean = (List<CommentInfo.CommentsBean>) obj;
-                 List<CommentItemData> commentItemDatas = new ArrayList<CommentItemData>();
-                for(int i =0;i<commentsBean.size();i++){
+                List<CommentInfo.CommentsBean> commentsBean = (List<CommentInfo.CommentsBean>) obj;
+                List<CommentItemData> commentItemDatas = new ArrayList<CommentItemData>();
+                for (int i = 0; i < commentsBean.size(); i++) {
                     CommentInfo.CommentsBean commentsBean1 = commentsBean.get(i);
-                    CommentItemData commentItemData = new CommentItemData(commentsBean1.getUser().getFName(),Base64Utils.decode(commentsBean1.getCommentText()));
+                    CommentItemData commentItemData = new CommentItemData(commentsBean1.getUser().getFName(), Base64Utils.decode(commentsBean1.getCommentText()));
                     commentItemDatas.add(commentItemData);
                 }
 
                 //进行缓存
-                helper.put(articleId+"comments", (Serializable) commentItemDatas);
+                helper.put(articleId + "comments", (Serializable) commentItemDatas);
                 //设置adpater
-                mCommunityView.setCommentAdapter(commentDetialLinear,articleId,commentItemDatas);
+                mCommunityView.setCommentAdapter(commentDetialLinear, articleId, commentItemDatas);
             }
 
             @Override
@@ -196,6 +212,8 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
         });
     }
+
+
 
 
 }

@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nexuslink.R;
-import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.RoomsBean;
 import com.nexuslink.presenter.runhousepresenter.RunHousePresenter;
 import com.nexuslink.presenter.runhousepresenter.RunHousePresenterImpl;
 import com.nexuslink.ui.activity.CreateRunHouseActivity;
@@ -41,12 +41,12 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by 猿人 on 2017/1/14.
  */
 
-public class AppointmentFragment extends Fragment implements RunHouseView {
+public class AppointmentFragment extends Fragment implements RunHouseView<RoomsBean> {
 
     //===============================================view
     private Toolbar mToolbar;
     private RecyclerView recyclerView;
-    private List<LoadRoomsResult.RoomBean> data = new ArrayList<>();
+    private List<RoomsBean> data = new ArrayList<>();
     private PtrFrameLayout ptrFrameLayout;
     private LoadingView proGress;
     private FloatingActionButton fab;
@@ -81,7 +81,13 @@ public class AppointmentFragment extends Fragment implements RunHouseView {
         View view = inflater.inflate(R.layout.appointment_fragment, container, false);
         initView(view);
 
-        mRunHousePresenter = new RunHousePresenterImpl(this);
+        /**
+         * 初始化presenter
+         */
+        mRunHousePresenter = new RunHousePresenterImpl();
+        mRunHousePresenter.attachView(this);
+        mRunHousePresenter.onCreate();
+
         //首次进入时进行刷新
         mRunHousePresenter.onRefresh(0, true);
 
@@ -159,6 +165,10 @@ public class AppointmentFragment extends Fragment implements RunHouseView {
     }
 
     @Override
+    public void showMsg(String message) {
+    }
+
+    @Override
     public void showError() {
         ToastUtil.showToast(getContext(), "请求出错，请重试");
         ptrFrameLayout.refreshComplete();
@@ -177,13 +187,13 @@ public class AppointmentFragment extends Fragment implements RunHouseView {
     }
 
     @Override
-    public void setRunHouseDatas(List<LoadRoomsResult.RoomBean> list) {
+    public void setRunHouseDatas(List<RoomsBean> list) {
         adapter.setDatas(list);
         ptrFrameLayout.refreshComplete();
     }
 
     @Override
-    public void addRunHouse(List<LoadRoomsResult.RoomBean> list) {
+    public void addRunHouse(List<RoomsBean> list) {
         adapter.addItems(list);
         ptrFrameLayout.refreshComplete();
     }

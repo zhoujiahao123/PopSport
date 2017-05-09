@@ -2,6 +2,7 @@ package com.nexuslink.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.nexuslink.R;
-import com.nexuslink.app.BaseFragment;
 import com.nexuslink.model.data.FollowedInfo;
 import com.nexuslink.ui.adapter.FollowAdapter;
 
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by ASUS-NB on 2017/2/24.
  */
 
-public class FollowFragment extends BaseFragment {
+public class FollowFragment extends Fragment {
 
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;

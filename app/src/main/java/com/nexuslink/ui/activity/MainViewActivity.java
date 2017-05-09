@@ -15,10 +15,11 @@ import com.nexuslink.ui.fragment.AppointmentFragment;
 import com.nexuslink.ui.fragment.CommunityFragment;
 import com.nexuslink.ui.fragment.PersonInfoFragment;
 import com.nexuslink.ui.fragment.StepAndRunFragment;
+import com.nexuslink.util.NetUtils;
 import com.nexuslink.util.PermissionsChecker;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UpLoadDatasUtils;
-import com.sina.weibo.sdk.utils.NetworkHelper;
+
 import com.ycl.tabview.library.TabView;
 import com.ycl.tabview.library.TabViewChild;
 
@@ -59,7 +60,7 @@ public class MainViewActivity extends BaseActivity {
         initView();
         //每次用户打开应用程序就进行一些数据的上传
         //检查用户联网否
-        if(NetworkHelper.isNetworkAvailable(this)){
+        if(NetUtils.isNetConnected(this)){
             Log.i(TAG,"网络可用");
             //进行数据上传
            new Thread(new Runnable() {
@@ -85,8 +86,7 @@ public class MainViewActivity extends BaseActivity {
             ToastUtil.showToast(this,"再按一次退出");
             mPressTime = mNowTime;
         }else{
-            finish();
-            System.exit(0);
+            super.onBackPressed();
         }
     }
 
@@ -110,7 +110,7 @@ public class MainViewActivity extends BaseActivity {
         Fragment stepAndRunFragment = new StepAndRunFragment();
         Fragment appointFragment = new AppointmentFragment();
         Fragment communityFragment = new CommunityFragment();
-        Fragment personalInfoFragment = PersonInfoFragment.getInstance();
+        Fragment personalInfoFragment = new PersonInfoFragment();
 
         TabViewChild stepAndRun = new TabViewChild(R.drawable.step_press, R.drawable.step_normal, "运动", stepAndRunFragment);
         TabViewChild appoint = new TabViewChild(R.drawable.appoint_press, R.drawable.appoint_normal, "跑房", appointFragment);

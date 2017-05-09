@@ -1,7 +1,7 @@
 package com.nexuslink.config;
 
 
-import com.nexuslink.model.data.AticalInfo;
+import com.nexuslink.model.data.ArticleBean;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
 import com.nexuslink.model.data.ChangeInfoPassword;
@@ -17,6 +17,7 @@ import com.nexuslink.model.data.GetDistanceResult;
 import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.JoinRoomResult;
 import com.nexuslink.model.data.LoadRoomsResult;
+import com.nexuslink.model.data.MyLoadRoomsResult;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
@@ -52,12 +53,12 @@ import rx.Observable;
 public interface Api {
     //获取天气信息
     @GET("onebox/weather/query")
-    Observable<WeatherInfo> getWeatherInfo(@Query("cityname")String cityname, @Query("key")String key);
+    Observable<WeatherInfo> getWeatherInfo(@Query("cityname") String cityname, @Query("key") String key);
 
     //关注某人
     @FormUrlEncoded
     @POST("friend/follow")
-    Observable<FollowInfo> getFollowInfo(@Field("uId") int uId,@Field("fId") int fId);
+    Observable<FollowInfo> getFollowInfo(@Field("uId") int uId, @Field("fId") int fId);
 
     //获取已关注的好友
     @FormUrlEncoded
@@ -67,17 +68,17 @@ public interface Api {
     //登录
     @FormUrlEncoded
     @POST("user/login")
-    Observable<UIdInfo> logIn(@Field("uName")String uName, @Field("uPassword")String uPassword);
+    Observable<UIdInfo> logIn(@Field("uName") String uName, @Field("uPassword") String uPassword);
 
     //获取好友的个人信息
     @FormUrlEncoded
     @POST("friend/getInfo")
-    Observable<FriendInfo> getFriendInfo(@Field("fId")int fId);
+    Observable<FriendInfo> getFriendInfo(@Field("uId") int uId,@Field("fId") int fId);
 
     //获取用户个人信息
     @FormUrlEncoded
     @POST("user/getInfo")
-    Observable<UserInfo> getUserInfo(@Field("uId")int uId);
+    Observable<UserInfo> getUserInfo(@Field("uId") int uId);
 
     //更改头像
     @Multipart
@@ -93,7 +94,7 @@ public interface Api {
     //话题图片上传
     @Multipart
     @POST("img/articleImg")
-    Observable<PublishImagesResult> publishImages(@Query("uId") int uId,@Query("aId") int aId,@Part() List<MultipartBody.Part> body);
+    Observable<PublishImagesResult> publishImages(@Query("uId") int uId, @Query("aId") int aId, @Part() List<MultipartBody.Part> body);
 
 
     //获取话题单一内容
@@ -104,7 +105,7 @@ public interface Api {
     //获取多话题内容
     @FormUrlEncoded
     @POST("article/getAll")
-    Observable<CommunityInfo> getArticles(@Field("uId") int userId,@Field("aId") int articleId);
+    Observable<CommunityInfo> getArticles(@Field("uId") int userId, @Field("aId") int articleId);
 
     //评论话题
     @FormUrlEncoded
@@ -124,50 +125,54 @@ public interface Api {
     //取消点赞
     @FormUrlEncoded
     @POST("article/dislike")
-    Observable<Integer> postDisLike(@Field("uId") int userId,@Field("aId") int articleId);
+    Observable<Integer> postDisLike(@Field("uId") int userId, @Field("aId") int articleId);
 
     //修改用户的个人信息
     @FormUrlEncoded
     @POST("user/changeInfo")
-    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId, @Field("uGender")char uGender, @Field("uHeight")int
-            uHeight, @Field("uWeight")int uWeight);
+    Observable<ChangeInfo> changeUserInfo(@Field("uId") int uId, @Field("uGender") char uGender, @Field("uHeight") int
+            uHeight, @Field("uWeight") int uWeight);
 
     //修改用户的昵称
     @FormUrlEncoded
     @POST("user/changeName")
-    Observable<ChangeInfo1> changeNickName(@Field("uId")int uId, @Field("uName")String uName);
+    Observable<ChangeInfo1> changeNickName(@Field("uId") int uId, @Field("uName") String uName);
 
     //搜索用户
     @FormUrlEncoded
     @POST("friend/search")
-    Observable<SearchInfo> searchUser(@Field("type")int type, @Field("keyword")String keyword);
+    Observable<SearchInfo> searchUser(@Field("type") int type, @Field("keyword") String keyword);
 
     //修改密码
     @FormUrlEncoded
     @POST("user/changePassword")
-    Observable<ChangeInfoPassword> changePassword(@Field("uId")int uId, @Field("uOldPassword")String uOldPassword, @Field("uNewPassword")String uNewPassword);
+    Observable<ChangeInfoPassword> changePassword(@Field("uId") int uId, @Field("uOldPassword") String uOldPassword, @Field("uNewPassword") String uNewPassword);
 
     //提交任务
     @FormUrlEncoded
     @POST("user/task")
-    Observable<TaskFlag> upLoadTask(@Field("uId")int uId, @Field("type")int type, @Field("taskNum")int taskNum);
+    Observable<TaskFlag> upLoadTask(@Field("uId") int uId, @Field("type") int type, @Field("taskNum") int taskNum);
 
     //注册新账号
     @FormUrlEncoded
     @POST("user/register")
-    Observable<UIdInfo> requestRegister(@Field("uName")String uName,@Field("uPassword")String uPassword,@Field("uGender")char uGender,@Field("uHeight")
-                                        int uHeight,@Field("uWeight")int uWeight);
+    Observable<UIdInfo> requestRegister(@Field("uName") String uName, @Field("uPassword") String uPassword, @Field("uGender") char uGender, @Field("uHeight")
+            int uHeight, @Field("uWeight") int uWeight);
 
 
     //获取用户的粉丝
     @FormUrlEncoded
     @POST("friend/fans")
-    Observable<FansInfo> getFans(@Field("uId")int uId);
+    Observable<FansInfo> getFans(@Field("uId") int uId);
+
+    @FormUrlEncoded
+    @POST("friend/mine")
+    Observable<FansInfo> getFriends(@Field("uId") int uId);
 
     //获取用户的话题
     @FormUrlEncoded
     @POST("article/getHis")
-    Observable<AticalInfo> getAtical(@Field("uId")int uId,@Field("writerId")int  writeId);
+    Observable<ArticleBean> getHis(@Field("uId") int uId, @Field("writerId") int writeId);
 
     /**
      * 跑房相关
@@ -176,7 +181,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("room/createRoom")
     Observable<CreateRunHouseResult> createRoom(@Field("uId") int uId, @Field("type") int type, @Field("goal")
-            int goal, @Field("roomName") String room, @Field("startTime")String startTime);
+            int goal, @Field("roomName") String room, @Field("startTime") String startTime);
 
     //查看所有房间
     @FormUrlEncoded
@@ -186,7 +191,7 @@ public interface Api {
     //加入跑房
     @FormUrlEncoded
     @POST("room/join")
-    Observable<JoinRoomResult> joinRoom(@Field("uId") int uId,@Field("rId") int rId);
+    Observable<JoinRoomResult> joinRoom(@Field("uId") int uId, @Field("rId") int rId);
 
     //退出跑房
     @FormUrlEncoded
@@ -194,12 +199,17 @@ public interface Api {
     Observable<QuiteRoomResult> quitRoom(@Field("uId") int uId, @Field("rId") int rId);
 
     //设置跑房成果
-   @FormUrlEncoded
+    @FormUrlEncoded
     @POST("room/setGoal")
     Observable<RoomGoal> setGoal(@Field("uId") int uId, @Field("rId") int rId, @Field("goal") long goal);
 
+    //取得个人跑房
+    @FormUrlEncoded
+    @POST("room/myRooms")
+    Observable<MyLoadRoomsResult> getMyRooms(@Field("uId") int uId);
 
-   //用户每日步数统计
+
+    //用户每日步数统计
     @FormUrlEncoded
     @POST("sport/saveStep")
     retrofit2.Call<Result> postStep(@Field("uId") int uId, @Field("step") int step, @Field("date") String date);
@@ -207,9 +217,9 @@ public interface Api {
     //用户跑步公里数统计
     @FormUrlEncoded
     @POST("sport/saveDistance")
-    retrofit2.Call<Result> postDistance(@Field("uId") int uId,@Field("distance") int distance,@Field("duration") int duration,
-    @Field("averageSpeed") int avergeSpeed, @Field("pathline") String pathLine,@Field("startPoint") String startPoint,@Field("endPoint") String endPoint
-    ,@Field("time") String time);
+    retrofit2.Call<Result> postDistance(@Field("uId") int uId, @Field("distance") int distance, @Field("duration") int duration,
+                                        @Field("averageSpeed") int avergeSpeed, @Field("pathline") String pathLine, @Field("startPoint") String startPoint, @Field("endPoint") String endPoint
+            , @Field("time") String time);
 
 
     //取得跑步数

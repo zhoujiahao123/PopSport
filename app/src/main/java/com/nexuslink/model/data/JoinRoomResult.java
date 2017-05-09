@@ -50,7 +50,7 @@ public class JoinRoomResult {
         private String roomName;
         private Date startDate;
         private Date startTime;
-        private List<LoadRoomsResult.RoomBean.UsersBean> users;
+        private List<RoomsBean.UsersBean> users;
 
         public int getRoomId() {
             return roomId;
@@ -100,11 +100,11 @@ public class JoinRoomResult {
             this.startTime = startTime;
         }
 
-        public List<LoadRoomsResult.RoomBean.UsersBean> getUsers() {
+        public List<RoomsBean.UsersBean> getUsers() {
             return users;
         }
 
-        public void setUsers(List<LoadRoomsResult.RoomBean.UsersBean> users) {
+        public void setUsers(List<RoomsBean.UsersBean> users) {
             this.users = users;
         }
 

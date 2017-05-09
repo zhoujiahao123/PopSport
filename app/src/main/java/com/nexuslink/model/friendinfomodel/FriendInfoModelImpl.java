@@ -3,6 +3,7 @@ package com.nexuslink.model.friendinfomodel;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.FriendInfo;
 import com.nexuslink.util.ApiUtil;
+import com.nexuslink.util.UserUtils;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,7 +22,7 @@ public class FriendInfoModelImpl implements FriendInfoModel {
     @Override
     public void getFriendInfo(int fId, final com.nexuslink.model.friendinfomodel.OnCallBackListener listener) {
         ApiUtil.getInstance(Constants.BASE_URL)
-                .getFriendInfo(fId)
+                .getFriendInfo(UserUtils.getUserId(),fId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<FriendInfo>() {

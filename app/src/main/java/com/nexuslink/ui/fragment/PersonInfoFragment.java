@@ -1,288 +1,250 @@
 package com.nexuslink.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.elvishew.xlog.XLog;
-import com.example.zhouwei.library.CustomPopWindow;
+import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.nexuslink.R;
-import com.nexuslink.User;
-import com.nexuslink.UserDao;
-import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
-import com.nexuslink.model.data.EventEntry;
+import com.nexuslink.model.FriendsInfo;
 import com.nexuslink.model.data.Info;
-import com.nexuslink.model.friendinfomodel.OnStartFriendInfoListener;
-import com.nexuslink.ui.activity.AchievementActivity;
+import com.nexuslink.model.data.UserInfo;
+import com.nexuslink.ui.BaseFragment;
 import com.nexuslink.ui.activity.AlterActivity;
-import com.nexuslink.ui.activity.AlterPhotoActivity;
-import com.nexuslink.ui.activity.FriendActivity;
-import com.nexuslink.ui.activity.FriendInfoActivity;
+import com.nexuslink.ui.activity.FriendsAndFansActivity;
 import com.nexuslink.ui.activity.RankActivity;
 import com.nexuslink.ui.activity.TaskActivity;
-import com.nexuslink.ui.view.PersonInfoView;
+import com.nexuslink.ui.adapter.PersonInfoViewPagerAdapter;
+import com.nexuslink.ui.view.PersonInfoBezierView;
+import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.CircleImageView;
-import com.nexuslink.util.ImageUtil;
-import com.nexuslink.util.RatingUtil;
+import com.nexuslink.util.SharedPrefsUtil;
+import com.nexuslink.util.ToActivityUtil;
+import com.nexuslink.util.UserUtils;
+import com.wuxiaolong.androidutils.library.DisplayMetricsUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
+import static com.nexuslink.util.SharedPrefsUtil.getValue;
 
 /**
  * Created by ASUS-NB on 2017/1/14.
  */
 
-public class PersonInfoFragment extends Fragment implements PersonInfoView, OnStartFriendInfoListener {
+public class PersonInfoFragment extends BaseFragment implements View.OnClickListener {
 
+    @BindView(R.id.user_image)
+    CircleImageView userImage;
+    @BindView(R.id.user_name)
+    TextView userName;
+    @BindView(R.id.user_level)
+    TextView userLevel;
+    @BindView(R.id.friends_num)
+    TextView friendsNum;
+    @BindView(R.id.funs_num)
+    TextView fansNum;
+    @BindView(R.id.sex)
+    TextView sex;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
+    @BindView(R.id.personinfo_bezier)
+    PersonInfoBezierView mBezier;
 
-    @BindView(R.id.group_myfriend)
-    LinearLayout groupMyfriend;
-    @BindView(R.id.group_runningromm)
-    LinearLayout groupRunningromm;
-    @BindView(R.id.group_setting)
-    LinearLayout groupSetting;
-    @BindView(R.id.group_mytask)
-    LinearLayout groupMytask;
-    @BindView(R.id.group_achieve)
-    LinearLayout groupAchieve;
-    @BindView(R.id.group_rank)
-    LinearLayout groupRank;
-    @BindView(R.id.image_head)
-    CircleImageView imageHead;
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.tv_grade)
-    TextView tvGrade;
-    @BindView(R.id.tv_achieve)
-    TextView tvAchieve;
-    @BindView(R.id.change_bg)
-    ImageView changeBg;
-    @BindView(R.id.head_relative)
-    RelativeLayout headRelative;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 2) {
-                ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL + BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique().getUImg(), imageHead);
-//                LoaderFactory.getGlideLoader().clearCacheMemory(BaseApplication.getContext());
-//                LoaderFactory.getGlideLoader().loadNet(imageHead,Constants.PHOTO_BASE_URL+BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique().getUImg(),null);
-                XLog.e("这里OK的");
-            }
-        }
-    };
+    private final String USER_IMAGE = "userImage";
+    private final String USER_NAME = "userName";
+    private final String USER_LEVEL = "userLevel";
+    private final String FRIEND_NUM = "friendsNum";
+    private final String FANS_NUM = "fsnsNum";
+    private final String SEX = "sex";
+    private final String SHARE_PRF_NAME = "userinfo";
 
-    public static PersonInfoFragment getInstance() {
-        PersonInfoFragment fragment = new PersonInfoFragment();
-        return fragment;
-    }
+    LinearLayout mSettingLinear;
+    /**
+     * 数据
+     */
+    List<Fragment> fragments = new ArrayList<>();
+    @BindView(R.id.more)
+    CircleImageView More;
+    PopupWindow pw;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_personinfo, container, false);
-        ButterKnife.bind(this, view);
-        XLog.e("OnCreateView");
-        return view;
+    public int getLayout() {
+        return R.layout.personinfo_fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Message message = new Message();
-                message.what = 2;
-                handler.sendMessage(message);
-            }
-        }).start();
-        XLog.e("OnCreate");
         EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-        int exp = user.getUExp();
-        tvGrade.setText(RatingUtil.getRating(exp));
-        tvName.setText(user.getUName());
-        XLog.e(user.getUAchievements());
-        String str[] = user.getUAchievements().split(",");
-        String achieve = "初出茅庐";
-        for (int i = 7; i > 0; i--) {
-            if (str[i].equals("true")) {
-                achieve = str[i];
-                break;
-            }
-        }
-        tvAchieve.setText(achieve);
-        XLog.e("onResume");
-        changeBg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-                int width = windowManager.getDefaultDisplay().getWidth();
-                View popView = LayoutInflater.from(getContext()).inflate(R.layout.item_pop, null);
-                final CustomPopWindow window = new CustomPopWindow.PopupWindowBuilder(getContext())
-                        .setView(popView)
-                        .setFocusable(true)
-                        .setOutsideTouchable(true)
-                        .create()
-                        .showAtLocation(popView, Gravity.RIGHT|Gravity.TOP,0,150);
-                RelativeLayout rl = (RelativeLayout) popView.findViewById(R.id.pop_window);
-                rl.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(getContext(), AlterPhotoActivity.class));
-                        window.dissmiss();
-                    }
-                });
-            }
-        });
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void initView() {
+        //初始化fragment
+        Fragment achievementFragment = new AchievementFragment();
+        Fragment personArticleFragment = new PersonArticleFragment();
+        Fragment myRoomsFragment = new MyRoomFragment();
+
+        fragments.add(achievementFragment);
+        fragments.add(personArticleFragment);
+        fragments.add(myRoomsFragment);
+
+        //舒适化viewpager
+        PersonInfoViewPagerAdapter adapter = new PersonInfoViewPagerAdapter(getFragmentManager());
+        adapter.setFragments(fragments);
+        mViewPager.setOffscreenPageLimit(3);//改变最大上限
+        mViewPager.setAdapter(adapter);
+        //初始化popupwindow
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.more_setting_poup, null);
+        view.findViewById(R.id.setting).setOnClickListener(this);
+        view.findViewById(R.id.rank_list).setOnClickListener(this);
+        view.findViewById(R.id.task).setOnClickListener(this);
+        mSettingLinear = (LinearLayout) view.findViewById(R.id.setting_linear);
+        pw = new PopupWindow(view, DisplayMetricsUtil.dip2px(getContext(), 120), DisplayMetricsUtil.dip2px(getContext(), 100));
+        pw.setOutsideTouchable(true);
+        pw.setFocusable(true);
+
+        fansNum.setOnClickListener(this);
+        friendsNum.setOnClickListener(this);
+        setUserInfo(null);
+
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void change_bg(EventEntry eventEntry) {
-        String photoPath = eventEntry.photos.get(0).getPath();
-        eventEntry.photos.clear();
-        Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
-        Drawable drawable = new BitmapDrawable(bitmap);
-        headRelative.setBackground(drawable);
-        XLog.e("切换背景的操作执行了");
+    public void setUserInfo(Info info) {
+        //初始化个人信息
+        initUserData();
+        ApiUtil.getInstance(Constants.BASE_URL).getUserInfo(UserUtils.getUserId())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<UserInfo>() {
+                    @Override
+                    public void call(UserInfo userInfo) {
+                        Log.i("PersonInfoFragment", "currentThread:" + Thread.currentThread());
+                        if (userInfo.getCode() == Constants.SUCCESS) {
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, userInfo.getUser().getUImg());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_NAME, userInfo.getUser().getUName());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, userInfo.getUser().getUExp());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansNum());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, SEX, userInfo.getUser().getUGender());
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<UserInfo>() {
+                    @Override
+                    public void call(UserInfo userInfo) {
+                        if (userInfo.getCode() == Constants.SUCCESS) {
+                            //设置信息
+                            Glide.with(getContext()).load(Constants.PHOTO_BASE_URL + userInfo.getUser().getUImg())
+                                    .into(userImage);
+                            userName.setText(userInfo.getUser().getUName());
+                            userLevel.setText(UserUtils.getUserLevel(userInfo.getUser().getUExp()));
+                            fansNum.setText(userInfo.getUser().getUFansNum() + "");
+                            sex.setText(userInfo.getUser().getUGender().equals("M") ? "男" : "女");
+                        }
+                    }
+                });
+        //继续请求用户好友树
+        ApiUtil.getInstance(Constants.BASE_URL).getFriends(UserUtils.getUserId())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<FriendsInfo>() {
+                    @Override
+                    public void call(FriendsInfo friendsInfo) {
+                        if(friendsInfo.getCode() == Constants.SUCCESS){
+                            SharedPrefsUtil.putValue(getContext(),SHARE_PRF_NAME,FRIEND_NUM,friendsInfo.getUsers().size());
+                        }
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<FriendsInfo>() {
+                    @Override
+                    public void call(FriendsInfo friendsInfo) {
+                        if(friendsInfo.getCode() == Constants.SUCCESS){
+                            friendsNum.setText(friendsInfo.getUsers().size()+"");
+                        }
+                    }
+                });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void initUserData() {
+        String image_url = Constants.PHOTO_BASE_URL + getValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, null);
+        String userNameStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_NAME, UserUtils.getUserName());
+        String userLevelStr = UserUtils.getUserLevel(SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, 0));
+        String friendsNumStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, 0) + "";
+        String fansNumStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, FANS_NUM, 0) + "";
+        String sexStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, SEX, "").equals("M") ? "男" : "女";
 
-
-        XLog.e("onStart");
+        if (image_url == null) {
+            Glide.with(getContext()).load(R.drawable.small_pop_logo).into(userImage);
+        } else {
+            Glide.with(getContext()).load(image_url).into(userImage);
+        }
+        userName.setText(userNameStr);
+        userLevel.setText(userLevelStr);
+        friendsNum.setText(friendsNumStr);
+        fansNum.setText(fansNumStr);
+        sex.setText(sexStr);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        XLog.e("onStop");
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        XLog.e("onPause");
+    @OnClick(R.id.more)
+    public void onViewClicked() {
+        pw.update();
+        pw.showAsDropDown(More, -20, DisplayMetricsUtil.dip2px(getContext(), 10));
+        YoYo.with(Techniques.RubberBand).duration(300).playOn(mSettingLinear);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        XLog.e("onDestroy");
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        XLog.e("onAttach");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        XLog.e("onDetach");
-    }
-
-    @Override
-    public void showFriends() {
-        Intent friendIntent = new Intent(getContext(), FriendActivity.class);
-        startActivity(friendIntent);
-    }
-
-    @Override
-    public void showRunningRoom() {
-
-    }
-
-    @Override
-    public void showSetting() {
-        Intent intent = new Intent(getContext(), AlterActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void showTask() {
-        startActivity(new Intent(getContext(), TaskActivity.class));
-    }
-
-    @Override
-    public void showAchieve() {
-        startActivity(new Intent(getContext(), AchievementActivity.class));
-    }
-
-    @Override
-    public void showRank() {
-        startActivity(new Intent(getContext(), RankActivity.class));
-    }
-
-    @OnClick({R.id.group_myfriend, R.id.group_runningromm, R.id.group_setting, R.id.group_mytask, R.id.group_achieve, R.id.group_rank})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.group_myfriend:
-                showFriends();
-                break;
-            case R.id.group_runningromm:
-                showRunningRoom();
-                break;
-            case R.id.group_setting:
-                showSetting();
-                break;
-            case R.id.group_mytask:
-                showTask();
-                break;
-            case R.id.group_achieve:
-                showAchieve();
-                break;
-            case R.id.group_rank:
-                showRank();
-                break;
+        if (pw != null) {
+            pw = null;//释放引用
         }
     }
 
     @Override
-    public void startFriendInfo(Context context, int uId, String uImg, String uName) {
-        Intent intent = new Intent(context, FriendInfoActivity.class);
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            intent.putExtra("uId", uId);
-            intent.putExtra("uImg", uImg);
-            intent.putExtra("uName", uName);
-            startActivity(intent);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.setting:
+                ToActivityUtil.toNextActivity(getContext(), AlterActivity.class);
+                break;
+            case R.id.task:
+                ToActivityUtil.toNextActivity(getContext(), TaskActivity.class);
+                break;
+            case R.id.rank_list:
+                ToActivityUtil.toNextActivity(getContext(), RankActivity.class);
+                break;
+            case R.id.funs_num:
+            case R.id.friends_num:
+                ToActivityUtil.toNextActivity(getContext(), FriendsAndFansActivity.class);
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void changePhoto(Info info) {
-        ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL + BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique().getUImg(), imageHead);
+        pw.dismiss();
     }
 }

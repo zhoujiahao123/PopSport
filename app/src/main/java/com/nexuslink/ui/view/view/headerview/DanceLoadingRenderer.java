@@ -12,6 +12,8 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.nexuslink.util.DensityUtil;
+
 public class DanceLoadingRenderer extends LoadingRenderer {
     private static final Interpolator MATERIAL_INTERPOLATOR = new FastOutSlowInInterpolator();
     private static final Interpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();

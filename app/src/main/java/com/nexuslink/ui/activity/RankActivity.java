@@ -108,4 +108,19 @@ public class RankActivity extends SwipeBackActivity implements RankView, RankRec
     public void onItemClock(int position) {
 
     }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMsg(String message) {
+
+    }
 }
