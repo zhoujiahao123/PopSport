@@ -196,6 +196,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
         });
     }
 
+
     @Override
     public void showProgress() {
         //进行提示

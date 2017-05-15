@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -34,79 +35,67 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         //收到来自Alarm的消息
         Log.i(TAG,"收到信息");
-        //唤醒通知栏
-//        PendingIntent toMainPd = PendingIntent.getActivity(context,0,new Intent(context,MainViewActivity.class),0);
-//        Notification.Builder builder = new Notification.Builder(context)
-//                .setContentText("您今天的运动时间到了，快进来健身吧")
-//                .setLargeIcon(BitmapFactory.decodeResource(BaseApplication.mContext.getResources(),R.drawable.poplog))
-//                .setSmallIcon(R.drawable.poplog)
-//                .setContentIntent(toMainPd)
-//                .setDefaults(Notification.DEFAULT_ALL)
-//                .setAutoCancel(true);
-//        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//        manager.notify(1,builder.build());
-        //再次打开Serviceo
-        //接收消息
         final HasJoinedRooms room = getInfoFromService(intent);
         if(room == null){
             return ;
         }
-        //设置震动
-        final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(new long[]{1000,1000},0);
-        //采用系统弹窗的方式
-        final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
-                0, 0, PixelFormat.TRANSPARENT);
-        lp.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
-        lp.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
-        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT ;
-        //设置view的相关属性
-        final View view = LayoutInflater.from(context).inflate(R.layout.remind_dialog,null);
+        if(Settings.canDrawOverlays(context)) {
+            //设置震动
+            final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(new long[]{1000, 1000}, 0);
+            //采用系统弹窗的方式
+            final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
+                    0, 0, PixelFormat.TRANSPARENT);
+            lp.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
+            lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+            lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+            //设置view的相关属性
+            final View view = LayoutInflater.from(context).inflate(R.layout.remind_dialog, null);
 
-        TextView tv = (TextView) view.findViewById(R.id.textView);
-        int length_head = tv.getText().toString().length();
-        String str = room.getRoomName()+"("+room.getPersonNum()+"人)";
-        int length_between = str.length()+length_head;
-        SpannableString spannableString = new SpannableString(tv.getText().toString()+str+"马上开始咯");
-        spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorPrimary)),length_head,length_between-1,SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tv.setText(spannableString);
-        view.findViewById(R.id.confirm_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startRun = new Intent(context, RunActivity.class);
-                startRun.putExtra(COME_FROM_RUNHOUSE,COME_FROM_RUNHOUSE_VALUE);
-                startRun.putExtra("type",room.getType());
-                startRun.putExtra("goal",room.getGoal());
-                startRun.putExtra("rId",room.getRId());
-                context.startActivity(startRun);
-                wm.removeView(view);
-                vibrator.cancel();
-            }
-        });
-        view.findViewById(R.id.cancel_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wm.removeView(view);
-                //vibrator.cancel();
+            TextView tv = (TextView) view.findViewById(R.id.textView);
+            int length_head = tv.getText().toString().length();
+            String str = room.getRoomName() + "(" + room.getPersonNum() + "人)";
+            int length_between = str.length() + length_head;
+            SpannableString spannableString = new SpannableString(tv.getText().toString() + str + "马上开始咯");
+            spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorPrimary)), length_head, length_between - 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tv.setText(spannableString);
+            view.findViewById(R.id.confirm_tv).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent startRun = new Intent(context, RunActivity.class);
+                    startRun.putExtra(COME_FROM_RUNHOUSE, COME_FROM_RUNHOUSE_VALUE);
+                    startRun.putExtra("type", room.getType());
+                    startRun.putExtra("goal", room.getGoal());
+                    startRun.putExtra("rId", room.getRId());
+                    context.startActivity(startRun);
+                    wm.removeView(view);
+                    vibrator.cancel();
+                }
+            });
+            view.findViewById(R.id.cancel_tv).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    wm.removeView(view);
+                    //vibrator.cancel();
 
-                RunHouseDetailModel runHouseModeImp = new RunHoseDetailModelImpl();
-                runHouseModeImp.quitRoom(room.getRId(), new CallBackListener() {
-                    @Override
-                    public void onFinish(Object o) {
+                    RunHouseDetailModel runHouseModeImp = new RunHoseDetailModelImpl();
+                    runHouseModeImp.quitRoom(room.getRId(), new CallBackListener() {
+                        @Override
+                        public void onFinish(Object o) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Exception e) {
+                        @Override
+                        public void onError(Exception e) {
 
-                    }
-                });
+                        }
+                    });
 
-            }
-        });
-        wm.addView(view,lp);
-
+                }
+            });
+            wm.addView(view, lp);
+        }
     }
 
     private HasJoinedRooms getInfoFromService(Intent intent) {

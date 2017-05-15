@@ -1,6 +1,9 @@
 package com.nexuslink.ui.activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nexuslink.HasJoinedRooms;
 import com.nexuslink.HasJoinedRoomsDao;
@@ -88,6 +92,29 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         if (roomBean == null) {
             ToastUtil.showToast(this, "出现未知错误，请重试");
             onBackPressed();
+        }
+    }
+
+    private final int OVERLAY_PERMISSION_REQ_CODE = 1;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!Settings.canDrawOverlays(this)){
+            ToastUtil.showToast(this,"检测到您还未授予悬浮窗口权限，请您授予");
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            startActivityForResult(intent,OVERLAY_PERMISSION_REQ_CODE);
+        }
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+            if(Build.VERSION.SDK_INT>=23) {
+                if (!Settings.canDrawOverlays(this)) {
+                    Toast.makeText(this, "权限授予失败，程序可能无法正确运行", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "权限授予成功！", Toast.LENGTH_SHORT).show();
+                    //有悬浮窗权限开启服务绑定 绑定权限
+                }
+            }
         }
     }
 

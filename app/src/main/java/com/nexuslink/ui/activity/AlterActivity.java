@@ -38,6 +38,7 @@ import com.nexuslink.model.data.Info;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.presenter.alterpresenter.AlterPresenterImpl;
+import com.nexuslink.service.StepService;
 import com.nexuslink.ui.dialog.AlterPasswordDialog;
 import com.nexuslink.ui.view.AlterView;
 import com.nexuslink.util.ActivityStack;
@@ -458,7 +459,9 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-
+                //停止运行service
+                Intent intent1 = new Intent(AlterActivity.this, StepService.class);
+                stopService(intent1);
                 SharedPrefsUtil.putValue(AlterActivity.this, "already", "already", 0);
                 DBUtil.getUserDao().deleteAll();
                 DBUtil.getRunDao().deleteAll();
@@ -469,6 +472,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 onBackPressed();
                 //退出之前清除所有Activity
                 ActivityStack.getScreenManager().clearAllActivity();
+
             }
         });
         dialog = builder.create();
