@@ -10,6 +10,7 @@
         android:layout_height="wrap_content">
 
         <Toolbar
+            android:theme="@style/WhiteToolbarStyle"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -21,14 +22,7 @@
             android:layout_height="wrap_content"
             android:text="话题详情" />
 
-        <ImageView
-            android:id="@+id/back_image"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:src="@drawable/back_white" />
+
     </RelativeLayout>
 
     <com.nexuslink.ui.view.SpringBackScrollView

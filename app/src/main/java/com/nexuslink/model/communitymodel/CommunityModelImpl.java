@@ -104,7 +104,8 @@ public class CommunityModelImpl implements CommunityModel {
 
     @Override
     public void postDisLike(int userId, int articleId, final CallBackListener listener) {
-        api.postDisLike(userId, articleId).subscribeOn(Schedulers.io())
+        api.postDisLike(userId, articleId)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Integer>() {
                     @Override

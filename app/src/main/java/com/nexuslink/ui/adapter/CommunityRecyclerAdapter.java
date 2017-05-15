@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,11 +26,8 @@ import com.nexuslink.model.data.CommentItemData;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.ui.activity.ArticleDetailActivity;
-
 import com.nexuslink.ui.activity.OtherPersonActivity;
 import com.nexuslink.ui.view.MyNineGridLayout;
-import com.nexuslink.ui.view.likeview.CommentPathAdapter;
-import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.util.Base64Utils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.KeyBoardUtils;
@@ -133,29 +131,29 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         holder.imagesContent.setUrlList(getCommunityImages(data.get(position).getImages()));
 
         //设置点赞
-        holder.likeView.setActivated(data.get(position).isLikeArticle());
-        holder.likeView.setNumber(data.get(position).getLikeNum());
-        holder.likeView.setCallback(new LikeView.SimpleCallback() {
-                                        @Override
-                                        public void activate(LikeView view) {
-                                            super.activate(view);
-                                            presenter.postLike(data.get(position).getUserId(), data.get(position).getArticleId());
-                                        }
+        if (data.get(position).isLikeArticle()) {
+            holder.likeView.setImageDrawable(mContext.getDrawable(R.drawable.like));
+        }
+        holder.likeNumTv.setText(data.get(position).getLikeNum() + "");
+        holder.likeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (data.get(position).isLikeArticle()) {
+                    presenter.postDisLike(data.get(position).getUserId(), data.get(position).getArticleId(), holder.likeView, holder.likeNumTv, position);
+                    holder.likeView.setImageDrawable(mContext.getDrawable(R.drawable.dislike));
 
-                                        @Override
-                                        public void deactivate(LikeView view) {
-                                            super.deactivate(view);
-                                            presenter.postDisLike(data.get(position).getUserId(), data.get(position).getArticleId());
-                                        }
-                                    }
-        );
+                } else {
+                    presenter.postLike(data.get(position).getUserId(), data.get(position).getArticleId(), holder.likeView, holder.likeNumTv, position);
+                    holder.likeView.setImageDrawable(mContext.getDrawable(R.drawable.like));
+                }
+            }
+        });
         //设置评论图标
         //评论区的个数用外部集合个数接口实现
-        holder.comment.setNumber(data.get(position).getCommentNum());
-        holder.comment.setGraphAdapter(CommentPathAdapter.getInstance());
-        holder.comment.setCallback(new LikeView.SimpleCallback() {
+        holder.commentNumTv.setText(data.get(position).getCommentNum() + "");
+        holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onClick(LikeView view) {
+            public void onClick(View v) {
                 if (!isOpen) {
                     isOpen = true;
                     holder.linearLayout.setVisibility(View.VISIBLE);
@@ -193,7 +191,6 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
                     KeyBoardUtils.closeKeybord(holder.commentInput, mContext);
                     holder.linearLayout.setVisibility(View.GONE);
                 }
-                return true;
             }
         });
 
@@ -296,6 +293,17 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         notifyDataSetChanged();
     }
 
+    public void addLikeNum(int pos) {
+        int num = data.get(pos).getLikeNum();
+        data.get(pos).setLikeNum(++num);
+        notifyDataSetChanged();
+    }
+
+    public void decreaseLikeNum(int pos) {
+        int num = data.get(pos).getLikeNum();
+        data.get(pos).setLikeNum(--num);
+        notifyDataSetChanged();
+    }
 
     public long getUserId(int pos) {
         return data.get(pos).getUserId();
@@ -311,11 +319,11 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
      */
     class CommunityViewHolder extends RecyclerView.ViewHolder {
         CircleImageView userImage;
-        TextView userName, userLevel;
+        TextView userName, userLevel, likeNumTv, commentNumTv;
         EmojiTextView mContent;
         MyNineGridLayout imagesContent;
-        LikeView likeView;
-        LikeView comment;
+        ImageView likeView;
+        ImageView comment;
         EmojiEditText commentInput;
         //输入框
         LinearLayout linearLayout;
@@ -330,8 +338,10 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
             userLevel = (TextView) itemView.findViewById(R.id.user_level);
             mContent = (EmojiTextView) itemView.findViewById(R.id.tv_content);
             imagesContent = (MyNineGridLayout) itemView.findViewById(R.id.multi_view);
-            likeView = (LikeView) itemView.findViewById(R.id.like_view);
-            comment = (LikeView) itemView.findViewById(R.id.comment);
+            likeView = (ImageView) itemView.findViewById(R.id.like);
+            comment = (ImageView) itemView.findViewById(R.id.comment);
+            likeNumTv = (TextView) itemView.findViewById(R.id.like_num);
+            commentNumTv = (TextView) itemView.findViewById(R.id.comment_num);
             commentInput = (EmojiEditText) itemView.findViewById(R.id.input_comment);
             commentPost = (Button) itemView.findViewById(R.id.input_send_comment);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.comment_linear);

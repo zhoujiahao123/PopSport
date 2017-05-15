@@ -84,7 +84,7 @@ public class SearchActivity extends AppCompatActivity {
                                 randomFriendsAdapter.clear();
                             }
                             mRecycler.setAdapter(randomFriendsAdapter);
-                            randomFriendsAdapter.addAll(randomSearchResult.getRandomUsers());
+                            randomFriendsAdapter.addAll(randomSearchResult.getUsers());
                         }
                     }
 

@@ -184,4 +184,14 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
     public void addCommunityItems(List<ArticleBean.ArticlesBean> list) {
         adapter.addItems(list);
     }
+
+    @Override
+    public void addLikeNum(int pos) {
+
+    }
+
+    @Override
+    public void decreaseLikeNum(int pos) {
+
+    }
 }

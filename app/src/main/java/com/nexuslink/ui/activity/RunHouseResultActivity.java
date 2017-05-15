@@ -76,9 +76,9 @@ public class RunHouseResultActivity extends AppCompatActivity {
         goalsList.remove(0);
         type = getIntent().getIntExtra("type", -1);
         if (type == 0){
-            mType.setText("minute");
+            mType.setText("meters");
         }else if(type == 1) {
-            mType.setText("m");
+            mType.setText("minutes");
         }
         mGoal.setText(No1.getGoal()+"");
 

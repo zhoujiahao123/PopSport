@@ -36,7 +36,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            android:text="张兴锐"
             android:textColor="@color/white"
             android:textSize="@dimen/font_large"
             app:layout_constraintLeft_toLeftOf="@+id/user_image"
@@ -65,7 +64,7 @@
                     style="@style/PersonInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="19" />
+                    android:text="0" />
 
                 <TextView
                     style="@style/PersonInfoText"
@@ -85,7 +84,7 @@
                     style="@style/PersonInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="175" />
+                    android:text="0" />
 
                 <TextView
                     style="@style/PersonInfoText"
@@ -104,7 +103,7 @@
                     style="@style/PersonInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="50" />
+                    android:text="0" />
 
                 <TextView
                     style="@style/PersonInfoText"
@@ -123,7 +122,7 @@
                     style="@style/PersonInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="男" />
+                    android:text="xx" />
 
                 <TextView
                     style="@style/PersonInfoText"

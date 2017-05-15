@@ -1,7 +1,9 @@
 package com.nexuslink.presenter.communitypresenter;
 
 import android.text.TextUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.model.CallBackListener;
@@ -38,7 +40,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
 
     @Override
-    public void postLike(int userId, int articleId) {
+    public void postLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position) {
         mCommunity.postLike(userId, articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
@@ -53,7 +55,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postDisLike(int userId, int articleId) {
+    public void postDisLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position) {
         mCommunity.postDisLike(userId, articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {

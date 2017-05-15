@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,8 +80,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.back_image)
-    ImageView backImage;
+
     @BindView(R.id.input_comment)
     EditText inputComment;
     @BindView(R.id.input_send_comment)
@@ -128,6 +128,9 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     }
 
     private void initViews() {
+        setActionBar(mToolbar);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowTitleEnabled(false);
         commentLinear = (LinearLayout) findViewById(R.id.comment_linear);
         commentInput = (EmojiEditText) findViewById(R.id.input_comment);
         postComment = (Button) findViewById(R.id.input_send_comment);
@@ -374,8 +377,13 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         postComment.setBackground(getResources().getDrawable(R.drawable.bt_run_house_normal));
     }
 
-    @OnClick(R.id.back_image)
-    public void onClick() {
-        onBackPressed();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,6 +1,8 @@
 package com.nexuslink.presenter.communitypresenter;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.vanniktech.emoji.EmojiEditText;
 
@@ -9,9 +11,9 @@ import com.vanniktech.emoji.EmojiEditText;
  */
 
 public interface CommunityPresenter {
-    void postLike(int userId, int articleId);
+    void postLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position);
 
-    void postDisLike(int userId, int articleId);
+    void postDisLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position);
 
     void postComment(LinearLayout commentsList, EmojiEditText input, LinearLayout linearLayout, int userId, int articleId, int pos);
 

@@ -55,7 +55,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             TextView tv = (TextView) view.findViewById(R.id.textView);
             int length_head = tv.getText().toString().length();
-            String str = room.getRoomName() + "(" + room.getPersonNum() + "人)";
+            String str = room.getRoomName() ;
             int length_between = str.length() + length_head;
             SpannableString spannableString = new SpannableString(tv.getText().toString() + str + "马上开始咯");
             spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorPrimary)), length_head, length_between - 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -77,7 +77,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 @Override
                 public void onClick(View v) {
                     wm.removeView(view);
-                    //vibrator.cancel();
+                    vibrator.cancel();
 
                     RunHouseDetailModel runHouseModeImp = new RunHoseDetailModelImpl();
                     runHouseModeImp.quitRoom(room.getRId(), new CallBackListener() {

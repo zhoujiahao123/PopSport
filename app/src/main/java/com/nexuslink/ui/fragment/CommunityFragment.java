@@ -238,6 +238,16 @@ public class CommunityFragment extends Fragment implements CommunityView<Communi
         adapter.addItems(list);
     }
 
+    @Override
+    public void addLikeNum(int pos) {
+        adapter.addLikeNum(pos);
+    }
+
+    @Override
+    public void decreaseLikeNum(int pos) {
+        adapter.decreaseLikeNum(pos);
+    }
+
 
     @OnClick(R.id.fab)
     public void onClick() {

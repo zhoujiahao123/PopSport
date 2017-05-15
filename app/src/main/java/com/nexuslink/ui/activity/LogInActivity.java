@@ -95,7 +95,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
             case R.id.register:
                 Intent intent = new Intent(this,SignInActivity.class);
                 startActivity(intent);
-                SharedPrefsUtil.putValue(this,"firstlogin","firstlogin",true);
                 break;
             case R.id.qq_login:
                 authorize(QQ);

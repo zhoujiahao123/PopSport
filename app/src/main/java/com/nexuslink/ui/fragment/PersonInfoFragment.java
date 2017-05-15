@@ -76,7 +76,7 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
     private final String USER_NAME = "userName";
     private final String USER_LEVEL = "userLevel";
     private final String FRIEND_NUM = "friendsNum";
-    private final String FANS_NUM = "fsnsNum";
+    private final String FANS_NUM = "fansNum";
     private final String SEX = "sex";
     private final String SHARE_PRF_NAME = "userinfo";
 
@@ -203,7 +203,7 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initUserData(Info info) {
-        if (!SharedPrefsUtil.getValue(getContext(), "firstlogin", "firstlogin", false)) {
+        {
             String image_url = Constants.PHOTO_BASE_URL + getValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, null);
             String userNameStr = SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_NAME, UserUtils.getUserName());
             String userLevelStr = UserUtils.getUserLevel(SharedPrefsUtil.getValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, 0));

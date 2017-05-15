@@ -8,7 +8,9 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,7 +31,6 @@ import com.nexuslink.util.MyScrollView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by ASUS-NB on 2017/1/17.
@@ -37,8 +38,7 @@ import butterknife.OnClick;
 
 public class WeatherActivity extends BaseActivity implements WeatherView, MyScrollView.OnScrollListener {
 
-    @BindView(R.id.turn_back)
-    ImageView turnBack;
+
     @BindView(R.id.city_name)
     TextView cityName;
     @BindView(R.id.air_quality_image)
@@ -400,6 +400,10 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
      * 设置一些控件等
      */
     private void setView() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         weatherPresenter = new WeatherPresenterImpl(this);
         weatherPresenter.getWeatherInfo("重庆");
         left.getBackground().setAlpha(20);
@@ -409,10 +413,17 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
         backgroundImage = new ImageView(this);
     }
 
-    @OnClick(R.id.turn_back)
-    public void onClick() {
-        onBackPressed();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * 模糊效果的实现

@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,8 +60,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     LoadingView progress;
     @BindView(R.id.room_name_input)
     EditText roomNameInput;
-    @BindView(R.id.back_icon)
-    ImageView backIcon;
+
     @BindView(R.id.activity_create_run_house)
     LinearLayout activityCreateRunHouse;
     //===============================================view
@@ -86,7 +85,7 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     /***
      * 三分钟的毫秒数
      */
-    private static final long THREE_MINUTES = 1000 * 60 * 3;
+    private static final long THREE_MINUTES = 1000 * 60 * 1;
     private static final String TAG = "CreateRunHouseActivity";
 
     @Override
@@ -99,6 +98,10 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
     }
 
     private void setUpView() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         Fragment timeTypeFragment = new TimeTypeRunHouseFragment();
         Fragment roadTypeFragment = new RoadTypeRunHouseFragment();
         fragments.add(timeTypeFragment);
@@ -109,13 +112,6 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
 
         //设置默认页
         changToTime();
-        //设置toolbar
-        backIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         timePickerDialog = new TimePickerDialog.Builder().setCallBack(this)
                 .setCancelStringId("取消")
@@ -142,6 +138,16 @@ public class CreateRunHouseActivity extends AppCompatActivity implements ViewPag
         } else {
             changToRoad();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void changToTime() {
