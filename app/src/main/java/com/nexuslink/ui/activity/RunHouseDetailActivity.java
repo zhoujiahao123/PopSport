@@ -105,10 +105,12 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     @Override
     protected void onResume() {
         super.onResume();
-        if(!Settings.canDrawOverlays(this)){
-            ToastUtil.showToast(this,"检测到您还未授予悬浮窗口权限，请您授予");
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-            startActivityForResult(intent,OVERLAY_PERMISSION_REQ_CODE);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+            if(!Settings.canDrawOverlays(this)){
+                ToastUtil.showToast(this,"检测到您还未授予悬浮窗口权限，请您授予");
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                startActivityForResult(intent,OVERLAY_PERMISSION_REQ_CODE);
+            }
         }
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -165,6 +167,11 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     }
 
     private void checkTimeAndShowRemind(String timeStr) {
+        //判断是否加入跑房
+        HasJoinedRooms rooms = DBUtil.getHasJoinedRoomsDap().queryBuilder().where(HasJoinedRoomsDao.Properties.RId.eq(roomBean.getRoomId())).build().unique();
+        if(rooms==null){
+            return;
+        }
         if(System.currentTimeMillis() > TimeUtils.DateToMills(timeStr)){
             AlertDialog dialog ;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

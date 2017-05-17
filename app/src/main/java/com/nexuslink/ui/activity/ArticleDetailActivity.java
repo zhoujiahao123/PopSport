@@ -44,7 +44,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 import static com.nexuslink.app.BaseApplication.mContext;
@@ -69,11 +68,6 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     @BindView(R.id.multi_view)
     MyNineGridLayout multiView;
 
-    @BindView(R.id.like_num)
-    LikeView likeNum;
-
-    @BindView(R.id.comment_num)
-    LikeView commentNum;
 
     @BindView(R.id.comments_detail)
     LinearLayout commentsDetail;
@@ -87,6 +81,14 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
     Button inputSendComment;
     @BindView(R.id.progressbar)
     LoadingView progressbar;
+    @BindView(R.id.like)
+    ImageView likeImage;
+    @BindView(R.id.like_num)
+    TextView likeNum;
+    @BindView(R.id.comment)
+    ImageView commentImage;
+    @BindView(R.id.comment_num)
+    TextView commentNum;
 
 
     private LinearLayout commentLinear;
@@ -127,6 +129,17 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        int childCount = multiView.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            Glide.clear(multiView.getChildAt(i));
+        }
+
+
+    }
+
     private void initViews() {
         setActionBar(mToolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -152,22 +165,22 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         getActionBar().setDisplayShowTitleEnabled(false);
 
         //喜欢回调
-        likeNum.setCallback(new LikeView.SimpleCallback() {
+        likeImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void activate(LikeView view) {
-                super.activate(view);
-                presenter.postLike(article.getArticleId());
-            }
-
-            @Override
-            public void deactivate(LikeView view) {
-                super.deactivate(view);
+            public void onClick(View v) {
+                if (!article.isLikeArticle()) {
+                    presenter.postLike(articleId);
+                    likeImage.setImageDrawable(getDrawable(R.drawable.like));
+                } else {
+                    presenter.postDisLke(articleId);
+                    likeImage.setImageDrawable(getDrawable(R.drawable.dislike));
+                }
             }
         });
         //设置评论回调
-        commentNum.setCallback(new LikeView.SimpleCallback() {
+        commentNum.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onClick(LikeView view) {
+            public void onClick(View v) {
                 if (!isOpen) {
                     isOpen = true;
                     commentLinear.setVisibility(View.VISIBLE);
@@ -180,18 +193,8 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
                     KeyBoardUtils.closeKeybord(commentInput, mContext);
                     commentLinear.setVisibility(View.GONE);
                 }
-                return true;
-            }
-
-            @Override
-            public void activate(LikeView view) {
-            }
-
-            @Override
-            public void deactivate(LikeView view) {
             }
         });
-
     }
 
     /**
@@ -206,12 +209,12 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, OtherPersonActivity.class);
-                intent.putExtra("uId",user.getUid());
+                intent.putExtra("uId", user.getUid());
                 mContext.startActivity(intent);
             }
         });
         userName.setText(user.getUName());
-        userLevel.setText("Lv."+UserUtils.getUserLevel(user.getUExp()));
+        userLevel.setText("Lv." + UserUtils.getUserLevel(user.getUExp()));
         //设置发表日期
         articleDateTv.setText(article.getDate() + " " + article.getTime());
         //设置文本内容
@@ -222,11 +225,10 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         multiView.setUrlList(getImagesUrl(article.getImages()));
         //设置点赞数目和评论数目
         likeNum.setActivated(article.isLikeArticle());
-        likeNum.setNumber(article.getLikeNum());
+        likeNum.setText(article.getLikeNum() + "");
 
         commentNumber = article.getCommentNum();
-        commentNum.setGraphAdapter(CommentPathAdapter.getInstance());
-        commentNum.setNumber(commentNumber);
+        commentNum.setText(commentNumber + "");
         //加载评论
         if (commentNumber > 0) {
             presenter.loadComments(article.getArticleId());
@@ -263,7 +265,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             View view = inflater.inflate(R.layout.comment_detial_item, null);
             setViews(view, commentsBean);
             commentsDetail.addView(view);
-            Log.i("添加view","添加view");
+            Log.i("添加view", "添加view");
         }
     }
 
@@ -281,22 +283,23 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         CircleImageView userImage = (CircleImageView) view.findViewById(R.id.user_image);
 
         CommentInfo.CommentsBean.UserBean user = commentsBean.getUser();
-        Glide.with(this).load(Constants.PHOTO_BASE_URL+user.getFImg()).crossFade().into(userImage);
+        Glide.with(this).load(Constants.PHOTO_BASE_URL + user.getFImg()).crossFade().into(userImage);
         commenterName.setText(user.getFName());
-        commentDateTv.setText(setData(commentsBean.getDate(),commentsBean.getTime()));
+        commentDateTv.setText(setData(commentsBean.getDate(), commentsBean.getTime()));
         commentFloor.setText(commentsBean.getCommentFloor() + "楼");
         commentText.setText(Base64Utils.decode(commentsBean.getCommentText()));
     }
 
-    private final int SEVEN_DAYS = 7*24*60*60*1000;
+    private final int SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
     //格式控制
     private SimpleDateFormat sdf_month = new SimpleDateFormat("MM:dd HH:mm");
     private SimpleDateFormat sdf_time = new SimpleDateFormat("HH:mm");
     //日期数据
-    private String datas[] = {"今天","昨天","前天","3天前","4天前","5天前","6天前","7天前"};
+    private String datas[] = {"今天", "昨天", "前天", "3天前", "4天前", "5天前", "6天前", "7天前"};
 
     /**
      * 根据不同的条件，设置时间
+     *
      * @param date
      * @param time
      * @return
@@ -305,24 +308,24 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         Calendar c = Calendar.getInstance();
         //同步时间
         c.setTimeInMillis(System.currentTimeMillis());
-        c.set(Calendar.AM_PM,0);
-        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.AM_PM, 0);
+        c.set(Calendar.MINUTE, 0);
         // 判断是不是今年
-        if(c.get(Calendar.YEAR) == Integer.valueOf(date.split("-")[0])){
+        if (c.get(Calendar.YEAR) == Integer.valueOf(date.split("-")[0])) {
             //是今年，那么是否有超过7天
-            long dateMills = TimeUtils.DateToMills(date+" "+time);
-            if(c.getTimeInMillis()-dateMills > SEVEN_DAYS){
+            long dateMills = TimeUtils.DateToMills(date + " " + time);
+            if (c.getTimeInMillis() - dateMills > SEVEN_DAYS) {
                 return sdf_month.format(dateMills);
-            }else{
+            } else {
                 //没有超过，就判断相几天
                 Calendar c1 = Calendar.getInstance();
                 //同步时间
                 c1.setTimeInMillis(dateMills);
                 int index = Math.abs(c.get(Calendar.DAY_OF_YEAR) - c1.get(Calendar.DAY_OF_YEAR));
-                return datas[index]+sdf_time.format(dateMills);
+                return datas[index] + sdf_time.format(dateMills);
             }
-        }else{
-            return date+" "+time;
+        } else {
+            return date + " " + time;
         }
     }
 
@@ -366,7 +369,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
 
     @Override
     public void addCommentNum() {
-        commentNum.setNumber(++commentNumber);
+        commentNum.setText(++commentNumber + "");
     }
 
     @Override
@@ -379,7 +382,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;

@@ -9,4 +9,5 @@ public interface ArticleDetailPresenter {
     void postComment(int articleId);
     void postLike(int articleId);
     void loadArticle(int articleId);
+    void postDisLke(int articleId);
 }

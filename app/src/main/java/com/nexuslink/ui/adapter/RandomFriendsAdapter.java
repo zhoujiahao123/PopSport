@@ -60,7 +60,7 @@ public class RandomFriendsAdapter extends RecyclerArrayAdapter<RandomSearchResul
                     mContext.startActivity(intent);
                 }
             });
-            Glide.with(mContext).load(Constants.PHOTO_BASE_URL + data.getUid()).crossFade().into(userImage);
+            Glide.with(mContext).load(Constants.PHOTO_BASE_URL + data.getUImg()).crossFade().into(userImage);
             userName.setText(data.getUName());
             stepsTv.setText(data.getUHistoryStep() + "");
             milesTv.setText(data.getUHistoryMileage() + "");

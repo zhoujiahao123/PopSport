@@ -110,30 +110,14 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="@dimen/spacing_tiny">
-
-                <com.nexuslink.ui.view.likeview.LikeView
-                    android:id="@+id/like_num"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    app:animateDuration="300"
-                    app:autoMeasureMaxWidth="true"
-                    app:graphStrokeWidth="3dp"
-                    app:isActivated="false"
-                    app:notAllowedCancel="false"
-                    app:number="0" />
-
-                <com.nexuslink.ui.view.likeview.LikeView
-                    android:id="@+id/comment_num"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
+                <include
+                    layout="@layout/like_comment_view"
+                    ></include>
             </LinearLayout>
 
 

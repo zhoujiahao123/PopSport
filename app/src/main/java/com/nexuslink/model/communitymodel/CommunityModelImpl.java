@@ -107,7 +107,7 @@ public class CommunityModelImpl implements CommunityModel {
         api.postDisLike(userId, articleId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Integer>() {
+                .subscribe(new Subscriber<PostLikeResult>() {
                     @Override
                     public void onCompleted() {
 
@@ -119,9 +119,10 @@ public class CommunityModelImpl implements CommunityModel {
                     }
 
                     @Override
-                    public void onNext(Integer integer) {
+                    public void onNext(PostLikeResult likeResult) {
+                        if(likeResult.getCode() == Constants.SUCCESS)
                         //flag判断回调
-                        listener.onFinish(integer);
+                        listener.onFinish(null);
                     }
                 });
     }
