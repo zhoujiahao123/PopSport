@@ -38,12 +38,14 @@ import com.nexuslink.model.data.Info;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.presenter.alterpresenter.AlterPresenterImpl;
+import com.nexuslink.service.StepService;
 import com.nexuslink.ui.dialog.AlterPasswordDialog;
 import com.nexuslink.ui.view.AlterView;
 import com.nexuslink.util.ActivityStack;
 import com.nexuslink.util.BitmapCompressUpUtils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.DataCleanManager;
 import com.nexuslink.util.GlideCacheUtil;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ImageUtil;
@@ -439,11 +441,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 
     @OnClick(R.id.log_off)
     public void onClick() {
-//        SharedPreferences sharedPreferences = getSharedPreferences("already",Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.remove("already");
-//        editor.putInt("already",0);
-//        editor.commit();
         android.app.AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("提示");
@@ -458,22 +455,29 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-
                 SharedPrefsUtil.putValue(AlterActivity.this, "already", "already", 0);
-                DBUtil.getUserDao().deleteAll();
-                DBUtil.getRunDao().deleteAll();
-                DBUtil.getStepsDao().deleteAll();
-
+                //停止运行service
+                Intent intent1 = new Intent(AlterActivity.this, StepService.class);
+                stopService(intent1);
+                DataCleanManager.clearUserInfoSharePreference(AlterActivity.this);
+                DataCleanManager.cleanExternalCache(AlterActivity.this);
+                DataCleanManager.cleanInternalCache(AlterActivity.this);
+                DBUtil.clearAll();
+                ActivityStack.getScreenManager().clearAllActivity();
                 Intent intent = new Intent(AlterActivity.this, LogInActivity.class);
                 startActivity(intent);
-                onBackPressed();
+                finish();
                 //退出之前清除所有Activity
-                ActivityStack.getScreenManager().clearAllActivity();
+
+
+
             }
         });
         dialog = builder.create();
         dialog.show();
     }
+
+
 
     @Override
     public void onClicked(String oldPssword, String newPassword) {
@@ -490,15 +494,16 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     String realPath;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void photoChooseEvent(EventEntry eventEntry) {
         final String photoPath = eventEntry.photos.get(0).getPath();
         realPath = photoPath;
-//        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
+
         eventEntry.photos.clear();
-        XLog.e("上面这个执行了");
-//        LoaderFactory.getGlideLoader().loadFile(circleImageView,new File(photoPath),null);
+
         new Thread(new Runnable() {
             @Override
             public void run() {

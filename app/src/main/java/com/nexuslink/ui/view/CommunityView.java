@@ -22,5 +22,6 @@ public interface CommunityView<T> {
     void showProgress();
     void hideProgress();
     void addCommunityItems(List<T> list);
-
+    void addLikeNum(int pos);
+    void decreaseLikeNum(int pos);
 }

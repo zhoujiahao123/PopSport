@@ -126,8 +126,8 @@ public interface Api {
 
     //取消点赞
     @FormUrlEncoded
-    @POST("article/dislike")
-    Observable<Integer> postDisLike(@Field("uId") int userId, @Field("aId") int articleId);
+    @POST("article/like")
+    Observable<PostLikeResult> postDisLike(@Field("uId") int userId, @Field("aId") int articleId);
 
     //修改用户的个人信息
     @FormUrlEncoded

@@ -178,6 +178,7 @@
         <activity android:name=".ui.activity.FriendsAndFansActivity" />
         <activity android:name=".ui.activity.OtherPersonActivity" />
         <activity android:name=".ui.activity.SearchActivity"></activity>
+        <service android:name=".service.ClearService"></service>
     </application>
 
 </manifest>

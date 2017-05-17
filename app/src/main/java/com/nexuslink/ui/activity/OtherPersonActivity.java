@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -46,11 +46,10 @@ public class OtherPersonActivity extends AppCompatActivity {
     @BindView(R.id.article_frame)
     FrameLayout articleFrame;
     @BindView(R.id.follow_bt)
-    ImageButton followBt;
+    ImageView followBt;
     @BindView(R.id.personinfo_bezier)
     PersonInfoBezierView personinfoBezier;
 
-    private boolean isFolowed = false;
     private int uId;
 
 
@@ -101,8 +100,7 @@ public class OtherPersonActivity extends AppCompatActivity {
                             mFansNum.setText(friendInfo.getFriend().getUFansnum() + "");
                             mSex.setText(friendInfo.getFriend().getUGender().equals("M") ? "男" : "女");
                             if (friendInfo.isIsFollowed()) {
-                                isFolowed = friendInfo.isIsFollowed();
-                                followBt.setImageResource(R.drawable.concern);
+                                followBt.setImageDrawable(getDrawable(R.drawable.concern));
                             }
                         }
                     }
@@ -121,21 +119,26 @@ public class OtherPersonActivity extends AppCompatActivity {
                 });
     }
 
+    private final int CONCERN = 1;
 
     @OnClick(R.id.follow_bt)
     public void onViewClicked() {
-        if (isFolowed) {
-            ToastUtil.showToast(this, "您已关注该好友");
-        } else {
-            ApiUtil.getInstance(Constants.BASE_URL).getFollowInfo(UserUtils.getUserId(), uId).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<FollowInfo>() {
-                        @Override
-                        public void call(FollowInfo followInfo) {
-                            followBt.setImageResource(R.drawable.concern);
+        ApiUtil.getInstance(Constants.BASE_URL).getFollowInfo(UserUtils.getUserId(), uId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<FollowInfo>() {
+                    @Override
+                    public void call(FollowInfo followInfo) {
+                        if (followInfo.getCode() == Constants.SUCCESS) {
+                            if (followInfo.getFollowFlag() == CONCERN) {
+                                followBt.setImageDrawable(getDrawable(R.drawable.concern));
+                                mFansNum.setText(followInfo.getFFansNum() + "");
+                            } else{
+                                followBt.setImageDrawable(getDrawable(R.drawable.unconcern));
+                                mFansNum.setText(followInfo.getFFansNum() + "");
+                            }
                         }
-                    });
-            ;
-        }
+                    }
+                });
     }
 }
+

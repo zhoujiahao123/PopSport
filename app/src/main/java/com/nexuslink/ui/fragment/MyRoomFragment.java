@@ -53,8 +53,8 @@ public class MyRoomFragment extends ContainPresenterFragment implements RunHouse
     @Override
     public void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setProgressView(R.layout.progress_layout);
-        mRecyclerView.setEmptyView(R.layout.empty_view);
+        mRecyclerView.setProgressView(R.layout.progress_view);
+        mRecyclerView.setEmptyView(R.layout.no_rooms_view);
         mRecyclerView.setErrorView(R.layout.peron_article_error);
         adapter = new RunHouseAdapter(getContext());
         mRecyclerView.setAdapter(adapter);
@@ -81,7 +81,6 @@ public class MyRoomFragment extends ContainPresenterFragment implements RunHouse
 
     @Override
     public void hideProgress() {
-
     }
 
     @Override

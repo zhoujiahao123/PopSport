@@ -64,6 +64,7 @@ public class PermissionsActivity extends AppCompatActivity {
     // 请求权限兼容低版本
     private void requestPermissions(String... permissions) {
         ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+        
     }
     // 返回传递的权限参数
     private String[] getPermissions() {

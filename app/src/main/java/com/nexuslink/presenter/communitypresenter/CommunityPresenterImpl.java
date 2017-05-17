@@ -1,7 +1,9 @@
 package com.nexuslink.presenter.communitypresenter;
 
 import android.text.TextUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.model.CallBackListener;
@@ -17,8 +19,10 @@ import com.nexuslink.util.cache.DiskLruCacheHelper;
 import com.vanniktech.emoji.EmojiEditText;
 
 import java.io.Serializable;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by 猿人 on 2017/2/12.
@@ -32,13 +36,13 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     public CommunityPresenterImpl(CommunityView mCommunityView) {
         this.mCommunityView = mCommunityView;
         mCommunity = new CommunityModelImpl();
-         helper = BaseApplication.getHelper();
+        helper = BaseApplication.getHelper();
 
     }
 
 
     @Override
-    public void postLike(int userId, int articleId) {
+    public void postLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position) {
         mCommunity.postLike(userId, articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
@@ -53,7 +57,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postDisLike(int userId, int articleId) {
+    public void postDisLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position) {
         mCommunity.postDisLike(userId, articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
@@ -118,7 +122,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
             @Override
             public void onError(Exception e) {
-                mCommunityView.showError("加载出错");
+                mCommunityView.showError(e.getMessage());
             }
         });
     }
@@ -148,7 +152,12 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
             @Override
             public void onError(Exception e) {
-                mCommunityView.showError("刷新失败,请重试");
+                if (e instanceof TimeoutException || e instanceof SocketTimeoutException) {
+                    mCommunityView.showError("请求超时，请重试");
+                } else {
+                    mCommunityView.showError("请求错误，请重试");
+                }
+
 
                 if (autoRefresh) {
                     mCommunityView.hideProgress();
@@ -212,8 +221,6 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
         });
     }
-
-
 
 
 }

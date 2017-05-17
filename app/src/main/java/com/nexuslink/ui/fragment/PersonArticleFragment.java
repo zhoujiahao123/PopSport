@@ -78,8 +78,8 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
         adapter = new PersonArticleAdapter(getContext(), presenter);
         mRecylerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecylerView.setProgressView(R.layout.cube_ptr_simple_loading);
-        mRecylerView.setEmptyView(R.layout.empty_view);
+        mRecylerView.setProgressView(R.layout.progress_view);
+        mRecylerView.setEmptyView(R.layout.no_article_view);
         mRecylerView.setErrorView(R.layout.peron_article_error);
         mRecylerView.setAdapter(adapter);
 
@@ -90,6 +90,7 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
 
     }
+
 
     @Override
     public void onDestroyView() {
@@ -183,5 +184,15 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
     @Override
     public void addCommunityItems(List<ArticleBean.ArticlesBean> list) {
         adapter.addItems(list);
+    }
+
+    @Override
+    public void addLikeNum(int pos) {
+
+    }
+
+    @Override
+    public void decreaseLikeNum(int pos) {
+
     }
 }

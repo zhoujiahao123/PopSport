@@ -79,44 +79,33 @@
             ></com.nexuslink.ui.view.MyNineGridLayout>
 
 
-        <com.nexuslink.ui.view.likeview.LikeView
+        <FrameLayout
             android:id="@+id/like_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="4dp"
-            app:animateDuration="300"
-            app:autoMeasureMaxWidth="true"
-            app:graphStrokeWidth="3dp"
-            app:isActivated="false"
-            app:layout_constraintRight_toLeftOf="@+id/comment"
             app:layout_constraintTop_toBottomOf="@+id/multi_view"
-            app:notAllowedCancel="false"
-            app:number="0" />
+            app:layout_constraintRight_toRightOf="parent">
 
-        <com.nexuslink.ui.view.likeview.LikeView
-            android:id="@+id/comment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/multi_view" />
+            <include
+                layout="@layout/like_comment_view"
+                ></include>
 
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/comments_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/spacing_tiny"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="0dp"
             android:background="@color/background_color"
             android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/comment"></LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/like_view"></LinearLayout>
 
 
         <!--输入框-->
@@ -124,12 +113,12 @@
             android:id="@+id/comment_linear"
             android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal"
             android:visibility="gone"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:orientation="horizontal"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
             app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="0dp"
             app:layout_constraintTop_toBottomOf="@+id/comments_detail">
 
             <com.vanniktech.emoji.EmojiEditText

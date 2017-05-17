@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+    android:id="@+id/like"
+    android:layout_gravity="center"
+    android:src="@drawable/dislike"
+    android:layout_width="22dp"
+    android:layout_height="22dp" />
+    <TextView
+        android:id="@+id/like_num"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="1"
+        android:layout_width="@dimen/font_small"
+        android:layout_height="@dimen/font_normal" />
+    <ImageView
+        android:layout_marginLeft="8dp"
+        android:id="@+id/comment"
+        android:layout_gravity="center"
+        android:src="@drawable/comment"
+        android:layout_width="22dp"
+        android:layout_height="22dp" />
+    <TextView
+        android:id="@+id/comment_num"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="1"
+        android:layout_width="@dimen/font_small"
+        android:layout_height="@dimen/font_normal" />
+
+</LinearLayout>

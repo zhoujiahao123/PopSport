@@ -49,7 +49,7 @@ public class ArticleDetailPresenterImpl implements ArticleDetailPresenter {
 
     @Override
     public void postComment(final int articleId) {
-        if(!TextUtils.isEmpty(mArticleView.getCommentInput())){
+        if (!TextUtils.isEmpty(mArticleView.getCommentInput())) {
             mArticleDetailModel.postComment(UserUtils.getUserId(), articleId, Base64Utils.encode(mArticleView.getCommentInput()), new CallBackListener() {
                 @Override
                 public void onFinish(Object o) {
@@ -63,7 +63,7 @@ public class ArticleDetailPresenterImpl implements ArticleDetailPresenter {
                     e.printStackTrace();
                 }
             });
-        }else{
+        } else {
             mArticleView.showError("输入空时，不能进行评论哦");
         }
 
@@ -84,6 +84,7 @@ public class ArticleDetailPresenterImpl implements ArticleDetailPresenter {
         });
     }
 
+
     @Override
     public void loadArticle(int articleId) {
         mArticleView.showProgress();
@@ -99,6 +100,23 @@ public class ArticleDetailPresenterImpl implements ArticleDetailPresenter {
             public void onError(Exception e) {
                 mArticleView.hideProgress();
                 mArticleView.showError("加载过程中出错,请重试");
+            }
+        });
+    }
+
+    @Override
+    public void postDisLke(int articleId) {
+        mArticleDetailModel.postDisLike(UserUtils.getUserId(), articleId, new CallBackListener() {
+            @Override
+            public void onFinish(Object data) {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                {
+                    mArticleView.showError("取消点赞失败");
+                }
             }
         });
     }
