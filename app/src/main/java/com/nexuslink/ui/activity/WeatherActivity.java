@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nexuslink.R;
 import com.nexuslink.app.BaseActivity;
@@ -133,7 +134,7 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
     TextView weatherLifeDesRay;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.my_scrollview)
+    @BindView(R.id.scroll_view)
     MyScrollView myScrollview;
     private WeatherPresenter weatherPresenter;
     //一个imageview作为整天背景
@@ -180,6 +181,7 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
         setAirQualityImage(weatherInfo);
         //设置今日提醒话语
         remindDes.setText(weatherInfo.getResult().getData().getPm25().getPm25().getDes());
+        Toast.makeText(this,weatherInfo.getResult().getData().getPm25().getPm25().getDes(),Toast.LENGTH_LONG).show();
         //设置天气状态
         weatherDes.setText(weatherInfo.getResult().getData().getRealtime().getWeather().getInfo());
         //设置风力级数

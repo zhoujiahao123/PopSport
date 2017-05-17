@@ -47,6 +47,11 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
      */
     private PersonArticleAdapter adapter;
     private CommunityPresenter presenter;
+    private int uId = -1;
+
+    public void setuId(int uId) {
+        this.uId = uId;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,13 +78,16 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
         adapter = new PersonArticleAdapter(getContext(), presenter);
         mRecylerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecylerView.setProgressView(R.layout.progress_layout);
+        mRecylerView.setProgressView(R.layout.cube_ptr_simple_loading);
         mRecylerView.setEmptyView(R.layout.empty_view);
         mRecylerView.setErrorView(R.layout.peron_article_error);
         mRecylerView.setAdapter(adapter);
 
         //开始加载数据
-        presenter.getHis(UserUtils.getUserId(), UserUtils.getUserId());
+        if (uId != -1) {
+            presenter.getHis(UserUtils.getUserId(), uId);
+        }
+
 
     }
 
@@ -95,7 +103,12 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
     @Override
     public void showError(String str) {
-        mRecylerView.showError();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRecylerView.showEmpty();
+            }
+        });
     }
 
     @Override
@@ -109,12 +122,19 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
 
     @Override
-    public void addMsgArticle(List<ArticleBean.ArticlesBean> list) {
+    public void addMsgArticle(final List<ArticleBean.ArticlesBean> list) {
         if (list == null || list.isEmpty()) {
             mRecylerView.showEmpty();
             return;
         }
-        adapter.setDatas(list);
+        //由于那边回调的时候是运行在子线程的，所以这里切回主线程
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setDatas(list);
+            }
+        });
+
 
     }
 

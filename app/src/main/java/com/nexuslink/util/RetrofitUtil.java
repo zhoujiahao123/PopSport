@@ -2,6 +2,9 @@ package com.nexuslink.util;
 
 import com.elvishew.xlog.XLog;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,14 +18,20 @@ public class RetrofitUtil {
     private static Retrofit mWeatherInstance;
     private static Retrofit instance;
 
+    private final long DEFAULT_TIMEOUT = 5000;
 
     /**
      * 单例化
      */
     private RetrofitUtil (String baseUrl){
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(DEFAULT_TIMEOUT,TimeUnit.MILLISECONDS)
+                .readTimeout(DEFAULT_TIMEOUT,TimeUnit.MILLISECONDS).build();
         instance = new Retrofit.Builder().baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(client)
                 .build();
     }
     public static Retrofit getInstance(String baseUrl){

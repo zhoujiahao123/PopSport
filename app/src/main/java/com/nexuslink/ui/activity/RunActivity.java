@@ -102,6 +102,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private int type  = -1;
     private int goal = -1;
     private int rId = -1;
+    private float mAverageSpeed = 0.0f;
+    private float maxSpeed = 0.0f;
     /**
      * 定时器
      */
@@ -143,6 +145,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     }
                     //根据条件判断是否启动路线轨迹记录
                     if (mStartOrPauseBt.getText().toString().equals("暂停")) {
+                        mAverageSpeed = aMapLocation.getSpeed();
+                        if(maxSpeed < mAverageSpeed){
+                            maxSpeed = mAverageSpeed;
+                        }
                         record.addpoint(aMapLocation);
                         mPolyoptions.add(myLocation);
                         redrawLine();
@@ -314,7 +320,9 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         //初始化AMapLocationClientOption对象
         mLocationOption = new AMapLocationClientOption();
         //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-        mLocationOption.setInterval(1000);
+        mLocationOption.setInterval(2000);
+        //打开传感器
+        mLocationOption.setSensorEnable(true);
         //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置是否返回地址信息（默认返回地址信息）
@@ -436,10 +444,10 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mCurrentTime.setText(realTime);
     }
 
+
     @Override
-    public void setCurrentSpeed(String speed) {
-        //    CurrentAverageSpeedTv.setText(speed+"m/s");
-        mAverageSpeedTv.setText(speed);
+    public void setCurrentSpeed() {
+        mAverageSpeedTv.setText(mAverageSpeed+"m/s");
     }
 
     @Override
@@ -455,8 +463,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     }
 
     @Override
-    public void setMaxSpeed(String maxSpeed) {
-        maxSpeedTv.setText(maxSpeed);
+    public void setMaxSpeed() {
+        maxSpeedTv.setText(maxSpeed+"m/s");
     }
 
     @Override
@@ -511,7 +519,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                 time = new TimeCount(TOTAL_TIME, INTERVAL);
                 record = new PathRecord();
                 long mStartTime = System.currentTimeMillis();
-                mRunPresenter.startRecord(mStartTime);
                 record.setDate(getCurrentDate(mStartTime));
             }
             //改变按钮的状态
@@ -555,17 +562,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     dialog.dismiss();
                     //通知首界面进行更新
                     EventBus.getDefault().post(new RunViewFresh());
-
-                   /* //在这里进行上传，如果上传成功，就将数据库中的匹配到时间的更新，否则就进行提示
-                    //分解时间进行数据库的查找
-                    String date = record.getDate().split(" ")[0];
-                    String time = record.getDate().split(" ")[1];
-                    //===============================================网络请求进行上传，上传成功，就更新
-
-                    //进行查找
-                    Run run = runDao.queryBuilder().where(RunDao.Properties.Date.eq(date),RunDao.Properties.Time.eq(time)).unique();
-                    run.setHasUpLoad(true);
-                    runDao.update(run);*/
                     if(!isComeFromRoom){
                         finish();
                     }else{

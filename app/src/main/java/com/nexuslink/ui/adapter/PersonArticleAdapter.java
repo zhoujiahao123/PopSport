@@ -37,6 +37,7 @@ import com.nexuslink.util.cache.DiskLruCacheHelper;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiTextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
     private boolean isOpen = false;
 
     //===============================================缓存类
-    private DiskLruCacheHelper helper = BaseApplication.helper;
+    private DiskLruCacheHelper helper;
     //===============================================辅助变量
     public List<Boolean> isFirstLoads = new ArrayList<>();
 
@@ -71,6 +72,7 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
         this.mContext = context;
         this.presenter = presenter;
         inflater = LayoutInflater.from(mContext);
+        helper = BaseApplication.getHelper();
     }
 
 
@@ -105,7 +107,8 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
         ArticleBean.ArticlesBean.UserBeanBean user = data.get(position).getUserBean();
         //设置头像
         Glide.with(mContext).load(Constants.PHOTO_BASE_URL + user.getUImg())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .skipMemoryCache(true)
                 //设置50%的缩略图
                 .thumbnail(0.5f)
                 .crossFade().into(holder.userImage);
@@ -208,7 +211,13 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
             presenter.loadComment(holder.commentDetialLinear, data.get(position).getArticleId(), position);
         } else {
             Log.i(TAG, "从缓存中调用");
-
+            if (helper == null) {
+                try {
+                    helper = new DiskLruCacheHelper(BaseApplication.getContext());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             List<CommentItemData> commentItemDatas = helper.getAsSerializable(data.get(position).getArticleId() + "comments");
             if (commentItemDatas != null && commentItemDatas.size() > 0) {
                 for (int i = 0; i < commentItemDatas.size(); i++) {
@@ -341,7 +350,6 @@ public class PersonArticleAdapter extends RecyclerView.Adapter<PersonArticleAdap
         }
 
     }
-
 
 
 }

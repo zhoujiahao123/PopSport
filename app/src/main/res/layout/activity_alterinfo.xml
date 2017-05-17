@@ -103,7 +103,6 @@
     </RelativeLayout>
     <RelativeLayout
         android:padding="8dp"
-        android:id="@+id/height_relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/name_relative"
@@ -139,7 +138,6 @@
 
     <RelativeLayout
         android:padding="8dp"
-        android:id="@+id/weight_relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 

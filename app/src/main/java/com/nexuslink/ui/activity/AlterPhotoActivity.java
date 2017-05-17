@@ -28,6 +28,7 @@ public class AlterPhotoActivity extends BaseGalleryActivity {
         setContentView(R.layout.activity_photos);
         ButterKnife.bind(this);
         setTitle("Photo");
+        setTitleColor(R.color.button_text_color);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         attachFragment(R.id.gallery_root);

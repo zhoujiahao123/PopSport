@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/top_bar"
@@ -12,16 +14,18 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:theme="@style/WhiteToolbarStyle">
 
         </Toolbar>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/task_title"
             android:layout_centerInParent="true"
+            android:text="@string/task_title"
             android:textColor="@color/white_light"
-            android:textSize="@dimen/font_large"/>
+            android:textSize="@dimen/font_large" />
     </RelativeLayout>
 
     <LinearLayout
@@ -29,58 +33,60 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/daily_task_title_height"
         android:layout_below="@id/top_bar"
-        android:background="@color/gray_light_more"
-        >
+        android:background="@color/gray_light_more">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="日常任务"
-            android:textSize="@dimen/font_normal"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/spacing_large"/>
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:text="日常任务"
+            android:textSize="@dimen/font_normal" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/daily_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white_light"
-        android:layout_below="@+id/daily_task_title"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/daily_task_title"
+        android:background="@color/white_light">
+
         <RelativeLayout
             android:id="@+id/daily_step_task"
             android:layout_width="match_parent"
             android:layout_height="@dimen/task_height"
-            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginBottom="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_small"
             android:background="@drawable/selector_task_blue"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/task_title_daily_step"
+                style="@style/TaskStyleTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/daily_step_task"
-                style="@style/TaskStyleTitle"/>
+                android:text="@string/daily_step_task" />
+
             <TextView
                 android:id="@+id/task_detail_daily_step"
+                style="@style/TaskStyleDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/daily_detail_task"
-                style="@style/TaskStyleDetail"
                 android:layout_below="@id/task_title_daily_step"
-                />
+                android:text="@string/daily_detail_task" />
+
             <TextView
                 android:id="@+id/task_times_daily_step"
+                style="@style/TaskStyleDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="经验值奖励: 50"
-                style="@style/TaskStyleDetail"
                 android:layout_below="@id/task_detail_daily_step"
-                />
+                android:text="经验值奖励: 50" />
+
             <Button
                 android:id="@+id/btn_finish_task_step"
                 android:layout_width="wrap_content"
@@ -89,45 +95,44 @@
                 android:layout_centerVertical="true"
                 android:background="@color/blue"
                 android:text="点击提交"
-                android:visibility="invisible"
                 android:textColor="@color/white_light"
-                />
+                android:visibility="invisible" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/daily_run_task"
             android:layout_width="match_parent"
             android:layout_height="@dimen/task_height"
-            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_below="@id/daily_step_task"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginBottom="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_small"
             android:background="@drawable/selector_task_red"
-            android:orientation="vertical"
-            android:layout_below="@id/daily_step_task">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/task_title_daily_run"
+                style="@style/TaskStyleTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/daily_run_task"
-                style="@style/TaskStyleTitle"/>
+                android:text="@string/daily_run_task" />
+
             <TextView
                 android:id="@+id/task_detail_daily_run"
+                style="@style/TaskStyleDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/daily_detail_task_run"
                 android:layout_below="@id/task_title_daily_run"
-                style="@style/TaskStyleDetail"
-                />
+                android:text="@string/daily_detail_task_run" />
+
             <TextView
                 android:id="@+id/task_times_daily"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/task_detail_daily_run"
-                android:layout_height="wrap_content"
-                android:text="经验值奖励: 50"
                 style="@style/TaskStyleDetail"
-                />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/task_detail_daily_run"
+                android:text="经验值奖励: 50" />
+
             <Button
                 android:id="@+id/btn_finish_task_run"
                 android:layout_width="wrap_content"
@@ -136,9 +141,8 @@
                 android:layout_centerVertical="true"
                 android:background="@color/red"
                 android:text="点击提交"
-                android:visibility="invisible"
                 android:textColor="@color/white_light"
-                />
+                android:visibility="invisible" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -147,56 +151,55 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/daily_task_title_height"
         android:layout_below="@id/daily_task"
-        android:background="@color/gray_light_more"
-        >
+        android:background="@color/gray_light_more">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="额外任务"
-            android:textSize="@dimen/font_normal"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/spacing_large"/>
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:text="额外任务"
+            android:textSize="@dimen/font_normal" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/addition_task_title"
-        android:background="@color/white_light"
-        >
+        android:background="@color/white_light">
+
         <RelativeLayout
-            android:id="@+id/addition_run_task"
             android:layout_width="match_parent"
             android:layout_height="@dimen/task_height"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
             android:background="@drawable/selector_task_yellow"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/task_title_addition_run"
+                style="@style/TaskStyleTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/addition_task_title"
-                style="@style/TaskStyleTitle"/>
+                android:text="@string/addition_task_title" />
+
             <TextView
                 android:id="@+id/task_detail_addition_run"
+                style="@style/TaskStyleDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/task_title_addition_run"
-                android:text="@string/addition_task_detail"
-                style="@style/TaskStyleDetail"
-                />
+                android:text="@string/addition_task_detail" />
+
             <TextView
                 android:id="@+id/task_times_addition"
+                style="@style/TaskStyleDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/task_detail_addition_run"
-                android:text="经验值奖励: 100"
-                style="@style/TaskStyleDetail"
-                />
+                android:text="经验值奖励: 100" />
+
             <Button
                 android:id="@+id/btn_finish_task"
                 android:layout_width="wrap_content"
@@ -206,8 +209,7 @@
                 android:background="@color/yellow"
                 android:text="点击提交"
                 android:textColor="@color/white_light"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible" />
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

@@ -163,6 +163,10 @@ public class SharedPrefsUtil {
         long value = sp.getLong(key, defValue);
         return value;
     }
+    public static void clear(Context context,String name){
+        getEditor(context,name).clear();
+        getEditor(context,name).commit();
+    }
 
     //获取Editor实例
     private static SharedPreferences.Editor getEditor(Context context, String name) {

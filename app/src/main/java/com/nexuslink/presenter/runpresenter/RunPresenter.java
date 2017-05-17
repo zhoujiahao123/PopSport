@@ -24,18 +24,16 @@ public class RunPresenter {
         mRunModel.setDuration(duration);
         mRunModel.saveRecord(list,date);
     }
-    public void startRecord(long startTime){
-        mRunModel.setStartTime(startTime);
-    }
+
     public void refreshUI(List<AMapLocation> list){
         //distance 单位米
         float distance = mRunModel.getDistance(list);
         mRunModel.calculateCurrentTime();
         mRunView.setCurrentTime(mRunModel.getRealCurrentTime());
         mRunView.setCurrentDistance(mRunModel.getCurrentMiles(distance));
-        mRunView.setCurrentSpeed(mRunModel.getCurrentAverage(distance));
         mRunView.setCurrentCol(mRunModel.getCurrentCol(distance));
-        mRunView.setMaxSpeed(mRunModel.getMaxSpeed());
+        mRunView.setCurrentSpeed();
+        mRunView.setMaxSpeed();
     }
 
     /**

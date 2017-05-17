@@ -99,7 +99,6 @@ public class StepService extends Service implements SensorEventListener {
             super.handleMessage(msg);
             switch (msg.what){
                 case Constants.MSG_FROM_CLIENT:
-                    Log.i(TAG, String.valueOf(msg.replyTo==null));
                     messengerFromClient = msg.replyTo;
                     StepService.this.sendMessage();
                     break;
@@ -228,8 +227,6 @@ public class StepService extends Service implements SensorEventListener {
                 int thisStepCount = tempStep -hasStepCount;
                 CURRENT_STEPS+=(thisStepCount-previousStepCount);
                 previousStepCount = thisStepCount;
-                Log.i(TAG,"tempStepCount:"+tempStep +"hasStepCount:"+hasStepCount+" privousStepCount:"+previousStepCount
-                        +" CURRENT_STEP:"+ CURRENT_STEPS);
             }
             sendMessage();
             setNotification();
@@ -237,7 +234,6 @@ public class StepService extends Service implements SensorEventListener {
             if(event.values[0] == 1.0){
                 hasRecord = true;
                 CURRENT_STEPS++;
-                Log.i(TAG,CURRENT_STEPS+"");
                 sendMessage();
                 setNotification();
             }
@@ -404,7 +400,6 @@ public class StepService extends Service implements SensorEventListener {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i(TAG,"返回IBinder");
         return messengerFromService.getBinder();
     }
 
@@ -468,7 +463,6 @@ public class StepService extends Service implements SensorEventListener {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            Log.i(TAG,"currentSteps:"+CURRENT_STEPS);
             if(stepSensor == 2){
                 sendMessage();
                 setNotification();

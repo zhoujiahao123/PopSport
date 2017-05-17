@@ -1,6 +1,8 @@
 package com.nexuslink.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,9 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
 import com.google.gson.Gson;
-import com.litao.android.lib.entity.PhotoEntry;
 import com.nexuslink.R;
 import com.nexuslink.User;
 import com.nexuslink.UserDao;
@@ -42,11 +44,11 @@ import com.nexuslink.util.ActivityStack;
 import com.nexuslink.util.BitmapCompressUpUtils;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.GlideCacheUtil;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ImageUtil;
 import com.nexuslink.util.SharedPrefsUtil;
 import com.nexuslink.util.ToastUtil;
-import com.nexuslink.util.loader.ILoader;
 import com.nexuslink.util.loader.LoaderFactory;
 import com.wevey.selector.dialog.MDEditDialog;
 
@@ -118,23 +120,19 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     int uWeight;
     int uHeight;
     private static final int COMPRESS_IMAGE_SUCCESS = 2;
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what==1){
+            if (msg.what == 1) {
                 nickName.setText(BaseApplication.getDaosession().getUserDao().queryBuilder().where(
                         UserDao.Properties.Already.eq(1)
                 ).unique().getUName());
-
-                LoaderFactory.getGlideLoader().loadNet(circleImageView,Constants.PHOTO_BASE_URL + BaseApplication.getDaosession().getUserDao().queryBuilder().where(
-                        UserDao.Properties.Already.eq(1)
-                ).unique().getUImg(),new ILoader.Option(R.drawable.head_photo,R.drawable.head_photo));
-//                ImageUtil.imageDisplayHeadImage(Constants.PHOTO_BASE_URL+String.valueOf(msg.obj),circleImageView);
-            }else if(msg.what == COMPRESS_IMAGE_SUCCESS){
+            } else if (msg.what == COMPRESS_IMAGE_SUCCESS) {
                 postPhoto((String) msg.obj);
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +156,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //add top-left icon click event deal
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }
@@ -194,11 +192,11 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         XLog.e(userInfo.getUser().getUHeight());
         XLog.e(userInfo.getUser().getUWeight());
         float f = userInfo.getUser().getUHeight();
-        uHeight = (int)f;
+        uHeight = (int) f;
         float w = userInfo.getUser().getUWeight();
-        uWeight = (int)w;
-        height.setText(uHeight+"cm");
-        weight.setText(uWeight+"kg");
+        uWeight = (int) w;
+        height.setText(uHeight + "cm");
+        weight.setText(uWeight + "kg");
         nickName.setText(userInfo.getUser().getUName());
         gender.setText(String.valueOf(userInfo.getUser().getUGender().toString().equals("M") ? '男' : '女'));
     }
@@ -222,11 +220,11 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 
         //设置昵称
         float f = user.getUHeight();
-        uHeight = (int)f;
-        float w =user.getUWeight();
-        uWeight = (int)w;
-        height.setText(uHeight+"cm");
-        weight.setText(uWeight+"kg");
+        uHeight = (int) f;
+        float w = user.getUWeight();
+        uWeight = (int) w;
+        height.setText(uHeight + "cm");
+        weight.setText(uWeight + "kg");
         nickName.setText(user.getUName());
         gender.setText(String.valueOf(user.getUGender().toString().equals("M") ? '男' : '女'));
     }
@@ -294,94 +292,7 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         genderList.add("女");
         return genderList;
     }
-//    /**
-//     * 身高spinner的配置
-//     */
-//    private void initDataHeight() {
-//        heightSpinner = (MaterialSpinner) findViewById(R.id.spinner1);
-//        String[] items = new String[191];
-//        for (int i = 0; i < items.length; i++)
-//            items[i] = i + 60 + "";
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        heightSpinner.setAdapter(adapter);
-//        heightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                heightSpinnerPosition = i;
-//                if (i != -1) {
-//                    presenter.changeUserInfo(8, 'M', (float) (i + 60), 57.0f);
-//                    XLog.e("身高选择");
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 体重spinner的配置
-//     *
-//     * @return
-//     */
-//    private void initDataWeight() {
-//        weightSpinner = (MaterialSpinner) findViewById(R.id.spinner2);
-//        String[] items = new String[71];
-//        for (int i = 0; i < items.length; i++)
-//            items[i] = i + 30 + "";
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        weightSpinner.setAdapter(adapter);
-//        weightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                weightSpinnerPosition = i;
-//                if (i != -1) {
-//                    presenter.changeUserInfo(8, 'M', 180.0f, (float) (i + 30));
-//                    XLog.e("体重选择");
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 性别spinner的配置
-//     *
-//     * @return
-//     */
-//    private void initDataSex() {
-//        sexSpinner = (MaterialSpinner) findViewById(R.id.spinner3);
-//        String[] items = new String[2];
-//        items[0] = "男";
-//        items[1] = "女";
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        sexSpinner.setAdapter(adapter);
-//        sexSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                XLog.e("i 是" + l);
-//                if (l != -1) {
-//                    presenter.changeUserInfo(8, i == 0 ? 'M' : 'W', 180.0f, 57.0f);
-//                    XLog.e("性别选择");
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
+
 
     private boolean isConnective() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -433,9 +344,9 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         EventBus.getDefault().register(this);
         UserDao userDao = BaseApplication.getDaosession().getUserDao();
         User user = userDao.queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-        if(user.getUName()==null){
+        if (user.getUName() == null) {
             presenter.getUserInfo((int) IdUtil.getuId());
-        }else {
+        } else {
             showUserInfo(user);
         }
 
@@ -445,11 +356,11 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.height:
-                initPickerWindow(HEIGHT_TYPE, uHeight-60);
+                initPickerWindow(HEIGHT_TYPE, uHeight - 60);
                 window.showAtLocation(container, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.weight:
-                initPickerWindow(WEIGHT_TYPE, uWeight-30);
+                initPickerWindow(WEIGHT_TYPE, uWeight - 30);
                 window.showAtLocation(container, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.gender:
@@ -484,25 +395,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                     }
                 });
                 dialog1.show();
-//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        if (oldPassword.getText().toString().equals("") || newPassword.getText().toString().equals("") || newPasswordAgain.getText().toString().equals("")) {
-//                            ToastUtil.showToast(AlterActivity.this, "请将密码补充完整");
-//                        } else if (!newPassword.getText().toString().equals(newPasswordAgain.getText().toString())) {
-//                            ToastUtil.showToast(AlterActivity.this, "两次输入的密码不一致");
-//                        } else {
-//                            presenter.changePassword(8, oldPassword.getText().toString(), newPassword.getText().toString());
-//                        }
-//                    }
-//                });
-//                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        onDismiss();
-//                    }
-//                });
-//                builder.show();
                 break;
             case R.id.head_relative:
                 startActivity(new Intent(this, AlterPhotoActivity.class));
@@ -552,17 +444,35 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
 //        editor.remove("already");
 //        editor.putInt("already",0);
 //        editor.commit();
-        SharedPrefsUtil.putValue(this,"already","already",0);
-//        User user;
-//        user= BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
-//        user.setAlready(0);
-//        BaseApplication.getDaosession().getUserDao().update(user);
-        DBUtil.getUserDao().deleteAll();
-        //退出之前清除所有Activity
-        ActivityStack.getScreenManager().clearAllActivity();
+        android.app.AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setMessage("您确定要退出吗?");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
 
-        Intent intent = new Intent(this,LogInActivity.class);
-        startActivity(intent);
+                SharedPrefsUtil.putValue(AlterActivity.this, "already", "already", 0);
+                DBUtil.getUserDao().deleteAll();
+                DBUtil.getRunDao().deleteAll();
+                DBUtil.getStepsDao().deleteAll();
+
+                Intent intent = new Intent(AlterActivity.this, LogInActivity.class);
+                startActivity(intent);
+                onBackPressed();
+                //退出之前清除所有Activity
+                ActivityStack.getScreenManager().clearAllActivity();
+            }
+        });
+        dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -580,10 +490,11 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-
+    String realPath;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void photoChooseEvent(EventEntry eventEntry) {
         final String photoPath = eventEntry.photos.get(0).getPath();
+        realPath = photoPath;
 //        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
         eventEntry.photos.clear();
         XLog.e("上面这个执行了");
@@ -591,20 +502,13 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String str = BitmapCompressUpUtils.compressImage(photoPath,photoPath+"111",50);
-                Message msg = Message.obtain(null,COMPRESS_IMAGE_SUCCESS,str);
+                String str = BitmapCompressUpUtils.compressImage(photoPath, photoPath + "111", 50);
+                Message msg = Message.obtain(null, COMPRESS_IMAGE_SUCCESS, str);
                 handler.sendMessage(msg);
             }
         }).start();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void photoChoosesEvent(PhotoEntry entry) {
-        String photoPath = entry.getPath();
-//        ImageUtil.imageDisplayWithFile(new File(photoPath), circleImageView);
-//        LoaderFactory.getGlideLoader().loadFile(circleImageView,new File(photoPath),null);
-        postPhoto(photoPath);
-    }
 
     private void postPhoto(final String path) {
         LoaderFactory.getGlideLoader().clearCacheMemory(AlterActivity.this);
@@ -630,34 +534,44 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
             public void onResponse(Call call, Response response) throws IOException {
                 User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
                 Gson gson = new Gson();
-                ImgInfo imgInfo =gson.fromJson(response.body().string(),ImgInfo.class);
+                final ImgInfo imgInfo = gson.fromJson(response.body().string(), ImgInfo.class);
                 XLog.e("上传头像成功了");
-                if(imgInfo.getCode()==500){
-                    Snackbar.make(container,"未知的错误发生了",Snackbar.LENGTH_SHORT).show();
+                if (imgInfo.getCode() == 500) {
+                    Snackbar.make(container, "未知的错误发生了", Snackbar.LENGTH_SHORT).show();
                     deletePhoto(path);
-                }else {
+                } else {
                     user.setUImg(imgInfo.getUserImg());
                     XLog.e("");
-                    LoaderFactory.getGlideLoader().clearDiskMemory(AlterActivity.this);
+
                     Message message = new Message();
-                    message.what =1;
-                    message.obj=imgInfo.getUserImg();
+                    message.what = 1;
+                    message.obj = imgInfo.getUserImg();
                     handler.sendMessage(message);
                     BaseApplication.getDaosession().getUserDao().update(user);
                     XLog.e("这里已经把头像插进去了");
+
+                    //由于更换了头像，需要进行页面刷新，所以在这里讲所有缓存清除
+                    GlideCacheUtil.getInstance().clearImageDiskCache(AlterActivity.this);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GlideCacheUtil.getInstance().clearImageMemoryCache(AlterActivity.this);
+                            Glide.with(AlterActivity.this).load(realPath).into(circleImageView);//重新设置头
+                        }
+                    });
                     deletePhoto(path);
+                    SharedPrefsUtil.putValue(AlterActivity.this, "userinfo", "userImage", imgInfo.getUserImg());
                     EventBus.getDefault().post(new Info());
                 }
             }
-
-
         });
     }
 
 
     private void deletePhoto(String path) {
         File file = new File(path);
-        if(file.exists()){
+        if (file.exists()) {
             file.delete();
         }
     }

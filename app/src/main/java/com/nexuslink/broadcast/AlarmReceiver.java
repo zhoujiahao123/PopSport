@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Vibrator;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -51,8 +52,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             return ;
         }
         //设置震动
-        /*final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(new long[]{1000,1000},0);*/
+        final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(new long[]{1000,1000},0);
         //采用系统弹窗的方式
         final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
@@ -80,7 +81,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 startRun.putExtra("rId",room.getRId());
                 context.startActivity(startRun);
                 wm.removeView(view);
-               // vibrator.cancel();
+                vibrator.cancel();
             }
         });
         view.findViewById(R.id.cancel_tv).setOnClickListener(new View.OnClickListener() {

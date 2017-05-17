@@ -8,41 +8,165 @@
     tools:context="com.nexuslink.ui.activity.RunHouseResultActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            app:expandedTitleMarginStart="@dimen/spacing_small"
-            app:expandedTitleMarginBottom="@dimen/spacing_small"
-            app:expandedTitleTextAppearance="@style/RunHouseResult.TitleText"
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginBottom="@dimen/spacing_small"
+            app:expandedTitleMarginStart="@dimen/spacing_small"
+            app:expandedTitleTextAppearance="@style/RunHouseResult.TitleText"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <android.support.constraint.ConstraintLayout
-                android:fitsSystemWindows="true"
-                android:id="@+id/constrainLayout"
-                app:layout_collapseMode="parallax"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <com.nexuslink.util.CircleImageView
-                    android:id="@+id/champion"
-                    android:layout_width="@dimen/image_size_post_image"
-                    android:layout_height="@dimen/image_size_post_image"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher"
-                    app:layout_constraintLeft_toLeftOf="@id/constrainLayout"
-                    app:layout_constraintRight_toRightOf="@id/constrainLayout"
-                    app:layout_constraintTop_toTopOf="@id/constrainLayout"
-                    app:layout_constraintBottom_toBottomOf="@id/constrainLayout"
-                     />
-            </android.support.constraint.ConstraintLayout>
 
+            <com.nexuslink.ui.view.PersonInfoBezierView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:paddingBottom="10dp"
+                app:dstColor="@color/ghost_white"
+                android:background="@drawable/person_info_background"
+                app:paddingHeight="60dp">
+
+                <com.nexuslink.util.CircleImageView
+                    android:id="@+id/circleImageView2"
+                    android:layout_width="@dimen/image_size_large"
+                    android:layout_height="@dimen/image_size_large"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="48dp"
+                    android:src="@drawable/poplog"
+
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/No_1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_large"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/circleImageView2"
+                    app:layout_constraintTop_toTopOf="@+id/circleImageView2" />
+
+                <TextView
+                    android:id="@+id/No1.name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="姓名"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_large"
+                    app:layout_constraintLeft_toLeftOf="@+id/circleImageView2"
+                    app:layout_constraintRight_toRightOf="@+id/circleImageView2"
+                    app:layout_constraintTop_toBottomOf="@+id/circleImageView2" />
+
+                <TextView
+                    android:id="@+id/No1.steps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="5500"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/No1.miles"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/No1.name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="steps"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="@dimen/font_small"
+                    app:layout_constraintLeft_toLeftOf="@+id/No1.steps"
+                    app:layout_constraintRight_toRightOf="@+id/No1.steps"
+                    app:layout_constraintTop_toBottomOf="@+id/No1.steps" />
+
+                <TextView
+                    android:id="@+id/No1.miles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="5500"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/No1.steps"
+                    app:layout_constraintLeft_toRightOf="@id/No1.steps"
+                    app:layout_constraintRight_toLeftOf="@+id/No1.fans" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="miles"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="@dimen/font_small"
+                    app:layout_constraintLeft_toLeftOf="@+id/No1.miles"
+                    app:layout_constraintRight_toRightOf="@+id/No1.miles"
+                    app:layout_constraintTop_toBottomOf="@+id/No1.miles" />
+
+                <TextView
+                    android:id="@+id/No1.fans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="5500"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/No1.miles"
+                    app:layout_constraintLeft_toRightOf="@id/No1.miles"
+                    app:layout_constraintRight_toLeftOf="@+id/No1.goal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="fans"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="@dimen/font_small"
+                    app:layout_constraintLeft_toLeftOf="@+id/No1.fans"
+                    app:layout_constraintRight_toRightOf="@+id/No1.fans"
+                    app:layout_constraintTop_toBottomOf="@+id/No1.fans" />
+
+
+                <TextView
+                    android:id="@+id/No1.goal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="5500"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/No1.fans"
+                    app:layout_constraintLeft_toRightOf="@id/No1.fans"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="type"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="@dimen/font_small"
+                    app:layout_constraintLeft_toLeftOf="@+id/No1.goal"
+                    app:layout_constraintRight_toRightOf="@+id/No1.goal"
+                    app:layout_constraintTop_toBottomOf="@+id/No1.goal" />
+
+            </com.nexuslink.ui.view.PersonInfoBezierView>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -54,7 +178,8 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_run_house_result" />
-
-
+    <com.jude.easyrecyclerview.EasyRecyclerView
+        android:id="@+id/other_persons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.jude.easyrecyclerview.EasyRecyclerView>
 </android.support.design.widget.CoordinatorLayout>

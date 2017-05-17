@@ -81,7 +81,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
-        <!--测试-->
+        <!-- 测试 -->
 
         <activity
             android:name=".ui.activity.LogInActivity"
@@ -128,26 +128,13 @@
 
         <activity android:name=".ui.activity.ViewImageShowActivity" />
         <activity
-            android:name=".ui.activity.FriendInfoActivity"
-            android:theme="@style/TranslucentBar" />
-        <activity android:name=".ui.activity.AlterActivity" />
-        <activity
             android:name=".ui.activity.AlterPhotoActivity"
             android:theme="@style/ChoosePhotoStyle" />
         <activity android:name=".ui.activity.RankActivity" />
-        <activity android:name=".ui.activity.AchievementActivity" />
         <activity android:name=".ui.activity.TaskActivity" />
         <activity
             android:name=".ui.activity.SignInActivity"
             android:theme="@style/AppTheme" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".ui.activity.FriendInfoActivityS"
@@ -187,6 +174,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.AlterActivity" />
+        <activity android:name=".ui.activity.FriendsAndFansActivity" />
+        <activity android:name=".ui.activity.OtherPersonActivity" />
+        <activity android:name=".ui.activity.SearchActivity"></activity>
     </application>
 
 </manifest>

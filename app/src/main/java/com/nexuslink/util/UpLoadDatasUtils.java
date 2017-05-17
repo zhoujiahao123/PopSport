@@ -8,12 +8,17 @@ import com.nexuslink.Steps;
 import com.nexuslink.StepsDao;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.Result;
+import com.nexuslink.model.data.TaskFlag;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import retrofit2.Call;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by 猿人 on 2017/3/2.
@@ -24,6 +29,34 @@ public class UpLoadDatasUtils {
     private static final RunDao runDao = DBUtil.getRunDao();
     private static final StepsDao stepsDao = DBUtil.getStepsDao();
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    public static void upLoadTaskInfoNor(int uId,int type){
+        ApiUtil.getInstance(Constants.BASE_URL)
+                .upLoadTask(uId,type,50)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<TaskFlag>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(TaskFlag taskFlag) {
+
+                    }
+                });
+
+    }
+    public static void upLoadTaskInfoSup(int uId,int type){
+
+    }
+
 
     public synchronized static void upLoadRunDatas() {
         List<Run> runList = runDao.queryBuilder().where(RunDao.Properties.HasUpLoad.eq(0)).list();
@@ -90,4 +123,6 @@ public class UpLoadDatasUtils {
 
         }
     }
+
+
 }

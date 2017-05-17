@@ -1,12 +1,15 @@
 package com.nexuslink.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMap.OnMapLoadedListener;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
@@ -46,13 +50,13 @@ import java.util.concurrent.Executors;
  * 实现轨迹回放、纠偏后轨迹回放
  * 
  */
-public class RecordShowActivity extends Activity implements
+public class RecordShowActivity extends AppCompatActivity implements
 		OnMapLoadedListener, TraceListener, OnClickListener {
 	private final static int AMAP_LOADED = 2;
 
 	private RadioButton mOriginRadioButton, mGraspRadioButton;
 	private ImageView mDisplaybtn,mBackPressIcon;
-
+	private Toolbar mToolbar;
 	private MapView mMapView;
 	private AMap mAMap;
 	private Marker mOriginStartMarker, mOriginEndMarker, mOriginRoleMarker;
@@ -73,6 +77,17 @@ public class RecordShowActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recorddisplay_activity);
+
+		try {
+			MapsInitializer.initialize(this);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		mMapView = (MapView) findViewById(R.id.map);
 		mMapView.onCreate(savedInstanceState);// 此方法必须重写
 		mGraspRadioButton = (RadioButton) findViewById(R.id.record_show_activity_grasp_radio_button);
@@ -80,13 +95,22 @@ public class RecordShowActivity extends Activity implements
 		mOriginRadioButton.setOnClickListener(this);
 		mGraspRadioButton.setOnClickListener(this);
 		mDisplaybtn = (ImageView) findViewById(R.id.displaybtn);
-		mBackPressIcon = (ImageView) findViewById(R.id.back_icon);
-		mBackPressIcon.setOnClickListener(this);
+
 		mDisplaybtn.setOnClickListener(this);
 
 		int threadPoolSize = Runtime.getRuntime().availableProcessors() * 2 + 3;
 		mThreadPool = Executors.newFixedThreadPool(threadPoolSize);
 		initMap();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case android.R.id.home:
+				onBackPressed();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void initMap() {
@@ -412,9 +436,6 @@ public class RecordShowActivity extends Activity implements
 			setOriginEnable(true);
 			mDisplaybtn.setImageResource(R.drawable.play);
 			resetOriginRole();
-			break;
-		case R.id.back_icon:
-			onBackPressed();
 			break;
 		}
 	}

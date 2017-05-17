@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,8 +56,6 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     LoadingView progress;
     @BindView(R.id.activity_run_house_detail)
     LinearLayout activityRunHouseDetail;
-    @BindView(R.id.back_icon)
-    ImageView backIcon;
     //===============================================变量
     private RoomsBean roomBean;
     private RunHouseDetailAdapter adapter;
@@ -96,21 +94,17 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         if (isDataChanged) {
             EventBus.getDefault().post("刷新跑房");
         }
-
     }
 
     private void initViews() {
+
         //设置toolbar
-        backIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //reyclerview设置
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         //进行界面的设置
@@ -155,9 +149,19 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
 
         } else if (mJoinInBt.getText().toString().equals("退出跑房")) {
             presenter.quitRoom(roomBean.getRoomId());
-
+            EventBus.getDefault().post( roomBean.getRoomId());//取消闹钟提醒
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -194,15 +198,15 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         mPersonNum.setText(adapter.getItemCount() + "人");
         changToJoin();
         isDataChanged = true;
-        if(adapter.getItemCount() == 0){
-           onBackPressed();
+        if (adapter.getItemCount() == 0) {
+            onBackPressed();
         }
     }
 
     @Override
     public void insertOneRoom() {
         final HasJoinedRoomsDao joinedRoomsDao = DBUtil.getHasJoinedRoomsDap();
-        HasJoinedRooms room = new HasJoinedRooms(null, roomBean.getRoomId(),roomBean.getRoomName(),adapter.getItemCount(),roomBean.getStartTime(),roomBean.getRoomGoal(),
+        HasJoinedRooms room = new HasJoinedRooms(null, roomBean.getRoomId(), roomBean.getRoomName(), adapter.getItemCount(), roomBean.getStartTime(), roomBean.getRoomGoal(),
                 roomBean.getRoomType());
         joinedRoomsDao.insert(room);
         //重新设置闹钟

@@ -9,7 +9,6 @@
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:background="@color/colorPrimary"
-            android:id="@+id/toolbar_step_and_run"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>

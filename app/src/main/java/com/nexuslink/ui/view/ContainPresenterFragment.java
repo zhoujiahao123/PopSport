@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nexuslink.ui.BaseFragment;
+import com.nexuslink.ui.fragment.BaseFragment;
 
 import butterknife.ButterKnife;
 
