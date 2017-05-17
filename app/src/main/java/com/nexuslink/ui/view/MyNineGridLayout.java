@@ -48,4 +48,5 @@ public class MyNineGridLayout extends NineGridLayout {
         intent.putExtra(ViewImageShowActivity.IMAGES_DATA_LIST, (Serializable) urlList);
         mContext.startActivity(intent);
     }
+
 }

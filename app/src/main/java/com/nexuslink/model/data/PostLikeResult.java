@@ -6,6 +6,11 @@ package com.nexuslink.model.data;
 
 public class PostLikeResult {
     private int code;
+    /**
+     * message : like
+     */
+
+    private String message;
 
     public int getCode() {
         return code;
@@ -13,5 +18,13 @@ public class PostLikeResult {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

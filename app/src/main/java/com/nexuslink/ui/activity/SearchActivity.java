@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -49,8 +50,8 @@ public class SearchActivity extends AppCompatActivity {
     private void initViews() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.search);
-        mToolbar.setTitleTextColor(getColor(R.color.white));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#FFFFFF\">"+"搜索"+"</font>"));
+
 
         adapter = new SearchAdapter(this);
         randomFriendsAdapter = new RandomFriendsAdapter(this);
@@ -84,7 +85,7 @@ public class SearchActivity extends AppCompatActivity {
                                 randomFriendsAdapter.clear();
                             }
                             mRecycler.setAdapter(randomFriendsAdapter);
-                            randomFriendsAdapter.addAll(randomSearchResult.getRandomUsers());
+                            randomFriendsAdapter.addAll(randomSearchResult.getUsers());
                         }
                     }
 

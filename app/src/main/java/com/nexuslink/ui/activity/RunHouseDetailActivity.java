@@ -1,6 +1,11 @@
 package com.nexuslink.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nexuslink.HasJoinedRooms;
 import com.nexuslink.HasJoinedRoomsDao;
@@ -22,6 +28,7 @@ import com.nexuslink.ui.adapter.RunHouseDetailAdapter;
 import com.nexuslink.ui.view.RunHouseDetailView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.TimeUtils;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
@@ -32,6 +39,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.nexuslink.broadcast.AlarmReceiver.COME_FROM_RUNHOUSE;
+import static com.nexuslink.broadcast.AlarmReceiver.COME_FROM_RUNHOUSE_VALUE;
 
 
 public class RunHouseDetailActivity extends AppCompatActivity implements RunHouseDetailView {
@@ -91,6 +101,31 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         }
     }
 
+    private final int OVERLAY_PERMISSION_REQ_CODE = 1;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+            if(!Settings.canDrawOverlays(this)){
+                ToastUtil.showToast(this,"检测到您还未授予悬浮窗口权限，请您授予");
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                startActivityForResult(intent,OVERLAY_PERMISSION_REQ_CODE);
+            }
+        }
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+            if(Build.VERSION.SDK_INT>=23) {
+                if (!Settings.canDrawOverlays(this)) {
+                    Toast.makeText(this, "权限授予失败，程序可能无法正确运行", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "权限授予成功！", Toast.LENGTH_SHORT).show();
+                    //有悬浮窗权限开启服务绑定 绑定权限
+                }
+            }
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -116,6 +151,8 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         mRunHouseExpectTv.setText(roomBean.getRoomGoal() + str);
         //设置目标
         mRunHouseStartTimeTv.setText(roomBean.getStartTime());
+        //检测是否已经到
+        checkTimeAndShowRemind(roomBean.getStartTime());
         //users设置
         adapter = new RunHouseDetailAdapter(this, roomBean.getUsers());
         mRecyclerView.setAdapter(adapter);
@@ -127,7 +164,40 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
                 break;
             }
         }
+    }
 
+    private void checkTimeAndShowRemind(String timeStr) {
+        //判断是否加入跑房
+        HasJoinedRooms rooms = DBUtil.getHasJoinedRoomsDap().queryBuilder().where(HasJoinedRoomsDao.Properties.RId.eq(roomBean.getRoomId())).build().unique();
+        if(rooms==null){
+            return;
+        }
+        if(System.currentTimeMillis() > TimeUtils.DateToMills(timeStr)){
+            AlertDialog dialog ;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提醒");
+            builder.setMessage("您的跑房时间已到了，要进入跑步吗?");
+            builder.setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Intent startRun = new Intent(RunHouseDetailActivity.this, RunActivity.class);
+                    startRun.putExtra(COME_FROM_RUNHOUSE, COME_FROM_RUNHOUSE_VALUE);
+                    startRun.putExtra("type", roomBean.getRoomType());
+                    startRun.putExtra("goal", roomBean.getRoomGoal());
+                    startRun.putExtra("rId", roomBean.getRoomId());
+                    startActivity(startRun);
+                    finish();
+                }
+            });
+            builder.setNegativeButton("算了吧", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog = builder.show();
+        }
     }
 
     private void changToQuit() {
@@ -149,7 +219,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
 
         } else if (mJoinInBt.getText().toString().equals("退出跑房")) {
             presenter.quitRoom(roomBean.getRoomId());
-            EventBus.getDefault().post( roomBean.getRoomId());//取消闹钟提醒
+            EventBus.getDefault().post(new Integer(roomBean.getRoomId()));//取消闹钟提醒
         }
 
     }

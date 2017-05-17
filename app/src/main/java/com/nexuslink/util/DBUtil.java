@@ -27,5 +27,13 @@ public class DBUtil {
     public static HasJoinedRoomsDao getHasJoinedRoomsDap(){
         return BaseApplication.getDaosession().getHasJoinedRoomsDao();
     }
+    public static void clearAll(){
+        BaseApplication.getDaosession().getStepsDao().deleteAll();
+        BaseApplication.getDaosession().getRunDao().deleteAll();
+        BaseApplication.getDaosession().getHasJoinedRoomsDao().deleteAll();
+        BaseApplication.getDaosession().getTaskMileagesDao().deleteAll();
+        BaseApplication.getDaosession().getTaskStepsDao().deleteAll();
+        BaseApplication.getDaosession().getUserDao().deleteAll();
+    }
 
 }

@@ -78,6 +78,7 @@ public class MainViewActivity extends BaseActivity {
     }
 
 
+
     private long mPressTime = 0;
     @Override
     public void onBackPressed() {

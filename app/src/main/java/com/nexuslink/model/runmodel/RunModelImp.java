@@ -31,7 +31,7 @@ import static android.content.ContentValues.TAG;
 public class RunModelImp implements RunModel {
     //===============================================辅助变量
     private int duration;
-    private int seconds,minutes,hours;
+    private int seconds, minutes, hours;
     DecimalFormat df = new DecimalFormat("#0.0");
     /**
      * api
@@ -56,7 +56,7 @@ public class RunModelImp implements RunModel {
             String _date = date.split(" ")[0];
             String time = date.split(" ")[1];
             insertNewRecord(String.valueOf(distance), duration, average, pathLineString, startPoint,
-                    endPoint, _date,time, kcal);
+                    endPoint, _date, time, kcal);
 
         }
     }
@@ -90,9 +90,9 @@ public class RunModelImp implements RunModel {
     }
 
 
-
     /**
      * m/s
+     *
      * @param distance
      * @return
      */
@@ -130,21 +130,11 @@ public class RunModelImp implements RunModel {
     }
 
 
-    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date,String time, float kcal) {
-        if(mRunDao.loadAll() == null){
-            Run run = new Run((long) 0, distance,
-                    duration, average, pathLineString,
-                    startPoint, endPoint, date,time, kcal,false);
-            mRunDao.insert(run);
-        }else{
-            Run run = new Run((long) mRunDao.loadAll().size(), distance,
-                    duration, average, pathLineString,
-                    startPoint, endPoint, date,time, kcal,false);
-            mRunDao.insert(run);
-        }
-
-
-        Log.i(TAG,mRunDao.loadAll().size()+"");
+    public void insertNewRecord(String distance, String duration, String average, String pathLineString, String startPoint, String endPoint, String date, String time, float kcal) {
+        Run run = new Run(null, distance,
+                duration, average, pathLineString,
+                startPoint, endPoint, date, time, kcal, false);
+        mRunDao.insert(run);
     }
 
     @Override
@@ -163,18 +153,19 @@ public class RunModelImp implements RunModel {
     @Override
     public String getRealCurrentTime() {
 
-        return getRealTime(hours)+":"+getRealTime(minutes)+":"+getRealTime(seconds);
+        return getRealTime(hours) + ":" + getRealTime(minutes) + ":" + getRealTime(seconds);
 
     }
 
     /**
      * 单位kcol
+     *
      * @param distance 单位m
      * @return
      */
     public String getCurrentCol(float distance) {
         final int weight = UserUtils.getUserWeight();
-        return df.format(weight * distance * 1.036f/1000);
+        return df.format(weight * distance * 1.036f / 1000);
     }
 
     public String getCurrentMiles(float distance) {
@@ -182,20 +173,17 @@ public class RunModelImp implements RunModel {
     }
 
 
-
-
-
     @Override
     public void postRoomData(int rId, long goal, final CallBackListener listener) {
-        api.setGoal(UserUtils.getUserId(),rId,goal)
+        api.setGoal(UserUtils.getUserId(), rId, goal)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<RoomGoal>() {
                     @Override
                     public void call(RoomGoal roomGoal) {
-                        if(roomGoal.getCode() == Constants.SUCCESS){
+                        if (roomGoal.getCode() == Constants.SUCCESS) {
                             listener.onFinish(roomGoal.getGoals());
-                        }else{
+                        } else {
                             listener.onError(new Exception("上传跑房数据时失败"));
                         }
                     }
