@@ -91,6 +91,7 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

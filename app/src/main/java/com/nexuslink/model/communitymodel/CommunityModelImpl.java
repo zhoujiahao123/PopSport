@@ -1,10 +1,7 @@
 package com.nexuslink.model.communitymodel;
 
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
@@ -15,15 +12,13 @@ import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.util.ApiUtil;
-import com.nexuslink.util.OkHttpUtils;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
-import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.util.concurrent.TimeoutException;
 
-import okhttp3.FormBody;
-import okhttp3.Request;
-import okhttp3.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -35,20 +30,7 @@ import rx.schedulers.Schedulers;
 public class CommunityModelImpl implements CommunityModel {
 
     Api api = ApiUtil.getInstance(Constants.BASE_URL);
-    private Gson gson = new Gson();
-    private final int SUCCESS = 1;
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case SUCCESS:
 
-                    break;
-            }
-
-        }
-    };
     @Override
     public void getArticles(int userId, final CallBackListener listener) {
         api.getArticles(userId, 0).subscribeOn(Schedulers.io())
@@ -60,6 +42,7 @@ public class CommunityModelImpl implements CommunityModel {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         listener.onError((Exception) e);
                     }
 
@@ -120,9 +103,9 @@ public class CommunityModelImpl implements CommunityModel {
 
                     @Override
                     public void onNext(PostLikeResult likeResult) {
-                        if(likeResult.getCode() == Constants.SUCCESS)
-                        //flag判断回调
-                        listener.onFinish(null);
+                        if (likeResult.getCode() == Constants.SUCCESS)
+                            //flag判断回调
+                            listener.onFinish(null);
                     }
                 });
     }
@@ -196,7 +179,6 @@ public class CommunityModelImpl implements CommunityModel {
                     public void onError(Throwable e) {
 
                     }
-
                     @Override
                     public void onNext(CommentInfo commentInfo) {
                         if ((commentInfo.getCode() == Constants.SUCCESS)) {
@@ -213,32 +195,37 @@ public class CommunityModelImpl implements CommunityModel {
 
     @Override
     public void getHis(final int uId, final int writerId, final CallBackListener listener) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                FormBody body = new FormBody.Builder().add("uId", String.valueOf(uId))
-                        .add("writerId", String.valueOf(writerId)).build();
-                Request request = new Request.Builder().post(body).url(Constants.BASE_URL + "article/getHis").build();
-                try {
-                    Response response = OkHttpUtils.getInstance().newCall(request).execute();
-                    String res = response.body().string();
-                    if (res != null) {
-                        ArticleBean articleBean = gson.fromJson(res, ArticleBean.class);
-                        Log.i("实体类", articleBean.toString());
-                        if (articleBean.getCode() == Constants.SUCCESS) {
-                            listener.onFinish(articleBean.getArticles());
-                        } else {
-                            listener.onError(new Exception("取回话题出错"));
-                        }
-                    } else {
-                        listener.onError(new Exception("取回话题出错"));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    listener.onError(e);
-                }
-            }
-        }).start();
+      try {
+          api.getHis(uId, writerId)
+                  .subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(new Subscriber<ArticleBean>() {
+                      @Override
+                      public void onCompleted() {
+
+                      }
+
+                      @Override
+                      public void onError(Throwable e) {
+                          if (e instanceof TimeoutException || e instanceof SocketTimeoutException
+                                  || e instanceof ConnectException){
+                              Log.i("fffff","超时");
+                          }
+                          listener.onError((Exception) e);
+                      }
+
+                      @Override
+                      public void onNext(ArticleBean articleBean) {
+                          if (articleBean.getCode() == Constants.SUCCESS) {
+                              listener.onFinish(articleBean.getArticles());
+                          } else {
+                              listener.onError(new Exception("取回话题出错"));
+                          }
+                      }
+                  });
+      }catch (Exception e){
+          e.printStackTrace();
+      }
 
     }
 }

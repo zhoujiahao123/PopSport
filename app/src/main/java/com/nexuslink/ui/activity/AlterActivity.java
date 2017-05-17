@@ -38,13 +38,14 @@ import com.nexuslink.model.data.Info;
 import com.nexuslink.model.data.UserInfo;
 import com.nexuslink.presenter.alterpresenter.AlterPresenter;
 import com.nexuslink.presenter.alterpresenter.AlterPresenterImpl;
-import com.nexuslink.service.ClearService;
 import com.nexuslink.service.StepService;
 import com.nexuslink.ui.dialog.AlterPasswordDialog;
 import com.nexuslink.ui.view.AlterView;
 import com.nexuslink.util.ActivityStack;
 import com.nexuslink.util.BitmapCompressUpUtils;
 import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.DBUtil;
+import com.nexuslink.util.DataCleanManager;
 import com.nexuslink.util.GlideCacheUtil;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.ImageUtil;
@@ -454,16 +455,21 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                SharedPrefsUtil.putValue(AlterActivity.this, "already", "already", 0);
                 //停止运行service
                 Intent intent1 = new Intent(AlterActivity.this, StepService.class);
                 stopService(intent1);
-                ClearService.start(AlterActivity.this);
-
+                DataCleanManager.clearUserInfoSharePreference(AlterActivity.this);
+                DataCleanManager.cleanExternalCache(AlterActivity.this);
+                DataCleanManager.cleanInternalCache(AlterActivity.this);
+                DBUtil.clearAll();
+                ActivityStack.getScreenManager().clearAllActivity();
                 Intent intent = new Intent(AlterActivity.this, LogInActivity.class);
                 startActivity(intent);
                 finish();
                 //退出之前清除所有Activity
-                ActivityStack.getScreenManager().clearAllActivity();
+
+
 
             }
         });

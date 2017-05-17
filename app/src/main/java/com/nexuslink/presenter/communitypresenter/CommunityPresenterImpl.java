@@ -19,8 +19,10 @@ import com.nexuslink.util.cache.DiskLruCacheHelper;
 import com.vanniktech.emoji.EmojiEditText;
 
 import java.io.Serializable;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by 猿人 on 2017/2/12.
@@ -34,7 +36,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     public CommunityPresenterImpl(CommunityView mCommunityView) {
         this.mCommunityView = mCommunityView;
         mCommunity = new CommunityModelImpl();
-         helper = BaseApplication.getHelper();
+        helper = BaseApplication.getHelper();
 
     }
 
@@ -120,7 +122,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
             @Override
             public void onError(Exception e) {
-                mCommunityView.showError("加载出错");
+                mCommunityView.showError(e.getMessage());
             }
         });
     }
@@ -150,7 +152,12 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
             @Override
             public void onError(Exception e) {
-                mCommunityView.showError("刷新失败,请重试");
+                if (e instanceof TimeoutException || e instanceof SocketTimeoutException) {
+                    mCommunityView.showError("请求超时，请重试");
+                } else {
+                    mCommunityView.showError("请求错误，请重试");
+                }
+
 
                 if (autoRefresh) {
                     mCommunityView.hideProgress();
@@ -214,8 +221,6 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
         });
     }
-
-
 
 
 }
