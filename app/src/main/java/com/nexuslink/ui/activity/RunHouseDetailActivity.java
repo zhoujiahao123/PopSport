@@ -102,20 +102,22 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     }
 
     private final int OVERLAY_PERMISSION_REQ_CODE = 1;
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
-            if(!Settings.canDrawOverlays(this)){
-                ToastUtil.showToast(this,"检测到您还未授予悬浮窗口权限，请您授予");
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                ToastUtil.showToast(this, "检测到您还未授予悬浮窗口权限，请您授予");
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                startActivityForResult(intent,OVERLAY_PERMISSION_REQ_CODE);
+                startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
             }
         }
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
-            if(Build.VERSION.SDK_INT>=23) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 if (!Settings.canDrawOverlays(this)) {
                     Toast.makeText(this, "权限授予失败，程序可能无法正确运行", Toast.LENGTH_SHORT).show();
                 } else {
@@ -169,11 +171,11 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
     private void checkTimeAndShowRemind(String timeStr) {
         //判断是否加入跑房
         List<HasJoinedRooms> rooms = DBUtil.getHasJoinedRoomsDap().queryBuilder().where(HasJoinedRoomsDao.Properties.RId.eq(roomBean.getRoomId())).build().list();
-        if(rooms==null){
+        if (rooms == null || rooms.size() == 0) {
             return;
         }
-        if(System.currentTimeMillis() > TimeUtils.DateToMills(timeStr)){
-            AlertDialog dialog ;
+        if (System.currentTimeMillis() > TimeUtils.DateToMills(timeStr)) {
+            AlertDialog dialog;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提醒");
             builder.setMessage("您的跑房时间已到了，要进入跑步吗?");
@@ -227,7 +229,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -272,6 +274,11 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
         if (adapter.getItemCount() == 0) {
             onBackPressed();
         }
+        HasJoinedRooms room = DBUtil.getHasJoinedRoomsDap().queryBuilder().where(HasJoinedRoomsDao.Properties.RId.eq(roomBean.getRoomId())).unique();
+        if (room != null) {
+            DBUtil.getHasJoinedRoomsDap().delete(room);
+        }
+
     }
 
     @Override

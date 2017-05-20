@@ -107,7 +107,9 @@
             android:name="com.amap.api.v2.apikey"
             android:value="ea9a725ff880d7bdd907142465ca7392" />
 
-        <activity android:name=".ui.activity.RunActivity" />
+        <activity android:name=".ui.activity.RunActivity"
+            android:launchMode="singleTask"
+            ></activity>
         <activity android:name=".ui.activity.RunHouseDetailActivity" />
         <activity
             android:name=".ui.activity.CreateRunHouseActivity"

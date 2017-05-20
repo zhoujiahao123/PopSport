@@ -58,12 +58,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         String str = room.getRoomName();
         int length_between = str.length() + length_head;
         SpannableString spannableString = new SpannableString(tv.getText().toString() + str + "马上开始咯");
-        spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorPrimary)), length_head, length_between - 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorPrimary)), length_head, length_between , SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv.setText(spannableString);
         view.findViewById(R.id.confirm_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent startRun = new Intent(context, RunActivity.class);
+                startRun.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startRun.putExtra(COME_FROM_RUNHOUSE, COME_FROM_RUNHOUSE_VALUE);
                 startRun.putExtra("type", room.getType());
                 startRun.putExtra("goal", room.getGoal());

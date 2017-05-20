@@ -88,9 +88,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     @BindView(R.id.run_time)
     TextView runTime;
     //弹窗
-    android.app.AlertDialog.Builder builder ;
+    android.app.AlertDialog.Builder builder;
     android.app.AlertDialog dialog;
-
 
 
     //定时器
@@ -99,7 +98,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private boolean isFirstLoc = true;
     private boolean hasStartRun = false;
     private boolean isComeFromRoom = false;
-    private int type  = -1;
+    private int type = -1;
     private int goal = -1;
     private int rId = -1;
     private float mAverageSpeed = 0.0f;
@@ -139,14 +138,14 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     //关闭自动回到定位点
                     if (isFirstLoc) {
                         aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation));
-                        if(!hasStartRun){
+                        if (!hasStartRun) {
                             isFirstLoc = false;
                         }
                     }
                     //根据条件判断是否启动路线轨迹记录
                     if (mStartOrPauseBt.getText().toString().equals("暂停")) {
                         mAverageSpeed = aMapLocation.getSpeed();
-                        if(maxSpeed < mAverageSpeed){
+                        if (maxSpeed < mAverageSpeed) {
                             maxSpeed = mAverageSpeed;
                         }
                         record.addpoint(aMapLocation);
@@ -192,18 +191,18 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     private void initRoom() {
         //初始化一些数据
-        isComeFromRoom = getIntent().getBooleanExtra(AlarmReceiver.COME_FROM_RUNHOUSE,false);
-        type = getIntent().getIntExtra("type",-1);
-        goal = getIntent().getIntExtra("goal",-1);
-        rId = getIntent().getIntExtra("rId",-1);
+        isComeFromRoom = getIntent().getBooleanExtra(AlarmReceiver.COME_FROM_RUNHOUSE, false);
+        type = getIntent().getIntExtra("type", -1);
+        goal = getIntent().getIntExtra("goal", -1);
+        rId = getIntent().getIntExtra("rId", -1);
         //定义弹窗
         builder = new android.app.AlertDialog.Builder(RunActivity.this).setTitle("提示")
                 .setMessage("这次跑步目标已经达到，正在为您进行上传，请稍等...");
         dialog = builder.create();
 
-        if(type == 0){
+        if (type == 0) {
             //时间型跑房
-             countDownTimer  = new CountDownTimer(goal*60*1000,1000) {
+            countDownTimer = new CountDownTimer(goal * 60 * 1000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
 
@@ -211,21 +210,21 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
                 @Override
                 public void onFinish() {
-                    Log.i(TAG,"计时完成");
+                    Log.i(TAG, "计时完成");
                     //开启弹窗进行提示用户
                     dialog.show();
                     //上传用户信息
                     //时间性跑房上传距离
                     String str = mCurrentDistance.getText().toString();
-                    Log.i(TAG,str.substring(0,str.length()-2));
-                    mRunPresenter.postRoomData(rId,Long.parseLong(str.substring(0,str.length()-2)));
+                    Log.i(TAG, str.substring(0, str.length() - 2));
+                    mRunPresenter.postRoomData(rId, Long.parseLong(str.substring(0, str.length() - 2)));
                 }
             };
             countDownTimer.start();
             startOrPause();
-        }else if(type == 1){
+        } else if (type == 1) {
             //距离型跑房
-           TextWatcher watcher = new TextWatcher() {
+            TextWatcher watcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -233,8 +232,8 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    int distance = Integer.parseInt(s.toString().substring(0,s.toString().length()-2));
-                    if(distance >= goal){
+                    int distance = Integer.parseInt(s.toString().substring(0, s.toString().length() - 2));
+                    if (distance >= goal) {
                         //使用弹窗给用户提醒
                         dialog.show();
                         //上传用户信息 距离型跑房上传这个取得的时间
@@ -256,9 +255,9 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     protected void onResumeFragments() {
         super.onResumeFragments();
         // 缺少权限时, 进入权限配置页面
-       {
+        {
             //如何拥有权限，检查是否打开了GPS
-            if(!GPSUtil.isOPen(this)){
+            if (!GPSUtil.isOPen(this)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("提示");
                 builder.setCancelable(false);
@@ -282,7 +281,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
             }
         }
     }
-
 
 
     private void initViews() {
@@ -381,9 +379,9 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
             time.cancel();
             time = null;
         }
-        if(type == 0 && countDownTimer != null){
+        if (type == 0 && countDownTimer != null) {
             countDownTimer.cancel();
-            countDownTimer= null;
+            countDownTimer = null;
         }
         mLocationClient = null;
 
@@ -447,7 +445,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     @Override
     public void setCurrentSpeed() {
-        mAverageSpeedTv.setText(mAverageSpeed+"m/s");
+        mAverageSpeedTv.setText(mAverageSpeed + "m/s");
     }
 
     @Override
@@ -464,12 +462,12 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     @Override
     public void setMaxSpeed() {
-        maxSpeedTv.setText(maxSpeed+"m/s");
+        maxSpeedTv.setText(maxSpeed + "m/s");
     }
 
     @Override
     public void showError(String str) {
-        ToastUtil.showToast(this,str);
+        ToastUtil.showToast(this, str);
         finish();
     }
 
@@ -480,13 +478,12 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     @Override
     public void intentToResult(List<RoomGoal.GoalsBean> goalsBeenList) {
-        Intent intent = new Intent(this,RunHouseResultActivity.class);
+        Intent intent = new Intent(this, RunHouseResultActivity.class);
         intent.putParcelableArrayListExtra("resultBeans", (ArrayList<? extends Parcelable>) goalsBeenList);
-        intent.putExtra("type",type);
+        intent.putExtra("type", type);
         startActivity(intent);
         finish();
     }
-
 
 
     @OnClick({R.id.start_or_pause, R.id.finish})
@@ -504,9 +501,9 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     private void startOrPause() {
         if (mStartOrPauseBt.getText().toString().equals("开始")) {
 
-            if(hasStartRun){
+            if (hasStartRun) {
                 mLocationClient.startLocation();
-            } else{
+            } else {
                 //用户开启了轨迹记录功能
                 hasStartRun = true;
                 //开启自动回到定位处
@@ -535,7 +532,7 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
     @Override
     public void onBackPressed() {
 
-        if(hasStartRun){
+        if (hasStartRun) {
             //弹窗
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);
@@ -557,26 +554,26 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
                     int hour = Integer.parseInt(durationStr[0]);
                     int minute = Integer.parseInt(durationStr[1]);
                     int second = Integer.parseInt(durationStr[2]);
-                    int duration = hour*60*60+minute*60+second;
+                    int duration = hour * 60 * 60 + minute * 60 + second;
                     mRunPresenter.saveRecord(record.getPathline(), record.getDate(), duration);
                     dialog.dismiss();
                     //通知首界面进行更新
                     EventBus.getDefault().post(new RunViewFresh());
-                    if(!isComeFromRoom){
+                    if (!isComeFromRoom) {
                         finish();
-                    }else{
+                    } else {
                         //展示此次运动成果,这里继续上传到房间去
-                        if(type == 0){
+                        if (type == 0) {
                             String str = mCurrentDistance.getText().toString();
-                            mRunPresenter.postRoomData(rId,Long.parseLong(str.substring(0,str.length()-2)));
-                        }else if(type == 1){
-                            mRunPresenter.postRoomData(rId,TimeUtils.StrToTime(mCurrentTime.getText().toString()));
+                            mRunPresenter.postRoomData(rId, Long.parseLong(str.substring(0, str.length() - 2)));
+                        } else if (type == 1) {
+                            mRunPresenter.postRoomData(rId, TimeUtils.StrToTime(mCurrentTime.getText().toString()));
                         }
                     }
 
                 }
             });
-        }else{
+        } else {
             finish();
         }
 
@@ -591,7 +588,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         mFinish.setClickable(false);
         mFinish.setBackground(getDrawable(R.drawable.bt_run_finish_unclick));
     }
-
 
 
     /**
