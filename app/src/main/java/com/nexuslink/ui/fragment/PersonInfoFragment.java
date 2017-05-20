@@ -158,7 +158,7 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, userInfo.getUser().getUImg());
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_NAME, userInfo.getUser().getUName());
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, userInfo.getUser().getUExp());
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansNum());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansnum());
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, SEX, userInfo.getUser().getUGender());
                         }
                     }
@@ -173,7 +173,7 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                                     .into(userImage);
                             userName.setText(userInfo.getUser().getUName());
                             userLevel.setText(UserUtils.getUserLevel(userInfo.getUser().getUExp()));
-                            fansNum.setText(userInfo.getUser().getUFansNum() + "");
+                            fansNum.setText(userInfo.getUser().getUFansnum() + "");
                             sex.setText(userInfo.getUser().getUGender().equals("M") ? "男" : "女");
                         }
                     }
@@ -186,8 +186,6 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                     public void call(FriendsInfo friendsInfo) {
                         if (friendsInfo.getCode() == Constants.SUCCESS) {
                             SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, friendsInfo.getUsers().size());
-                            //请求完成
-                            SharedPrefsUtil.putValue(getContext(), "firstlogin", "firstlogin", false);
                         }
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
@@ -213,9 +211,6 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
             if (image_url == null) {
                 Glide.with(getContext()).load(R.drawable.small_pop_logo).into(userImage);
             } else {
-                //缓存到磁盘
-                Log.i(TAG, "重置头像");
-                Log.i(TAG, image_url);
                 Glide.with(getContext()).load(image_url).diskCacheStrategy(DiskCacheStrategy.RESULT).skipMemoryCache(true).into(userImage);
             }
             userName.setText(userNameStr);

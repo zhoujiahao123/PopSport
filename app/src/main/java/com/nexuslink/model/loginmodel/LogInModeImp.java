@@ -1,8 +1,7 @@
 package com.nexuslink.model.loginmodel;
 
 
-import android.util.Log;
-
+import com.google.gson.Gson;
 import com.nexuslink.Run;
 import com.nexuslink.Steps;
 import com.nexuslink.User;
@@ -13,17 +12,18 @@ import com.nexuslink.model.data.GetDistanceResult;
 import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.UIdInfo;
 import com.nexuslink.model.data.UserInfo;
-import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.DBUtil;
-import com.nexuslink.util.UserUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by ASUS-NB on 2016/12/19.
@@ -40,113 +40,123 @@ public class LogInModeImp implements LogInModel {
     }
 
     @Override
-    public void getLogInInfo(String uName, String password, final CallBackListener listener) {
-        ApiUtil.getInstance(Constants.BASE_URL)
-                .logIn(uName, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .flatMap(new Func1<UIdInfo, Observable<UserInfo>>() {
-                    @Override
-                    public Observable<UserInfo> call(UIdInfo uIdInfo) {
-                        Log.i(TAG, "第一次请求，登录请求:" + Thread.currentThread());
-                        if (uIdInfo.getCode() == Constants.SUCCESS && uIdInfo.getuId() != 0) {
-                            //清除数据
-                            DBUtil.getStepsDao().deleteAll();
-                            DBUtil.getRunDao().deleteAll();
-                            DBUtil.getUserDao().deleteAll();
+    public void getLogInInfo(final String uName, final String password, final CallBackListener listener) {
 
-                            return ApiUtil.getInstance(Constants.BASE_URL).getUserInfo(uIdInfo.getuId());
-                        } else {
-                            listener.onError(new Exception("登陆过程出错"));
-                            return null;
-                        }
+        //改用okhttpp进行网络请求
+//        第一次进行登录
+        final OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .build();
+        final Gson gson = new Gson();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RequestBody body1 = new FormBody.Builder()
+                            .add("uName",uName)
+                            .add("uPassword",password).build();
+                    Request loginRequest = new Request.Builder()
+                            .url(Constants.BASE_URL + "user/login")
+                            .post(body1)
+                            .build();
+                    Response response1 = client.newCall(loginRequest).execute();
+                    UIdInfo uIdInfo = gson.fromJson(response1.body().string(), UIdInfo.class);
+                    response1.close();
+                    if(uIdInfo.getCode() == Constants.FAILED){
+                        listener.onError(new Exception("登录过程出错"));
+                        return;
+                    }
+                    if(uIdInfo.getuId() == 0){
+                        listener.onError(new Exception("密码错误"));
+                    }
+//                    第二次请求用户信息
+                    RequestBody body2 = new FormBody.Builder()
+                            .add("uId", String.valueOf(uIdInfo.getuId())).build();
+                    Request userInfoRequest = new Request.Builder()
+                            .url(Constants.BASE_URL + "user/getInfo")
+                            .post(body2)
+                            .build();
+                    Response response2 = client.newCall(userInfoRequest).execute();
+                    UserInfo userInfo = gson.fromJson(response2.body().string(), UserInfo.class);
+                    response2.close();
+                    if (userInfo.getCode() != Constants.SUCCESS) {
+                        listener.onError(new Exception("登录过程出错"));
+                    }
+                    User user = new User();
+                    StringBuffer achievement = new StringBuffer();
+                    for (Boolean b : userInfo.getUser().getUAchievements()) {
+                        achievement.append(b + ",");
+                    }
+                    user.setAlready(1);
+                    user.setUid(userInfo.getUser().getUid());
+                    user.setUAchievements(achievement.substring(0, achievement.length() - 1));
+                    user.setUExp(userInfo.getUser().getUExp());
+                    user.setUFansNum(userInfo.getUser().getUFansnum());
+                    user.setUGender(userInfo.getUser().getUGender());
+                    user.setUHeight(userInfo.getUser().getUHeight());
+                    user.setUImg(userInfo.getUser().getUImg());
+                    user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
+                    user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
+                    user.setUName(userInfo.getUser().getUName());
+                    user.setUWeight(userInfo.getUser().getUWeight());
+                    userDao.insert(user);
 
+                    //第三次请求请求用户计步数
+                    RequestBody body3 = new FormBody.Builder()
+                            .add("uId", String.valueOf(uIdInfo.getuId())).build();
+                    Request stepsRequest = new Request.Builder()
+                            .url(Constants.BASE_URL + "sport/getStep")
+                            .post(body3)
+                            .build();
+                    Response response3 = client.newCall(stepsRequest).execute();
+                    GetStepResult stepResult = gson.fromJson(response3.body().string(), GetStepResult.class);
+                    response3.close();
+                    if (stepResult.getCode() == Constants.SUCCESS || stepResult.getCode() == Constants.FAILED) {
+                        //进行存储
+                        List<GetStepResult.RecordBean> recordBeanList = stepResult.getRecord();
+                        List<Steps> stepsList = new ArrayList<Steps>();
+                        for (GetStepResult.RecordBean recordBean : recordBeanList) {
+                            Steps steps = new Steps(null, recordBean.getStep(), recordBean.getDate(), true);
+                            stepsList.add(steps);
+                        }
+                        if (!stepsList.isEmpty()) {
+                            DBUtil.getStepsDao().insertInTx(stepsList);
+                        }
                     }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .flatMap(new Func1<UserInfo, Observable<GetDistanceResult>>() {
-                    @Override
-                    public Observable<GetDistanceResult> call(UserInfo userInfo) {
-                        Log.i(TAG, "第二次请求,请求用户信息:" + Thread.currentThread());
-                        if (userInfo.getCode() == Constants.SUCCESS) {
-                            User user = new User();
-                            StringBuffer achievement = new StringBuffer();
-                            for (Boolean b : userInfo.getUser().getUAchievements()) {
-                                achievement.append(b + ",");
-                            }
-                            user.setAlready(1);
-                            user.setUid(userInfo.getUser().getUid());
-                            user.setUAchievements(achievement.substring(0, achievement.length() - 1));
-                            user.setUExp(userInfo.getUser().getUExp());
-                            user.setUFansNum(userInfo.getUser().getUFansNum());
-                            user.setUGender(userInfo.getUser().getUGender());
-                            user.setUHeight(userInfo.getUser().getUHeight());
-                            user.setUImg(userInfo.getUser().getUImg());
-                            user.setUHistoryMileage(Long.valueOf(userInfo.getUser().getUHistoryMileage()));
-                            user.setUHistoryStep(Long.valueOf(userInfo.getUser().getUHistoryStep()));
-                            user.setUName(userInfo.getUser().getUName());
-                            user.setUWeight(userInfo.getUser().getUWeight());
-                            userDao.insert(user);
-                            Log.i(TAG, (userDao.loadAll() == null ? "yes" : "no"));
-                            if (!userDao.loadAll().isEmpty()) {
-                                Log.i(TAG, userDao.loadAll().size() + "");
-                                List<User> list = userDao.loadAll();
-                                Log.i(TAG, list.get(0).getUid() + " " + list.get(0).getAlready());
-                            }
 
-                            Log.i(TAG, "插入用户数据成功");
-                            return ApiUtil.getInstance(Constants.BASE_URL).getDistance(userInfo.getUser().getUid());
-                        } else {
-                            listener.onError(new Exception("登陆过程出错"));
-                            return null;
+                    //第四次请求，请求跑步公里数信息
+                    RequestBody body4 = new FormBody.Builder()
+                            .add("uId", String.valueOf(uIdInfo.getuId())).build();
+                    Request runRecordRequest = new Request.Builder()
+                            .url(Constants.BASE_URL + "sport/getDistance")
+                            .post(body4)
+                            .build();
+                    Response response4 = client.newCall(runRecordRequest).execute();
+                    GetDistanceResult distanceResult = gson.fromJson(response4.body().string(), GetDistanceResult.class);
+                    response4.close();
+                    if (distanceResult.getCode() == Constants.SUCCESS ) {
+                        //开始存储到本地种
+                        List<Run> runlist = new ArrayList<Run>();
+                        for (GetDistanceResult.RecordBean recordBean : distanceResult.getRecord()) {
+                            Run run = new Run(null, String.valueOf(recordBean.getDistance()),
+                                    String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
+                                    , recordBean.getPathline(), recordBean.getStartPoint(),
+                                    recordBean.getEndPoint(), recordBean.getDate(),
+                                    recordBean.getTime(), null, true);
+                            runlist.add(run);
+                        }
+                        if (!runlist.isEmpty()) {
+                            DBUtil.getRunDao().insertInTx(runlist);
                         }
                     }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .flatMap(new Func1<GetDistanceResult, Observable<GetStepResult>>() {
-                    @Override
-                    public Observable<GetStepResult> call(GetDistanceResult getDistanceResult) {
-                        Log.i(TAG, "第三次请求,请求跑步信息:" + Thread.currentThread());
-                        if (getDistanceResult.getCode() == Constants.SUCCESS) {
-                            //开始存储到本地种
-                            List<Run> runlist = new ArrayList<Run>();
-                            for (GetDistanceResult.RecordBean recordBean : getDistanceResult.getRecord()) {
-                                Run run = new Run(null, String.valueOf(recordBean.getDistance()),
-                                        String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
-                                        , recordBean.getPathline(), recordBean.getStartPoint(),
-                                        recordBean.getEndPoint(), recordBean.getDate(),
-                                        recordBean.getTime(), null, true);
-                                runlist.add(run);
-                            }
-                            if (!runlist.isEmpty()) {
-                                DBUtil.getRunDao().insertInTx(runlist);
-                            }
-                        }
-                        return ApiUtil.getInstance(Constants.BASE_URL).getStep(UserUtils.getUserId());
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(new Action1<GetStepResult>() {
-                    @Override
-                    public void call(GetStepResult getStepResult) {
-                        Log.i(TAG, "第四次请求,请求计步信息:" + Thread.currentThread());
-                        if (getStepResult.getCode() == Constants.SUCCESS) {
-                            //进行存储
-                            List<GetStepResult.RecordBean> recordBeanList = getStepResult.getRecord();
-                            List<Steps> stepsList = new ArrayList<Steps>();
-                            for (GetStepResult.RecordBean recordBean : recordBeanList) {
-                                Steps steps = new Steps(null, recordBean.getStep(), recordBean.getDate(), true);
-                                stepsList.add(steps);
-                            }
-                            if (!stepsList.isEmpty()) {
-                                DBUtil.getStepsDao().insertInTx(stepsList);
-                            }
-                            listener.onFinish(null);
-                        } else if(getStepResult.getCode() == Constants.FAILED){
-                            listener.onFinish(null);
-                        }
-                    }
-                });
+                    listener.onFinish(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    listener.onError(e);
+                }
+            }
+        }).start();
+
     }
 
 }

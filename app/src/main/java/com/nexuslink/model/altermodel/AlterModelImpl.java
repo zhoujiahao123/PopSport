@@ -49,11 +49,11 @@ public class AlterModelImpl implements AlterModel {
                         User user = BaseApplication.getDaosession().getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
                         String achievement=new String();
                         for(int i =0;i<8;i++){
-                            achievement+= String.valueOf(userInfo.getUser().getUAchievements()[i]);
+                            achievement+= String.valueOf(userInfo.getUser().getUAchievements().get(i));
                         }
                         user.setUAchievements(achievement.substring(1,achievement.length()-1));
                         user.setUExp(userInfo.getUser().getUExp());
-                        user.setUFansNum(userInfo.getUser().getUFansNum());
+                        user.setUFansNum(userInfo.getUser().getUFansnum());
                         user.setUGender(userInfo.getUser().getUGender());
                         user.setUHeight(userInfo.getUser().getUHeight());
                         user.setUImg(userInfo.getUser().getUImg());
