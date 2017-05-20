@@ -133,18 +133,25 @@ public class CommunityRecyclerAdapter extends RecyclerView.Adapter<CommunityRecy
         //设置点赞
         if (data.get(position).isLikeArticle()) {
             holder.likeView.setImageDrawable(mContext.getDrawable(R.drawable.like));
+        }else{
+            holder.likeView.setImageDrawable(mContext.getDrawable(R.drawable.dislike));
         }
         holder.likeNumTv.setText(data.get(position).getLikeNum() + "");
         holder.likeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (data.get(position).isLikeArticle()) {
-                    presenter.postDisLike(data.get(position).getUserId(), data.get(position).getArticleId(), holder.likeView, holder.likeNumTv, position);
+                    presenter.postDisLike(UserUtils.getUserId(), data.get(position).getArticleId(), holder.likeView, holder.likeNumTv, position);
+                    //刷新状态
                     holder.likeView.setImageDrawable(mContext.getDrawable(R.drawable.dislike));
-
+                    data.get(position).setLikeArticle(false);
+                    notifyDataSetChanged();
                 } else {
-                    presenter.postLike(data.get(position).getUserId(), data.get(position).getArticleId(), holder.likeView, holder.likeNumTv, position);
+                    presenter.postLike(UserUtils.getUserId(), data.get(position).getArticleId(), holder.likeView, holder.likeNumTv, position);
+                    //刷新状态
                     holder.likeView.setImageDrawable(mContext.getDrawable(R.drawable.like));
+                    data.get(position).setLikeArticle(true);
+                    notifyDataSetChanged();
                 }
             }
         });

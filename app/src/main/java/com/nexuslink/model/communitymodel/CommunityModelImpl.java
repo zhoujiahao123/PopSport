@@ -10,6 +10,7 @@ import com.nexuslink.model.data.ArticleBean;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
 import com.nexuslink.model.data.CommunityInfo;
+import com.nexuslink.model.data.PostDisLike;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.ToastUtil;
@@ -90,7 +91,7 @@ public class CommunityModelImpl implements CommunityModel {
         api.postDisLike(userId, articleId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<PostLikeResult>() {
+                .subscribe(new Subscriber<PostDisLike>() {
                     @Override
                     public void onCompleted() {
 
@@ -102,7 +103,7 @@ public class CommunityModelImpl implements CommunityModel {
                     }
 
                     @Override
-                    public void onNext(PostLikeResult likeResult) {
+                    public void onNext(PostDisLike likeResult) {
                         if (likeResult.getCode() == Constants.SUCCESS)
                             //flag判断回调
                             listener.onFinish(null);

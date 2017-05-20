@@ -59,7 +59,7 @@ public class RunHousePresenterImpl extends BasePresenterImpl<RunHouseView,List<R
             public void onFinish(List<RoomsBean> list) {
                 if (list != null && list.size() > 0) {
                     mView.addRunHouse(list);
-                    mView.showSuccess();
+//                    mView.showSuccess();
                 } else {
                     mView.showNoMore();
                 }
