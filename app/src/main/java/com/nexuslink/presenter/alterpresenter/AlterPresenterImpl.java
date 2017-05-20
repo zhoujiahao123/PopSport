@@ -7,6 +7,7 @@ import com.nexuslink.model.altermodel.OnCallBackListener;
 import com.nexuslink.model.data.ChangeInfo;
 import com.nexuslink.model.data.ChangeInfo1;
 import com.nexuslink.model.data.UserInfo;
+import com.nexuslink.ui.activity.OtherPersonActivity;
 import com.nexuslink.ui.view.AlterView;
 import com.nexuslink.ui.view.BaseView;
 
@@ -17,7 +18,6 @@ import com.nexuslink.ui.view.BaseView;
 public class AlterPresenterImpl extends AlterPresenter implements OnCallBackListener{
     AlterModel model;
     AlterView view;
-
     public AlterPresenterImpl(AlterModel model, AlterView view) {
         this.model = model;
         this.view = view;

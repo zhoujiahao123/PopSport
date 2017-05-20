@@ -12,6 +12,8 @@ import com.nexuslink.util.cache.DiskLruCacheHelper;
 
 import java.io.IOException;
 
+import cn.sharesdk.framework.ShareSDK;
+
 
 /**
  * Created by ASUS-NB on 2016/12/17.

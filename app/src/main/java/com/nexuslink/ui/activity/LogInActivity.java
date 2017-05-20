@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
 import com.nexuslink.app.BaseActivity;
 import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
@@ -19,6 +20,7 @@ import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.SharedPrefsUtil;
 import com.nexuslink.util.ToastUtil;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -69,6 +71,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
             sweetAlertDialog = new SweetAlertDialog(this);
             presenter = new LogInPresenterImp(this);
         }
+        ShareSDK.initSDK(this);
     }
 
     AlertDialog.Builder builder;
@@ -111,6 +114,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     public void authorize(int platform) {
         Platform pf = null;
+
         switch (platform) {
             case QQ:
                 pf = ShareSDK.getPlatform(cn.sharesdk.tencent.qq.QQ.NAME);
@@ -125,17 +129,26 @@ public class LogInActivity extends BaseActivity implements LoginView {
         //使用了SSO授权后，有客户端的都会优先启用客户端授权，没客户端的则任然使用网页版进行授权。
         pf.SSOSetting(false);//客户端授权
         pf.setPlatformActionListener(new PlatformActionListener() {
+            String openId;
+            String uName;
+            char uGender;
             @Override
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                 Iterator ite = hashMap.entrySet().iterator();
+                openId = platform.getDb().getUserId();
                 while (ite.hasNext()) {
                     Map.Entry entry = (Map.Entry) ite.next();
                     Object key = entry.getKey();
                     Object value = entry.getValue();
-                    Log.i(TAG, key + " " + value);
-                    ToastUtil.showToast(LogInActivity.this,"key:"+key+
-                                "value:"+value);
+                    if(key.equals("nickname")){
+                        uName = (String) value;
+                    }
+                    if(key.equals("gender")){
+                        uGender=value.equals("男")?'M':'W';
+                        SharedPrefsUtil.putValue(LogInActivity.this,"gender","gender",uGender);
+                    }
                 }
+                presenter.otherLogIn(openId,uName,uGender,null);
                 if (platform.isAuthValid()) {
                     platform.removeAccount(true);
                 }
@@ -159,6 +172,8 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
             @Override
             public void onError(Platform platform, int i, Throwable throwable) {
+                XLog.e("第三方登录失败");
+                throwable.printStackTrace();
                 if (platform.isAuthValid()) {
                     platform.removeAccount(true);
                 }
@@ -166,7 +181,7 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
             @Override
             public void onCancel(Platform platform, int i) {
-
+                XLog.e("第三方登录取消",i+"-----");
             }
         });
         pf.showUser(null);

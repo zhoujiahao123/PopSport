@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nexuslink.R;
 import com.nexuslink.User;
@@ -86,9 +87,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }else {
                     LoaderFactory.getGlideLoader().loadNet(((MyViewHodler) holder).headImage, Constants.PHOTO_BASE_URL+mData.get(position).getUImg(),null);
                 }
-                ((MyViewHodler) holder).nickName.setText(mData.get(position).getUName());
-                ((MyViewHodler) holder).rankNum.setText(position+1+"");
-                ((MyViewHodler) holder).textNum.setText(mData.get(position).getUHistoryMileage()+"");
+                ((MyViewHodler) holder).nickName.setText(mData.get(position+2).getUName());
+                ((MyViewHodler) holder).rankNum.setText(position+3+"");
+                ((MyViewHodler) holder).textNum.setText(mData.get(position+2).getUHistoryMileage()+"");
             }
         }
     }

@@ -35,6 +35,7 @@ import com.nexuslink.model.data.WeatherInfo;
 import com.nexuslink.model.data.WriteArticleResult;
 import com.nexuslink.model.search.RandomSearchResult;
 
+import java.io.File;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -71,7 +72,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("user/login")
     Observable<UIdInfo> logIn(@Field("uName") String uName, @Field("uPassword") String uPassword);
-
+    //第三方登录
+    @FormUrlEncoded
+    @POST("user/qqLogin")
+    Observable<UIdInfo> otherLogInfo(@Field("openId")int openId, @Field("uName")String uName, @Field("uGender") char uGender, @Field("uImg")File uImg);
     //获取好友的个人信息
     @FormUrlEncoded
     @POST("friend/getInfo")

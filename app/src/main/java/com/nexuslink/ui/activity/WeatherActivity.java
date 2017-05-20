@@ -181,7 +181,6 @@ public class WeatherActivity extends BaseActivity implements WeatherView, MyScro
         setAirQualityImage(weatherInfo);
         //设置今日提醒话语
         remindDes.setText(weatherInfo.getResult().getData().getPm25().getPm25().getDes());
-        Toast.makeText(this,weatherInfo.getResult().getData().getPm25().getPm25().getDes(),Toast.LENGTH_LONG).show();
         //设置天气状态
         weatherDes.setText(weatherInfo.getResult().getData().getRealtime().getWeather().getInfo());
         //设置风力级数

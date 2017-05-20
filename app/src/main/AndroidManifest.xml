@@ -119,7 +119,7 @@
         <activity android:name=".ui.activity.WriteMsgActivity" />
         <!-- 图片跳转Activity -->
 
-
+        <activity android:name=".ui.activity.OtherLogInfoAddInfo"/>
         <!-- 到点通知 -->
         <service android:name=".service.AlarmService" />
 
@@ -159,10 +159,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <data android:scheme="tencent100424468" />
-
+                <data android:scheme="tencent1106177114" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -170,7 +168,6 @@
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

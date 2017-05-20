@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/WhiteToolbarStyle">
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="信息补全"
+            android:textColor="@color/white_light"
+            android:textSize="@dimen/font_large" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/top_bar"
+            android:background="@color/white_light">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/spacing_large">
+
+
+                <TextView
+                    android:id="@+id/basic_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="基本信息"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/font_normal" />
+
+                <com.nexuslink.util.CircleImageView
+                    android:id="@+id/user_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/basic_info"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/add_placeholder" />
+
+                <TextView
+                    android:id="@+id/private_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_image"
+                    android:layout_marginTop="@dimen/spacing_huge"
+                    android:text="私人信息"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/font_normal" />
+
+                <RelativeLayout
+                    android:id="@+id/height_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_layout"
+                    android:layout_below="@id/private_info"
+                    android:layout_marginTop="@dimen/spacing_large">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="身高"
+                        android:textColor="@color/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="170cm"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/font_normal" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/weight_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_layout"
+                    android:layout_below="@id/height_layout">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="体重"
+                        android:textColor="@color/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="50kg"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/font_normal" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/weight_layout"
+                    android:layout_marginTop="@dimen/spacing_huge"
+                    android:background="@drawable/bt_run_house_background"
+                    android:text="完成"
+                    android:textColor="@color/white_light"
+                    android:textSize="@dimen/font_large" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+</RelativeLayout>

@@ -5,6 +5,8 @@ import com.nexuslink.model.loginmodel.LogInModeImp;
 import com.nexuslink.model.loginmodel.LogInModel;
 import com.nexuslink.ui.view.LoginView;
 
+import java.io.File;
+
 
 /**
  * Created by ASUS-NB on 2016/12/19.
@@ -33,6 +35,21 @@ public class LogInPresenterImp implements LoginPresenter {
             public void onError(Exception e) {
                 loginView.hideProgress();
                 loginView.loginFailed();
+            }
+        });
+    }
+
+    @Override
+    public void otherLogIn(String openId, String uName, char uGender, File uImg) {
+        logInModel.getOtherLogInInfo(openId, uName, uGender, uImg, new CallBackListener() {
+            @Override
+            public void onFinish(Object data) {
+                loginView.loginSuccess();
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         });
     }
