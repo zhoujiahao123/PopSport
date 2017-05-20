@@ -3,6 +3,8 @@ package com.nexuslink.ui.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -185,15 +187,24 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     @Override
     public void loginFailed() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                sweetAlertDialog.setTitle("很抱歉");
-                sweetAlertDialog.setContentText("登陆过程中出现错误");
-                sweetAlertDialog.show();
-            }
-        });
+        handler.sendEmptyMessage(1);
     }
+    private final Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final SweetAlertDialog dialog = new SweetAlertDialog(LogInActivity.this);
+            dialog.setTitle("很抱歉");
+            dialog.setContentText("登陆过程中出现错误");
+            dialog.show();
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    dialog.dismiss();
+                }
+            });
+        }
+    };
 
 
     @Override

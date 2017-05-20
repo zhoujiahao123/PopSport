@@ -8,14 +8,16 @@ import com.nexuslink.UserDao;
  */
 
 public class UserUtils {
-    public static  User user = DBUtil.getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
 
+    public static User getUser(){
+        return DBUtil.getUserDao().queryBuilder().where(UserDao.Properties.Already.eq(1)).unique();
+    }
     /**
      * 取得用户id
      * @return
      */
     public static int getUserId(){
-        return user.getUid();
+        return getUser().getUid();
     }
     /**
      * 计算user的等级
@@ -27,14 +29,14 @@ public class UserUtils {
      * 获取用户昵称
      */
     public static String getUserName(){
-        return user.getUName();
+        return getUser().getUName();
     }
 
     /**
      * 取得用户体重
      */
     public static int getUserWeight(){
-        return user.getUWeight();
+        return getUser().getUWeight();
     }
 
 }

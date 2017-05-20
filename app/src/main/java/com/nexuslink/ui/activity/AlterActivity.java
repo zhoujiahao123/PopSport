@@ -468,9 +468,6 @@ public class AlterActivity extends SwipeBackActivity implements AlterView, Alter
                 startActivity(intent);
                 finish();
                 //退出之前清除所有Activity
-
-
-
             }
         });
         dialog = builder.create();
