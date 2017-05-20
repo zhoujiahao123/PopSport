@@ -33,6 +33,23 @@ public class UserInfo {
     }
 
     public static class UserBean {
+        @Override
+        public String toString() {
+            return "UserBean{" +
+                    "uid=" + uid +
+                    ", uName='" + uName + '\'' +
+                    ", uGender='" + uGender + '\'' +
+                    ", uImg='" + uImg + '\'' +
+                    ", uHeight=" + uHeight +
+                    ", uWeight=" + uWeight +
+                    ", uFansnum=" + uFansnum +
+                    ", uExp=" + uExp +
+                    ", uHistoryStep=" + uHistoryStep +
+                    ", uHistoryMileage=" + uHistoryMileage +
+                    ", uAchievements=" + uAchievements +
+                    '}';
+        }
+
         /**
          * uid : 15
          * uName : 张兴锐

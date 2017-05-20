@@ -168,7 +168,7 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
 
     private void checkTimeAndShowRemind(String timeStr) {
         //判断是否加入跑房
-        HasJoinedRooms rooms = DBUtil.getHasJoinedRoomsDap().queryBuilder().where(HasJoinedRoomsDao.Properties.RId.eq(roomBean.getRoomId())).build().unique();
+        List<HasJoinedRooms> rooms = DBUtil.getHasJoinedRoomsDap().queryBuilder().where(HasJoinedRoomsDao.Properties.RId.eq(roomBean.getRoomId())).build().list();
         if(rooms==null){
             return;
         }
@@ -196,7 +196,8 @@ public class RunHouseDetailActivity extends AppCompatActivity implements RunHous
                     dialog.dismiss();
                 }
             });
-            dialog = builder.show();
+            dialog = builder.create();
+            dialog.show();
         }
     }
 
