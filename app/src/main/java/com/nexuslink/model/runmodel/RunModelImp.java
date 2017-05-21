@@ -18,8 +18,8 @@ import com.nexuslink.util.UserUtils;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
@@ -178,9 +178,19 @@ public class RunModelImp implements RunModel {
         api.setGoal(UserUtils.getUserId(), rId, goal)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<RoomGoal>() {
+                .subscribe(new Subscriber<RoomGoal>() {
                     @Override
-                    public void call(RoomGoal roomGoal) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError((Exception) e);
+                    }
+
+                    @Override
+                    public void onNext(RoomGoal roomGoal) {
                         if (roomGoal.getCode() == Constants.SUCCESS) {
                             listener.onFinish(roomGoal.getGoals());
                         } else {

@@ -7,8 +7,8 @@ import com.nexuslink.model.data.CreateRunHouseResult;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.UserUtils;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -23,16 +23,26 @@ public class CreateRunHouseModelImpl implements CreateRunHouseModel {
             api.createRoom(UserUtils.getUserId(),type,goal,name,startTime)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<CreateRunHouseResult>() {
+                    .subscribe(new Subscriber<CreateRunHouseResult>() {
                         @Override
-                        public void call(CreateRunHouseResult createRunHouseResult) {
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            listener.onError((Exception) e);
+                        }
+
+                        @Override
+                        public void onNext(CreateRunHouseResult createRunHouseResult) {
                             if(createRunHouseResult.getCode() == Constants.SUCCESS){
                                 listener.onFinish(createRunHouseResult.getRId());
                             }else{
                                 listener.onError(new Exception("创建跑房失败"));
                             }
                         }
-            });
+                    });
 
 
     }

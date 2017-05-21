@@ -24,4 +24,6 @@ public interface RunView {
     void postDataSuccess();
     //跳转到详情界面，并把这次数据传送过去
     void intentToResult(List<RoomGoal.GoalsBean> goalsBeenList);
+    void showProgress();
+    void hideProgress();
 }
