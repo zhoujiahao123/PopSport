@@ -168,8 +168,8 @@ public class AppointmentFragment extends Fragment implements RunHouseView<RoomsB
     }
 
     @Override
-    public void showError() {
-        ToastUtil.showToast(getContext(), "请求出错，请重试");
+    public void showError(String message) {
+        ToastUtil.showToast(getContext(), message);
         ptrFrameLayout.refreshComplete();
     }
 

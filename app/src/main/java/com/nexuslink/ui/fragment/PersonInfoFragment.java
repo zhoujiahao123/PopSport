@@ -124,8 +124,8 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
         Fragment myRoomsFragment = new MyRoomFragment();
 
         fragments.add(achievementFragment);
-//        fragments.add(personArticleFragment);
         fragments.add(myRoomsFragment);
+        fragments.add(personArticleFragment);
 
         //舒适化viewpager
         PersonInfoViewPagerAdapter adapter = new PersonInfoViewPagerAdapter(getFragmentManager());

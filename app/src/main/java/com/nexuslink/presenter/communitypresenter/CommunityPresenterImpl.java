@@ -124,6 +124,7 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
             @Override
             public void onError(Exception e) {
+                mCommunityView.hideProgress();
                 mCommunityView.showError(e.getMessage());
             }
         });
