@@ -141,22 +141,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 if (platform.isAuthValid()) {
                     platform.removeAccount(true);
                 }
-//                Intent intent = new Intent(LogInActivity.this,MainViewActivity.class);
-//                startActivity(intent);
-//                String accessToken = db.getToken();
-//                String userId = db.getUserId();
-//                String platname = db.getPlatformNname();
-//                int version = db.getPlatformVersion();
-//                String tokenSecret = db.getTokenSecret();
-//                String gender = db.getUserGender();
-//                String icon = db.getUserIcon();
-//                String userName = db.getUserName();
-//                String expiresIn = String.valueOf(db.getExpiresIn());
-//                String expireseTime = String.valueOf(db.getExpiresTime());
-//                Log.i(TAG,accessToken+" "+platname+" "+version+" "+tokenSecret+" "+gender+" "+icon+" "+userName+" "+expiresIn+" "+expireseTime);
-//                if(platform.isAuthValid()){
-//                    platform.removeAccount(true);
-//                }
             }
 
             @Override

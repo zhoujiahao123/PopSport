@@ -114,13 +114,15 @@ public class LogInModeImp implements LogInModel {
                     if (stepResult.getCode() == Constants.SUCCESS || stepResult.getCode() == Constants.FAILED) {
                         //进行存储
                         List<GetStepResult.RecordBean> recordBeanList = stepResult.getRecord();
-                        List<Steps> stepsList = new ArrayList<Steps>();
-                        for (GetStepResult.RecordBean recordBean : recordBeanList) {
-                            Steps steps = new Steps(null, recordBean.getStep(), recordBean.getDate(), true);
-                            stepsList.add(steps);
-                        }
-                        if (!stepsList.isEmpty()) {
-                            DBUtil.getStepsDao().insertInTx(stepsList);
+                        if(recordBeanList!=null && !recordBeanList.isEmpty()){
+                            List<Steps> stepsList = new ArrayList<Steps>();
+                            for (GetStepResult.RecordBean recordBean : recordBeanList) {
+                                Steps steps = new Steps(null, recordBean.getStep(), recordBean.getDate(), true);
+                                stepsList.add(steps);
+                            }
+                            if (!stepsList.isEmpty()) {
+                                DBUtil.getStepsDao().insertInTx(stepsList);
+                            }
                         }
                     }
 
@@ -136,17 +138,19 @@ public class LogInModeImp implements LogInModel {
                     response4.close();
                     if (distanceResult.getCode() == Constants.SUCCESS ) {
                         //开始存储到本地种
-                        List<Run> runlist = new ArrayList<Run>();
-                        for (GetDistanceResult.RecordBean recordBean : distanceResult.getRecord()) {
-                            Run run = new Run(null, String.valueOf(recordBean.getDistance()),
-                                    String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
-                                    , recordBean.getPathline(), recordBean.getStartPoint(),
-                                    recordBean.getEndPoint(), recordBean.getDate(),
-                                    recordBean.getTime(), null, true);
-                            runlist.add(run);
-                        }
-                        if (!runlist.isEmpty()) {
-                            DBUtil.getRunDao().insertInTx(runlist);
+                        if(distanceResult.getRecord()!=null && !distanceResult.getRecord().isEmpty()){
+                            List<Run> runlist = new ArrayList<Run>();
+                            for (GetDistanceResult.RecordBean recordBean : distanceResult.getRecord()) {
+                                Run run = new Run(null, String.valueOf(recordBean.getDistance()),
+                                        String.valueOf(recordBean.getDuration()), String.valueOf(recordBean.getAverageSpeed())
+                                        , recordBean.getPathline(), recordBean.getStartPoint(),
+                                        recordBean.getEndPoint(), recordBean.getDate(),
+                                        recordBean.getTime(), null, true);
+                                runlist.add(run);
+                            }
+                            if (!runlist.isEmpty()) {
+                                DBUtil.getRunDao().insertInTx(runlist);
+                            }
                         }
                     }
                     listener.onFinish(null);
