@@ -9,4 +9,5 @@ public interface WriteArticleView {
     void showProgress();
     void hideProgress();
     void showSuccess();
+    void showError(String msg);
 }
