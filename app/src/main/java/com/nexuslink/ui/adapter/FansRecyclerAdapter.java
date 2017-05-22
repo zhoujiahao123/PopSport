@@ -40,9 +40,8 @@ public class FansRecyclerAdapter extends RecyclerArrayAdapter<FansInfo.FansBean>
 
         @Override
         public void setData(FansInfo.FansBean data) {
-            super.setData(data);
-            Glide.with(getContext()).load(Constants.PHOTO_BASE_URL + data.getFImg()).crossFade().thumbnail(0.3f).into(userImageTv);
-            userNameTv.setText(data.getFName());
+            Glide.with(getContext()).load(Constants.PHOTO_BASE_URL + data.getUImg()).crossFade().thumbnail(0.3f).into(userImageTv);
+            userNameTv.setText(data.getUName());
         }
 
 

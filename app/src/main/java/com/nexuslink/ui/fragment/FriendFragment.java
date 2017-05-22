@@ -11,6 +11,7 @@ import com.nexuslink.presenter.personfriendpresenter.FriendPresenterImpl;
 import com.nexuslink.ui.adapter.FansRecyclerAdapter;
 import com.nexuslink.ui.view.ContainPresenterFragment;
 import com.nexuslink.ui.view.IFansView;
+import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class FriendFragment extends ContainPresenterFragment implements IFansVie
     @Override
     public void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setProgressView(R.layout.cube_ptr_simple_loading);
+        mRecyclerView.setProgressView(R.layout.progress_view);
         mRecyclerView.setEmptyView(R.layout.empty_view);
         mRecyclerView.setErrorView(R.layout.peron_article_error);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4,GridLayoutManager.VERTICAL,false));
@@ -64,12 +65,12 @@ public class FriendFragment extends ContainPresenterFragment implements IFansVie
 
     @Override
     public void hideProgress() {
-
+        mRecyclerView.showRecycler();
     }
 
     @Override
     public void showMsg(String message) {
-
+        ToastUtil.showToast(getContext(),message);
     }
 
     @Override
@@ -77,10 +78,10 @@ public class FriendFragment extends ContainPresenterFragment implements IFansVie
         List<FansInfo.FansBean> fans = new ArrayList<>();
         for(FriendsInfo.UsersBean usersBean: datas){
             FansInfo.FansBean fansBean = new FansInfo.FansBean();
-            fansBean.setFId(usersBean.getFId());
-            fansBean.setFImg(usersBean.getFImg());
-            fansBean.setFAchievements(usersBean.getFAchievements());
-            fansBean.setFName(usersBean.getFName());
+            fansBean.setUid(usersBean.getUid());
+            fansBean.setUImg(usersBean.getUImg());
+            fansBean.setUAchievements(usersBean.getUAchievements());
+            fansBean.setUName(usersBean.getUName());
             fans.add(fansBean);
         }
         adapter.addAll(fans);
