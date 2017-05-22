@@ -167,46 +167,51 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
                             .post(body1)
                             .build();
                     Response response1 = client.newCall(request1).execute();
-                    final UserInfo userInfo = gson.fromJson(response1.body().string(), UserInfo.class);
-                    if (userInfo.getCode() == Constants.SUCCESS) {
-                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, userInfo.getUser().getUImg());
-                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_NAME, userInfo.getUser().getUName());
-                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, userInfo.getUser().getUExp());
-                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansnum());
-                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, SEX, userInfo.getUser().getUGender());
-                    }
-                    Log.i(TAG,userInfo.getUser().toString());
-                    //设置用户信息
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //设置信息
-                            Glide.with(getContext()).load(Constants.PHOTO_BASE_URL + userInfo.getUser().getUImg())
-                                    .into(userImage);
-                            userName.setText(userInfo.getUser().getUName());
-                            userLevel.setText(UserUtils.getUserLevel(userInfo.getUser().getUExp()));
-                            fansNum.setText(userInfo.getUser().getUFansnum() + "");
-                            sex.setText(userInfo.getUser().getUGender().equals("M") ? "男" : "女");
+                    if(response1.isSuccessful()){
+                        final UserInfo userInfo = gson.fromJson(response1.body().string(), UserInfo.class);
+                        if (userInfo.getCode() == Constants.SUCCESS) {
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, userInfo.getUser().getUImg());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_NAME, userInfo.getUser().getUName());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, userInfo.getUser().getUExp());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansnum());
+                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, SEX, userInfo.getUser().getUGender());
                         }
-                    });
-                    //请求用户好友数
-                    RequestBody body2 = new FormBody.Builder()
-                            .add("uId", String.valueOf(UserUtils.getUserId())).build();
-                    Request request2 = new Request.Builder()
-                            .url(Constants.BASE_URL + "friend/mine")
-                            .post(body2)
-                            .build();
-                    Response response2 = client.newCall(request2).execute();
-                    final FriendsInfo friendsInfo = gson.fromJson(response2.body().string(), FriendsInfo.class);
-                    if (friendsInfo.getCode() == Constants.SUCCESS) {
-                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, friendsInfo.getUsers().size());
-                    }
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            friendsNum.setText(friendsInfo.getUsers().size() + "");
+                        Log.i(TAG,userInfo.getUser().toString());
+                        //设置用户信息
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //设置信息
+                                Glide.with(getContext()).load(Constants.PHOTO_BASE_URL + userInfo.getUser().getUImg())
+                                        .into(userImage);
+                                userName.setText(userInfo.getUser().getUName());
+                                userLevel.setText(UserUtils.getUserLevel(userInfo.getUser().getUExp()));
+                                fansNum.setText(userInfo.getUser().getUFansnum() + "");
+                                sex.setText(userInfo.getUser().getUGender().equals("M") ? "男" : "女");
+                            }
+                        });
+                        //请求用户好友数
+                        RequestBody body2 = new FormBody.Builder()
+                                .add("uId", String.valueOf(UserUtils.getUserId())).build();
+                        Request request2 = new Request.Builder()
+                                .url(Constants.BASE_URL + "friend/mine")
+                                .post(body2)
+                                .build();
+                        Response response2 = client.newCall(request2).execute();
+                        if(response2.isSuccessful()){
+                            final FriendsInfo friendsInfo = gson.fromJson(response2.body().string(), FriendsInfo.class);
+                            if (friendsInfo.getCode() == Constants.SUCCESS) {
+                                SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, friendsInfo.getUsers().size());
+                            }
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    friendsNum.setText(friendsInfo.getUsers().size() + "");
+                                }
+                            });
                         }
-                    });
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

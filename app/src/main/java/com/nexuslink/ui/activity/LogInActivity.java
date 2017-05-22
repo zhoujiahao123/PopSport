@@ -33,7 +33,7 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
-import cn.sharesdk.wechat.friends.Wechat;
+
 
 
 public class LogInActivity extends BaseActivity implements LoginView {
@@ -109,7 +109,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     private final int QQ = 0;
     private final int XINLANG = 1;
-    private final int WECHAT = 2;
 
     public void authorize(int platform) {
         Platform pf = null;
@@ -119,9 +118,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 break;
             case XINLANG:
                 pf = ShareSDK.getPlatform(SinaWeibo.NAME);
-                break;
-            case WECHAT:
-                pf = ShareSDK.getPlatform(Wechat.NAME);
                 break;
         }
         //使用了SSO授权后，有客户端的都会优先启用客户端授权，没客户端的则任然使用网页版进行授权。

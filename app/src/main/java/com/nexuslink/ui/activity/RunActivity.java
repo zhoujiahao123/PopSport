@@ -434,10 +434,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     @Override
     public void setCurrentTime(String realTime) {
-        if (realTime.length() > 5) {
-            //  CurrentMiles.setTextSize(getResources().getDimension(R.dimen.font_large));
-        }
-        //     CurrentTimeTv.setText(realTime);
         mCurrentTime.setText(realTime);
     }
 

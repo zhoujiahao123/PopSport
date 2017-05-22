@@ -101,6 +101,7 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
     @Override
     public void showSuccess(String str) {
+
     }
 
     @Override
@@ -174,7 +175,7 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
     @Override
     public void hideProgress() {
-
+        mRecylerView.showProgress();
     }
 
     @Override

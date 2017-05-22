@@ -24,6 +24,7 @@ import com.nexuslink.util.UserUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -84,9 +85,20 @@ public class OtherPersonActivity extends AppCompatActivity {
         ApiUtil.getInstance(Constants.BASE_URL).getFriendInfo(UserUtils.getUserId(), uId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FriendInfo>() {
+                .subscribe(new Subscriber<FriendInfo>() {
                     @Override
-                    public void call(FriendInfo friendInfo) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.showToast(OtherPersonActivity.this,e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(FriendInfo friendInfo) {
                         if (friendInfo.getCode() == Constants.SUCCESS) {
                             //设置信息
                             if (friendInfo.getFriend().getUImg() != null) {
@@ -109,9 +121,19 @@ public class OtherPersonActivity extends AppCompatActivity {
         ApiUtil.getInstance(Constants.BASE_URL).getFriends(UserUtils.getUserId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FriendsInfo>() {
+                .subscribe(new Subscriber<FriendsInfo>() {
                     @Override
-                    public void call(FriendsInfo friendsInfo) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.showToast(OtherPersonActivity.this,e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(FriendsInfo friendsInfo) {
                         if (friendsInfo.getCode() == Constants.SUCCESS) {
                             mFriendNum.setText(friendsInfo.getUsers().size() + "");
                         }
