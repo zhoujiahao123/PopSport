@@ -84,7 +84,7 @@ public class MyRoomFragment extends ContainPresenterFragment implements RunHouse
     }
 
     @Override
-    public void showError() {
+    public void showError(String message) {
         mRecyclerView.showError();
     }
 

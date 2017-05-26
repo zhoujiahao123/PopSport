@@ -99,7 +99,7 @@ public class ArticleDetailPresenterImpl implements ArticleDetailPresenter {
             @Override
             public void onError(Exception e) {
                 mArticleView.hideProgress();
-                mArticleView.showError("加载过程中出错,请重试");
+                mArticleView.showError(e.getMessage());
             }
         });
     }

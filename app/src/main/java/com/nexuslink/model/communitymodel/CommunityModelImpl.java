@@ -1,7 +1,5 @@
 package com.nexuslink.model.communitymodel;
 
-import android.util.Log;
-
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Api;
 import com.nexuslink.config.Constants;
@@ -15,10 +13,6 @@ import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeoutException;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -208,10 +202,6 @@ public class CommunityModelImpl implements CommunityModel {
 
                       @Override
                       public void onError(Throwable e) {
-                          if (e instanceof TimeoutException || e instanceof SocketTimeoutException
-                                  || e instanceof ConnectException){
-                              Log.i("fffff","超时");
-                          }
                           listener.onError((Exception) e);
                       }
 

@@ -9,7 +9,7 @@ import java.util.List;
 public interface RunHouseView<T> extends BaseView {
     void showProgress();
     void hideProgress();
-    void showError();
+    void showError(String message);
     void showSuccess();
     void showNoMore();
     void setRunHouseDatas(List<T> list);

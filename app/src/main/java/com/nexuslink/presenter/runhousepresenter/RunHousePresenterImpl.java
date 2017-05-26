@@ -43,12 +43,11 @@ public class RunHousePresenterImpl extends BasePresenterImpl<RunHouseView,List<R
                     if (autoRefresh) {
                         mView.hideProgress();
                     }
-
-                    mView.showError();
+                    mView.showError(e.getMessage());
                 }
             });
         } else {
-            mView.showError();
+            mView.showError("未连接网络，请重试");
         }
     }
 
@@ -67,13 +66,14 @@ public class RunHousePresenterImpl extends BasePresenterImpl<RunHouseView,List<R
             @Override
             public void onError(Exception e) {
                 e.printStackTrace();
-                mView.showError();
+                mView.showError(e.getMessage());
             }
         });
     }
 
     @Override
     public void getMyRooms(int uId) {
+        mView.showProgress();
         runHouseModel.getMyRooms(uId,this);
     }
 
@@ -86,6 +86,8 @@ public class RunHousePresenterImpl extends BasePresenterImpl<RunHouseView,List<R
     @Override
     public void onError(Exception e) {
         super.onError(e);
+        mView.showMsg(e.getMessage());
+        mView.showError(e.getMessage());
     }
 
     @Override

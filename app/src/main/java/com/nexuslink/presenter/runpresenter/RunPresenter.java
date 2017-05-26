@@ -42,9 +42,11 @@ public class RunPresenter {
      * @param goal
      */
     public void postRoomData(int rId, long goal){
+        mRunView.showProgress();
         mRunModel.postRoomData(rId, goal, new CallBackListener() {
             @Override
             public void onFinish(Object o) {
+                mRunView.hideProgress();
                 mRunView.postDataSuccess();
                 List<RoomGoal.GoalsBean> goalsBeen = (List<RoomGoal.GoalsBean>) o;
                 mRunView.intentToResult(goalsBeen);
@@ -53,6 +55,7 @@ public class RunPresenter {
             @Override
             public void onError(Exception e) {
                 e.printStackTrace();
+                mRunView.hideProgress();
                 mRunView.showError("上传数据失败");
             }
         });

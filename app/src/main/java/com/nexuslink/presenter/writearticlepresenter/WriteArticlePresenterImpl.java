@@ -52,6 +52,8 @@ public class WriteArticlePresenterImpl implements WriteArtilcePresenter {
             @Override
             public void onError(Exception e) {
                 e.printStackTrace();
+                mView.hideProgress();
+                mView.showError(e.getMessage());
             }
         });
     }

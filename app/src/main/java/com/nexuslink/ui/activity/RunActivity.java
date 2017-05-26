@@ -210,7 +210,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
                 @Override
                 public void onFinish() {
-                    Log.i(TAG, "计时完成");
                     //开启弹窗进行提示用户
                     dialog.show();
                     //上传用户信息
@@ -435,10 +434,6 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
 
     @Override
     public void setCurrentTime(String realTime) {
-        if (realTime.length() > 5) {
-            //  CurrentMiles.setTextSize(getResources().getDimension(R.dimen.font_large));
-        }
-        //     CurrentTimeTv.setText(realTime);
         mCurrentTime.setText(realTime);
     }
 
@@ -483,6 +478,25 @@ public class RunActivity extends AppCompatActivity implements LocationSource, Ru
         intent.putExtra("type", type);
         startActivity(intent);
         finish();
+    }
+
+    android.app.AlertDialog dialog1 = null;
+    @Override
+    public void showProgress() {
+        if(dialog1 == null){
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setMessage("正在为您上传数据，请稍候...");
+            dialog1 = builder.create();
+        }
+        dialog1.show();
+    }
+
+    @Override
+    public void hideProgress() {
+        if(dialog1.isShowing()){
+            dialog1.dismiss();
+        }
     }
 
 

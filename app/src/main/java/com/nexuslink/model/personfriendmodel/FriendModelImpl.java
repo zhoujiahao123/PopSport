@@ -9,8 +9,8 @@ import com.nexuslink.util.ApiUtil;
 
 import java.util.List;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -27,9 +27,19 @@ public class FriendModelImpl implements IFriendModel<List<FriendsInfo.UsersBean>
         api.getFans(uId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FansInfo>() {
+                .subscribe(new Subscriber<FansInfo>() {
                     @Override
-                    public void call(FansInfo fansInfo) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError((Exception) e);
+                    }
+
+                    @Override
+                    public void onNext(FansInfo fansInfo) {
                         if (fansInfo.getCode() == Constants.SUCCESS) {
                             listener.onFinish(fansInfo.getFans());
                         } else {
@@ -44,9 +54,19 @@ public class FriendModelImpl implements IFriendModel<List<FriendsInfo.UsersBean>
         api.getFriends(uId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FriendsInfo>() {
+                .subscribe(new Subscriber<FriendsInfo>() {
                     @Override
-                    public void call(FriendsInfo friendsInfo) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError((Exception) e);
+                    }
+
+                    @Override
+                    public void onNext(FriendsInfo friendsInfo) {
                         if (friendsInfo.getCode() == Constants.SUCCESS) {
                             listener.onFinish(friendsInfo.getUsers());
                         } else {
