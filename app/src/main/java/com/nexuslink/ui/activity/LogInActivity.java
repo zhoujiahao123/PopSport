@@ -3,8 +3,9 @@ package com.nexuslink.ui.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,14 +14,17 @@ import android.widget.TextView;
 import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
 import com.nexuslink.app.BaseActivity;
+import com.nexuslink.model.data.BlackModel;
 import com.nexuslink.presenter.loginpresenter.LogInPresenterImp;
 import com.nexuslink.presenter.loginpresenter.LoginPresenter;
 import com.nexuslink.ui.view.LoginView;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.SharedPrefsUtil;
-import com.nexuslink.util.ToastUtil;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -59,9 +63,15 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+
         if (SharedPrefsUtil.getValue(this, "already", "already", 0) == 1) {
             startActivity(new Intent(this, MainViewActivity.class));
             finish();
@@ -72,8 +82,13 @@ public class LogInActivity extends BaseActivity implements LoginView {
             presenter = new LogInPresenterImp(this);
         }
         ShareSDK.initSDK(this);
+        EventBus.getDefault().register(this);
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void finishEvent(BlackModel model){
+        XLog.e("收到了来自EventBus");
+        finish();
+    }
     AlertDialog.Builder builder;
     AlertDialog dialog;
 
@@ -169,7 +184,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
 //                    platform.removeAccount(true);
 //                }
             }
-
             @Override
             public void onError(Platform platform, int i, Throwable throwable) {
                 XLog.e("第三方登录失败");
@@ -200,15 +214,24 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     @Override
     public void loginFailed() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                sweetAlertDialog.setTitle("很抱歉");
-                sweetAlertDialog.setContentText("登陆过程中出现错误");
-                sweetAlertDialog.show();
-            }
-        });
+        handler.sendEmptyMessage(1);
     }
+    private final Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final SweetAlertDialog dialog = new SweetAlertDialog(LogInActivity.this);
+            dialog.setTitle("很抱歉");
+            dialog.setContentText("登陆过程中出现错误");
+            dialog.show();
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    dialog.dismiss();
+                }
+            });
+        }
+    };
 
 
     @Override

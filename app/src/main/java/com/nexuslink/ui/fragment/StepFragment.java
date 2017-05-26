@@ -174,7 +174,7 @@ public class StepFragment extends Fragment {
         //日期回滚七天,包含今天
         calendar.add(Calendar.DATE, -6);
         //找到数据 区间在一个星期之内
-        Steps steps = null;
+//        Steps steps = null;
         //x轴数据
         List<String> xList = new ArrayList<>();
         //y轴数据
@@ -182,10 +182,10 @@ public class StepFragment extends Fragment {
         // 数据获得
         //加载7天数据
         for(int i =0;i<7;i++){
-            steps = stepsDao.queryBuilder().where(StepsDao.Properties.Date.eq(yearsdf.format(calendar.getTime()))).unique();
+            List<Steps> steps = stepsDao.queryBuilder().where(StepsDao.Properties.Date.eq(yearsdf.format(calendar.getTime()))).list();
             //进行判断
-            if(steps != null){
-                yBarEnties.add(new BarEntry(steps.getUStep(),i));
+            if(steps != null && steps.size() !=0){
+                yBarEnties.add(new BarEntry(steps.get(0).getUStep(),i));
             }else{
                 yBarEnties.add(new BarEntry(0,i));
             }

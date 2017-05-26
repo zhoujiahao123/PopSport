@@ -19,6 +19,7 @@ import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.JoinRoomResult;
 import com.nexuslink.model.data.LoadRoomsResult;
 import com.nexuslink.model.data.MyLoadRoomsResult;
+import com.nexuslink.model.data.PostDisLike;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.PublishImagesResult;
 import com.nexuslink.model.data.QuiteRoomResult;
@@ -131,7 +132,7 @@ public interface Api {
     //取消点赞
     @FormUrlEncoded
     @POST("article/like")
-    Observable<PostLikeResult> postDisLike(@Field("uId") int userId, @Field("aId") int articleId);
+    Observable<PostDisLike> postDisLike(@Field("uId") int userId, @Field("aId") int articleId);
 
     //修改用户的个人信息
     @FormUrlEncoded

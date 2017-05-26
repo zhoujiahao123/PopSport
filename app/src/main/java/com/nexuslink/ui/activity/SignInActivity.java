@@ -95,8 +95,6 @@ public class SignInActivity extends BaseActivity implements SignInView {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,7 +128,6 @@ public class SignInActivity extends BaseActivity implements SignInView {
                 onSelectOption(i);
             }
         });
-
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.CommentInfo;
 import com.nexuslink.model.data.CommentResult;
+import com.nexuslink.model.data.PostDisLike;
 import com.nexuslink.model.data.PostLikeResult;
 import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.util.ApiUtil;
@@ -50,8 +51,29 @@ public class ArticleDetailModelImpl implements ArticleDetailModel {
     }
 
     @Override
-    public void postDisLike(int userId, int articleId, CallBackListener listener) {
+    public void postDisLike(int userId, int articleId, final CallBackListener listener) {
+            api.postDisLike(userId,articleId).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<PostDisLike>() {
+                        @Override
+                        public void onCompleted() {
 
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(PostDisLike postDisLike) {
+                            if(postDisLike.getCode() == Constants.SUCCESS){
+                                listener.onFinish(null);
+                            }else{
+                                listener.onError(new Exception("取消点赞失败"));
+                            }
+                        }
+                    });
     }
 
     @Override

@@ -128,8 +128,4 @@ public class MainViewActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

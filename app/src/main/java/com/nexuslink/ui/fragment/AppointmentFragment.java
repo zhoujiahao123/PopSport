@@ -193,7 +193,12 @@ public class AppointmentFragment extends Fragment implements RunHouseView<RoomsB
 
     @Override
     public void addRunHouse(List<RoomsBean> list) {
-        adapter.addItems(list);
+        if(list.size() != adapter.getDatas().size()){
+            adapter.addItems(list);
+            showSuccess();
+        }else{
+            showNoMore();
+        }
         ptrFrameLayout.refreshComplete();
     }
 

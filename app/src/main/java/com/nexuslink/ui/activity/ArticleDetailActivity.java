@@ -23,7 +23,6 @@ import com.nexuslink.presenter.articlepresenter.ArticleDetailPresenter;
 import com.nexuslink.presenter.articlepresenter.ArticleDetailPresenterImpl;
 import com.nexuslink.ui.view.ArticleDetailView;
 import com.nexuslink.ui.view.MyNineGridLayout;
-import com.nexuslink.ui.view.likeview.CommentPathAdapter;
 import com.nexuslink.ui.view.likeview.LikeView;
 import com.nexuslink.ui.view.view.headerview.LoadingView;
 import com.nexuslink.util.Base64Utils;
@@ -170,10 +169,18 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
             public void onClick(View v) {
                 if (!article.isLikeArticle()) {
                     presenter.postLike(articleId);
+                    //更新状态
                     likeImage.setImageDrawable(getDrawable(R.drawable.like));
+                    article.setLikeArticle(true);
+                    article.setLikeNum(article.getLikeNum()+1);
+                    likeNum.setText(article.getLikeNum()+"");
                 } else {
                     presenter.postDisLke(articleId);
+                    //更新状态
                     likeImage.setImageDrawable(getDrawable(R.drawable.dislike));
+                    article.setLikeArticle(false);
+                    article.setLikeNum(article.getLikeNum()-1);
+                    likeNum.setText(article.getLikeNum()+"");
                 }
             }
         });
@@ -224,7 +231,11 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         multiView.setIsShowAll(true);
         multiView.setUrlList(getImagesUrl(article.getImages()));
         //设置点赞数目和评论数目
-        likeNum.setActivated(article.isLikeArticle());
+        if(article.isLikeArticle()){
+            likeImage.setImageDrawable(getDrawable(R.drawable.like));
+        }else{
+            likeImage.setImageDrawable(getDrawable(R.drawable.dislike));
+        }
         likeNum.setText(article.getLikeNum() + "");
 
         commentNumber = article.getCommentNum();
@@ -311,7 +322,7 @@ public class ArticleDetailActivity extends SwipeBackActivity implements ArticleD
         c.set(Calendar.AM_PM, 0);
         c.set(Calendar.MINUTE, 0);
         // 判断是不是今年
-        if (c.get(Calendar.YEAR) == Integer.valueOf(date.split("-")[0])) {
+        if (c.get(Calendar.YEAR) == Integer.valueOf(date.split("-")[0]).intValue()) {
             //是今年，那么是否有超过7天
             long dateMills = TimeUtils.DateToMills(date + " " + time);
             if (c.getTimeInMillis() - dateMills > SEVEN_DAYS) {

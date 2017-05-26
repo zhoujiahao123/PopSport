@@ -101,7 +101,7 @@ public class RunHouseResultActivity extends AppCompatActivity {
                                 Glide.with(RunHouseResultActivity.this).load(Constants.PHOTO_BASE_URL+userInfo.getUser().getUImg()).crossFade().into(mNo1Image);
                                 mSteps.setText(userInfo.getUser().getUHistoryStep()+"");
                                 Miles.setText(userInfo.getUser().getUHistoryMileage()+"");
-                                mFans.setText(userInfo.getUser().getUFansNum()+"");
+                                mFans.setText(userInfo.getUser().getUFansnum()+"");
                             }
                         }
                     });

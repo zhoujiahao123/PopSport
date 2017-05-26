@@ -1,11 +1,13 @@
 package com.nexuslink.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -13,10 +15,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.elvishew.xlog.XLog;
+import com.google.gson.Gson;
 import com.nexuslink.R;
+import com.nexuslink.Run;
+import com.nexuslink.Steps;
+import com.nexuslink.User;
+import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseActivity;
+import com.nexuslink.app.BaseApplication;
+import com.nexuslink.config.Constants;
 import com.nexuslink.model.addinfomodel.AddInfoModelImpl;
 import com.nexuslink.model.altermodel.AlterModelImpl;
+import com.nexuslink.model.data.BlackModel;
+import com.nexuslink.model.data.GetDistanceResult;
+import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.presenter.addinfopresenter.AddInfoPresenter;
 import com.nexuslink.presenter.addinfopresenter.AddInfoPresenterImpl;
 import com.nexuslink.presenter.alterpresenter.AlterPresenter;
@@ -24,10 +36,16 @@ import com.nexuslink.presenter.alterpresenter.AlterPresenterImpl;
 import com.nexuslink.presenter.signinpresenter.SignInPresenter;
 import com.nexuslink.ui.view.OtherLogInAddInfoView;
 import com.nexuslink.util.CircleImageView;
+import com.nexuslink.util.DBUtil;
 import com.nexuslink.util.IdUtil;
 import com.nexuslink.util.SharedPrefsUtil;
 import com.nexuslink.util.ToastUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +56,11 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.jeesoft.widget.pickerview.CharacterPickerWindow;
 import cn.jeesoft.widget.pickerview.OnOptionChangedListener;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by ASUS-NB on 2017/5/20.
@@ -66,6 +89,9 @@ public class OtherLogInfoAddInfo extends BaseActivity implements OtherLogInAddIn
     ArrayList<String> heightList;
     ArrayList<String> weightList;
     private AddInfoPresenter presenter;
+    OkHttpClient okHttpClient = new OkHttpClient();
+
+    private int uId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +101,19 @@ public class OtherLogInfoAddInfo extends BaseActivity implements OtherLogInAddIn
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getIntent().getIntExtra("uId",-1);
+
         presenter = new AddInfoPresenterImpl(new AddInfoModelImpl(),this);
-        XLog.e("调试这里");
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private ArrayList<String> showHeightAction() {
@@ -154,8 +191,9 @@ public class OtherLogInfoAddInfo extends BaseActivity implements OtherLogInAddIn
                 window.showAtLocation(container, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.btn_ok:
-                addInfo((int)IdUtil.getuId(), (char) SharedPrefsUtil.getValue(this,"gender","gender",'M'),Integer.valueOf(height.getText().toString()),
-                        Integer.valueOf(weight.getText().toString()));
+                addInfo((int)IdUtil.getuId(),(char) SharedPrefsUtil.getValue(this,"gender","gender",'M'),Integer.valueOf(height.getText().toString().replaceAll("cm"," ").trim()),
+                        Integer.valueOf(weight.getText().toString().replaceAll("kg"," ").trim()));
+
                 break;
         }
     }
@@ -167,7 +205,22 @@ public class OtherLogInfoAddInfo extends BaseActivity implements OtherLogInAddIn
 
     @Override
     public void onAddSucceed() {
-
+        if(uId!=-1){
+            new Thread(){
+                @Override
+                public void run() {
+                            SharedPrefsUtil.putValue(OtherLogInfoAddInfo.this, "already", "already", 1);
+                            Intent mainViewIntent = new Intent(OtherLogInfoAddInfo.this, MainViewActivity.class);
+                            startActivity(mainViewIntent);
+                            //登陆成功发送广播,通知计步更新
+                            sendBroadcast(new Intent("ANewacount"));
+                            finish();
+                            BlackModel model =new BlackModel();
+                            EventBus.getDefault().post(model);
+                }
+            }.start();
+        }
+        finish();
     }
 
     @Override

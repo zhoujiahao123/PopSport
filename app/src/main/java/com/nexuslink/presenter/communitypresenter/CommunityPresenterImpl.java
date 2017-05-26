@@ -42,11 +42,12 @@ public class CommunityPresenterImpl implements CommunityPresenter {
 
 
     @Override
-    public void postLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position) {
+    public void postLike(int userId, int articleId, final ImageView likeView, final TextView likeNumTv, final int position) {
         mCommunity.postLike(userId, articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
                 mCommunityView.showSuccess("点赞成功");
+                mCommunityView.addLikeNum(position);
             }
 
             @Override
@@ -57,11 +58,12 @@ public class CommunityPresenterImpl implements CommunityPresenter {
     }
 
     @Override
-    public void postDisLike(int userId, int articleId, ImageView likeView, TextView likeNumTv, int position) {
+    public void postDisLike(int userId, int articleId, final ImageView likeView, TextView likeNumTv, final int position) {
         mCommunity.postDisLike(userId, articleId, new CallBackListener() {
             @Override
             public void onFinish(Object obj) {
-                mCommunityView.showSuccess("成功取消");
+//                mCommunityView.showSuccess("成功取消");
+                mCommunityView.decreaseLikeNum(position);
             }
 
             @Override

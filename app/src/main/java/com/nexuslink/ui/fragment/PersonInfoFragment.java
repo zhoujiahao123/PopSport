@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.gson.Gson;
 import com.nexuslink.R;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.FriendsInfo;
@@ -27,7 +28,6 @@ import com.nexuslink.ui.activity.SearchActivity;
 import com.nexuslink.ui.activity.TaskActivity;
 import com.nexuslink.ui.adapter.PersonInfoViewPagerAdapter;
 import com.nexuslink.ui.view.PersonInfoBezierView;
-import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.CircleImageView;
 import com.nexuslink.util.SharedPrefsUtil;
 import com.nexuslink.util.ToActivityUtil;
@@ -38,14 +38,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.nexuslink.util.SharedPrefsUtil.getValue;
 
@@ -79,6 +83,9 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
     private final String FANS_NUM = "fansNum";
     private final String SEX = "sex";
     private final String SHARE_PRF_NAME = "userinfo";
+
+    private final OkHttpClient client = new OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS).build();
+    private final Gson gson = new Gson();
 
     LinearLayout mSettingLinear;
     /**
@@ -145,60 +152,66 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
 
 
     private void setUserInfo() {
-        Log.i(TAG, "设置个人信息");
         //初始化个人信息
         initUserData(null);
-        ApiUtil.getInstance(Constants.BASE_URL).getUserInfo(UserUtils.getUserId())
-                .subscribeOn(Schedulers.io())
-                .doOnNext(new Action1<UserInfo>() {
-                    @Override
-                    public void call(UserInfo userInfo) {
-                        Log.i("PersonInfoFragment", "currentThread:" + Thread.currentThread());
-                        if (userInfo.getCode() == Constants.SUCCESS) {
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, userInfo.getUser().getUImg());
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_NAME, userInfo.getUser().getUName());
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, userInfo.getUser().getUExp());
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansNum());
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, SEX, userInfo.getUser().getUGender());
-                        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //请求用户信息
+                    RequestBody body1 = new FormBody.Builder().add("uId", String.valueOf(UserUtils.getUserId()))
+                            .build();
+                    Log.i(TAG,UserUtils.getUserId()+"");
+                    Request request1 = new Request.Builder()
+                            .url(Constants.BASE_URL + "user/getInfo")
+                            .post(body1)
+                            .build();
+                    Response response1 = client.newCall(request1).execute();
+                    final UserInfo userInfo = gson.fromJson(response1.body().string(), UserInfo.class);
+                    if (userInfo.getCode() == Constants.SUCCESS) {
+                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_IMAGE, userInfo.getUser().getUImg());
+                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_NAME, userInfo.getUser().getUName());
+                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, USER_LEVEL, userInfo.getUser().getUExp());
+                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FANS_NUM, userInfo.getUser().getUFansnum());
+                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, SEX, userInfo.getUser().getUGender());
                     }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<UserInfo>() {
-                    @Override
-                    public void call(UserInfo userInfo) {
-                        if (userInfo.getCode() == Constants.SUCCESS) {
+                    Log.i(TAG,userInfo.getUser().toString());
+                    //设置用户信息
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
                             //设置信息
                             Glide.with(getContext()).load(Constants.PHOTO_BASE_URL + userInfo.getUser().getUImg())
                                     .into(userImage);
                             userName.setText(userInfo.getUser().getUName());
                             userLevel.setText(UserUtils.getUserLevel(userInfo.getUser().getUExp()));
-                            fansNum.setText(userInfo.getUser().getUFansNum() + "");
+                            fansNum.setText(userInfo.getUser().getUFansnum() + "");
                             sex.setText(userInfo.getUser().getUGender().equals("M") ? "男" : "女");
                         }
+                    });
+                    //请求用户好友数
+                    RequestBody body2 = new FormBody.Builder()
+                            .add("uId", String.valueOf(UserUtils.getUserId())).build();
+                    Request request2 = new Request.Builder()
+                            .url(Constants.BASE_URL + "friend/mine")
+                            .post(body2)
+                            .build();
+                    Response response2 = client.newCall(request2).execute();
+                    final FriendsInfo friendsInfo = gson.fromJson(response2.body().string(), FriendsInfo.class);
+                    if (friendsInfo.getCode() == Constants.SUCCESS) {
+                        SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, friendsInfo.getUsers().size());
                     }
-                });
-        //继续请求用户好友树
-        ApiUtil.getInstance(Constants.BASE_URL).getFriends(UserUtils.getUserId())
-                .subscribeOn(Schedulers.io())
-                .doOnNext(new Action1<FriendsInfo>() {
-                    @Override
-                    public void call(FriendsInfo friendsInfo) {
-                        if (friendsInfo.getCode() == Constants.SUCCESS) {
-                            SharedPrefsUtil.putValue(getContext(), SHARE_PRF_NAME, FRIEND_NUM, friendsInfo.getUsers().size());
-                            //请求完成
-                            SharedPrefsUtil.putValue(getContext(), "firstlogin", "firstlogin", false);
-                        }
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FriendsInfo>() {
-                    @Override
-                    public void call(FriendsInfo friendsInfo) {
-                        if (friendsInfo.getCode() == Constants.SUCCESS) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
                             friendsNum.setText(friendsInfo.getUsers().size() + "");
                         }
-                    }
-                });
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -213,9 +226,6 @@ public class PersonInfoFragment extends BaseFragment implements View.OnClickList
             if (image_url == null) {
                 Glide.with(getContext()).load(R.drawable.small_pop_logo).into(userImage);
             } else {
-                //缓存到磁盘
-                Log.i(TAG, "重置头像");
-                Log.i(TAG, image_url);
                 Glide.with(getContext()).load(image_url).diskCacheStrategy(DiskCacheStrategy.RESULT).skipMemoryCache(true).into(userImage);
             }
             userName.setText(userNameStr);

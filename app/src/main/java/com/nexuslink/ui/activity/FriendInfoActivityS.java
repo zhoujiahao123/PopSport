@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -231,13 +230,11 @@ public class FriendInfoActivityS extends BaseActivity implements FriendInfoSView
         loader.loadNet(headImage, Constants.PHOTO_BASE_URL + userInfo.getUser().getUImg(), null);
         nickName.setText(userInfo.getUser().getUName());
         XLog.e(userInfo.getUser().getUName());
-        fanNum.setText(userInfo.getUser().getUFansNum() + "");
-        XLog.e(userInfo.getUser().getUFansNum());
+        fanNum.setText(userInfo.getUser().getUFansnum() + "");
         followNum.setText(50 + "");
         genderImpl.setText(userInfo.getUser().getUGender().equals("M") ? "男" : "女");
         XLog.e(userInfo.getUser().getUGender());
-        achieveImpl.setText(checkAchieve(userInfo.getUser().getUAchievements()));
-        XLog.e(checkAchieve(userInfo.getUser().getUAchievements()));
+        achieveImpl.setText(checkAchieve((Boolean[]) userInfo.getUser().getUAchievements().toArray()));
         ratingImpl.setText(RatingUtil.getRating(userInfo.getUser().getUExp()));
         XLog.e(RatingUtil.getRating(userInfo.getUser().getUExp()));
     }
