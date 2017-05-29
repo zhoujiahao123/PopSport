@@ -24,7 +24,7 @@
     <!--登录注册-->
     <Button
         android:text="登陆"
-        android:textColor="@color/white"
+        android:textColor="@color/ghost_white"
         app:layout_constraintTop_toBottomOf="@+id/input"
         android:background="@drawable/bt_run_house_background"
         android:id="@+id/login"

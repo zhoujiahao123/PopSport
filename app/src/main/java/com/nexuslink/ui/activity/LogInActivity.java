@@ -37,7 +37,7 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
-import cn.sharesdk.wechat.friends.Wechat;
+
 
 
 public class LogInActivity extends BaseActivity implements LoginView {
@@ -125,7 +125,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
 
     private final int QQ = 0;
     private final int XINLANG = 1;
-    private final int WECHAT = 2;
 
     public void authorize(int platform) {
         Platform pf = null;
@@ -136,9 +135,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 break;
             case XINLANG:
                 pf = ShareSDK.getPlatform(SinaWeibo.NAME);
-                break;
-            case WECHAT:
-                pf = ShareSDK.getPlatform(Wechat.NAME);
                 break;
         }
         //使用了SSO授权后，有客户端的都会优先启用客户端授权，没客户端的则任然使用网页版进行授权。
@@ -167,22 +163,6 @@ public class LogInActivity extends BaseActivity implements LoginView {
                 if (platform.isAuthValid()) {
                     platform.removeAccount(true);
                 }
-//                Intent intent = new Intent(LogInActivity.this,MainViewActivity.class);
-//                startActivity(intent);
-//                String accessToken = db.getToken();
-//                String userId = db.getUserId();
-//                String platname = db.getPlatformNname();
-//                int version = db.getPlatformVersion();
-//                String tokenSecret = db.getTokenSecret();
-//                String gender = db.getUserGender();
-//                String icon = db.getUserIcon();
-//                String userName = db.getUserName();
-//                String expiresIn = String.valueOf(db.getExpiresIn());
-//                String expireseTime = String.valueOf(db.getExpiresTime());
-//                Log.i(TAG,accessToken+" "+platname+" "+version+" "+tokenSecret+" "+gender+" "+icon+" "+userName+" "+expiresIn+" "+expireseTime);
-//                if(platform.isAuthValid()){
-//                    platform.removeAccount(true);
-//                }
             }
             @Override
             public void onError(Platform platform, int i, Throwable throwable) {

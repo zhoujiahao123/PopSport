@@ -7,19 +7,13 @@ import java.util.List;
  */
 
 public class FansInfo {
+
     /**
      * code : 200
-     * fans : [{"fId":18,"fName":"好哥哥","fImg":"user18.jpeg","fAchievements":[false,false,false,false,false,false,false,false]}]
+     * fans : [{"uid":18,"uName":"好哥哥","uGender":"M","uImg":"user18.jpeg","uHeight":180,"uWeight":60,"uFansnum":2,"uExp":0,"uHistoryStep":3294,"uHistoryMileage":0,"uAchievements":[false,false,false,false,false,false,false,false]},{"uid":26,"uName":"周家豪","uGender":"M","uImg":"user26.jpeg","uHeight":180,"uWeight":60,"uFansnum":1,"uExp":0,"uHistoryStep":0,"uHistoryMileage":0,"uAchievements":[false,false,false,false,false,false,false,false]},{"uid":41,"uName":"1122","uGender":"M","uImg":"user41.png","uHeight":170,"uWeight":50,"uFansnum":3,"uExp":0,"uHistoryStep":1120,"uHistoryMileage":0,"uAchievements":[false,false,false,false,false,false,false,false]}]
      */
 
     private int code;
-    /**
-     * fId : 18
-     * fName : 好哥哥
-     * fImg : user18.jpeg
-     * fAchievements : [false,false,false,false,false,false,false,false]
-     */
-
     private List<FansBean> fans;
 
     public int getCode() {
@@ -39,41 +33,118 @@ public class FansInfo {
     }
 
     public static class FansBean {
-        private int fId;
-        private String fName;
-        private String fImg;
-        private List<Boolean> fAchievements;
+        /**
+         * uid : 18
+         * uName : 好哥哥
+         * uGender : M
+         * uImg : user18.jpeg
+         * uHeight : 180
+         * uWeight : 60
+         * uFansnum : 2
+         * uExp : 0
+         * uHistoryStep : 3294
+         * uHistoryMileage : 0
+         * uAchievements : [false,false,false,false,false,false,false,false]
+         */
 
-        public int getFId() {
-            return fId;
+        private int uid;
+        private String uName;
+        private String uGender;
+        private String uImg;
+        private int uHeight;
+        private int uWeight;
+        private int uFansnum;
+        private int uExp;
+        private int uHistoryStep;
+        private int uHistoryMileage;
+        private List<Boolean> uAchievements;
+
+        public int getUid() {
+            return uid;
         }
 
-        public void setFId(int fId) {
-            this.fId = fId;
+        public void setUid(int uid) {
+            this.uid = uid;
         }
 
-        public String getFName() {
-            return fName;
+        public String getUName() {
+            return uName;
         }
 
-        public void setFName(String fName) {
-            this.fName = fName;
+        public void setUName(String uName) {
+            this.uName = uName;
         }
 
-        public String getFImg() {
-            return fImg;
+        public String getUGender() {
+            return uGender;
         }
 
-        public void setFImg(String fImg) {
-            this.fImg = fImg;
+        public void setUGender(String uGender) {
+            this.uGender = uGender;
         }
 
-        public List<Boolean> getFAchievements() {
-            return fAchievements;
+        public String getUImg() {
+            return uImg;
         }
 
-        public void setFAchievements(List<Boolean> fAchievements) {
-            this.fAchievements = fAchievements;
+        public void setUImg(String uImg) {
+            this.uImg = uImg;
+        }
+
+        public int getUHeight() {
+            return uHeight;
+        }
+
+        public void setUHeight(int uHeight) {
+            this.uHeight = uHeight;
+        }
+
+        public int getUWeight() {
+            return uWeight;
+        }
+
+        public void setUWeight(int uWeight) {
+            this.uWeight = uWeight;
+        }
+
+        public int getUFansnum() {
+            return uFansnum;
+        }
+
+        public void setUFansnum(int uFansnum) {
+            this.uFansnum = uFansnum;
+        }
+
+        public int getUExp() {
+            return uExp;
+        }
+
+        public void setUExp(int uExp) {
+            this.uExp = uExp;
+        }
+
+        public int getUHistoryStep() {
+            return uHistoryStep;
+        }
+
+        public void setUHistoryStep(int uHistoryStep) {
+            this.uHistoryStep = uHistoryStep;
+        }
+
+        public int getUHistoryMileage() {
+            return uHistoryMileage;
+        }
+
+        public void setUHistoryMileage(int uHistoryMileage) {
+            this.uHistoryMileage = uHistoryMileage;
+        }
+
+        public List<Boolean> getUAchievements() {
+            return uAchievements;
+        }
+
+        public void setUAchievements(List<Boolean> uAchievements) {
+            this.uAchievements = uAchievements;
         }
     }
 }

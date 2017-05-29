@@ -21,6 +21,7 @@ import com.nexuslink.presenter.communitypresenter.CommunityPresenter;
 import com.nexuslink.presenter.communitypresenter.CommunityPresenterImpl;
 import com.nexuslink.ui.adapter.PersonArticleAdapter;
 import com.nexuslink.ui.view.CommunityView;
+import com.nexuslink.util.ToastUtil;
 import com.nexuslink.util.UserUtils;
 import com.vanniktech.emoji.EmojiTextView;
 
@@ -100,16 +101,13 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
     @Override
     public void showSuccess(String str) {
+
     }
 
     @Override
     public void showError(String str) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mRecylerView.showEmpty();
-            }
-        });
+        mRecylerView.showEmpty();
+        ToastUtil.showToast(getContext(),str);
     }
 
     @Override
@@ -135,7 +133,6 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
                 adapter.setDatas(list);
             }
         });
-
 
     }
 
@@ -178,7 +175,7 @@ public class PersonArticleFragment extends Fragment implements CommunityView<Art
 
     @Override
     public void hideProgress() {
-
+        mRecylerView.showProgress();
     }
 
     @Override

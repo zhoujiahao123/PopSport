@@ -2,15 +2,13 @@ package com.nexuslink.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.elvishew.xlog.XLog;
 import com.nexuslink.R;
-import com.nexuslink.User;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.data.RankInfo;
 import com.nexuslink.util.CircleImageView;
@@ -32,10 +30,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     int myPos;
     public void addData(RankInfo rankInfo){
         int myUid= (int) IdUtil.getuId();
+        XLog.e("我的id是"+myUid);
         for(int i=0;i<rankInfo.getUsers().size();i++){
             mData.add(rankInfo.getUsers().get(i));
             if(myUid==rankInfo.getUsers().get(i).getUid()){
                 myPos = i;
+                XLog.e("我的位置是"+myPos);
             }
         }
         this.notifyDataSetChanged();

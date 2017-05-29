@@ -40,7 +40,7 @@ public class FansFragment extends ContainPresenterFragment implements IFansView<
 
     @Override
     public void initView() {
-        mRecyclerView.setProgressView(R.layout.cube_ptr_simple_loading);
+        mRecyclerView.setProgressView(R.layout.progress_view);
         mRecyclerView.setEmptyView(R.layout.empty_view);
         mRecyclerView.setErrorView(R.layout.peron_article_error);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4,GridLayoutManager.VERTICAL,false));
@@ -67,7 +67,7 @@ public class FansFragment extends ContainPresenterFragment implements IFansView<
 
     @Override
     public void hideProgress() {
-
+        mRecyclerView.showRecycler();
     }
 
     @Override

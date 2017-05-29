@@ -1,7 +1,9 @@
 package com.nexuslink.app;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
@@ -19,7 +21,7 @@ import cn.sharesdk.framework.ShareSDK;
  * Created by ASUS-NB on 2016/12/17.
  */
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 
     public static Context mContext;
     //===============================================缓存
@@ -31,8 +33,14 @@ public class BaseApplication extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         XLog.init(LogLevel.ALL);
-
+        Log.i("application","onCreate");
         InitService.start(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public synchronized static DiskLruCacheHelper getHelper() {

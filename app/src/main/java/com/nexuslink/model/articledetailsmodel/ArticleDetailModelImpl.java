@@ -11,9 +11,11 @@ import com.nexuslink.model.data.SingleCommunityInfo;
 import com.nexuslink.util.ApiUtil;
 import com.nexuslink.util.UserUtils;
 
+import java.net.SocketTimeoutException;
+import java.util.concurrent.TimeoutException;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -135,11 +137,24 @@ public class ArticleDetailModelImpl implements ArticleDetailModel {
         api.getArticle(UserUtils.getUserId(),articleId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<SingleCommunityInfo>() {
+                .subscribe(new Subscriber<SingleCommunityInfo>() {
                     @Override
-                    public void call(SingleCommunityInfo communityInfo) {
-                        if(communityInfo.getCode() == Constants.SUCCESS){
-                            listener.onFinish(communityInfo.getArticle());
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        if(e instanceof TimeoutException || e instanceof SocketTimeoutException){
+                            listener.onError((Exception) e);
+                        }
+                    }
+
+                    @Override
+                    public void onNext(SingleCommunityInfo singleCommunityInfo) {
+                        if(singleCommunityInfo.getCode() == Constants.SUCCESS){
+                            listener.onFinish(singleCommunityInfo.getArticle());
                         }else{
                             listener.onError(new Exception("加载话题出错"));
                         }
