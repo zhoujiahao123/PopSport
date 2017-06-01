@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:background="@android:color/white"
+    android:background="@color/white_light"
     android:weightSum="1">
     <RelativeLayout
         android:layout_margin="@dimen/font_small"
