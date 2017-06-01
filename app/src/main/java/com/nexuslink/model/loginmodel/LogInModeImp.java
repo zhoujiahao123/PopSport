@@ -2,29 +2,23 @@ package com.nexuslink.model.loginmodel;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.util.Log;
 
-import com.elvishew.xlog.XLog;
-import com.nexuslink.UserDao;
-import com.nexuslink.model.data.UserInfo;
-import com.nexuslink.ui.activity.OtherLogInfoAddInfo;
-import com.nexuslink.util.ApiUtil;
-import com.nexuslink.util.DBUtil;
 import com.google.gson.Gson;
 import com.nexuslink.Run;
 import com.nexuslink.Steps;
 import com.nexuslink.User;
+import com.nexuslink.UserDao;
 import com.nexuslink.app.BaseApplication;
 import com.nexuslink.config.Constants;
 import com.nexuslink.model.CallBackListener;
 import com.nexuslink.model.data.GetDistanceResult;
 import com.nexuslink.model.data.GetStepResult;
 import com.nexuslink.model.data.UIdInfo;
-import com.nexuslink.util.IdUtil;
-import com.nexuslink.util.UserUtils;
+import com.nexuslink.model.data.UserInfo;
+import com.nexuslink.ui.activity.OtherLogInfoAddInfo;
+import com.nexuslink.util.ApiUtil;
+import com.nexuslink.util.DBUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,11 +35,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -67,7 +58,7 @@ public class LogInModeImp implements LogInModel {
         File file = new File(Environment.getExternalStorageDirectory()+"/poplog.png");
         int random = (int) (Math.random()*100+1);
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("openId", String.valueOf(random))
+                .addFormDataPart("openId",String.valueOf(random))
                 .addFormDataPart("uName",uName)
                 .addFormDataPart("uGender",String.valueOf(uGender))
                 .addFormDataPart("uImg", "uImg", RequestBody.create(MediaType.parse(type), file)).build();

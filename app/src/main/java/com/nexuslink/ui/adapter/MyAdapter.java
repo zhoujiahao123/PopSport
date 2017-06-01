@@ -99,7 +99,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(mData==null){
             return 0;
         }
-        return mData.size();
+        return mData.size()-2;
     }
 
     class MyViewHodler extends RecyclerView.ViewHolder{

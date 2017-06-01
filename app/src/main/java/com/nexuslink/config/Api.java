@@ -86,13 +86,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("user/getInfo")
     Observable<UserInfo> getUserInfo(@Field("uId") int uId);
-
     //更改头像
     @Multipart
     @POST("img/changeImg")
     Observable<UpLoadUserImageResult> changUserImage(@Query("uId") int uerId, @Part("uImg\"; filename=\"userImage.jpg\"") RequestBody file);
-
-
     //发表小话题
     @FormUrlEncoded
     @POST("article/publish")
