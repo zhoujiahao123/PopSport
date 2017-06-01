@@ -50,14 +50,14 @@
         ></include>
 
     <android.support.v4.view.ViewPager
-        android:background="@android:color/white"
+        android:background="@color/white_light"
         android:id="@+id/viewpager_create_run_house"
         android:layout_width="match_parent"
         android:layout_height="@dimen/create_run_house_viewpager_height">
     </android.support.v4.view.ViewPager>
 
     <RelativeLayout
-        android:background="#ffffff"
+        android:background="@color/white_light"
         android:id="@+id/start_date_pick"
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:background="#ffffff"
+        android:background="@color/white_light"
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_marginBottom="@dimen/font_normal"
         android:layout_width="match_parent"
